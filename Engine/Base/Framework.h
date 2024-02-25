@@ -9,6 +9,7 @@
 #include"SceneManager.h"
 #include"ImGuiManager.h"
 #include"AbstractSceneFactory.h"
+#include"SrvManager.h"
 
 class Framework
 {
@@ -39,6 +40,7 @@ protected:
 
 	AbstractSceneFactory* sceneFactory_ = nullptr;
 
+	SrvManager* srvManager = nullptr;
 
 	ImGuiManager* imgui;
 

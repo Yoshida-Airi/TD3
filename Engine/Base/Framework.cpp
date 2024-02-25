@@ -3,31 +3,35 @@
 Framework::~Framework()
 {
 
-	delete texture;
-	texture = nullptr;
+
+	delete sceneManager_;
+
+	delete imgui;
 
 	delete audio;
 
 	delete input;
 	input = nullptr;
 
+	delete texture;
+	texture = nullptr;
+
+	
+	delete psoManager;
+
+
+	delete srvManager;
 
 	//DirectXの解放
 	delete dxCommon;
 	dxCommon = nullptr;
 
-	delete psoManager;
+
 
 	//WindowAPIの解放
 	delete winApp;
 	winApp = nullptr;
 
-	
-
-	delete imgui;
-
-
-	delete sceneManager_;
 
 
 #ifdef _DEBUG
@@ -47,6 +51,10 @@ void Framework::Initialize()
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize();
 
+	//SRVManagerの初期化
+	srvManager = new SrvManager();
+	srvManager->Initialize();
+
 	psoManager = GraphicsPipelineManager::GetInstance();
 	psoManager->Initialize();
 
@@ -58,6 +66,8 @@ void Framework::Initialize()
 
 	audio = Audio::GetInstance();
 	audio->Initialize();
+
+	
 
 	imgui = ImGuiManager::GetInstance();
 	imgui->Initialize();
