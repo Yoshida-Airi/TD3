@@ -9,7 +9,7 @@ GamePlayScene::~GamePlayScene()
 
 void GamePlayScene::Initialize()
 {
-	texture = TextureManager::GetInstance();
+	textureManager_ = TextureManager::GetInstance();
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
@@ -18,10 +18,10 @@ void GamePlayScene::Initialize()
 #endif // _DEBUG
 
 
-	uvTexture = texture->LoadTexture("Resources/DefaultAssets/uvChecker.png");
-	monsterBall = texture->LoadTexture("Resources/DefaultAssets/monsterBall.png");
-	Doll = texture->LoadTexture("Resources/DefaultAssets/Doll.png");
-	circle = texture->LoadTexture("Resources/DefaultAssets/circle.png");
+	uvTexture = textureManager_->LoadTexture("Resources/DefaultAssets/uvChecker.png");
+	monsterBall = textureManager_->LoadTexture("Resources/DefaultAssets/monsterBall.png");
+	Doll = textureManager_->LoadTexture("Resources/DefaultAssets/Doll.png");
+	circle = textureManager_->LoadTexture("Resources/DefaultAssets/circle.png");
 
 	camera = new Camera;
 	camera->Initialize();

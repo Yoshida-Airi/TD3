@@ -29,7 +29,7 @@ public:
 	void Draw()override;
 
 private:
-	TextureManager* texture;
+	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
 
 	uint32_t uvTexture;
