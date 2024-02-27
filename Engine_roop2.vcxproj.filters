@@ -78,7 +78,7 @@
     <ClCompile Include="Engine\Base\Scene\AbstractSceneFactory.cpp">
       <Filter>Engine\Base\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Scene\SceneFactory.cpp">
+    <ClCompile Include="Application\Scene\SceneFactory.cpp">
       <Filter>Engine\Base\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Scene\SceneManager.cpp">
@@ -101,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Base\Audio.cpp">
       <Filter>Engine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Manager\SrvManager.cpp">
+      <Filter>Engine\Base\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +179,7 @@
     <ClInclude Include="Engine\Base\Scene\BaseScene.h">
       <Filter>Engine\Base\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Scene\SceneFactory.h">
+    <ClInclude Include="Application\Scene\SceneFactory.h">
       <Filter>Engine\Base\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Scene\SceneManager.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\Audio.h">
       <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Manager\SrvManager.h">
+      <Filter>Engine\Base\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

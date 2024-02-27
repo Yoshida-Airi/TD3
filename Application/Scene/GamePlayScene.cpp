@@ -18,10 +18,10 @@ void GamePlayScene::Initialize()
 #endif // _DEBUG
 
 
-	uvTexture = texture->LoadTexture("DefaultAssets/uvChecker.png");
-	monsterBall = texture->LoadTexture("DefaultAssets/monsterBall.png");
-	Doll = texture->LoadTexture("DefaultAssets/Doll.png");
-	circle = texture->LoadTexture("DefaultAssets/circle.png");
+	uvTexture = texture->LoadTexture("Resources/DefaultAssets/uvChecker.png");
+	monsterBall = texture->LoadTexture("Resources/DefaultAssets/monsterBall.png");
+	Doll = texture->LoadTexture("Resources/DefaultAssets/Doll.png");
+	circle = texture->LoadTexture("Resources/DefaultAssets/circle.png");
 
 	camera = new Camera;
 	camera->Initialize();
@@ -52,8 +52,8 @@ void GamePlayScene::Initialize()
 	sphere->worldTransform_->translation_.y = -1.0f;
 	//sphere->SetisInvisible(true);
 
-	model.reset(Model::Create("DefaultAssets/plane.gltf"));
-	model2.reset(Model::Create("DefaultAssets/terrain.obj"));
+	model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
+	model2.reset(Model::Create("Resources/DefaultAssets/terrain.obj"));
 
 	model->worldTransform_->rotation_.y = 3.14f;
 	model2->worldTransform_->rotation_.y = 3.14f;
@@ -66,14 +66,13 @@ void GamePlayScene::Initialize()
 	//model->SetisInvisible(true);
 	//model2->SetisInvisible(true);
 
-	emitter.count = 20;
-	emitter.frequency = 0.1f;
-	emitter.frequencyTime = 0.0f;
-	emitter.transform.translate = { 0.0f,0.2f,0.0f };
-	emitter.transform.rotate = { 0.0f,0.0f,0.0f };
-	emitter.transform.scale = { 1.0f,1.0f,1.0f };
-	particle.reset(ParticleSystem::Create(circle, emitter));
 
+	particle.reset(ParticleSystem::Create(circle));
+	particle->emitter_->count = 100;
+	//particle->SetisInvisible(true);
+
+	particle2.reset(ParticleSystem::Create(uvTexture));
+	//particle2->SetisInvisible(true);
 }
 
 void GamePlayScene::Update()
@@ -116,7 +115,11 @@ void GamePlayScene::Update()
 	model2->Update();
 	model->worldTransform_->translation_.x = 3.0f;
 
+	particle->Debug("circleParticle");
+	particle2->Debug("uvTextureParticle");
+
 	particle->Update();
+	particle2->Update();
 }
 
 void GamePlayScene::Draw()
@@ -138,5 +141,6 @@ void GamePlayScene::Draw()
 	sprite2->Draw(camera);
 
 	particle->Draw(camera);
+	particle2->Draw(camera);
 
 }

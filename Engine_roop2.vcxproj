@@ -114,7 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Scene\AbstractSceneFactory.cpp" />
     <ClCompile Include="Engine\3D\Camera.cpp" />
     <ClCompile Include="Engine\Base\Framework.cpp" />
-    <ClCompile Include="Engine\Base\Scene\SceneFactory.cpp" />
+    <ClCompile Include="Application\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Logger\DebugHelper.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\Manager\ImGuiManager.cpp" />
@@ -136,6 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Scene\SceneManager.cpp" />
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Engine\Effect\ParticleSystem.cpp" />
+    <ClCompile Include="Engine\Base\Manager\SrvManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Audio.h" />
@@ -143,7 +144,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3D\Camera.h" />
     <ClInclude Include="Engine\Base\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="Engine\Base\Framework.h" />
-    <ClInclude Include="Engine\Base\Scene\SceneFactory.h" />
+    <ClInclude Include="Application\Scene\SceneFactory.h" />
     <ClInclude Include="Engine\Logger\DebugHelper.h" />
     <ClInclude Include="Engine\Base\DirectXCommon.h" />
     <ClInclude Include="Engine\Math\Globals.h" />
@@ -170,6 +171,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Application\Scene\TitleScene.h" />
     <ClInclude Include="Engine\Base\Manager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\Effect\ParticleSystem.h" />
+    <ClInclude Include="Engine\Base\Manager\SrvManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">

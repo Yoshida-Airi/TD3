@@ -7,21 +7,21 @@
 
 ParticleSystem::~ParticleSystem()
 {
-	delete worldTransform_;
+	delete emitter_;
+
 }
 
-void ParticleSystem::Initialize(uint32_t textureHandle, Emitter emitter)
+void ParticleSystem::Initialize(uint32_t textureHandle)
 {
 
 	dxCommon_ = DirectXCommon::GetInstance();
+	srvManager_ = SrvManager::GetInstance();
 	psoManager_ = GraphicsPipelineManager::GetInstance();
 	texture_ = TextureManager::GetInstance();
 
-	worldTransform_ = new WorldTransform();
-	worldTransform_->Initialize();
 	textureHandle_ = textureHandle;
 
-	emitter_ = emitter;
+	//emitter_ = emitter;
 
 	uvTransform =
 	{
@@ -77,42 +77,33 @@ void ParticleSystem::Initialize(uint32_t textureHandle, Emitter emitter)
 	indexData_[4] = 3;
 	indexData_[5] = 2;
 
-
+	emitter_->count = 10;
+	emitter_->frequency = 1.0f;
+	emitter_->frequencyTime = 0.0f;
+	emitter_->transform.translate = { 0.0f,0.2f,0.0f };
+	emitter_->transform.rotate = { 0.0f,0.0f,0.0f };
+	emitter_->transform.scale = { 1.0f,1.0f,1.0f };
 }
 
 void ParticleSystem::Update()
 {
 
-
-	worldTransform_->UpdateWorldMatrix();
 	UpdateVertexBuffer();
 
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine(seedGenerator());
 
-	emitter_.frequencyTime += kDeltaTime;
-	if (emitter_.frequency <= emitter_.frequencyTime)
+	emitter_->frequencyTime += kDeltaTime;
+	if (emitter_->frequency <= emitter_->frequencyTime)
 	{
 		particles.splice(particles.end(), Emission(emitter_, randomEngine));
-		emitter_.frequencyTime -= emitter_.frequency;
+		emitter_->frequencyTime -= emitter_->frequency;
 	}
 
 	Matrix4x4 uvTransformMatrix_ = MakeScaleMatrix(uvTransform.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranselateMatrix(uvTransform.translate));
 	materialData_->uvTransform = uvTransformMatrix_;
-
-#ifdef _DEBUG
-	ImGui::Begin("emitter");
-
-	float translate[3] = { emitter_.transform.translate.x,emitter_.transform.translate.y,emitter_.transform.translate.z };
-	ImGui::DragFloat3("transform", translate, 1, 100);
-	emitter_.transform.translate = { translate[0],translate[1],translate[2] };
-
-	ImGui::End();
-#endif // _DEBUG
-
-
 
 
 }
@@ -123,6 +114,13 @@ void ParticleSystem::Draw(Camera* camera)
 	{
 		return;
 	}
+
+	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
+	Matrix4x4 cameraMatrix = Inverse(camera->matView);
+	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix, cameraMatrix);
+	billboardMatrix.m[3][0] = 0.0f;
+	billboardMatrix.m[3][1] = 0.0f;
+	billboardMatrix.m[3][2] = 0.0f;
 
 	uint32_t numInstance = 0;
 	for (std::list<Particle>::iterator particleIterator = particles.begin(); particleIterator != particles.end(); )
@@ -171,19 +169,12 @@ void ParticleSystem::Draw(Camera* camera)
 	//カメラ用のCBufferの場所を設定
 	dxCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(2, camera->constBuffer_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。3はrootParamater[3]である。
-	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(3, texture_->GetGPUHandle(textureHandle_));
+	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(3, texture_->GetSrvGPUHandle(textureHandle_));
 	//描画
 	/*dxCommon_->GetCommandList()->DrawInstanced(6, 1, 0, 0);*/
 	dxCommon_->GetCommandList()->DrawIndexedInstanced(6, numInstance, 0, 0, 0);
 }
 
-void ParticleSystem::SetVertexData(const float left, const float right, const float top, const float bottom)
-{
-	this->left = left;
-	this->right = right;
-	this->top = top;
-	this->bottom = bottom;
-}
 
 void ParticleSystem::SetMaterialData(const Vector4 color)
 {
@@ -195,35 +186,31 @@ void ParticleSystem::SetAlpha()
 
 }
 
-ParticleSystem* ParticleSystem::Create(uint32_t textureHandle, Emitter emitter)
+ParticleSystem* ParticleSystem::Create(uint32_t textureHandle)
 {
 	ParticleSystem* sprite = new ParticleSystem();
-	sprite->Initialize(textureHandle, emitter);
+	sprite->Initialize(textureHandle);
 	return sprite;
 }
 
 void ParticleSystem::Debug(const char* name)
 {
 #ifdef _DEBUG
-	ImGui::Begin(name);
-	ImGui::DragFloat2("UVTransform", &uvTransform.translate.x, 0.01f, -10.0f, 10.0f);
-	ImGui::DragFloat2("UVScale", &uvTransform.scale.x, 0.01f, -10.0f, 10.0f);
-	ImGui::SliderAngle("UVRotate", &uvTransform.rotate.z);
+	ImGui::Begin("particle");
+	if (ImGui::TreeNode(name))
+	{
+		ImGui::DragFloat2("UVTransform", &uvTransform.translate.x, 0.01f, -10.0f, 10.0f);
+		ImGui::DragFloat2("UVScale", &uvTransform.scale.x, 0.01f, -10.0f, 10.0f);
+		ImGui::SliderAngle("UVRotate", &uvTransform.rotate.z);
 
+		float translate[3] = { emitter_->transform.translate.x,emitter_->transform.translate.y,emitter_->transform.translate.z };
+		ImGui::DragFloat3("transform", translate, 1, 100);
+		emitter_->transform.translate = { translate[0],translate[1],translate[2] };
+		ImGui::TreePop();
+	}
 	ImGui::End();
 #endif // _DEBUG
-}
 
-std::list<Particle> ParticleSystem::Emission(const Emitter& emitter, std::mt19937& randomEngine)
-{
-	std::list<Particle>particle;
-
-	for (uint32_t count = 0; count < emitter.count; ++count)
-	{
-		particle.push_back(MakeNewParticle(randomEngine, emitter_.transform.translate));
-	}
-
-	return particle;
 }
 
 
@@ -329,21 +316,24 @@ void ParticleSystem::InstancingBuffer()
 void ParticleSystem::SetSRV()
 {
 
-	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	/*instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
 	instancingSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	instancingSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
 	instancingSrvDesc.Buffer.FirstElement = 0;
 	instancingSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	instancingSrvDesc.Buffer.NumElements = kNumMaxInstance;
-	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
-	instancingSrvHandleCPU = texture_->GetCPUDescriptorHandle(dxCommon_->GetSRVDescriptorHeap(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 7);
-	instancingSrvHandleGPU = texture_->GetGPUDescriptorHandle(dxCommon_->GetSRVDescriptorHeap(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 7);
+	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);*/
+	//instancingSrvHandleCPU = texture_->GetCPUDescriptorHandle(srvManager_->GetDescriptorHeap(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 7);
+	//instancingSrvHandleGPU = texture_->GetGPUDescriptorHandle(srvManager_->GetDescriptorHeap(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 7);
 
-	//先頭はImGuiが使っているので次のを使う
-	instancingSrvHandleCPU.ptr += (dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 10);
-	instancingSrvHandleGPU.ptr += (dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 10);
+	////先頭はImGuiが使っているので次のを使う
+	//instancingSrvHandleCPU.ptr += (dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 10);
+	//instancingSrvHandleGPU.ptr += (dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 10);
 
-	dxCommon_->GetDevice()->CreateShaderResourceView(instancingResources_.Get(), &instancingSrvDesc, instancingSrvHandleCPU);
+	//dxCommon_->GetDevice()->CreateShaderResourceView(instancingResources_.Get(), &instancingSrvDesc, instancingSrvHandleCPU);
+	uint32_t srvIndex = srvManager_->Allocate();
+	srvManager_->CreateSRVforStructuredBuffer(srvIndex, instancingResources_.Get(), kNumMaxInstance, sizeof(ParticleForGPU));
+	instancingSrvHandleGPU = srvManager_->GetGPUDescriptorHandle(srvIndex);
 }
 
 Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate)
@@ -365,3 +355,16 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, const Vecto
 	particle.currentTime = 0;
 	return particle;
 }
+
+std::list<Particle> ParticleSystem::Emission(const Emitter* emitter, std::mt19937& randomEngine)
+{
+	std::list<Particle>particle;
+
+	for (uint32_t count = 0; count < emitter->count; ++count)
+	{
+		particle.push_back(MakeNewParticle(randomEngine, emitter->transform.translate));
+	}
+
+	return particle;
+}
+
