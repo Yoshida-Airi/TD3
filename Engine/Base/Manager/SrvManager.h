@@ -1,53 +1,45 @@
 #pragma once
 #include"DirectXCommon.h"
-#include<wrl.h>
-
-
 
 class SrvManager
 {
 public:
+
+	static SrvManager* GetInstance();
+
 	void Initialize();
 	void PreDraw();
 
 	uint32_t Allocate();
 
+	//最大数を超えているかのチェック関数
+	bool SrvMaxCountCheck();
+
 	/*ゲッター*/
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(uint32_t index);
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(uint32_t index);
 
-	//確保可能チェック
-	bool SRVAvailabilityCheck();
+	Microsoft::WRL::ComPtr< ID3D12DescriptorHeap> GetDescriptorHeap()const { return descriptorHeap.Get(); };
 
 	/*セッター*/
 	void SetGraphicsRootDescriptorTable(UINT RootParameterIndex, uint32_t srvIndex);
 
-
-
-public:
-
-private:
-
-	
-	//SRV生成(テクスチャ用
-	void CreateSRVforTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels);
-	//SRV生成(ストラクチャーバッファ用
+	//SRV生成関数
+	void CreateSRVforTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT format, UINT MipLevels);
 	void CreateSRVforStructuredBuffer(uint32_t srvIndex, ID3D12Resource* pResource, UINT numElements, UINT structureByteStride);
 
+	static const uint32_t kMaxSRVCount;	//最大SRV数
 
 private:
-	DirectXCommon* dxCommon_ = nullptr;
+	DirectXCommon* dxCommon = nullptr;
 
-	//最大SRV数
-	static const uint32_t kMaxSRVCount;
-	//SRV用のディスクリプタサイズ
-	uint32_t descriptorSize;
-	//SRV用デスクリプタヒープ
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>descriptorHeap;
+	
+	uint32_t descriptorSize;//SRV用のディスクリプタサイズ
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>descriptorHeap;	//SRV用のディスクリプタヒープ
 
-	//次に使用するSRVインデックス
-	uint32_t useIndex = 0;
+	uint32_t useIndex = 0;	//次に使用するSRVインデックス
 
+	static SrvManager* instance;
 
 };
 

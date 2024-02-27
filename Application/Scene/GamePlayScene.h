@@ -55,8 +55,9 @@ private:
 	std::unique_ptr<Model> model = nullptr;
 	std::unique_ptr<Model> model2 = nullptr;
 
-	Emitter emitter;
 	std::unique_ptr<ParticleSystem> particle = nullptr;
+	std::unique_ptr<ParticleSystem> particle2 = nullptr;
+
 
 #ifdef _DEBUG
 

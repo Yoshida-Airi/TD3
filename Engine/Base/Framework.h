@@ -40,11 +40,10 @@ protected:
 
 	AbstractSceneFactory* sceneFactory_ = nullptr;
 
-	SrvManager* srvManager = nullptr;
 
 	ImGuiManager* imgui;
 
-
+	SrvManager* srvManager = nullptr;
 
 };
 

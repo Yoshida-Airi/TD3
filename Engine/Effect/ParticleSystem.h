@@ -1,5 +1,6 @@
 #pragma once
 #include"DirectXCommon.h"
+#include"SrvManager.h"
 #include"TextureManager.h"
 #include"VectorMath.h"
 #include"Globals.h"
@@ -13,6 +14,7 @@
 #include"Camera.h"
 
 #include<random>
+#include<numbers>
 
 
 
@@ -44,12 +46,11 @@ class ParticleSystem
 public:
 	~ParticleSystem();
 
-	void Initialize(uint32_t textureHandle, Emitter emitter);
+	void Initialize(uint32_t textureHandle);
 	void Update();
 	void Draw(Camera* camera);
 
-	void SetVertexData(const float left, const float right, const float top, const float bottom);
-
+	
 	/// <summary>
 	/// マテリアルデータの設定
 	/// </summary>
@@ -61,8 +62,7 @@ public:
 		textureSrvHandleGPU_ = textureSrvHandleGPU;
 	}
 
-	WorldTransform* worldTransform_;
-
+	//描画するかしないか　true : 消す
 	void SetisInvisible(bool isInvisible)
 	{
 		isInvisible_ = isInvisible;
@@ -103,18 +103,18 @@ public:
 	/// </summary>
 	/// <param name="textureHandle">テクスチャ</param>
 	/// <returns>四角形</returns>
-	static ParticleSystem* Create(uint32_t textureHandle, Emitter emitter);
+	static ParticleSystem* Create(uint32_t textureHandle);
 
 	/// <summary>
 	/// Imgui
 	/// </summary>
 	void Debug(const char* name);
 
-	std::list<Particle>Emission(const Emitter& emitter, std::mt19937& randomEngine);
-
+	Emitter* emitter_ = new Emitter();
 private://プライベート変数
 
 	GraphicsPipelineManager* psoManager_ = nullptr;
+	SrvManager* srvManager_ = nullptr;
 
 	static const uint32_t kNumMaxInstance = 100;
 	uint32_t numInstance = 0;
@@ -169,7 +169,8 @@ private://プライベート変数
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU;
 
 	std::list<Particle> particles;
-	Emitter emitter_;
+	
+
 
 	const float kDeltaTime = 1.0f / 60.0f;
 
@@ -206,4 +207,5 @@ private://プライベート関数
 
 	Particle MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate);
 
+	std::list<Particle>Emission(const Emitter* emitter, std::mt19937& randomEngine);
 };
