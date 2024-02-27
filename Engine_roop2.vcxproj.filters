@@ -78,7 +78,7 @@
     <ClCompile Include="Engine\Base\Scene\AbstractSceneFactory.cpp">
       <Filter>Engine\Base\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Scene\SceneFactory.cpp">
+    <ClCompile Include="Application\Scene\SceneFactory.cpp">
       <Filter>Engine\Base\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Scene\SceneManager.cpp">
@@ -179,7 +179,7 @@
     <ClInclude Include="Engine\Base\Scene\BaseScene.h">
       <Filter>Engine\Base\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Scene\SceneFactory.h">
+    <ClInclude Include="Application\Scene\SceneFactory.h">
       <Filter>Engine\Base\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Scene\SceneManager.h">
