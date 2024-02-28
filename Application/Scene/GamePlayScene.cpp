@@ -27,52 +27,28 @@ void GamePlayScene::Initialize()
 	camera->Initialize();
 
 	
-
-
-	triangle.reset(Triangle::Create(uvTexture));
-	triangle2.reset(Triangle::Create(monsterBall));
-	
-	triangle->SetisInvisible(true);
-	triangle2->SetisInvisible(true);
-
+	//triangle.reset(Triangle::Create(uvTexture));
+	//triangle->SetisInvisible(true);
 	//
-	sprite.reset(Sprite::Create(Doll));
-	sprite->SetSize({ 64.0f, 64.0f });
-	sprite->SetTextureLeftTop({ 0,0 });
-	
-	//sprite->SetisInvisible(true);
+
+	//sprite.reset(Sprite::Create(Doll));
+	//sprite->SetSize({ 64.0f, 64.0f });
+	//sprite->SetTextureLeftTop({ 0,0 });
+
+	//sphere.reset(Sphere::Create(monsterBall));
+	//sphere->worldTransform_->translation_.y = -1.0f;
+
+	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
+	//model->worldTransform_->rotation_.y = 3.14f;
 
 
-	sprite2.reset(Sprite::Create(uvTexture));
-	sprite2->SetSize({ 64.0f, 64.0f });
-	sprite2->SetTextureLeftTop({ 0,0 });
-	//sprite2->SetisInvisible(true);
+	//particle.reset(ParticleSystem::Create(circle));
+	//particle->emitter_->count = 100;
+	////particle->SetisInvisible(true);
 
-	sphere.reset(Sphere::Create(monsterBall));
-	sphere->worldTransform_->translation_.y = -1.0f;
-	//sphere->SetisInvisible(true);
+	player = std::make_unique<Player>();
+	player->Initialize();
 
-	model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
-	model2.reset(Model::Create("Resources/DefaultAssets/terrain.obj"));
-
-	model->worldTransform_->rotation_.y = 3.14f;
-	model2->worldTransform_->rotation_.y = 3.14f;
-
-	model2->worldTransform_->translation_ =
-	{
-		0.0f,-1.5,0.0f
-	};
-
-	//model->SetisInvisible(true);
-	//model2->SetisInvisible(true);
-
-
-	particle.reset(ParticleSystem::Create(circle));
-	particle->emitter_->count = 100;
-	//particle->SetisInvisible(true);
-
-	particle2.reset(ParticleSystem::Create(uvTexture));
-	//particle2->SetisInvisible(true);
 }
 
 void GamePlayScene::Update()
@@ -90,57 +66,37 @@ void GamePlayScene::Update()
 		sceneManager_->ChangeScene("TITLE");
 	}
 
-	triangle->Update();
-	triangle->worldTransform_->rotation_.y += 0.03f;
+	//triangle->Update();
+	//triangle->worldTransform_->rotation_.y += 0.03f;
 
-	triangle2->Update();
-	triangle2->worldTransform_->scale_.y = 0.5f;
-	triangle2->worldTransform_->rotation_.y += 0.02f;
+	//sprite->worldTransform_->translation_ = { 700.0f };
+	//sprite->Update();
+	//sprite->Debug("Doll");
 
-	sprite->worldTransform_->translation_ = { 700.0f };
+	//sphere->Update();
+	//sphere->worldTransform_->rotation_.y += 0.01f;
 
-	sprite->Update();
-	sprite2->Update();
+	//model->ModelDebug("plane");
+	//model->Update();
+	//model->worldTransform_->translation_.x = 3.0f;
 
-	sprite->Debug("Doll");
-	sprite2->Debug("uv");
+	//particle->Debug("circleParticle");
+	//particle->Update();
+	
+	player->Update();
 
-	sphere->Update();
-	sphere->worldTransform_->rotation_.y += 0.01f;
-
-	model->ModelDebug("plane");
-	model2->ModelDebug("plane2");
-
-	model->Update();
-	model2->Update();
-	model->worldTransform_->translation_.x = 3.0f;
-
-	particle->Debug("circleParticle");
-	particle2->Debug("uvTextureParticle");
-
-	particle->Update();
-	particle2->Update();
 }
 
 void GamePlayScene::Draw()
 {
 
-	triangle->Draw(camera);
-	triangle2->Draw(camera);
-
-	
-
-	sphere->Draw(camera);
-
-
-	model->Draw(camera);
-	model2->Draw(camera);
+	//triangle->Draw(camera);
+	//sphere->Draw(camera);
+	//model->Draw(camera);
+	//sprite->Draw(camera);
+	//particle->Draw(camera);
 
 
-	sprite->Draw(camera);
-	sprite2->Draw(camera);
-
-	particle->Draw(camera);
-	particle2->Draw(camera);
+	player->Draw(camera);
 
 }

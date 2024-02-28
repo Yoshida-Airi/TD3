@@ -13,6 +13,7 @@
 #include"ParticleSystem.h"
 #include"Camera.h"
 
+#include"Player.h"
 
 #include"Input.h"
 
@@ -37,10 +38,6 @@ private:
 	uint32_t Doll;
 	uint32_t circle;
 
-	ModelLoader* object;
-	ModelData plane;
-	ModelData cube;
-
 	Camera* camera;
 	
 
@@ -48,16 +45,14 @@ private:
 
 
 	std::unique_ptr<Triangle> triangle = nullptr;
-	std::unique_ptr<Triangle> triangle2 = nullptr;
 	std::unique_ptr<Sprite> sprite = nullptr;
-	std::unique_ptr<Sprite> sprite2 = nullptr;
 	std::unique_ptr<Sphere> sphere = nullptr;
 	std::unique_ptr<Model> model = nullptr;
-	std::unique_ptr<Model> model2 = nullptr;
-
 	std::unique_ptr<ParticleSystem> particle = nullptr;
-	std::unique_ptr<ParticleSystem> particle2 = nullptr;
 
+
+
+	std::unique_ptr<Player> player = nullptr;
 
 #ifdef _DEBUG
 

@@ -105,6 +105,9 @@
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp">
       <Filter>Engine\Base\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Object\Player.cpp">
+      <Filter>Application\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\Manager\SrvManager.h">
       <Filter>Engine\Base\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Player.h">
+      <Filter>Application\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
