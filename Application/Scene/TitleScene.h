@@ -14,6 +14,8 @@
 
 #include"EfectManager.h"
 
+#include "../Enemy.h"
+
 class TitleScene :public BaseScene
 {
 public:
@@ -21,6 +23,10 @@ public:
 	void Initialize()override;
 	void Update()override;
 	void Draw()override;
+
+private:
+
+	void EnemySporn();
 
 private:
 
@@ -35,7 +41,10 @@ private:
 	std::unique_ptr<Model> fence_ = nullptr;
 	std::unique_ptr<Model> cube_ = nullptr;
 
+	std::list<Enemy*> enemy_;
 	
-	
+	int enemyCount = 0;
+	int enemySpornTimer = 0;
+
 };
 

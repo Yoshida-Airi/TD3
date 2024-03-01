@@ -108,6 +108,9 @@
     <ClCompile Include="Application\Object\Player.cpp">
       <Filter>Application\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Application\Object\Player.h">
       <Filter>Application\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

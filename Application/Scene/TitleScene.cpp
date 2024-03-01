@@ -56,6 +56,11 @@ void TitleScene::Update()
 	fence_->ModelDebug("fence");
 	fence_->Parent(cube_.get());
 
+	for (Enemy* enemys : enemy_) {
+		enemys->Update();
+	}
+
+	EnemySporn();
 
 }
 
@@ -64,5 +69,26 @@ void TitleScene::Draw()
 	fence_->Draw(camera);
 	cube_->Draw(camera);
 
+	for (Enemy* enemys : enemy_) {
+		enemys->Draw(camera);
+	}
+
 }
 
+void TitleScene::EnemySporn() {
+
+	if (enemyCount <= 2) {
+		Enemy* newEnemy = new Enemy();
+		newEnemy->Initialize();
+
+		enemy_.push_back(newEnemy);
+		enemyCount++;
+	}
+	else if (enemyCount > 2) {
+		enemySpornTimer++;
+		if (enemySpornTimer >= 180) {
+			enemyCount = 0;
+			enemySpornTimer = 0;
+		}
+	}
+}
