@@ -39,6 +39,9 @@ public:
 
 	bool GetJoystickState(int32_t stickNo, XINPUT_STATE& state);
 
+	//マウスの左クリックの検知
+	bool IsLeftMouseClicked();
+
 private:
 
 	WinApp* winApp_;

@@ -139,6 +139,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Effect\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp" />
     <ClCompile Include="Application\Object\Player.cpp" />
+    <ClCompile Include="Application\Object\PlayerWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Audio.h" />
@@ -175,6 +176,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Effect\ParticleSystem.h" />
     <ClInclude Include="Engine\Base\Manager\SrvManager.h" />
     <ClInclude Include="Application\Object\Player.h" />
+    <ClInclude Include="Application\Object\PlayerWeapon.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">
