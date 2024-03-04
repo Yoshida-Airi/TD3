@@ -14,6 +14,7 @@
 #include"Camera.h"
 
 #include"Player.h"
+#include"playerWeapon.h"
 
 #include"Input.h"
 
@@ -53,6 +54,7 @@ private:
 
 
 	std::unique_ptr<Player> player = nullptr;
+	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
 
 #ifdef _DEBUG
 

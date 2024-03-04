@@ -49,6 +49,12 @@ void GamePlayScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize();
 
+	playerWeapon_ = std::make_unique<PlayerWeapon>();
+	playerWeapon_->Initialize();
+	
+
+	player->SetWeapon(playerWeapon_.get());
+	
 }
 
 void GamePlayScene::Update()
@@ -65,6 +71,7 @@ void GamePlayScene::Update()
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}
+
 
 	//triangle->Update();
 	//triangle->worldTransform_->rotation_.y += 0.03f;
@@ -85,6 +92,14 @@ void GamePlayScene::Update()
 	
 	player->Update();
 
+	Vector3 weaponPos = player->GetPosition();
+
+	weaponPos.z = weaponPos.z + 5.0f;
+
+	playerWeapon_->SetPosition(weaponPos);
+
+	//playerWeapon_->Update();
+
 }
 
 void GamePlayScene::Draw()
@@ -98,5 +113,6 @@ void GamePlayScene::Draw()
 
 
 	player->Draw(camera);
+	//playerWeapon_->Draw(camera);
 
 }

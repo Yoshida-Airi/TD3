@@ -66,7 +66,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Light;$(ProjectDir)Engine\3D;$(ProjectDir)Engine\Effect;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Logger;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Base\Manager;$(ProjectDir)Engine\Base\Scene;$(ProjectDir)Application;$(ProjectDir)Application\Object;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\2D;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\ImGui;$(ProjectDir)Externals\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Light;$(ProjectDir)Engine\3D;$(ProjectDir)Engine\Effect;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\Logger;$(ProjectDir)Engine\Base;$(ProjectDir)Engine\Base\Manager;$(ProjectDir)Engine\Base\Scene;$(ProjectDir)Application;$(ProjectDir)Application\Object;$(ProjectDir)Application\Object\Player;$(ProjectDir)Application\Scene;$(ProjectDir)Engine\2D;$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Externals\ImGui;$(ProjectDir)Externals\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,7 +138,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Engine\Effect\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp" />
-    <ClCompile Include="Application\Object\Player.cpp" />
+    <ClCompile Include="Application\Object\Player\Player.cpp" />
+    <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Audio.h" />
@@ -174,7 +175,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Manager\GraphicsPipelineManager.h" />
     <ClInclude Include="Engine\Effect\ParticleSystem.h" />
     <ClInclude Include="Engine\Base\Manager\SrvManager.h" />
-    <ClInclude Include="Application\Object\Player.h" />
+    <ClInclude Include="Application\Object\Player\Player.h" />
+    <ClInclude Include="Application\Object\Player\PlayerWeapon.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">

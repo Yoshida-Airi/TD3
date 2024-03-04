@@ -96,4 +96,9 @@ bool Input::GetJoystickState(int32_t stickNo, XINPUT_STATE& state)
 	return Result == ERROR_SUCCESS;
 }
 
+bool Input::IsLeftMouseClicked()
+{
+	return GetAsyncKeyState(VK_LBUTTON) < 0;
+}
+
 Input* Input::instance = NULL;

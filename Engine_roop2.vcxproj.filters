@@ -105,8 +105,11 @@
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp">
       <Filter>Engine\Base\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Object\Player.cpp">
-      <Filter>Application\Object</Filter>
+    <ClCompile Include="Application\Object\Player\Player.cpp">
+      <Filter>Application\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp">
+      <Filter>Application\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,8 +212,11 @@
     <ClInclude Include="Engine\Base\Manager\SrvManager.h">
       <Filter>Engine\Base\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Object\Player.h">
-      <Filter>Application\Object</Filter>
+    <ClInclude Include="Application\Object\Player\Player.h">
+      <Filter>Application\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Player\PlayerWeapon.h">
+      <Filter>Application\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +264,9 @@
     </Filter>
     <Filter Include="Application\Object">
       <UniqueIdentifier>{52c1d885-234e-44f3-8036-5287b77e433a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Object\Player">
+      <UniqueIdentifier>{49fab23e-1832-48b8-9542-e4c67e8a1557}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
