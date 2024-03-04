@@ -2,6 +2,7 @@
 #include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 
+
 void Player::Initialize()
 {
 	input_ = Input::GetInstance();
@@ -11,9 +12,11 @@ void Player::Initialize()
 	//衝突対象の設定
 	SetCollisionMask(kCollisionAttributeEnemy);
 	
+	
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
-	Speed = 0.03f;
+
+	SetRadius(model_->worldTransform_->scale_.x);
 
 }
 
@@ -21,11 +24,21 @@ void Player::Update()
 {
 	model_->Update();
 	model_->ModelDebug("player");
+
+#ifdef _DEBUG
+	
+	ImGui::Begin("HitCheack");
+	ImGui::Text("HP : %d", HP);
+	ImGui::End();
+
+#endif // _DEBUG
+
+
 	Move();
 
 	Attack();
 
-	Weapon_->Update();
+	
 
 }
 
@@ -33,10 +46,7 @@ void Player::Draw(Camera* camera)
 {
 	model_->Draw(camera);
 
-	if (isUnderAttack == true)
-	{
-		Weapon_->Draw(camera);
-	}
+	
 }
 
 Vector3 Player::GetWorldPosition()
@@ -52,9 +62,18 @@ Vector3 Player::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 Player::GetCenterPosition() const
+{
+	const Vector3 offset = { 0.0f,1.0f,0.0f };
+	//ワールド座標に変換
+	Vector3 worldPos = TransformNormal(offset, model_->worldTransform_->matWorld_);
+	return worldPos;
+}
+
 void Player::OnCollision()
 {
-
+	//model_->worldTransform_->rotation_.y += 0.01f;
+	HP -= 1;
 }
 
 void Player::Move()

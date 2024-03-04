@@ -14,6 +14,9 @@ public:
 	//衝突時に呼ばれる関数
 	virtual void OnCollision() {};
 
+	//中心座標を取得
+	virtual Vector3 GetCenterPosition()const = 0;
+
 	//半径を取得
 	float GetRadius() const { return radius_; };
 

@@ -15,6 +15,8 @@ void PlayerWeapon::Initialize()
 	model->worldTransform_->scale_.y = 0.5f;
 	model->worldTransform_->scale_.z = 0.5f;
 
+	SetRadius(model->worldTransform_->scale_.x);
+
 }
 
 void PlayerWeapon::Update()
@@ -43,6 +45,14 @@ Vector3 PlayerWeapon::GetWorldPosition()
 	worldpos.z = model->worldTransform_->matWorld_.m[3][2];
 
 	return worldpos;
+}
+
+Vector3 PlayerWeapon::GetCenterPosition() const
+{
+	const Vector3 offset = { 0.0f,0.25f,0.0f };
+	//ワールド座標に変換
+	Vector3 worldPos = TransformNormal(offset, model->worldTransform_->matWorld_);
+	return worldPos;
 }
 
 void PlayerWeapon::OnCollision()

@@ -1,6 +1,9 @@
 #include "CollisionManager.h"
 
-void CollisionManager::ListClear() { colliders_.clear(); }
+void CollisionManager::ListClear()
+{
+	colliders_.clear(); 
+}
 
 /// 衝突判定と応答
 void CollisionManager::ChackAllCollisions() {
@@ -34,7 +37,6 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 		colliderB->GetCollisionAttribute() != colliderA->GetCollisionMask()) {
 		return;
 	}
-
 	// コライダーAのワールド座標を取得
 	Vector3 posA = colliderA->GetWorldPosition();
 	// コライダーBのワールド座標を取得
@@ -45,7 +47,8 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 
 	// 球と球の交差判定
 	if ((distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z) <=
-		(colliderA->GetRadius() * colliderB->GetRadius())) {
+		(colliderA->GetRadius() + colliderB->GetRadius()) * 2)
+	{
 		// コライダーAの衝突時コールバックを呼び出す
 		colliderA->OnCollision();
 		// コライダーBの衝突時コールバックを呼び出す

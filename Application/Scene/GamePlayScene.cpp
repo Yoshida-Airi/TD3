@@ -2,7 +2,6 @@
 
 GamePlayScene::~GamePlayScene()
 {
-	delete colliderManager_;
 	delete camera;
 	
 }
@@ -14,7 +13,7 @@ void GamePlayScene::Initialize()
 	sceneManager_ = SceneManager::GetInstance();
 
 	//当たり判定処理の設定
-	colliderManager_ = new CollisionManager;
+	colliderManager_ = std::make_unique<CollisionManager>();
 
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
@@ -44,6 +43,7 @@ void GamePlayScene::Initialize()
 	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
 	//model->worldTransform_->rotation_.y = 3.14f;
 
+	
 
 	//particle.reset(ParticleSystem::Create(circle));
 	//particle->emitter_->count = 100;
@@ -54,7 +54,7 @@ void GamePlayScene::Initialize()
 
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
-	
+
 
 	player->SetWeapon(playerWeapon_.get());
 	
@@ -83,6 +83,8 @@ void GamePlayScene::Update()
 	//コライダーにオブジェクトを登録
 	colliderManager_->AddColliders(player.get());
 	colliderManager_->AddColliders(playerWeapon_.get());
+	
+	
 
 	//当たり判定
 	colliderManager_->ChackAllCollisions();
@@ -99,9 +101,9 @@ void GamePlayScene::Update()
 	//sphere->Update();
 	//sphere->worldTransform_->rotation_.y += 0.01f;
 
-	//model->ModelDebug("plane");
-	//model->Update();
-	//model->worldTransform_->translation_.x = 3.0f;
+	/*model->ModelDebug("plane");
+	model->Update();
+	model->worldTransform_->translation_.x = 3.0f;*/
 
 	//particle->Debug("circleParticle");
 	//particle->Update();
@@ -114,7 +116,9 @@ void GamePlayScene::Update()
 
 	playerWeapon_->SetPosition(weaponPos);
 
-	//playerWeapon_->Update();
+
+	//sampleEnemy->Update();
+	playerWeapon_->Update();
 
 }
 
@@ -129,6 +133,9 @@ void GamePlayScene::Draw()
 
 
 	player->Draw(camera);
-	//playerWeapon_->Draw(camera);
 
+	if (player->GetIsUnderAttack())
+	{
+		playerWeapon_->Draw(camera);
+	}
 }
