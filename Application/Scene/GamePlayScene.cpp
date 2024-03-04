@@ -115,6 +115,14 @@ void GamePlayScene::Update()
 
 	EnemyAttack();
 
+	enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+		if (enemyBullets->GetIsDead()) {
+			delete enemyBullets;
+			return true;
+		}
+		return false;
+	});
+
 }
 
 void GamePlayScene::Draw()

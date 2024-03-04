@@ -16,10 +16,12 @@ public:
 
 	void SetTranslate(Vector3 translate);
 
+	bool GetIsDead() { return isDead_; }
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 
-	int deathTimer = 0;
+	int deathTimer = 120;
 	bool isDead_ = false;
 
 	Vector3 speed_;
