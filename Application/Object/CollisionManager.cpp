@@ -74,9 +74,9 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 		(colliderA->GetRadius() + colliderB->GetRadius()) * 2)
 	{
 		// コライダーAの衝突時コールバックを呼び出す
-		colliderA->OnCollision();
+		colliderA->OnCollision(colliderB);
 		// コライダーBの衝突時コールバックを呼び出す
-		colliderB->OnCollision();
+		colliderB->OnCollision(colliderA);
 	}
 }
 

@@ -18,7 +18,7 @@ public:
 	virtual Vector3 GetWorldPosition() = 0;
 
 	//衝突時に呼ばれる関数
-	virtual void OnCollision() {};
+	virtual void OnCollision([[maybe_unused]] Collider* other) {};
 
 	//中心座標を取得
 	virtual Vector3 GetCenterPosition()const = 0;
@@ -46,9 +46,17 @@ public:
 		CollisionMask_ = mask;
 	}
 
+	//種別IDを取得
+	uint32_t GetTypeID()const { return typeID_; };
+	//種別IDを設定
+	void SetTypeID(uint32_t typeID) { typeID_ = typeID; };
+
 private:
 	//衝突半径
 	float radius_ = 2.0f;
+	uint32_t typeID_ = 0u;
+
+
 
 	//衝突属性(自分)
 	uint32_t collisionAttribute_ = 0xffffffff;

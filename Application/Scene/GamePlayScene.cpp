@@ -56,10 +56,12 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
+	sampleEnemy = std::make_unique<PlayerWeapon>();
+	sampleEnemy->Initialize();
 
 	player->SetWeapon(playerWeapon_.get());
 
-	colliderManager_->UpdateWorldTransform();
+	//colliderManager_->UpdateWorldTransform();
 	
 }
 
@@ -86,6 +88,7 @@ void GamePlayScene::Update()
 	//コライダーにオブジェクトを登録
 	colliderManager_->AddColliders(player.get());
 	colliderManager_->AddColliders(playerWeapon_.get());
+	colliderManager_->AddColliders(sampleEnemy.get());
 	
 	
 
@@ -122,6 +125,7 @@ void GamePlayScene::Update()
 
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
+	sampleEnemy->Update();
 
 }
 
@@ -142,5 +146,7 @@ void GamePlayScene::Draw()
 		playerWeapon_->Draw(camera);
 	}
 
-	colliderManager_->Draw(camera);
+	sampleEnemy->Draw(camera);
+
+	//colliderManager_->Draw(camera);
 }

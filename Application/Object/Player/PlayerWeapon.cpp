@@ -5,11 +5,7 @@ void PlayerWeapon::Initialize()
 {
 	Collider::Initialize();
 
-	//衝突属性を設定
-	SetCollisionAttribute(kCollisionAttributePlayerWeapon);
-	//衝突対象の設定
-	SetCollisionMask(kCollisionAttributeEnemy);
-
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon));
 
 	model.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
@@ -58,6 +54,12 @@ Vector3 PlayerWeapon::GetCenterPosition() const
 	return worldPos;
 }
 
-void PlayerWeapon::OnCollision()
+void PlayerWeapon::OnCollision([[maybe_unused]] Collider* other)
 {
+
+	uint32_t typeID = other->GetTypeID();
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
+	{
+	
+	}
 }

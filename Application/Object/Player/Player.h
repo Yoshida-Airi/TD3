@@ -26,7 +26,7 @@ public:
 	Vector3 GetCenterPosition()const override;
 	
 
-	void OnCollision()override;
+	void OnCollision([[maybe_unused]] Collider* other)override;
 
 	
 
