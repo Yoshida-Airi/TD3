@@ -129,14 +129,14 @@ void GamePlayScene::Draw()
 
 	player->Draw(camera);
 
-	//ここから敵を出す処理
-	for (Enemy* enemys : enemy_) {
-		enemys->Draw(camera);
-	}
-
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Draw(camera);
+	}
+
+	//ここから敵を出す処理
+	for (Enemy* enemys : enemy_) {
+		enemys->Draw(camera);
 	}
 
 }
@@ -170,7 +170,7 @@ void GamePlayScene::EnemyAttack(){
 
 			isEnemyAttack = false;
 
-			const float kBulletSpeed = 0.5f;
+			const float kBulletSpeed = 0.05f;
 			Vector3 playerPos = player->GetTranslate();
 			Vector3 enemyPos = enemy->GetTranslate();
 			Vector3 speed;
@@ -185,11 +185,10 @@ void GamePlayScene::EnemyAttack(){
 			speed.y *= kBulletSpeed;
 			speed.z *= kBulletSpeed;
 
-			speed = Normalize(speed);
-
-
+			speed = TransformNormal(speed,enemy->GetMatWorld());
+			
 			EnemyBullet* newBullet = new EnemyBullet();
-			newBullet->Initialize();
+			newBullet->Initialize(speed);
 
 			newBullet->SetTranslate(enemy->GetTranslate());
 

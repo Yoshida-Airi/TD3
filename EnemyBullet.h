@@ -6,7 +6,7 @@ class EnemyBullet
 public:
 	~EnemyBullet();
 
-	void Initialize();
+	void Initialize(Vector3 speed);
 
 	void Update();
 
@@ -21,6 +21,8 @@ private:
 
 	int deathTimer = 0;
 	bool isDead_ = false;
+
+	Vector3 speed_;
 
 };
 
