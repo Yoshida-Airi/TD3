@@ -58,6 +58,12 @@ private:
 	std::unique_ptr<ParticleSystem> particle = nullptr;
 	std::unique_ptr<ParticleSystem> particle2 = nullptr;
 
+	uint32_t nowSecond = 0;
+	uint32_t nowWaveSecond = 0;
+	uint32_t bossSecond = 0;
+	uint32_t nowFrame = 0;
+	uint32_t nowWaveFrame = 0;
+	uint32_t bossFrame = 0;
 
 #ifdef _DEBUG
 
