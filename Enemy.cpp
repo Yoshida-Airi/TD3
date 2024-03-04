@@ -19,6 +19,10 @@ void Enemy::Update() {
 
 	model_->worldTransform_->translation_.x += 0.001f;
 
+	if (--deathTimer <= 0) {
+		isDead_ = true;
+	}
+
 }
 
 void Enemy::Draw(Camera* camera) {

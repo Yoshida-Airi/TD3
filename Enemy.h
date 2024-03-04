@@ -20,9 +20,14 @@ public:
 
 	void SetTranslate(std::mt19937& randomEngine);
 
+	bool GetIsDead() { return isDead_; }
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Input* input_ = nullptr;
+
+	int deathTimer = 120;
+	bool isDead_ = false;
 
 };
 

@@ -95,6 +95,14 @@ void GamePlayScene::Update()
 
 	EnemySporn();
 
+	enemy_.remove_if([](Enemy* enemys) {
+		if (enemys->GetIsDead()) {
+			delete enemys;
+			return true;
+		}
+		return false;
+	});
+
 }
 
 void GamePlayScene::Draw()
