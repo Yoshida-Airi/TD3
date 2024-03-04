@@ -43,9 +43,7 @@ private:
 
 	Camera* camera;
 	
-
 	Input* input;
-
 
 	std::unique_ptr<Triangle> triangle = nullptr;
 	std::unique_ptr<Triangle> triangle2 = nullptr;

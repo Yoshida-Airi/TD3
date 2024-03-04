@@ -110,6 +110,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\Player\Playerlevel\Playerlevel.cpp" />
     <ClCompile Include="Engine\Base\Audio.cpp" />
     <ClCompile Include="Engine\Effect\EfectManager.cpp" />
     <ClCompile Include="Engine\Base\Scene\AbstractSceneFactory.cpp" />
@@ -140,6 +141,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application\Player\Playerlevel\Playerlevel.h" />
     <ClInclude Include="Engine\Base\Audio.h" />
     <ClInclude Include="Engine\Effect\EfectManager.h" />
     <ClInclude Include="Engine\3D\Camera.h" />

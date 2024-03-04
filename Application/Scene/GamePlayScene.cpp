@@ -39,7 +39,7 @@ void GamePlayScene::Initialize()
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
-	
+
 	//sprite->SetisInvisible(true);
 
 
@@ -80,7 +80,7 @@ void GamePlayScene::Update()
 	input->TriggerKey(DIK_0);
 
 #ifdef _DEBUG
-	
+
 	camera->CameraDebug();
 
 #endif // _DEBUG

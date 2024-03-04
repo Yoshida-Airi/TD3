@@ -105,6 +105,9 @@
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp">
       <Filter>Engine\Base\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Player\Playerlevel\Playerlevel.cpp">
+      <Filter>Application\Player\Playerlevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -206,6 +209,9 @@
     <ClInclude Include="Engine\Base\Manager\SrvManager.h">
       <Filter>Engine\Base\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Player\Playerlevel\Playerlevel.h">
+      <Filter>Application\Player\Playerlevel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -252,6 +258,12 @@
     </Filter>
     <Filter Include="Application\Object">
       <UniqueIdentifier>{52c1d885-234e-44f3-8036-5287b77e433a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Player">
+      <UniqueIdentifier>{637c9abb-7a27-40bb-bcaa-572e09ccdbc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Player\Playerlevel">
+      <UniqueIdentifier>{48b204e7-9062-4716-bead-c0debe73076e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
