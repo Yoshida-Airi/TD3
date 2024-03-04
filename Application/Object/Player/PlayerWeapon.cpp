@@ -5,6 +5,7 @@ void PlayerWeapon::Initialize()
 {
 	Collider::Initialize();
 
+	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon));
 
 	model.reset(Model::Create("Resources/DefaultAssets/cube.obj"));

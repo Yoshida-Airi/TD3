@@ -35,9 +35,6 @@ void Player::Update()
 	Move();
 
 	Attack();
-
-	
-
 }
 
 void Player::Draw(Camera* camera)
@@ -68,8 +65,6 @@ Vector3 Player::GetCenterPosition() const
 
 void Player::OnCollision([[maybe_unused]] Collider* other)
 {
-	//model_->worldTransform_->rotation_.y += 0.01f;
-
 
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
@@ -77,10 +72,10 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 1;
 	}
 
-	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
-	{
-		HP -= 1;
-	}
+	//if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
+	//{
+	//	HP -= 1;
+	//}
 }
 
 void Player::Move()
