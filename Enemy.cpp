@@ -5,10 +5,12 @@ Enemy::~Enemy() {
 }
 
 void Enemy::Initialize() {
-	model_.reset(Model::Create("Resources/DefaultAssets/axis.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
+
+	model_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
 
 }
 
