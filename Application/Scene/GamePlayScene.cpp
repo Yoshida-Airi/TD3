@@ -93,12 +93,12 @@ void GamePlayScene::Update()
 	
 	player->Update();
 
+	EnemySporn();
+
 	//ここから敵の処理
 	for (Enemy* enemys : enemy_) {
 		enemys->Update();
 	}
-
-	EnemySporn();
 
 	enemy_.remove_if([](Enemy* enemys) {
 		if (enemys->GetIsDead()) {
@@ -108,12 +108,12 @@ void GamePlayScene::Update()
 		return false;
 	});
 
+	EnemyAttack();
+
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Update();
 	}
-
-	EnemyAttack();
 
 	enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
 		if (enemyBullets->GetIsDead()) {
