@@ -20,6 +20,10 @@ public:
 
 	void SetTranslate(std::mt19937& randomEngine);
 
+	Vector3 GetTranslate() { return model_->worldTransform_->translation_; }
+
+	Matrix4x4 GetMatWorld() { return model_->worldTransform_->matWorld_; }
+
 	bool GetIsDead() { return isDead_; }
 
 private:

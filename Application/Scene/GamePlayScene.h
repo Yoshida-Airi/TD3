@@ -18,6 +18,7 @@
 #include"Input.h"
 
 #include "../Enemy.h"
+#include "../EnemyBullet.h"
 #include <random>
 
 /// <summary>
@@ -34,6 +35,8 @@ public:
 private:
 
 	void EnemySporn();
+
+	void EnemyAttack();
 
 private:
 	TextureManager* textureManager_ = nullptr;
@@ -61,9 +64,13 @@ private:
 	std::unique_ptr<Player> player = nullptr;
 
 	std::list<Enemy*> enemy_;
+	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 0;
 	int enemySpornTimer = 0;
+
+	bool isEnemyAttack = true;
+	int enemyAttackCoolDown = 0;
 
 	std::random_device generator;
 

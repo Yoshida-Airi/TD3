@@ -10,6 +10,10 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 
+public:
+
+	Vector3 GetTranslate() { return playerModel_->worldTransform_->translation_; }
+
 private:
 	Input* input_ = nullptr;
 	std::unique_ptr<Model> playerModel_ = nullptr;

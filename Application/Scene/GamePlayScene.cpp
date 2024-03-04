@@ -9,6 +9,10 @@ GamePlayScene::~GamePlayScene()
 		delete enemys;
 	}
 	
+	for (EnemyBullet* enemyBullets : enemyBullet_) {
+		delete enemyBullets;
+	}
+
 }
 
 void GamePlayScene::Initialize()
@@ -89,6 +93,7 @@ void GamePlayScene::Update()
 	
 	player->Update();
 
+	//ここから敵の処理
 	for (Enemy* enemys : enemy_) {
 		enemys->Update();
 	}
@@ -102,6 +107,13 @@ void GamePlayScene::Update()
 		}
 		return false;
 	});
+
+	//ここから敵の弾の処理
+	for (EnemyBullet* enemyBullets : enemyBullet_) {
+		enemyBullets->Update();
+	}
+
+	EnemyAttack();
 
 }
 
@@ -117,18 +129,24 @@ void GamePlayScene::Draw()
 
 	player->Draw(camera);
 
+	//ここから敵を出す処理
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
+	}
+
+	//ここから敵の弾の処理
+	for (EnemyBullet* enemyBullets : enemyBullet_) {
+		enemyBullets->Draw(camera);
 	}
 
 }
 
 void GamePlayScene::EnemySporn() {
 
-	if (enemyCount <= 10) {
+	if (enemyCount <= 2) {
 		Enemy* newEnemy = new Enemy();
 		newEnemy->Initialize();
-
+		
 		std::mt19937 random(generator());
 
 		newEnemy->SetTranslate(random);
@@ -136,11 +154,51 @@ void GamePlayScene::EnemySporn() {
 		enemy_.push_back(newEnemy);
 		enemyCount++;
 	}
-	else if (enemyCount > 10) {
+	else if (enemyCount > 2) {
 		enemySpornTimer++;
 		if (enemySpornTimer >= 180) {
 			enemyCount = 0;
 			enemySpornTimer = 0;
+		}
+	}
+}
+
+void GamePlayScene::EnemyAttack() {
+	for (Enemy* enemy : enemy_) {
+		if (isEnemyAttack == true) {
+
+			isEnemyAttack = false;
+
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize();
+
+			newBullet->SetTranslate(enemy->GetTranslate());
+
+			const float kBulletSpeed = 0.5f;
+			Vector3 playerPos = player->GetTranslate();
+			Vector3 enemyPos = enemy->GetTranslate();
+			Vector3 speed;
+
+			speed.x = playerPos.x - enemyPos.x;
+			speed.y = playerPos.y - enemyPos.y;
+			speed.z = playerPos.z - enemyPos.z;
+
+			speed = Normalize(speed);
+
+			speed.x *= kBulletSpeed;
+			speed.y *= kBulletSpeed;
+			speed.z *= kBulletSpeed;
+
+			speed = TransformNormal(speed, enemy->GetMatWorld());
+
+			enemyBullet_.push_back(newBullet);
+		}
+		else if (isEnemyAttack == false) {
+			enemyAttackCoolDown++;
+			if (enemyAttackCoolDown >= 60) {
+				enemyAttackCoolDown = 0;
+				isEnemyAttack = true;
+			}
 		}
 	}
 }
