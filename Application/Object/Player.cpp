@@ -5,16 +5,15 @@ void Player::Initialize()
 {
 	input_ = Input::GetInstance();
 
-	Model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	Speed = 0.03f;
 
-	
 }
 
 void Player::Update()
 {
-	Model_->Update();
-	Model_->ModelDebug("player");
+	model_->Update();
+	model_->ModelDebug("player");
 	Move();
 
 	Attack();
@@ -25,7 +24,7 @@ void Player::Update()
 
 void Player::Draw(Camera* camera)
 {
-	Model_->Draw(camera);
+	model_->Draw(camera);
 
 	if (isUnderAttack == true)
 	{
@@ -37,19 +36,19 @@ void Player::Move()
 {
 	if (input_->PushKey(DIK_W))
 	{
-		Model_->worldTransform_->translation_.z += Speed;
+		model_->worldTransform_->translation_.z += Speed;
 	}
 	if (input_->PushKey(DIK_S))
 	{
-		Model_->worldTransform_->translation_.z -= Speed;
+		model_->worldTransform_->translation_.z -= Speed;
 	}
 	if (input_->PushKey(DIK_A))
 	{
-		Model_->worldTransform_->translation_.x -= Speed;
+		model_->worldTransform_->translation_.x -= Speed;
 	}
 	if (input_->PushKey(DIK_D))
 	{
-		Model_->worldTransform_->translation_.x += Speed;
+		model_->worldTransform_->translation_.x += Speed;
 	}
 
 
