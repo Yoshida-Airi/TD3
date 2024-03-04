@@ -16,6 +16,8 @@
 #include"Player.h"
 #include"playerWeapon.h"
 
+#include"CollisionManager.h"
+
 #include"Input.h"
 
 
@@ -33,6 +35,8 @@ public:
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
+	//当たり判定処理
+	CollisionManager* colliderManager_ = nullptr;
 
 	uint32_t uvTexture;
 	uint32_t monsterBall;

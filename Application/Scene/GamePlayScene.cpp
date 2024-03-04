@@ -2,7 +2,7 @@
 
 GamePlayScene::~GamePlayScene()
 {
-
+	delete colliderManager_;
 	delete camera;
 	
 }
@@ -12,6 +12,9 @@ void GamePlayScene::Initialize()
 	textureManager_ = TextureManager::GetInstance();
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
+
+	//当たり判定処理の設定
+	colliderManager_ = new CollisionManager;
 
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
@@ -71,6 +74,19 @@ void GamePlayScene::Update()
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}
+
+
+	/***当たり判定処理***/
+	//コライダーのリストをクリア
+	colliderManager_->ListClear();
+
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	colliderManager_->AddColliders(playerWeapon_.get());
+
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
+
 
 
 	//triangle->Update();

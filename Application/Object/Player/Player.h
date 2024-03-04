@@ -2,10 +2,11 @@
 #include"Input.h"
 
 #include"Model.h"
+#include"Collider.h"
 
 class PlayerWeapon;
 
-class Player
+class Player :public Collider
 {
 public:
 	void Initialize();
@@ -18,6 +19,9 @@ public:
 	}
 
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
+
+	Vector3 GetWorldPosition()override;
+	void OnCollision()override;
 
 private:
 	Input* input_ = nullptr;

@@ -1,26 +1,50 @@
 #include "PlayerWeapon.h"
+#include"CollisionConfig.h"
 
 void PlayerWeapon::Initialize()
 {
-	weapon.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	//衝突属性を設定
+	SetCollisionAttribute(kCollisionAttributePlayerWeapon);
+	//衝突対象の設定
+	SetCollisionMask(kCollisionAttributeEnemy);
 
-	weapon->worldTransform_->scale_.x = 0.5f;
-	weapon->worldTransform_->scale_.y = 0.5f;
-	weapon->worldTransform_->scale_.z = 0.5f;
+
+	model.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+
+	model->worldTransform_->scale_.x = 0.5f;
+	model->worldTransform_->scale_.y = 0.5f;
+	model->worldTransform_->scale_.z = 0.5f;
 
 }
 
 void PlayerWeapon::Update()
 {
-	weapon->Update();
+	model->Update();
 }
 
 void PlayerWeapon::Draw(Camera* camera)
 {
-	weapon->Draw(camera);
+	model->Draw(camera);
 }
 
 void PlayerWeapon::SetPosition(Vector3 position)
 {
-	weapon->worldTransform_->translation_ = position;
+	model->worldTransform_->translation_ = position;
+}
+
+Vector3 PlayerWeapon::GetWorldPosition()
+{
+	// ワールド座標を入れる変数
+	Vector3 worldpos;
+
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	worldpos.x = model->worldTransform_->matWorld_.m[3][0];
+	worldpos.y = model->worldTransform_->matWorld_.m[3][1];
+	worldpos.z = model->worldTransform_->matWorld_.m[3][2];
+
+	return worldpos;
+}
+
+void PlayerWeapon::OnCollision()
+{
 }

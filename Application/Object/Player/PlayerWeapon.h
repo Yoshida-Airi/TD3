@@ -1,7 +1,8 @@
 #pragma once
 #include"Model.h"
+#include"Collider.h"
 
-class PlayerWeapon
+class PlayerWeapon :public Collider
 {
 public:
 
@@ -11,8 +12,11 @@ public:
 
 	void SetPosition(Vector3 position);
 
+	Vector3 GetWorldPosition()override;
+	void OnCollision()override;
+
 private:
-	std::unique_ptr<Model> weapon = nullptr;
+	std::unique_ptr<Model> model = nullptr;
 	
 };
 
