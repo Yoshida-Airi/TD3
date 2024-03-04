@@ -68,6 +68,8 @@ private:
 
 #endif // _DEBUG
 
+private:
 
+	void CheckAllCollisions();
 };
 

@@ -81,20 +81,7 @@ void GamePlayScene::Update()
 	}
 
 
-	/***当たり判定処理***/
-	//コライダーのリストをクリア
-	colliderManager_->ListClear();
-
-	//コライダーにオブジェクトを登録
-	colliderManager_->AddColliders(player.get());
-	colliderManager_->AddColliders(playerWeapon_.get());
-	colliderManager_->AddColliders(sampleEnemy.get());
-	
-	
-
-	//当たり判定
-	colliderManager_->ChackAllCollisions();
-
+	CheckAllCollisions();
 
 
 	//triangle->Update();
@@ -149,4 +136,18 @@ void GamePlayScene::Draw()
 	sampleEnemy->Draw(camera);
 
 	//colliderManager_->Draw(camera);
+}
+
+void GamePlayScene::CheckAllCollisions()
+{
+	//コライダーのリストをクリア
+	colliderManager_->ListClear();
+
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	colliderManager_->AddColliders(playerWeapon_.get());
+	colliderManager_->AddColliders(sampleEnemy.get());
+
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
 }
