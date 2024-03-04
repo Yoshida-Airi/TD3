@@ -2,7 +2,6 @@
 
 GamePlayScene::~GamePlayScene()
 {
-
 	delete camera;
 	
 }
@@ -12,6 +11,10 @@ void GamePlayScene::Initialize()
 	textureManager_ = TextureManager::GetInstance();
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
+
+	//当たり判定処理の設定
+	colliderManager_ = std::make_unique<CollisionManager>();
+	colliderManager_->Initialize();
 
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
@@ -41,6 +44,7 @@ void GamePlayScene::Initialize()
 	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
 	//model->worldTransform_->rotation_.y = 3.14f;
 
+	
 
 	//particle.reset(ParticleSystem::Create(circle));
 	//particle->emitter_->count = 100;
@@ -51,9 +55,13 @@ void GamePlayScene::Initialize()
 
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
-	
+
+	sampleEnemy = std::make_unique<PlayerWeapon>();
+	sampleEnemy->Initialize();
 
 	player->SetWeapon(playerWeapon_.get());
+
+	//colliderManager_->UpdateWorldTransform();
 	
 }
 
@@ -73,6 +81,9 @@ void GamePlayScene::Update()
 	}
 
 
+	CheckAllCollisions();
+
+
 	//triangle->Update();
 	//triangle->worldTransform_->rotation_.y += 0.03f;
 
@@ -83,9 +94,9 @@ void GamePlayScene::Update()
 	//sphere->Update();
 	//sphere->worldTransform_->rotation_.y += 0.01f;
 
-	//model->ModelDebug("plane");
-	//model->Update();
-	//model->worldTransform_->translation_.x = 3.0f;
+	/*model->ModelDebug("plane");
+	model->Update();
+	model->worldTransform_->translation_.x = 3.0f;*/
 
 	//particle->Debug("circleParticle");
 	//particle->Update();
@@ -98,7 +109,10 @@ void GamePlayScene::Update()
 
 	playerWeapon_->SetPosition(weaponPos);
 
-	//playerWeapon_->Update();
+
+	//sampleEnemy->Update();
+	playerWeapon_->Update();
+	sampleEnemy->Update();
 
 }
 
@@ -113,6 +127,27 @@ void GamePlayScene::Draw()
 
 
 	player->Draw(camera);
-	//playerWeapon_->Draw(camera);
 
+	if (player->GetIsUnderAttack())
+	{
+		playerWeapon_->Draw(camera);
+	}
+
+	sampleEnemy->Draw(camera);
+
+	//colliderManager_->Draw(camera);
+}
+
+void GamePlayScene::CheckAllCollisions()
+{
+	//コライダーのリストをクリア
+	colliderManager_->ListClear();
+
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	colliderManager_->AddColliders(playerWeapon_.get());
+	colliderManager_->AddColliders(sampleEnemy.get());
+
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
 }

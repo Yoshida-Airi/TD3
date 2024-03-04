@@ -1,34 +1,73 @@
 #include "Player.h"
 #include"PlayerWeapon.h"
+#include"CollisionConfig.h"
+
 
 void Player::Initialize()
 {
 	input_ = Input::GetInstance();
 
+	Collider::Initialize();
+	
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
+
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
-	Speed = 0.03f;
+
+	SetRadius(model_->worldTransform_->scale_.x);
 
 }
 
 void Player::Update()
 {
+	Collider::UpdateWorldTransform();
 	model_->Update();
 	model_->ModelDebug("player");
+
+#ifdef _DEBUG
+	
+	ImGui::Begin("HitCheack");
+	ImGui::Text("HP : %d", HP);
+	ImGui::End();
+
+#endif // _DEBUG
+
+
 	Move();
 
 	Attack();
-
-	Weapon_->Update();
-
 }
 
 void Player::Draw(Camera* camera)
 {
 	model_->Draw(camera);
+}
 
-	if (isUnderAttack == true)
+Vector3 Player::GetWorldPosition()
+{
+	// ワールド座標を入れる変数
+	Vector3 worldpos;
+
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	worldpos.x = model_->worldTransform_->matWorld_.m[3][0];
+	worldpos.y = model_->worldTransform_->matWorld_.m[3][1];
+	worldpos.z = model_->worldTransform_->matWorld_.m[3][2];
+
+	return worldpos;
+}
+
+
+void Player::OnCollision([[maybe_unused]] Collider* other)
+{
+
+	uint32_t typeID = other->GetTypeID();
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
 	{
-		Weapon_->Draw(camera);
+		HP -= 1;
+	}
+
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
+	{
+		HP -= 1;
 	}
 }
 

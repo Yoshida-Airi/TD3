@@ -16,6 +16,8 @@
 #include"Player.h"
 #include"playerWeapon.h"
 
+#include"CollisionManager.h"
+
 #include"Input.h"
 
 
@@ -33,6 +35,8 @@ public:
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
+	//当たり判定処理
+	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
 
 	uint32_t uvTexture;
 	uint32_t monsterBall;
@@ -56,12 +60,16 @@ private:
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
 
+	std::unique_ptr<PlayerWeapon> sampleEnemy = nullptr;
+
 #ifdef _DEBUG
 
 	ImGuiManager* imgui;
 
 #endif // _DEBUG
 
+private:
 
+	void CheckAllCollisions();
 };
 

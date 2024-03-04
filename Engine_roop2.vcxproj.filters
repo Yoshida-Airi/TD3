@@ -111,6 +111,12 @@
     <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Object\CollisionManager.cpp">
+      <Filter>Application\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Collider.cpp">
+      <Filter>Application\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -217,6 +223,15 @@
     </ClInclude>
     <ClInclude Include="Application\Object\Player\PlayerWeapon.h">
       <Filter>Application\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Collider.h">
+      <Filter>Application\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\CollisionConfig.h">
+      <Filter>Application\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\CollisionManager.h">
+      <Filter>Application\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
