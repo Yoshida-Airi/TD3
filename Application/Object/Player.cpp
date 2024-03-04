@@ -6,6 +6,9 @@ void Player::Initialize()
 
 	playerModel_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	playerSpeed = 0.03f;
+
+	playerModel_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
+
 }
 
 void Player::Update()
