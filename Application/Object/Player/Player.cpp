@@ -55,13 +55,6 @@ Vector3 Player::GetWorldPosition()
 	return worldpos;
 }
 
-Vector3 Player::GetCenterPosition() const
-{
-	const Vector3 offset = { 0.0f,1.0f,0.0f };
-	//ワールド座標に変換
-	Vector3 worldPos = TransformNormal(offset, model_->worldTransform_->matWorld_);
-	return worldPos;
-}
 
 void Player::OnCollision([[maybe_unused]] Collider* other)
 {

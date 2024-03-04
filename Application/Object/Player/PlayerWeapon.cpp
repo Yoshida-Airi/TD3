@@ -47,14 +47,6 @@ Vector3 PlayerWeapon::GetWorldPosition()
 	return worldpos;
 }
 
-Vector3 PlayerWeapon::GetCenterPosition() const
-{
-	const Vector3 offset = { 0.0f,0.25f,0.0f };
-	//ワールド座標に変換
-	Vector3 worldPos = TransformNormal(offset, model->worldTransform_->matWorld_);
-	return worldPos;
-}
-
 void PlayerWeapon::OnCollision([[maybe_unused]] Collider* other)
 {
 

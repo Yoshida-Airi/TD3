@@ -23,13 +23,8 @@ public:
 	bool GetIsUnderAttack() { return isUnderAttack; };
 
 	Vector3 GetWorldPosition()override;
-	Vector3 GetCenterPosition()const override;
-	
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
-
-	
-
 
 private:
 	Input* input_ = nullptr;
