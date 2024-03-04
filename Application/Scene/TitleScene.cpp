@@ -5,6 +5,11 @@ TitleScene::~TitleScene()
 {
 	delete camera;
 	delete efect;
+
+	for (Enemy* enemys : enemy_) {
+		delete enemys;
+	}
+
 }
 
 void TitleScene::Initialize()
@@ -77,14 +82,18 @@ void TitleScene::Draw()
 
 void TitleScene::EnemySporn() {
 
-	if (enemyCount <= 2) {
+	if (enemyCount <= 10) {
 		Enemy* newEnemy = new Enemy();
 		newEnemy->Initialize();
+
+		std::mt19937 random(generator());
+
+		newEnemy->SetTranslate(random);
 
 		enemy_.push_back(newEnemy);
 		enemyCount++;
 	}
-	else if (enemyCount > 2) {
+	else if (enemyCount > 10) {
 		enemySpornTimer++;
 		if (enemySpornTimer >= 180) {
 			enemyCount = 0;

@@ -15,6 +15,7 @@
 #include"EfectManager.h"
 
 #include "../Enemy.h"
+#include <random>
 
 class TitleScene :public BaseScene
 {
@@ -45,6 +46,8 @@ private:
 	
 	int enemyCount = 0;
 	int enemySpornTimer = 0;
+
+	std::random_device generator;
 
 };
 
