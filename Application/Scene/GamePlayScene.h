@@ -17,6 +17,8 @@
 
 #include"Input.h"
 
+#include "../Enemy.h"
+#include <random>
 
 /// <summary>
 /// ゲームプレイシーン
@@ -28,6 +30,10 @@ public:
 	void Initialize()override;
 	void Update()override;
 	void Draw()override;
+
+private:
+
+	void EnemySporn();
 
 private:
 	TextureManager* textureManager_ = nullptr;
@@ -53,6 +59,13 @@ private:
 
 
 	std::unique_ptr<Player> player = nullptr;
+
+	std::list<Enemy*> enemy_;
+
+	int enemyCount = 0;
+	int enemySpornTimer = 0;
+
+	std::random_device generator;
 
 #ifdef _DEBUG
 

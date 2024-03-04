@@ -4,6 +4,10 @@ GamePlayScene::~GamePlayScene()
 {
 
 	delete camera;
+
+	for (Enemy* enemys : enemy_) {
+		delete enemys;
+	}
 	
 }
 
@@ -85,6 +89,12 @@ void GamePlayScene::Update()
 	
 	player->Update();
 
+	for (Enemy* enemys : enemy_) {
+		enemys->Update();
+	}
+
+	EnemySporn();
+
 }
 
 void GamePlayScene::Draw()
@@ -99,4 +109,30 @@ void GamePlayScene::Draw()
 
 	player->Draw(camera);
 
+	for (Enemy* enemys : enemy_) {
+		enemys->Draw(camera);
+	}
+
+}
+
+void GamePlayScene::EnemySporn() {
+
+	if (enemyCount <= 10) {
+		Enemy* newEnemy = new Enemy();
+		newEnemy->Initialize();
+
+		std::mt19937 random(generator());
+
+		newEnemy->SetTranslate(random);
+
+		enemy_.push_back(newEnemy);
+		enemyCount++;
+	}
+	else if (enemyCount > 10) {
+		enemySpornTimer++;
+		if (enemySpornTimer >= 180) {
+			enemyCount = 0;
+			enemySpornTimer = 0;
+		}
+	}
 }

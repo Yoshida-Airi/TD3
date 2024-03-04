@@ -5,11 +5,6 @@ TitleScene::~TitleScene()
 {
 	delete camera;
 	delete efect;
-
-	for (Enemy* enemys : enemy_) {
-		delete enemys;
-	}
-
 }
 
 void TitleScene::Initialize()
@@ -61,43 +56,11 @@ void TitleScene::Update()
 	fence_->ModelDebug("fence");
 	fence_->Parent(cube_.get());
 
-	for (Enemy* enemys : enemy_) {
-		enemys->Update();
-	}
-
-	EnemySporn();
-
 }
 
 void TitleScene::Draw()
 {
 	fence_->Draw(camera);
 	cube_->Draw(camera);
-
-	for (Enemy* enemys : enemy_) {
-		enemys->Draw(camera);
-	}
-
 }
 
-void TitleScene::EnemySporn() {
-
-	if (enemyCount <= 10) {
-		Enemy* newEnemy = new Enemy();
-		newEnemy->Initialize();
-
-		std::mt19937 random(generator());
-
-		newEnemy->SetTranslate(random);
-
-		enemy_.push_back(newEnemy);
-		enemyCount++;
-	}
-	else if (enemyCount > 10) {
-		enemySpornTimer++;
-		if (enemySpornTimer >= 180) {
-			enemyCount = 0;
-			enemySpornTimer = 0;
-		}
-	}
-}

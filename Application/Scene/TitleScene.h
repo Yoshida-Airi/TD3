@@ -27,10 +27,6 @@ public:
 
 private:
 
-	void EnemySporn();
-
-private:
-
 	EfectManager* efect = nullptr;
 
 	Input* input;
@@ -41,13 +37,6 @@ private:
 
 	std::unique_ptr<Model> fence_ = nullptr;
 	std::unique_ptr<Model> cube_ = nullptr;
-
-	std::list<Enemy*> enemy_;
-	
-	int enemyCount = 0;
-	int enemySpornTimer = 0;
-
-	std::random_device generator;
 
 };
 
