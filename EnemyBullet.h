@@ -6,7 +6,7 @@ class EnemyBullet
 public:
 	~EnemyBullet();
 
-	void Initialize(Vector3 speed);
+	void Initialize();
 
 	void Update();
 
@@ -17,6 +17,8 @@ public:
 	void SetTranslate(Vector3 translate);
 
 	bool GetIsDead() { return isDead_; }
+
+	void SetSpeed(Vector3 speed);
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;

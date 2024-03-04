@@ -4,12 +4,11 @@ EnemyBullet::~EnemyBullet() {
 
 }
 
-void EnemyBullet::Initialize(Vector3 speed) {
+void EnemyBullet::Initialize() {
+
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	model_->worldTransform_->scale_ = { 0.2f,0.2f,0.2f };
-
-	speed_ = speed;
 }
 
 void EnemyBullet::Update() {
@@ -29,5 +28,9 @@ void EnemyBullet::Draw(Camera* camera) {
 }
 
 void EnemyBullet::SetTranslate(Vector3 translate) {
-	model_->worldTransform_->translation_ = translate;
+	model_->worldTransform_->translation_ = { translate.x,translate.y,translate.z };
+}
+
+void EnemyBullet::SetSpeed(Vector3 speed) {
+	speed_ = speed;
 }

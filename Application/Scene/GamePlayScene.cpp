@@ -177,6 +177,9 @@ void GamePlayScene::EnemyAttack(){
 		if (isEnemyAttack == true) {
 
 			isEnemyAttack = false;
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize();
+			newBullet->SetTranslate(enemy->GetTranslate());
 
 			const float kBulletSpeed = 0.05f;
 			Vector3 playerPos = player->GetTranslate();
@@ -194,11 +197,8 @@ void GamePlayScene::EnemyAttack(){
 			speed.z *= kBulletSpeed;
 
 			speed = TransformNormal(speed,enemy->GetMatWorld());
-			
-			EnemyBullet* newBullet = new EnemyBullet();
-			newBullet->Initialize(speed);
 
-			newBullet->SetTranslate(enemy->GetTranslate());
+			newBullet->SetSpeed(speed);
 
 			enemyBullet_.push_back(newBullet);
 		}
