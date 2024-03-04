@@ -110,6 +110,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\Object\Collider.cpp" />
     <ClCompile Include="Application\Object\CollisionManager.cpp" />
     <ClCompile Include="Engine\Base\Audio.cpp" />
     <ClCompile Include="Engine\Effect\EfectManager.cpp" />

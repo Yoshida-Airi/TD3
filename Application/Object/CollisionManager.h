@@ -2,11 +2,15 @@
 #include<list>
 #include"Collider.h"
 #include"MathUtilty.h"
+#include"Model.h"
 
 class CollisionManager {
 
 public:
 
+	void Initialize();
+	void UpdateWorldTransform();
+	void Draw( Camera* camera);
 
 	/// <summary>
 	/// リストをクリアする
@@ -35,5 +39,7 @@ private:
 
 	// コライダーリスト
 	std::list<Collider*> colliders_;
+
+	std::unique_ptr<Model>model;
 
 };

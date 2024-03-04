@@ -14,6 +14,7 @@ void GamePlayScene::Initialize()
 
 	//当たり判定処理の設定
 	colliderManager_ = std::make_unique<CollisionManager>();
+	colliderManager_->Initialize();
 
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
@@ -57,6 +58,8 @@ void GamePlayScene::Initialize()
 
 
 	player->SetWeapon(playerWeapon_.get());
+
+	colliderManager_->UpdateWorldTransform();
 	
 }
 
@@ -138,4 +141,6 @@ void GamePlayScene::Draw()
 	{
 		playerWeapon_->Draw(camera);
 	}
+
+	colliderManager_->Draw(camera);
 }

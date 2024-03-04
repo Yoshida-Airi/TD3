@@ -1,5 +1,7 @@
 #pragma once
 #include"VectorMath.h"
+#include"WorldTransform.h"
+#include"Model.h"
 
 /// <summary>
 /// 衝突判定オブジェクト
@@ -7,6 +9,10 @@
 class Collider
 {
 public:
+
+	void Initialize();
+	void UpdateWorldTransform();
+	void Draw( Camera* camera);
 
 	//ワールド座標を取得
 	virtual Vector3 GetWorldPosition() = 0;
@@ -48,4 +54,8 @@ private:
 	uint32_t collisionAttribute_ = 0xffffffff;
 	//衝突マスク(相手)
 	uint32_t CollisionMask_ = 0xffffffff;
+	WorldTransform* worldTransform;
+
+	std::unique_ptr<Model>model_;
+
 };

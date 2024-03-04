@@ -1,5 +1,29 @@
 #include "CollisionManager.h"
 
+void CollisionManager::Initialize()
+{
+	for (Collider* collider : colliders_)
+	{
+		collider->Initialize();
+	}
+}
+
+void CollisionManager::UpdateWorldTransform()
+{
+	for (Collider* collider : colliders_)
+	{
+		collider->UpdateWorldTransform();
+	}
+}
+
+void CollisionManager::Draw( Camera* camera)
+{
+	for (Collider* collider : colliders_)
+	{
+		collider->Draw(camera);
+	}
+}
+
 void CollisionManager::ListClear()
 {
 	colliders_.clear(); 

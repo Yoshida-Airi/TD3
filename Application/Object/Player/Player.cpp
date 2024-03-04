@@ -7,6 +7,9 @@ void Player::Initialize()
 {
 	input_ = Input::GetInstance();
 
+	Collider::Initialize();
+
+
 	//衝突属性を設定
 	SetCollisionAttribute(kCollisionAttributePlayer);
 	//衝突対象の設定
@@ -22,6 +25,7 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	Collider::UpdateWorldTransform();
 	model_->Update();
 	model_->ModelDebug("player");
 
@@ -45,8 +49,6 @@ void Player::Update()
 void Player::Draw(Camera* camera)
 {
 	model_->Draw(camera);
-
-	
 }
 
 Vector3 Player::GetWorldPosition()

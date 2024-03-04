@@ -3,6 +3,8 @@
 
 void PlayerWeapon::Initialize()
 {
+	Collider::Initialize();
+
 	//衝突属性を設定
 	SetCollisionAttribute(kCollisionAttributePlayerWeapon);
 	//衝突対象の設定
@@ -21,6 +23,7 @@ void PlayerWeapon::Initialize()
 
 void PlayerWeapon::Update()
 {
+	Collider::UpdateWorldTransform();
 	model->Update();
 }
 
