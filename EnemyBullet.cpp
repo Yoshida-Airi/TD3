@@ -5,7 +5,9 @@ EnemyBullet::~EnemyBullet() {
 }
 
 void EnemyBullet::Initialize() {
-	model_.reset(Model::Create("Resources / DefaultAssets / cube.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+
+	model_->worldTransform_->scale_ = { 0.2f };
 }
 
 void EnemyBullet::Update() {

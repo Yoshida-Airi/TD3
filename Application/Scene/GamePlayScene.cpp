@@ -163,16 +163,12 @@ void GamePlayScene::EnemySporn() {
 	}
 }
 
-void GamePlayScene::EnemyAttack() {
+void GamePlayScene::EnemyAttack(){
+
 	for (Enemy* enemy : enemy_) {
 		if (isEnemyAttack == true) {
 
 			isEnemyAttack = false;
-
-			EnemyBullet* newBullet = new EnemyBullet();
-			newBullet->Initialize();
-
-			newBullet->SetTranslate(enemy->GetTranslate());
 
 			const float kBulletSpeed = 0.5f;
 			Vector3 playerPos = player->GetTranslate();
@@ -189,7 +185,13 @@ void GamePlayScene::EnemyAttack() {
 			speed.y *= kBulletSpeed;
 			speed.z *= kBulletSpeed;
 
-			speed = TransformNormal(speed, enemy->GetMatWorld());
+			speed = Normalize(speed);
+
+
+			EnemyBullet* newBullet = new EnemyBullet();
+			newBullet->Initialize();
+
+			newBullet->SetTranslate(enemy->GetTranslate());
 
 			enemyBullet_.push_back(newBullet);
 		}
@@ -201,4 +203,5 @@ void GamePlayScene::EnemyAttack() {
 			}
 		}
 	}
+
 }
