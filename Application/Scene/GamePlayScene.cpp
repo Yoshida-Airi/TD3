@@ -49,7 +49,7 @@ void GamePlayScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize();
 
-	playerWeapon_ = std::make_unique<playerWeapon>();
+	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 	
 

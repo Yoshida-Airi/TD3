@@ -1,7 +1,7 @@
 #pragma once
 #include"Model.h"
 
-class playerWeapon
+class PlayerWeapon
 {
 public:
 

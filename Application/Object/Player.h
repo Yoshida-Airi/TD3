@@ -3,7 +3,7 @@
 
 #include"Model.h"
 
-class playerWeapon;
+class PlayerWeapon;
 
 class Player
 {
@@ -12,7 +12,7 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 
-	void SetWeapon(playerWeapon* playerWeapon)
+	void SetWeapon(PlayerWeapon* playerWeapon)
 	{
 		Weapon_ = playerWeapon;
 	}
@@ -23,7 +23,7 @@ private:
 	Input* input_ = nullptr;
 
 	std::unique_ptr<Model> model_ = nullptr;
-	playerWeapon* Weapon_ = nullptr;
+	PlayerWeapon* Weapon_ = nullptr;
 
 	float Speed = 0;	//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中

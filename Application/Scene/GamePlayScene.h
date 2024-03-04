@@ -54,7 +54,7 @@ private:
 
 
 	std::unique_ptr<Player> player = nullptr;
-	std::unique_ptr<playerWeapon> playerWeapon_ = nullptr;
+	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
 
 #ifdef _DEBUG
 

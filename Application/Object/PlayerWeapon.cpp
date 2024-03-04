@@ -1,6 +1,6 @@
 #include "PlayerWeapon.h"
 
-void playerWeapon::Initialize()
+void PlayerWeapon::Initialize()
 {
 	weapon.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
@@ -10,17 +10,17 @@ void playerWeapon::Initialize()
 
 }
 
-void playerWeapon::Update()
+void PlayerWeapon::Update()
 {
 	weapon->Update();
 }
 
-void playerWeapon::Draw(Camera* camera)
+void PlayerWeapon::Draw(Camera* camera)
 {
 	weapon->Draw(camera);
 }
 
-void playerWeapon::SetPosition(Vector3 position)
+void PlayerWeapon::SetPosition(Vector3 position)
 {
 	weapon->worldTransform_->translation_ = position;
 }
