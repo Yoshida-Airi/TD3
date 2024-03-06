@@ -65,6 +65,7 @@ void GamePlayScene::Initialize()
 	particle->emitter_->count = 100;
 	particle->emitter_->transform.scale = { 0.5f,0.0f,0.0f };
 	particle->SetLifeTime(1.0f, 3.0f);
+	particle->SetUseBillBoard(true);
 	//particle->SetisInvisible(true);
 
 	player = std::make_unique<Player>();
@@ -124,6 +125,7 @@ void GamePlayScene::Update()
 #ifdef _DEBUG
 
 	camera->CameraDebug();
+	camera->UpdateMatrix();
 
 #endif // _DEBUG
 

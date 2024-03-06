@@ -124,6 +124,11 @@ public:
 		lifeTime.max = timeMax;
 	}
 
+	void SetUseBillBoard(bool isUseBillboard)
+	{
+		isBillboard_ = isUseBillboard;
+	}
+
 	/// <summary>
 	/// Imgui
 	/// </summary>
@@ -194,6 +199,7 @@ private://プライベート変数
 	bool isRandomVelocity_ = false;
 	Vector3 velocity_;
 	Time lifeTime = { 1.0,3.0f };
+	bool isBillboard_ = false;
 
 	const float kDeltaTime = 1.0f / 60.0f;
 

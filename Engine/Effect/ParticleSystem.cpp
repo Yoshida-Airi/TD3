@@ -116,10 +116,9 @@ void ParticleSystem::Update()
 
 	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
 	Matrix4x4 cameraMatrix = Inverse(camera_->matView);
-	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix, cameraMatrix);
-	billboardMatrix.m[3][0] = 0.0f;
-	billboardMatrix.m[3][1] = 0.0f;
-	billboardMatrix.m[3][2] = 0.0f;
+	
+	Matrix4x4 billboardMatrix;
+
 
 	numInstance = 0;
 	for (std::list<Particle>::iterator particleIterator = particles.begin(); particleIterator != particles.end(); )
@@ -130,9 +129,28 @@ void ParticleSystem::Update()
 			continue;
 		}
 
+		Matrix4x4 Scale = MakeScaleMatrix((*particleIterator).transform.scale);
+		Matrix4x4 Translate = MakeTranselateMatrix((*particleIterator).transform.translate);
+		Matrix4x4 worldMatrix;
+
+	
 		float alpha = 1.0f - particleIterator->currentTime / particleIterator->lifeTime;
 
-		Matrix4x4 worldMatrix = MakeAffinMatrix(particleIterator->transform.scale, particleIterator->transform.rotate, particleIterator->transform.translate);
+
+		if (isBillboard_ == true)
+		{
+			billboardMatrix = Multiply(backToFrontMatrix, cameraMatrix);
+			billboardMatrix.m[3][0] = 0.0f;
+			billboardMatrix.m[3][1] = 0.0f;
+			billboardMatrix.m[3][2] = 0.0f;
+			worldMatrix = Multiply(Scale, Multiply(billboardMatrix, Translate));
+		}
+		else
+		{
+			worldMatrix = MakeAffinMatrix(particleIterator->transform.scale, particleIterator->transform.rotate, particleIterator->transform.translate);
+		}
+
+	
 
 		particleIterator->transform.translate.x += (*particleIterator).velocity.x * kDeltaTime;
 		particleIterator->transform.translate.y += (*particleIterator).velocity.y * kDeltaTime;
@@ -218,6 +236,7 @@ void ParticleSystem::Debug(const char* name)
 
 			ImGui::Checkbox("isRandomPosition", &isRandomPosition_);
 			ImGui::Checkbox("isRandomVelocity", &isRandomVelocity_);
+			ImGui::Checkbox("isBillboard", &isBillboard_);
 
 			ImGui::TreePop();
 		}
