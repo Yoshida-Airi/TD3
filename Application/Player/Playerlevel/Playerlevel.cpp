@@ -53,6 +53,7 @@ void Playerlevel::Update() {
 		if (nowlevel == 3) {
 			sprite3->worldTransform_->translation_.x = 1008.0f;
 			sprite3->worldTransform_->translation_.y = 49.0f;
+			nowskilllevel += 1;
 		}
 		if (nowlevel == 6 || nowlevel == 10) {
 			Skillup();
@@ -68,7 +69,11 @@ void Playerlevel::Update() {
 	sprite1->Update();
 	sprite2->Update();
 	sprite3->Update();
-
+	ImGui::Begin("Experiencepoint");
+	ImGui::DragFloat("Experiencepoint", (float*)&Experiencepoint);
+	ImGui::DragInt("nowlevel", (int*)&nowlevel);
+	ImGui::DragInt("nowskill", (int*)&nowskilllevel);
+	ImGui::End();
 }
 void Playerlevel::Draw() {
 
