@@ -51,7 +51,6 @@ void TitleScene::Update()
 
 	fence_->Update();
 	cube_->Update();
-	
 	playerlevel->Update();
 
 	cube_->ModelDebug("cube");

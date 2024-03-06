@@ -19,7 +19,8 @@ public:
 	void Levelup();
 	void Skillup();
 	float Experiencepoint = 0.0f;
-
+	int nowlevel = 1;
+	int nowskilllevel = 0;
 private:
 
 	TextureManager* textureManager_ = nullptr;
@@ -34,9 +35,7 @@ private:
 	std::unique_ptr<Sprite> sprite2 = nullptr;
 	std::unique_ptr<Sprite> sprite3 = nullptr;
 	float maxbar = 105.0f;
-	int nowlevel = 1;
 	int maxlevel = 17;
-	int nowskilllevel = 0;
 	int maxskilllevel = 3;
 #ifdef _DEBUG
 	ImGuiManager* imgui;
