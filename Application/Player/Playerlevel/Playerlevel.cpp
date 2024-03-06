@@ -8,7 +8,6 @@ Playerlevel ::~Playerlevel() {
 void Playerlevel::Initialize() {
 
 	input = Input::GetInstance();
-	sceneManager_ = SceneManager::GetInstance();
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG

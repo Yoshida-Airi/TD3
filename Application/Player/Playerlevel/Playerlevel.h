@@ -21,11 +21,9 @@ private:
 
 	TextureManager* textureManager_ = nullptr;
 	Input* input;
-	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
 	uint32_t levelbar;
 	std::unique_ptr<Sprite> sprite = nullptr;
-	uint32_t soundData;
 #ifdef _DEBUG
 	ImGuiManager* imgui;
 #endif // _DEBUG
