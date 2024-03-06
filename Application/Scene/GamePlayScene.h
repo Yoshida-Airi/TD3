@@ -20,8 +20,8 @@
 
 #include"Input.h"
 
-#include "../Enemy.h"
-#include "../EnemyBullet.h"
+#include "Enemy.h"
+#include "EnemyBullet.h"
 #include <random>
 
 /// <summary>

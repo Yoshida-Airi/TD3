@@ -15,7 +15,7 @@
 
 #include"EfectManager.h"
 
-#include "../Enemy.h"
+#include"Enemy.h"
 #include <random>
 
 class TitleScene :public BaseScene
