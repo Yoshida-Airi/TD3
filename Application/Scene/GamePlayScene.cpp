@@ -173,7 +173,7 @@ void GamePlayScene::Update()
 	playerWeapon_->Update();
 	sampleEnemy->Update();
 
-}
+
 
 	enemy_.remove_if([](Enemy* enemys) {
 		if (enemys->GetIsDead()) {
@@ -219,6 +219,16 @@ void GamePlayScene::Draw()
 
 	sampleEnemy->Draw(camera);
 
+	//ここから敵の弾の処理
+	for (EnemyBullet* enemyBullets : enemyBullet_) {
+		enemyBullets->Draw(camera);
+	}
+
+	//ここから敵を出す処理
+	for (Enemy* enemys : enemy_) {
+		enemys->Draw(camera);
+	}
+
 	//colliderManager_->Draw(camera);
 }
 
@@ -235,17 +245,9 @@ void GamePlayScene::CheckAllCollisions()
 	//当たり判定
 	colliderManager_->ChackAllCollisions();
 }
-	//ここから敵の弾の処理
-	for (EnemyBullet* enemyBullets : enemyBullet_) {
-		enemyBullets->Draw(camera);
-	}
+	
 
-	//ここから敵を出す処理
-	for (Enemy* enemys : enemy_) {
-		enemys->Draw(camera);
-	}
 
-}
 
 void GamePlayScene::EnemySpawn() {
 
@@ -280,7 +282,7 @@ void GamePlayScene::EnemyAttack(){
 			newBullet->SetTranslate(enemy->GetTranslate());
 
 			const float kBulletSpeed = 0.05f;
-			Vector3 playerPos = player->GetTranslate();
+			Vector3 playerPos = player->GetPosition();
 			Vector3 enemyPos = enemy->GetTranslate();
 			Vector3 speed;
 
