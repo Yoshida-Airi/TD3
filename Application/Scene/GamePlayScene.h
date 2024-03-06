@@ -45,9 +45,7 @@ private:
 
 	Camera* camera;
 	
-
 	Input* input;
-
 
 	std::unique_ptr<Triangle> triangle = nullptr;
 	std::unique_ptr<Sprite> sprite = nullptr;
@@ -55,6 +53,12 @@ private:
 	std::unique_ptr<Model> model = nullptr;
 	std::unique_ptr<ParticleSystem> particle = nullptr;
 
+	uint32_t nowSecond = 0;
+	uint32_t nowWaveSecond = 0;
+	uint32_t bossSecond = 0;
+	uint32_t nowFrame = 0;
+	uint32_t nowWaveFrame = 0;
+	uint32_t bossFrame = 0;
 
 
 	std::unique_ptr<Player> player = nullptr;

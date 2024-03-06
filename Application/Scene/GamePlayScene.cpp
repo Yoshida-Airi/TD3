@@ -34,6 +34,13 @@ void GamePlayScene::Initialize()
 	//triangle->SetisInvisible(true);
 	//
 
+	sprite.reset(Sprite::Create(Doll));
+	sprite->SetSize({ 64.0f, 64.0f });
+	sprite->SetTextureLeftTop({ 0,0 });
+
+	//sprite->SetisInvisible(true);
+
+
 	//sprite.reset(Sprite::Create(Doll));
 	//sprite->SetSize({ 64.0f, 64.0f });
 	//sprite->SetTextureLeftTop({ 0,0 });
@@ -69,8 +76,46 @@ void GamePlayScene::Update()
 {
 	input->TriggerKey(DIK_0);
 
+	if(nowSecond!=120)
+	{
+		nowFrame++;
+		nowWaveFrame++;
+		if (nowFrame == 60) 
+		{
+			nowSecond++;
+			nowFrame = 0;
+		}
+		if (nowWaveFrame == 60) 
+		{
+			nowWaveSecond++;
+			nowWaveFrame = 0;
+		}
+		if (nowWaveSecond == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
+		{
+			nowWaveSecond = 0;
+			nowWaveFrame = 0;
+		}
+	}
+	else if(nowSecond >= 120)
+	{
+		bossFrame++;
+		if (bossFrame == 60)
+		{
+			bossSecond++;
+			bossFrame = 0;
+		}
+	}
+	ImGui::Begin("Frame&Seconds");
+	ImGui::DragInt("nowFrame", (int*)&nowFrame);
+	ImGui::DragInt("nowWaveFrame", (int*)&nowWaveFrame);
+	ImGui::DragInt("nowSecond", (int*)&nowSecond);
+	ImGui::DragInt("nowWaveSecond", (int*)&nowWaveSecond);
+	ImGui::DragInt("bossFrame", (int*)&bossFrame);
+	ImGui::DragInt("bossSecond", (int*)&bossSecond);
+	ImGui::End();
+
 #ifdef _DEBUG
-	
+
 	camera->CameraDebug();
 
 #endif // _DEBUG

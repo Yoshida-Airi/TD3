@@ -11,6 +11,7 @@
 #include"Sphere.h"
 #include"Model.h"
 #include"Camera.h"
+#include"../Application/Player/Playerlevel/Playerlevel.h"
 
 #include"EfectManager.h"
 
@@ -25,7 +26,7 @@ public:
 private:
 
 	EfectManager* efect = nullptr;
-
+	Playerlevel* playerlevel;
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
@@ -35,7 +36,7 @@ private:
 	std::unique_ptr<Model> fence_ = nullptr;
 	std::unique_ptr<Model> cube_ = nullptr;
 
-	
-	
+
+
 };
 
