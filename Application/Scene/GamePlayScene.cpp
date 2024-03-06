@@ -71,9 +71,6 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
-	sampleEnemy = std::make_unique<PlayerWeapon>();
-	sampleEnemy->Initialize();
-
 	player->SetWeapon(playerWeapon_.get());
 
 	//colliderManager_->UpdateWorldTransform();
@@ -171,8 +168,6 @@ void GamePlayScene::Update()
 
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
-	sampleEnemy->Update();
-
 
 
 	enemy_.remove_if([](Enemy* enemys) {
@@ -217,8 +212,6 @@ void GamePlayScene::Draw()
 		playerWeapon_->Draw(camera);
 	}
 
-	sampleEnemy->Draw(camera);
-
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Draw(camera);
@@ -240,8 +233,7 @@ void GamePlayScene::CheckAllCollisions()
 	//コライダーにオブジェクトを登録
 	colliderManager_->AddColliders(player.get());
 	colliderManager_->AddColliders(playerWeapon_.get());
-	colliderManager_->AddColliders(sampleEnemy.get());
-
+	
 	//当たり判定
 	colliderManager_->ChackAllCollisions();
 }

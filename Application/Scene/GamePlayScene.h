@@ -73,8 +73,6 @@ private:
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
 
-	std::unique_ptr<PlayerWeapon> sampleEnemy = nullptr;
-
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;
 
