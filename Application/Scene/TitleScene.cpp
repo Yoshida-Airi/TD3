@@ -57,7 +57,6 @@ void TitleScene::Update()
 	fence_->ModelDebug("fence");
 	fence_->Parent(cube_.get());
 
-
 }
 
 void TitleScene::Draw()

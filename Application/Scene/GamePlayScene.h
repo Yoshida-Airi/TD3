@@ -20,6 +20,9 @@
 
 #include"Input.h"
 
+#include "../Enemy.h"
+#include "../EnemyBullet.h"
+#include <random>
 
 /// <summary>
 /// ゲームプレイシーン
@@ -31,6 +34,12 @@ public:
 	void Initialize()override;
 	void Update()override;
 	void Draw()override;
+
+private:
+
+	void EnemySpawn();
+
+	void EnemyAttack();
 
 private:
 	TextureManager* textureManager_ = nullptr;
@@ -65,6 +74,17 @@ private:
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
 
 	std::unique_ptr<PlayerWeapon> sampleEnemy = nullptr;
+
+	std::list<Enemy*> enemy_;
+	std::list<EnemyBullet*> enemyBullet_;
+
+	int enemyCount = 0;
+	int enemySpornTimer = 0;
+
+	bool isEnemyAttack = true;
+	int enemyAttackCoolDown = 0;
+
+	std::random_device generator;
 
 #ifdef _DEBUG
 

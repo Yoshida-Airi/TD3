@@ -115,6 +115,12 @@
     <ClCompile Include="Application\Object\CollisionManager.cpp">
       <Filter>Application\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
     <ClCompile Include="Application\Object\Collider.cpp">
       <Filter>Application\Object</Filter>
 
@@ -242,6 +248,12 @@
     <ClInclude Include="Application\Player\Playerlevel\Playerlevel.h">
       <Filter>Application\Player\Playerlevel</Filter>
 
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
