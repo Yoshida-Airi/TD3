@@ -34,7 +34,7 @@ public:
 
 private:
 
-	void EnemySporn();
+	void EnemySpawn();
 
 	void EnemyAttack();
 

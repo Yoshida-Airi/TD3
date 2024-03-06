@@ -94,7 +94,7 @@ void GamePlayScene::Update()
 	player->Update();
 
 	//ここから敵の処理
-	EnemySporn();
+	EnemySpawn();
 
 	for (Enemy* enemys : enemy_) {
 		enemys->Update();
@@ -149,7 +149,7 @@ void GamePlayScene::Draw()
 
 }
 
-void GamePlayScene::EnemySporn() {
+void GamePlayScene::EnemySpawn() {
 
 	if (enemyCount <= 2) {
 		Enemy* newEnemy = new Enemy();
