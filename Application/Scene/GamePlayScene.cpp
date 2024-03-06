@@ -60,10 +60,12 @@ void GamePlayScene::Initialize()
 	//model->worldTransform_->rotation_.y = 3.14f;
 
 	
-
-	//particle.reset(ParticleSystem::Create(circle));
-	//particle->emitter_->count = 100;
-	////particle->SetisInvisible(true);
+	Vector3 velocity = { 1.0f,1.0f,0.0f };
+	particle.reset(ParticleSystem::Create(circle, camera, velocity, true, false));
+	particle->emitter_->count = 100;
+	particle->emitter_->transform.scale = { 0.5f,0.0f,0.0f };
+	particle->SetLifeTime(1.0f, 3.0f);
+	//particle->SetisInvisible(true);
 
 	player = std::make_unique<Player>();
 	player->Initialize();
@@ -148,8 +150,8 @@ void GamePlayScene::Update()
 	model->Update();
 	model->worldTransform_->translation_.x = 3.0f;*/
 
-	//particle->Debug("circleParticle");
-	//particle->Update();
+	particle->Debug("circleParticle");
+	particle->Update();
 	
 	player->Update();
 
@@ -202,7 +204,7 @@ void GamePlayScene::Draw()
 	//sphere->Draw(camera);
 	//model->Draw(camera);
 	//sprite->Draw(camera);
-	//particle->Draw(camera);
+	particle->Draw();
 
 
 	player->Draw(camera);
