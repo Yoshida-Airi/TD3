@@ -2,7 +2,6 @@
 
 GamePlayScene::~GamePlayScene()
 {
-
 	delete camera;
 	
 }
@@ -12,6 +11,10 @@ void GamePlayScene::Initialize()
 	textureManager_ = TextureManager::GetInstance();
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
+
+	//当たり判定処理の設定
+	colliderManager_ = std::make_unique<CollisionManager>();
+	colliderManager_->Initialize();
 
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
@@ -27,15 +30,10 @@ void GamePlayScene::Initialize()
 	camera->Initialize();
 
 	
-
-
-	triangle.reset(Triangle::Create(uvTexture));
-	triangle2.reset(Triangle::Create(monsterBall));
-	
-	triangle->SetisInvisible(true);
-	triangle2->SetisInvisible(true);
-
+	//triangle.reset(Triangle::Create(uvTexture));
+	//triangle->SetisInvisible(true);
 	//
+
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
@@ -43,36 +41,35 @@ void GamePlayScene::Initialize()
 	//sprite->SetisInvisible(true);
 
 
-	sprite2.reset(Sprite::Create(uvTexture));
-	sprite2->SetSize({ 64.0f, 64.0f });
-	sprite2->SetTextureLeftTop({ 0,0 });
-	//sprite2->SetisInvisible(true);
+	//sprite.reset(Sprite::Create(Doll));
+	//sprite->SetSize({ 64.0f, 64.0f });
+	//sprite->SetTextureLeftTop({ 0,0 });
 
-	sphere.reset(Sphere::Create(monsterBall));
-	sphere->worldTransform_->translation_.y = -1.0f;
-	//sphere->SetisInvisible(true);
+	//sphere.reset(Sphere::Create(monsterBall));
+	//sphere->worldTransform_->translation_.y = -1.0f;
 
-	model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
-	model2.reset(Model::Create("Resources/DefaultAssets/terrain.obj"));
+	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
+	//model->worldTransform_->rotation_.y = 3.14f;
 
-	model->worldTransform_->rotation_.y = 3.14f;
-	model2->worldTransform_->rotation_.y = 3.14f;
+	
 
-	model2->worldTransform_->translation_ =
-	{
-		0.0f,-1.5,0.0f
-	};
+	//particle.reset(ParticleSystem::Create(circle));
+	//particle->emitter_->count = 100;
+	////particle->SetisInvisible(true);
 
-	//model->SetisInvisible(true);
-	//model2->SetisInvisible(true);
+	player = std::make_unique<Player>();
+	player->Initialize();
 
+	playerWeapon_ = std::make_unique<PlayerWeapon>();
+	playerWeapon_->Initialize();
 
-	particle.reset(ParticleSystem::Create(circle));
-	particle->emitter_->count = 100;
-	//particle->SetisInvisible(true);
+	sampleEnemy = std::make_unique<PlayerWeapon>();
+	sampleEnemy->Initialize();
 
-	particle2.reset(ParticleSystem::Create(uvTexture));
-	//particle2->SetisInvisible(true);
+	player->SetWeapon(playerWeapon_.get());
+
+	//colliderManager_->UpdateWorldTransform();
+	
 }
 
 void GamePlayScene::Update()
@@ -128,57 +125,74 @@ void GamePlayScene::Update()
 		sceneManager_->ChangeScene("TITLE");
 	}
 
-	triangle->Update();
-	triangle->worldTransform_->rotation_.y += 0.03f;
 
-	triangle2->Update();
-	triangle2->worldTransform_->scale_.y = 0.5f;
-	triangle2->worldTransform_->rotation_.y += 0.02f;
+	CheckAllCollisions();
 
-	sprite->worldTransform_->translation_ = { 700.0f };
 
-	sprite->Update();
-	sprite2->Update();
+	//triangle->Update();
+	//triangle->worldTransform_->rotation_.y += 0.03f;
 
-	sprite->Debug("Doll");
-	sprite2->Debug("uv");
+	//sprite->worldTransform_->translation_ = { 700.0f };
+	//sprite->Update();
+	//sprite->Debug("Doll");
 
-	sphere->Update();
-	sphere->worldTransform_->rotation_.y += 0.01f;
+	//sphere->Update();
+	//sphere->worldTransform_->rotation_.y += 0.01f;
 
-	model->ModelDebug("plane");
-	model2->ModelDebug("plane2");
-
+	/*model->ModelDebug("plane");
 	model->Update();
-	model2->Update();
-	model->worldTransform_->translation_.x = 3.0f;
+	model->worldTransform_->translation_.x = 3.0f;*/
 
-	particle->Debug("circleParticle");
-	particle2->Debug("uvTextureParticle");
+	//particle->Debug("circleParticle");
+	//particle->Update();
+	
+	player->Update();
 
-	particle->Update();
-	particle2->Update();
+	Vector3 weaponPos = player->GetPosition();
+
+	weaponPos.z = weaponPos.z + 5.0f;
+
+	playerWeapon_->SetPosition(weaponPos);
+
+
+	//sampleEnemy->Update();
+	playerWeapon_->Update();
+	sampleEnemy->Update();
+
 }
 
 void GamePlayScene::Draw()
 {
 
-	triangle->Draw(camera);
-	triangle2->Draw(camera);
-
-	
-
-	sphere->Draw(camera);
-
-
-	model->Draw(camera);
-	model2->Draw(camera);
+	//triangle->Draw(camera);
+	//sphere->Draw(camera);
+	//model->Draw(camera);
+	//sprite->Draw(camera);
+	//particle->Draw(camera);
 
 
-	sprite->Draw(camera);
-	sprite2->Draw(camera);
+	player->Draw(camera);
 
-	particle->Draw(camera);
-	particle2->Draw(camera);
+	if (player->GetIsUnderAttack())
+	{
+		playerWeapon_->Draw(camera);
+	}
 
+	sampleEnemy->Draw(camera);
+
+	//colliderManager_->Draw(camera);
+}
+
+void GamePlayScene::CheckAllCollisions()
+{
+	//コライダーのリストをクリア
+	colliderManager_->ListClear();
+
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	colliderManager_->AddColliders(playerWeapon_.get());
+	colliderManager_->AddColliders(sampleEnemy.get());
+
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
 }

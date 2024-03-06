@@ -13,6 +13,10 @@
 #include"ParticleSystem.h"
 #include"Camera.h"
 
+#include"Player.h"
+#include"playerWeapon.h"
+
+#include"CollisionManager.h"
 
 #include"Input.h"
 
@@ -31,30 +35,23 @@ public:
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
+	//当たり判定処理
+	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
 
 	uint32_t uvTexture;
 	uint32_t monsterBall;
 	uint32_t Doll;
 	uint32_t circle;
 
-	ModelLoader* object;
-	ModelData plane;
-	ModelData cube;
-
 	Camera* camera;
 	
 	Input* input;
 
 	std::unique_ptr<Triangle> triangle = nullptr;
-	std::unique_ptr<Triangle> triangle2 = nullptr;
 	std::unique_ptr<Sprite> sprite = nullptr;
-	std::unique_ptr<Sprite> sprite2 = nullptr;
 	std::unique_ptr<Sphere> sphere = nullptr;
 	std::unique_ptr<Model> model = nullptr;
-	std::unique_ptr<Model> model2 = nullptr;
-
 	std::unique_ptr<ParticleSystem> particle = nullptr;
-	std::unique_ptr<ParticleSystem> particle2 = nullptr;
 
 	uint32_t nowSecond = 0;
 	uint32_t nowWaveSecond = 0;
@@ -63,12 +60,20 @@ private:
 	uint32_t nowWaveFrame = 0;
 	uint32_t bossFrame = 0;
 
+
+	std::unique_ptr<Player> player = nullptr;
+	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
+
+	std::unique_ptr<PlayerWeapon> sampleEnemy = nullptr;
+
 #ifdef _DEBUG
 
 	ImGuiManager* imgui;
 
 #endif // _DEBUG
 
+private:
 
+	void CheckAllCollisions();
 };
 
