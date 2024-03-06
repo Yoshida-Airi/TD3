@@ -41,6 +41,12 @@ struct ParticleForGPU
 	Vector4 color;
 };
 
+struct Time
+{
+	float min;
+	float max;
+};
+
 class ParticleSystem
 {
 public:
@@ -106,6 +112,17 @@ public:
 	/// <param name="isRandomVelocity">ランダムな速度にするか　true : する</param>
 	/// <returns>パーティクル</returns>
 	static ParticleSystem* Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity);
+
+	/// <summary>
+	/// 生存時間の設定
+	/// </summary>
+	/// <param name="timeMin">一番短く消したい時間</param>
+	/// <param name="timeMax">一番長く存在していい時間</param>
+	void SetLifeTime(float timeMin, float timeMax)
+	{
+		lifeTime.min = timeMin;
+		lifeTime.max = timeMax;
+	}
 
 	/// <summary>
 	/// Imgui
@@ -176,8 +193,11 @@ private://プライベート変数
 	bool isRandomPosition_ = false;
 	bool isRandomVelocity_ = false;
 	Vector3 velocity_;
+	Time lifeTime = { 1.0,3.0f };
 
 	const float kDeltaTime = 1.0f / 60.0f;
+
+
 
 private://プライベート関数
 
