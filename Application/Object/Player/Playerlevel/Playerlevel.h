@@ -34,7 +34,7 @@ private:
 	std::unique_ptr<Sprite> sprite1 = nullptr;
 	std::unique_ptr<Sprite> sprite2 = nullptr;
 	std::unique_ptr<Sprite> sprite3 = nullptr;
-	float maxbar = 105.0f;
+	float maxbar = 106.0f;
 	int maxlevel = 17;
 	int maxskilllevel = 3;
 #ifdef _DEBUG
