@@ -93,9 +93,9 @@ void GamePlayScene::Update()
 	
 	player->Update();
 
+	//ここから敵の処理
 	EnemySporn();
 
-	//ここから敵の処理
 	for (Enemy* enemys : enemy_) {
 		enemys->Update();
 	}
@@ -108,9 +108,9 @@ void GamePlayScene::Update()
 		return false;
 	});
 
+	//ここから敵の弾の処理
 	EnemyAttack();
 
-	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Update();
 	}
