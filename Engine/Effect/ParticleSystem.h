@@ -124,6 +124,10 @@ public:
 		lifeTime.max = timeMax;
 	}
 
+	/// <summary>
+	/// ビルボードを使用するかの設定
+	/// </summary>
+	/// <param name="isUseBillboard">true : 使用する</param>
 	void SetUseBillBoard(bool isUseBillboard)
 	{
 		isBillboard_ = isUseBillboard;

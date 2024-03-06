@@ -24,6 +24,8 @@
 #include "EnemyBullet.h"
 #include <random>
 
+#include"HitEffect.h"
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
@@ -56,11 +58,11 @@ private:
 	
 	Input* input;
 
-	std::unique_ptr<Triangle> triangle = nullptr;
+	/*std::unique_ptr<Triangle> triangle = nullptr;
 	std::unique_ptr<Sprite> sprite = nullptr;
 	std::unique_ptr<Sphere> sphere = nullptr;
 	std::unique_ptr<Model> model = nullptr;
-	std::unique_ptr<ParticleSystem> particle = nullptr;
+	std::unique_ptr<ParticleSystem> particle = nullptr;*/
 
 	uint32_t nowSecond = 0;
 	uint32_t nowWaveSecond = 0;
@@ -72,6 +74,7 @@ private:
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
+	std::unique_ptr<HitEffect> hitEffect_ = nullptr;
 
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;

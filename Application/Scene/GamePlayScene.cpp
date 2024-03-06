@@ -42,9 +42,9 @@ void GamePlayScene::Initialize()
 	//triangle->SetisInvisible(true);
 	//
 
-	sprite.reset(Sprite::Create(Doll));
-	sprite->SetSize({ 64.0f, 64.0f });
-	sprite->SetTextureLeftTop({ 0,0 });
+	//sprite.reset(Sprite::Create(Doll));
+	//sprite->SetSize({ 64.0f, 64.0f });
+	//sprite->SetTextureLeftTop({ 0,0 });
 
 	//sprite->SetisInvisible(true);
 
@@ -60,19 +60,22 @@ void GamePlayScene::Initialize()
 	//model->worldTransform_->rotation_.y = 3.14f;
 
 	
-	Vector3 velocity = { 1.0f,1.0f,0.0f };
-	particle.reset(ParticleSystem::Create(circle, camera, velocity, true, false));
-	particle->emitter_->count = 100;
-	particle->emitter_->transform.scale = { 0.5f,0.0f,0.0f };
-	particle->SetLifeTime(1.0f, 3.0f);
-	particle->SetUseBillBoard(true);
-	//particle->SetisInvisible(true);
+	//Vector3 velocity = { 1.0f,1.0f,0.0f };
+	//particle.reset(ParticleSystem::Create(circle, camera, velocity, true, false));
+	//particle->emitter_->count = 100;
+	//particle->emitter_->transform.scale = { 0.5f,0.0f,0.0f };
+	//particle->SetLifeTime(1.0f, 3.0f);
+	//particle->SetUseBillBoard(true);
+	////particle->SetisInvisible(true);
 
 	player = std::make_unique<Player>();
 	player->Initialize();
 
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
+
+	hitEffect_ = std::make_unique<HitEffect>();
+	hitEffect_->Initialize(camera);
 
 	player->SetWeapon(playerWeapon_.get());
 
@@ -83,7 +86,6 @@ void GamePlayScene::Initialize()
 void GamePlayScene::Update()
 {
 	input->TriggerKey(DIK_0);
-
 	if(nowSecond!=120)
 	{
 		nowFrame++;
@@ -152,8 +154,8 @@ void GamePlayScene::Update()
 	model->Update();
 	model->worldTransform_->translation_.x = 3.0f;*/
 
-	particle->Debug("circleParticle");
-	particle->Update();
+	//particle->Debug("circleParticle");
+	//particle->Update();
 	
 	player->Update();
 
@@ -197,6 +199,10 @@ void GamePlayScene::Update()
 		return false;
 	});
 
+	hitEffect_->Update();
+
+	
+
 }
 
 void GamePlayScene::Draw()
@@ -206,8 +212,9 @@ void GamePlayScene::Draw()
 	//sphere->Draw(camera);
 	//model->Draw(camera);
 	//sprite->Draw(camera);
-	particle->Draw();
+	//particle->Draw();
 
+	
 
 	player->Draw(camera);
 
@@ -225,6 +232,9 @@ void GamePlayScene::Draw()
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
 	}
+
+	hitEffect_->Draw();
+
 
 	//colliderManager_->Draw(camera);
 }

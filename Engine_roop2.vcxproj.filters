@@ -126,6 +126,9 @@
     <ClCompile Include="Application\Object\Collider\CollisionManager.cpp">
       <Filter>Application\Object\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Object\Effect\HitEffect.cpp">
+      <Filter>Application\Object\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -251,6 +254,9 @@
     <ClInclude Include="Application\Object\Collider\CollisionManager.h">
       <Filter>Application\Object\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Object\Effect\HitEffect.h">
+      <Filter>Application\Object\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -306,6 +312,9 @@
     </Filter>
     <Filter Include="Application\Object\Collider">
       <UniqueIdentifier>{ed1fb180-d8cb-4589-80a0-98bb9052f55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Object\Effect">
+      <UniqueIdentifier>{ef364f01-aeeb-4c43-ab84-a8de2b13dc85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
