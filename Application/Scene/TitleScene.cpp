@@ -3,7 +3,7 @@
 
 TitleScene::~TitleScene()
 {
-	delete camera;
+	
 	delete efect;
 	delete playerlevel;
 }
