@@ -105,6 +105,7 @@
     <ClCompile Include="Engine\Base\Manager\SrvManager.cpp">
       <Filter>Engine\Base\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Math\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -206,6 +207,7 @@
     <ClInclude Include="Engine\Base\Manager\SrvManager.h">
       <Filter>Engine\Base\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Math\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

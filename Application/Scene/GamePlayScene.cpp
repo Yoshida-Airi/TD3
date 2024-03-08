@@ -26,7 +26,7 @@ void GamePlayScene::Initialize()
 	camera = new Camera;
 	camera->Initialize();
 
-	
+	timer.Initialize();
 
 
 	triangle.reset(Triangle::Create(uvTexture));
@@ -79,42 +79,42 @@ void GamePlayScene::Update()
 {
 	input->TriggerKey(DIK_0);
 
-	if(nowSecond!=120)
+	if(timer.GetNowSecond()!=120)
 	{
-		nowFrame++;
-		nowWaveFrame++;
-		if (nowFrame == 60) 
+		timer.AddNowFrame();
+		timer.AddNowWaveFrame();
+		if (timer.GetNowFrame() == 60)
 		{
-			nowSecond++;
-			nowFrame = 0;
+			timer.AddNowSecond(); 
+			timer.ResetNowFrame();
 		}
-		if (nowWaveFrame == 60) 
+		if (timer.GetNowWaveFrame() == 60)
 		{
-			nowWaveSecond++;
-			nowWaveFrame = 0;
+			timer.AddNowWaveSecond();
+			timer.ResetNowWaveFrame();
 		}
-		if (nowWaveSecond == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
+		if (timer.GetNowWaveSecond() == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
 		{
-			nowWaveSecond = 0;
-			nowWaveFrame = 0;
+			timer.AddNowWaveSecond();
+			timer.ResetNowWaveFrame();
 		}
 	}
-	else if(nowSecond >= 120)
+	else if(timer.GetNowSecond() >= 120)
 	{
-		bossFrame++;
-		if (bossFrame == 60)
+		timer.AddBossFrame();
+		if (timer.GetBossFrame() == 60)
 		{
-			bossSecond++;
-			bossFrame = 0;
+			timer.AddBossSecond();
+			timer.ResetBossFrame();
 		}
 	}
 	ImGui::Begin("Frame&Seconds");
-	ImGui::DragInt("nowFrame", (int*)&nowFrame);
-	ImGui::DragInt("nowWaveFrame", (int*)&nowWaveFrame);
-	ImGui::DragInt("nowSecond", (int*)&nowSecond);
-	ImGui::DragInt("nowWaveSecond", (int*)&nowWaveSecond);
-	ImGui::DragInt("bossFrame", (int*)&bossFrame);
-	ImGui::DragInt("bossSecond", (int*)&bossSecond);
+	ImGui::DragInt("nowFrame", (int*)timer.GetNowFrame());
+	ImGui::DragInt("nowWaveFrame", (int*)timer.GetNowWaveFrame());
+	ImGui::DragInt("nowSecond", (int*)timer.GetNowSecond());
+	ImGui::DragInt("nowWaveSecond", (int*)timer.GetNowWaveSecond());
+	ImGui::DragInt("bossFrame", (int*)timer.GetBossFrame());
+	ImGui::DragInt("bossSecond", (int*)timer.GetBossSecond());
 	ImGui::End();
 
 #ifdef _DEBUG
