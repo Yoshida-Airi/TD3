@@ -21,8 +21,8 @@
 #include"Input.h"
 
 #include "Playerlevel/Playerlevel.h"
-#include "../Enemy.h"
-#include "../EnemyBullet.h"
+#include "Enemy/Enemy.h"
+#include "Enemy/EnemyBullet.h"
 #include <random>
 
 /// <summary>
