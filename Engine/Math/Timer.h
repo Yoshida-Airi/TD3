@@ -1,24 +1,25 @@
 #pragma once
 #include<stdint.h>
+
 class Timer
 {
 private:
-	int nowSecond;
-	int nowWaveSecond;
-	int bossSecond;
-	int nowFrame;
-	int nowWaveFrame;
-	int bossFrame;
+	uint32_t nowSecond;
+	uint32_t nowWaveSecond;
+	uint32_t bossSecond;
+	uint32_t nowFrame;
+	uint32_t nowWaveFrame;
+	uint32_t bossFrame;
 
 public:
 	~Timer();
 	void Initialize();
-	int GetNowSecond() { return nowSecond; }
-	int GetNowWaveSecond() { return nowWaveSecond; }
-	int GetBossSecond() { return bossSecond; }
-	int GetNowFrame() { return nowFrame; }
-	int GetNowWaveFrame() { return nowWaveFrame; }
-	int GetBossFrame() { return bossFrame; }
+	uint32_t GetNowSecond() { return nowSecond; }
+	uint32_t GetNowWaveSecond() { return nowWaveSecond; }
+	uint32_t GetBossSecond() { return bossSecond; }
+	uint32_t GetNowFrame() { return nowFrame; }
+	uint32_t GetNowWaveFrame() { return nowWaveFrame; }
+	uint32_t GetBossFrame() { return bossFrame; }
 	
 	void AddNowSecond() { nowSecond++; }
 	void AddNowWaveSecond() { nowWaveSecond++; }

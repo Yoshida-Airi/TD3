@@ -81,6 +81,10 @@ void GamePlayScene::Update()
 
 	if(timer.GetNowSecond()!=120)
 	{
+		sprite->worldTransform_->translation_ =
+		{
+			sprite->worldTransform_->translation_.x - 20.0f,sprite->worldTransform_->translation_.y,sprite->worldTransform_->translation_.z
+		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
 		if (timer.GetNowFrame() == 60)
@@ -97,6 +101,10 @@ void GamePlayScene::Update()
 		{
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
+			sprite->worldTransform_->translation_ =
+			{
+				1280.0f,300.0f,0.0f
+			};
 		}
 	}
 	else if(timer.GetNowSecond() >= 120)
@@ -108,14 +116,14 @@ void GamePlayScene::Update()
 			timer.ResetBossFrame();
 		}
 	}
-	ImGui::Begin("Frame&Seconds");
-	ImGui::DragInt("nowFrame", (int*)timer.GetNowFrame());
-	ImGui::DragInt("nowWaveFrame", (int*)timer.GetNowWaveFrame());
-	ImGui::DragInt("nowSecond", (int*)timer.GetNowSecond());
-	ImGui::DragInt("nowWaveSecond", (int*)timer.GetNowWaveSecond());
-	ImGui::DragInt("bossFrame", (int*)timer.GetBossFrame());
-	ImGui::DragInt("bossSecond", (int*)timer.GetBossSecond());
-	ImGui::End();
+	//ImGui::Begin("Frame&Seconds");
+	//ImGui::DragInt("nowFrame", (int*)timer.GetNowFrame());
+	//ImGui::DragInt("nowWaveFrame", (int*)timer.GetNowWaveFrame());
+	//ImGui::DragInt("nowSecond", (int*)timer.GetNowSecond());
+	//ImGui::DragInt("nowWaveSecond", (int*)timer.GetNowWaveSecond());
+	//ImGui::DragInt("bossFrame", (int*)timer.GetBossFrame());
+	//ImGui::DragInt("bossSecond", (int*)timer.GetBossSecond());
+	//ImGui::End();
 
 #ifdef _DEBUG
 	
@@ -135,7 +143,7 @@ void GamePlayScene::Update()
 	triangle2->worldTransform_->scale_.y = 0.5f;
 	triangle2->worldTransform_->rotation_.y += 0.02f;
 
-	sprite->worldTransform_->translation_ = { 700.0f };
+	//sprite->worldTransform_->translation_ = { 700.0f };
 
 	sprite->Update();
 	sprite2->Update();
