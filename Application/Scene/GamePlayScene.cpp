@@ -33,6 +33,7 @@ void GamePlayScene::Initialize()
 	monsterBall = textureManager_->LoadTexture("Resources/DefaultAssets/monsterBall.png");
 	Doll = textureManager_->LoadTexture("Resources/DefaultAssets/Doll.png");
 	circle = textureManager_->LoadTexture("Resources/DefaultAssets/circle.png");
+	demo_stage.reset(Model::Create("Resources/DefaultAssets/demo_stage.obj"));
 
 	camera = new Camera;
 	camera->Initialize();
@@ -60,7 +61,6 @@ void GamePlayScene::Initialize()
 	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
 	//model->worldTransform_->rotation_.y = 3.14f;
 
-	
 
 	//particle.reset(ParticleSystem::Create(circle));
 	//particle->emitter_->count = 100;
@@ -113,7 +113,6 @@ void GamePlayScene::Update()
 			bossFrame = 0;
 		}
 	}
-	playerlevel->Update();
 
 	ImGui::Begin("Frame&Seconds");
 	ImGui::DragInt("nowFrame", (int*)&nowFrame);
@@ -155,7 +154,9 @@ void GamePlayScene::Update()
 
 	//particle->Debug("circleParticle");
 	//particle->Update();
-	
+	demo_stage->Update();
+	demo_stage->ModelDebug("demo_stage");
+	playerlevel->Update();
 	player->Update();
 
 	//ここから敵の処理
@@ -211,7 +212,7 @@ void GamePlayScene::Draw()
 	//model->Draw(camera);
 	//sprite->Draw(camera);
 	//particle->Draw(camera);
-
+	demo_stage->Draw(camera);
 	player->Draw(camera);
 
 	if (player->GetIsUnderAttack())

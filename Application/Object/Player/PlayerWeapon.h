@@ -17,6 +17,6 @@ public:
 
 private:
 	std::unique_ptr<Model> model = nullptr;
-	
+
 };
 

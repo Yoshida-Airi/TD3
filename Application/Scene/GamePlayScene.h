@@ -71,6 +71,7 @@ private:
 	uint32_t nowWaveFrame = 0;
 	uint32_t bossFrame = 0;
 
+	std::unique_ptr<Model> demo_stage = nullptr;
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;

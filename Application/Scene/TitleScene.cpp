@@ -5,7 +5,6 @@ TitleScene::~TitleScene()
 {
 	delete camera;
 	delete efect;
-	delete playerlevel;
 }
 
 void TitleScene::Initialize()
