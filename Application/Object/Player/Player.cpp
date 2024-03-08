@@ -35,6 +35,8 @@ void Player::Update()
 	Move();
 
 	Attack();
+
+	Skill();
 }
 
 void Player::Draw(Camera* camera)
@@ -103,5 +105,16 @@ void Player::Attack()
 	else
 	{
 		isUnderAttack = false;
+	}
+}
+
+void Player::Skill()
+{
+	if (input_->PushKey(DIK_LSHIFT)) {
+		isSkill = true;
+	}
+	else
+	{
+		isSkill = false;
 	}
 }

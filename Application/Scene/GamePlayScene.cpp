@@ -83,7 +83,22 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
-
+	if (input->PushKey(DIK_W))
+	{
+		camera->transform.translate.z += 0.03f;
+	}
+	if (input->PushKey(DIK_S))
+	{
+		camera->transform.translate.z -= 0.03f;
+	}
+	if (input->PushKey(DIK_A))
+	{
+		camera->transform.translate.x -= 0.03f;
+	}
+	if (input->PushKey(DIK_D))
+	{
+		camera->transform.translate.x += 0.03f;
+	}
 	input->TriggerKey(DIK_0);
 	if(nowSecond!=120)
 	{
@@ -220,7 +235,11 @@ void GamePlayScene::Draw()
 	{
 		playerWeapon_->Draw(camera);
 	}
-
+	if (player->GetIsSkill())
+	{
+		player->model_->worldTransform_->translation_.z += 0.5f;
+		camera->transform.translate.z += 0.5f;
+	}
 	sampleEnemy->Draw(camera);
 
 	//ここから敵の弾の処理
