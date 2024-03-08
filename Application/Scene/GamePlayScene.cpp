@@ -37,7 +37,8 @@ void GamePlayScene::Initialize()
 	camera = new Camera;
 	camera->Initialize();
 
-	
+	playerlevel = new Playerlevel;
+	playerlevel->Initialize();
 	//triangle.reset(Triangle::Create(uvTexture));
 	//triangle->SetisInvisible(true);
 	//
@@ -83,7 +84,6 @@ void GamePlayScene::Initialize()
 void GamePlayScene::Update()
 {
 	input->TriggerKey(DIK_0);
-
 	if(nowSecond!=120)
 	{
 		nowFrame++;
@@ -113,6 +113,8 @@ void GamePlayScene::Update()
 			bossFrame = 0;
 		}
 	}
+	playerlevel->Update();
+
 	ImGui::Begin("Frame&Seconds");
 	ImGui::DragInt("nowFrame", (int*)&nowFrame);
 	ImGui::DragInt("nowWaveFrame", (int*)&nowWaveFrame);
@@ -177,6 +179,7 @@ void GamePlayScene::Update()
 
 	enemy_.remove_if([](Enemy* enemys) {
 		if (enemys->GetIsDead()) {
+		
 			delete enemys;
 			return true;
 		}
@@ -209,7 +212,6 @@ void GamePlayScene::Draw()
 	//sprite->Draw(camera);
 	//particle->Draw(camera);
 
-
 	player->Draw(camera);
 
 	if (player->GetIsUnderAttack())
@@ -228,6 +230,7 @@ void GamePlayScene::Draw()
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
 	}
+	playerlevel->Draw();
 
 	//colliderManager_->Draw(camera);
 }

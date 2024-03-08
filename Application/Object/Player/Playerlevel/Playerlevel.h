@@ -18,7 +18,7 @@ public:
 	void Draw();
 	void Levelup();
 	void Skillup();
-	float Experiencepoint = 0.0f;
+	float Experiencepoint = 0.0f;//経験値
 	int nowlevel = 1;
 	int nowskilllevel = 0;
 private:
@@ -34,7 +34,7 @@ private:
 	std::unique_ptr<Sprite> sprite1 = nullptr;
 	std::unique_ptr<Sprite> sprite2 = nullptr;
 	std::unique_ptr<Sprite> sprite3 = nullptr;
-	float maxbar = 106.0f;
+	float maxbar = 106.0f;//経験値バーの最大値
 	int maxlevel = 17;
 	int maxskilllevel = 3;
 #ifdef _DEBUG

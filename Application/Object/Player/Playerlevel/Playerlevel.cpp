@@ -19,7 +19,7 @@ void Playerlevel::Initialize() {
 	camera = new Camera;
 	camera->Initialize();
 	sprite0.reset(Sprite::Create(levelbar));
-	sprite0->SetSize({ 1280.0f, 720.0f });
+	sprite0->SetSize({ 1280.0f, 64.0f });
 	sprite0->SetTextureLeftTop({ 0,0 });
 
 	sprite1.reset(Sprite::Create(experiencepointbar));
