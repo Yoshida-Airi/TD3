@@ -7,9 +7,14 @@ void Camera::Initialize()
 
 	transform =
 	{
-		{1.0f,1.0f,1.0f},
+		/*{1.0f,1.0f,1.0f},
 		{1.1f,0.0f,0.0f},
-		{0.2f,13.0f,-6.0f}
+		{0.2f,13.0f,-6.0f}*/
+		
+		//調整中
+		{ 1.0f,1.0f,1.0f },
+		{1.1f,0.0f,0.0f},
+		{0.0f,20.0f,-10.0f}
 	};
 
 	CreateConstBuffer();
@@ -66,13 +71,13 @@ void Camera::CameraDebug()
 	ImGui::DragFloat3("transform", translate, 0.01f);
 	float rotate[3] = { transform.rotate.x,transform.rotate.y,transform.rotate.z };
 	ImGui::DragFloat3("rotate", rotate, 0.01f);
-	//float scale[3] = { transform.scale.x, transform.scale.y, transform.scale.z };
-	//ImGui::DragFloat3("scale", scale, 1);
+	float scale[3] = { transform.scale.x, transform.scale.y, transform.scale.z };
+	ImGui::DragFloat3("scale", scale, 0.01f);
 
 
 	transform.translate = { translate[0],translate[1],translate[2] };
 	transform.rotate = { rotate[0],rotate[1],rotate[2] };
-	//transform.scale = { scale[0],scale[1],scale[2] };
+	transform.scale = { scale[0],scale[1],scale[2] };
 
 	UpdateMatrix();
 

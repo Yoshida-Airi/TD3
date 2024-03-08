@@ -83,6 +83,7 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+
 	input->TriggerKey(DIK_0);
 	if(nowSecond!=120)
 	{
