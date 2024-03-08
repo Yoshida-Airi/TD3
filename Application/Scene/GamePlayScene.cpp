@@ -237,8 +237,10 @@ void GamePlayScene::Draw()
 	}
 	if (player->GetIsSkill())
 	{
-		player->model_->worldTransform_->translation_.z += 0.5f;
-		camera->transform.translate.z += 0.5f;
+		if (playerlevel->nowskilllevel == 1) {
+			player->model_->worldTransform_->translation_.z += 0.5f;
+			camera->transform.translate.z += 0.5f;
+		}
 	}
 	sampleEnemy->Draw(camera);
 
