@@ -12,6 +12,7 @@
 #include"Model.h"
 #include"ParticleSystem.h"
 #include"Camera.h"
+#include"Timer.h"
 
 #include"Player.h"
 #include"playerWeapon.h"
@@ -56,6 +57,8 @@ private:
 
 	Camera* camera;
 	
+	Timer timer;
+
 	Input* input;
 
 	std::unique_ptr<Triangle> triangle = nullptr;
@@ -64,12 +67,6 @@ private:
 	std::unique_ptr<Model> model = nullptr;
 	std::unique_ptr<ParticleSystem> particle = nullptr;
 
-	uint32_t nowSecond = 0;
-	uint32_t nowWaveSecond = 0;
-	uint32_t bossSecond = 0;
-	uint32_t nowFrame = 0;
-	uint32_t nowWaveFrame = 0;
-	uint32_t bossFrame = 0;
 
 	std::unique_ptr<Model> demo_stage = nullptr;
 

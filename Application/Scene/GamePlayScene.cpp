@@ -38,6 +38,15 @@ void GamePlayScene::Initialize()
 	camera = new Camera;
 	camera->Initialize();
 
+	timer.Initialize();
+
+
+	triangle.reset(Triangle::Create(uvTexture));
+	triangle2.reset(Triangle::Create(monsterBall));
+	
+	triangle->SetisInvisible(true);
+	triangle2->SetisInvisible(true);
+
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
 	//triangle.reset(Triangle::Create(uvTexture));
@@ -100,44 +109,52 @@ void GamePlayScene::Update()
 		camera->transform.translate.x += 0.03f;
 	}
 	input->TriggerKey(DIK_0);
-	if(nowSecond!=120)
-	{
-		nowFrame++;
-		nowWaveFrame++;
-		if (nowFrame == 60) 
-		{
-			nowSecond++;
-			nowFrame = 0;
-		}
-		if (nowWaveFrame == 60) 
-		{
-			nowWaveSecond++;
-			nowWaveFrame = 0;
-		}
-		if (nowWaveSecond == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
-		{
-			nowWaveSecond = 0;
-			nowWaveFrame = 0;
-		}
-	}
-	else if(nowSecond >= 120)
-	{
-		bossFrame++;
-		if (bossFrame == 60)
-		{
-			bossSecond++;
-			bossFrame = 0;
-		}
-	}
 
-	ImGui::Begin("Frame&Seconds");
-	ImGui::DragInt("nowFrame", (int*)&nowFrame);
-	ImGui::DragInt("nowWaveFrame", (int*)&nowWaveFrame);
-	ImGui::DragInt("nowSecond", (int*)&nowSecond);
-	ImGui::DragInt("nowWaveSecond", (int*)&nowWaveSecond);
-	ImGui::DragInt("bossFrame", (int*)&bossFrame);
-	ImGui::DragInt("bossSecond", (int*)&bossSecond);
-	ImGui::End();
+	if(timer.GetNowSecond()!=120)
+	{
+		sprite->worldTransform_->translation_ =
+		{
+			sprite->worldTransform_->translation_.x - 20.0f,sprite->worldTransform_->translation_.y,sprite->worldTransform_->translation_.z
+		};
+		timer.AddNowFrame();
+		timer.AddNowWaveFrame();
+		if (timer.GetNowFrame() == 60)
+		{
+			timer.AddNowSecond(); 
+			timer.ResetNowFrame();
+		}
+		if (timer.GetNowWaveFrame() == 60)
+		{
+			timer.AddNowWaveSecond();
+			timer.ResetNowWaveFrame();
+		}
+		if (timer.GetNowWaveSecond() == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
+		{
+			timer.AddNowWaveSecond();
+			timer.ResetNowWaveFrame();
+			sprite->worldTransform_->translation_ =
+			{
+				1280.0f,300.0f,0.0f
+			};
+		}
+	}
+	else if(timer.GetNowSecond() >= 120)
+	{
+		timer.AddBossFrame();
+		if (timer.GetBossFrame() == 60)
+		{
+			timer.AddBossSecond();
+			timer.ResetBossFrame();
+		}
+	}
+	//ImGui::Begin("Frame&Seconds");
+	//ImGui::DragInt("nowFrame", (int*)timer.GetNowFrame());
+	//ImGui::DragInt("nowWaveFrame", (int*)timer.GetNowWaveFrame());
+	//ImGui::DragInt("nowSecond", (int*)timer.GetNowSecond());
+	//ImGui::DragInt("nowWaveSecond", (int*)timer.GetNowWaveSecond());
+	//ImGui::DragInt("bossFrame", (int*)timer.GetBossFrame());
+	//ImGui::DragInt("bossSecond", (int*)timer.GetBossSecond());
+	//ImGui::End();
 
 #ifdef _DEBUG
 
@@ -153,6 +170,7 @@ void GamePlayScene::Update()
 
 	CheckAllCollisions();
 
+	//sprite->worldTransform_->translation_ = { 700.0f };
 
 	//triangle->Update();
 	//triangle->worldTransform_->rotation_.y += 0.03f;
