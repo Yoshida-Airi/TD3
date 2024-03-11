@@ -319,7 +319,7 @@ void GamePlayScene::EnemySpawn() {
 
 	std::mt19937 random(generator());
 
-	newEnemy->SetTranslate(random);
+	newEnemy->SetTranslate(random, player->GetPosition());
 
 	enemy_.push_back(newEnemy);
 

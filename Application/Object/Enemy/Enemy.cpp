@@ -47,11 +47,11 @@ void Enemy::Finalize() {
 	
 }
 
-void Enemy::SetTranslate(std::mt19937& randomEngine) {
+void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
 	std::uniform_real_distribution<float> translateX (-3.0f, 3.0f);
 	std::uniform_real_distribution<float> translateZ (-3.0f, 3.0f);
 
-	model_->worldTransform_->translation_ = { translateX(randomEngine),0.0f,translateZ(randomEngine) };
+	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
 }
 
 Vector3 Enemy::GetWorldPosition()
