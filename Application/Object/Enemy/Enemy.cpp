@@ -6,6 +6,11 @@ Enemy::~Enemy() {
 }
 
 void Enemy::Initialize() {
+	Collider::Initialize();
+
+	//当たり判定用
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemy));
+
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	input_ = Input::GetInstance();
@@ -19,6 +24,8 @@ void Enemy::Update() {
 	input_->Update();
 
 	model_->Update();
+
+	Collider::UpdateWorldTransform();
 
 	model_->worldTransform_->translation_.x += 0.001f;
 

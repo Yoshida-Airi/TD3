@@ -8,7 +8,7 @@ GamePlayScene::~GamePlayScene()
 	for (Enemy* enemys : enemy_) {
 		delete enemys;
 	}
-	
+
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		delete enemyBullets;
 	}
@@ -43,7 +43,7 @@ void GamePlayScene::Initialize()
 
 
 	triangle.reset(Triangle::Create(uvTexture));
-	
+
 	triangle->SetisInvisible(true);
 
 	playerlevel = new Playerlevel;
@@ -80,13 +80,13 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
-	sampleEnemy = std::make_unique<PlayerWeapon>();
-	sampleEnemy->Initialize();
+	//sampleEnemy = std::make_unique<PlayerWeapon>();
+	//sampleEnemy->Initialize();
 
 	player->SetWeapon(playerWeapon_.get());
 
 	//colliderManager_->UpdateWorldTransform();
-	
+
 }
 
 void GamePlayScene::Update()
@@ -109,7 +109,7 @@ void GamePlayScene::Update()
 	}
 	input->TriggerKey(DIK_0);
 
-	if(timer.GetNowSecond()!=120)
+	if (timer.GetNowSecond() != 120)
 	{
 		sprite->worldTransform_->translation_ =
 		{
@@ -119,7 +119,7 @@ void GamePlayScene::Update()
 		timer.AddNowWaveFrame();
 		if (timer.GetNowFrame() == 60)
 		{
-			timer.AddNowSecond(); 
+			timer.AddNowSecond();
 			timer.ResetNowFrame();
 		}
 		if (timer.GetNowWaveFrame() == 60)
@@ -137,7 +137,7 @@ void GamePlayScene::Update()
 			};
 		}
 	}
-	else if(timer.GetNowSecond() >= 120)
+	else if (timer.GetNowSecond() >= 120)
 	{
 		timer.AddBossFrame();
 		if (timer.GetBossFrame() == 60)
@@ -207,18 +207,18 @@ void GamePlayScene::Update()
 
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
-	sampleEnemy->Update();
+	//sampleEnemy->Update();
 
 
 
 	enemy_.remove_if([](Enemy* enemys) {
 		if (enemys->GetIsDead()) {
-		
+
 			delete enemys;
 			return true;
 		}
 		return false;
-	});
+		});
 
 	//ここから敵の弾の処理
 	EnemyAttack();
@@ -233,7 +233,7 @@ void GamePlayScene::Update()
 			return true;
 		}
 		return false;
-	});
+		});
 
 }
 
@@ -259,7 +259,7 @@ void GamePlayScene::Draw()
 			camera->transform.translate.z += 0.5f;
 		}
 	}
-	sampleEnemy->Draw(camera);
+	//sampleEnemy->Draw(camera);
 
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
@@ -277,18 +277,24 @@ void GamePlayScene::Draw()
 
 void GamePlayScene::CheckAllCollisions()
 {
-	//コライダーのリストをクリア
-	colliderManager_->ListClear();
+	for (EnemyBullet* enemyBullets : enemyBullet_) {
+		for (Enemy* enemys : enemy_) {
+			//コライダーのリストをクリア
+			colliderManager_->ListClear();
 
-	//コライダーにオブジェクトを登録
-	colliderManager_->AddColliders(player.get());
-	colliderManager_->AddColliders(playerWeapon_.get());
-	colliderManager_->AddColliders(sampleEnemy.get());
+			//コライダーにオブジェクトを登録
+			colliderManager_->AddColliders(player.get());
+			colliderManager_->AddColliders(playerWeapon_.get());
+			colliderManager_->AddColliders(enemyBullets);
+			colliderManager_->AddColliders(enemys);
+			//colliderManager_->AddColliders(sampleEnemy.get());
 
-	//当たり判定
-	colliderManager_->ChackAllCollisions();
+			//当たり判定
+			colliderManager_->ChackAllCollisions();
+		}
+	}
 }
-	
+
 
 
 
@@ -297,7 +303,7 @@ void GamePlayScene::EnemySpawn() {
 	if (enemyCount <= 2) {
 		Enemy* newEnemy = new Enemy();
 		newEnemy->Initialize();
-		
+
 		std::mt19937 random(generator());
 
 		newEnemy->SetTranslate(random);
@@ -314,7 +320,7 @@ void GamePlayScene::EnemySpawn() {
 	}
 }
 
-void GamePlayScene::EnemyAttack(){
+void GamePlayScene::EnemyAttack() {
 
 	for (Enemy* enemy : enemy_) {
 		if (isEnemyAttack == true) {
@@ -339,7 +345,7 @@ void GamePlayScene::EnemyAttack(){
 			speed.y *= kBulletSpeed;
 			speed.z *= kBulletSpeed;
 
-			speed = TransformNormal(speed,enemy->GetMatWorld());
+			speed = TransformNormal(speed, enemy->GetMatWorld());
 
 			newBullet->SetSpeed(speed);
 
