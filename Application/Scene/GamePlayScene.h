@@ -79,7 +79,10 @@ private:
 	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 0;
-	int enemySpornTimer = 0;
+	const int MaxEnemySpawn = 4;//0から数える
+
+	bool isEnemySpawn = true;
+	bool isEnemyReSpawn = false;
 
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;

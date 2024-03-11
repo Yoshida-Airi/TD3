@@ -117,6 +117,47 @@ void GamePlayScene::Update()
 		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
+
+		//敵の処理
+		EnemyAttack();
+
+		if (isEnemySpawn == true) {
+			if (enemyCount <= MaxEnemySpawn) {
+				EnemySpawn();
+				enemyCount++;
+			}
+			else {
+				isEnemySpawn = false;
+			}
+		}
+
+		for (Enemy* enemys : enemy_) {
+			enemys->Update();
+		}
+
+		enemy_.remove_if([](Enemy* enemys) {
+			if (enemys->GetIsDead()) {
+
+				delete enemys;
+				return true;
+			}
+			return false;
+			});
+
+		//ここから敵の弾の処理
+		for (EnemyBullet* enemyBullets : enemyBullet_) {
+			enemyBullets->Update();
+		}
+
+		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+			if (enemyBullets->GetIsDead()) {
+				delete enemyBullets;
+				return true;
+			}
+			return false;
+			});
+
+
 		if (timer.GetNowFrame() == 60)
 		{
 			timer.AddNowSecond();
@@ -131,6 +172,10 @@ void GamePlayScene::Update()
 		{
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
+
+			isEnemySpawn = true;
+			enemyCount = 0;
+
 			sprite->worldTransform_->translation_ =
 			{
 				1280.0f,300.0f,0.0f
@@ -192,12 +237,6 @@ void GamePlayScene::Update()
 	playerlevel->Update();
 	player->Update();
 
-	//ここから敵の処理
-	EnemySpawn();
-
-	for (Enemy* enemys : enemy_) {
-		enemys->Update();
-	}
 	Vector3 weaponPos = player->GetPosition();
 
 	weaponPos.z = weaponPos.z + 5.0f;
@@ -208,33 +247,6 @@ void GamePlayScene::Update()
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
 	//sampleEnemy->Update();
-
-
-
-	enemy_.remove_if([](Enemy* enemys) {
-		if (enemys->GetIsDead()) {
-
-			delete enemys;
-			return true;
-		}
-		return false;
-		});
-
-	//ここから敵の弾の処理
-	EnemyAttack();
-
-	for (EnemyBullet* enemyBullets : enemyBullet_) {
-		enemyBullets->Update();
-	}
-
-	enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
-		if (enemyBullets->GetIsDead()) {
-			delete enemyBullets;
-			return true;
-		}
-		return false;
-		});
-
 }
 
 void GamePlayScene::Draw()
@@ -300,24 +312,15 @@ void GamePlayScene::CheckAllCollisions()
 
 void GamePlayScene::EnemySpawn() {
 
-	if (enemyCount <= 2) {
-		Enemy* newEnemy = new Enemy();
-		newEnemy->Initialize();
+	Enemy* newEnemy = new Enemy();
+	newEnemy->Initialize();
 
-		std::mt19937 random(generator());
+	std::mt19937 random(generator());
 
-		newEnemy->SetTranslate(random);
+	newEnemy->SetTranslate(random);
 
-		enemy_.push_back(newEnemy);
-		enemyCount++;
-	}
-	else if (enemyCount > 2) {
-		enemySpornTimer++;
-		if (enemySpornTimer >= 180) {
-			enemyCount = 0;
-			enemySpornTimer = 0;
-		}
-	}
+	enemy_.push_back(newEnemy);
+
 }
 
 void GamePlayScene::EnemyAttack() {
