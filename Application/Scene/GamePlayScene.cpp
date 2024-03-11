@@ -42,10 +42,8 @@ void GamePlayScene::Initialize()
 
 
 	triangle.reset(Triangle::Create(uvTexture));
-	triangle2.reset(Triangle::Create(monsterBall));
 	
 	triangle->SetisInvisible(true);
-	triangle2->SetisInvisible(true);
 
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
