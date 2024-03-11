@@ -3,6 +3,7 @@
 GamePlayScene::~GamePlayScene()
 {
 	delete camera;
+	delete playerlevel;
 
 	for (Enemy* enemys : enemy_) {
 		delete enemys;
