@@ -79,7 +79,6 @@ private:
 	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 0;
-	const int MaxEnemySpawn = 4;//0から数える
 
 	bool isEnemySpawn = true;
 	bool isEnemyReSpawn = false;

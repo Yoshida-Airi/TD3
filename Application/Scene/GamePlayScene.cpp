@@ -122,7 +122,7 @@ void GamePlayScene::Update()
 		EnemyAttack();
 
 		if (isEnemySpawn == true) {
-			if (enemyCount <= MaxEnemySpawn) {
+			if (enemyCount <= 4) {
 				EnemySpawn();
 				enemyCount++;
 			}
