@@ -18,6 +18,8 @@ void Enemy::Initialize() {
 
 	model_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
 
+	SetRadius(model_->worldTransform_->scale_.x);
+
 }
 
 void Enemy::Update() {

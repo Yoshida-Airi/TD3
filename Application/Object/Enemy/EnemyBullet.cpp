@@ -14,6 +14,8 @@ void EnemyBullet::Initialize() {
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	model_->worldTransform_->scale_ = { 0.2f,0.2f,0.2f };
+
+	SetRadius(model_->worldTransform_->scale_.x);
 }
 
 void EnemyBullet::Update() {
