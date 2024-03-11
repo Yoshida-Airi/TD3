@@ -31,9 +31,9 @@ void Enemy::Update() {
 
 	model_->worldTransform_->translation_.x += 0.001f;
 
-	if (--deathTimer <= 0) {
+	/*if (--deathTimer <= 0) {
 		isDead_ = true;
-	}
+	}*/
 
 }
 
@@ -74,7 +74,7 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		//isDead_ = true;
+		isDead_ = true;
 	}
 
 	
