@@ -67,7 +67,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 1;
 	}
 
-	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
 		HP -= 1;
 	}

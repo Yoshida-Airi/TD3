@@ -3,8 +3,9 @@
 #include "Camera.h"
 #include "Input.h"
 #include <random>
+#include "Collider.h"
 
-class Enemy{
+class Enemy : public Collider {
 public:
 	~Enemy();
 
@@ -18,13 +19,17 @@ public:
 
 public:
 
-	void SetTranslate(std::mt19937& randomEngine);
+	void SetTranslate(std::mt19937& randomEngine, Vector3 translate);
 
 	Vector3 GetTranslate() { return model_->worldTransform_->translation_; }
 
 	Matrix4x4 GetMatWorld() { return model_->worldTransform_->matWorld_; }
 
 	bool GetIsDead() { return isDead_; }
+
+	Vector3 GetWorldPosition()override;
+
+	void OnCollision([[maybe_unused]] Collider* other)override;
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;

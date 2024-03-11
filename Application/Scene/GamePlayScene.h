@@ -79,7 +79,9 @@ private:
 	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 0;
-	int enemySpornTimer = 0;
+
+	bool isEnemySpawn = true;
+	bool isEnemyReSpawn = false;
 
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
