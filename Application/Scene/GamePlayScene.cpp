@@ -296,7 +296,9 @@ void GamePlayScene::CheckAllCollisions()
 
 			//コライダーにオブジェクトを登録
 			colliderManager_->AddColliders(player.get());
-			colliderManager_->AddColliders(playerWeapon_.get());
+			if (player->GetIsUnderAttack() == true) {
+				colliderManager_->AddColliders(playerWeapon_.get());
+			}
 			colliderManager_->AddColliders(enemyBullets);
 			colliderManager_->AddColliders(enemys);
 			//colliderManager_->AddColliders(sampleEnemy.get());
