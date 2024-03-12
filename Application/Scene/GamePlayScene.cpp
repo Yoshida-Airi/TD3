@@ -80,6 +80,9 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
+	sword = std::make_unique<Sword>();
+	sword->Initialize();
+
 	//sampleEnemy = std::make_unique<PlayerWeapon>();
 	//sampleEnemy->Initialize();
 
@@ -91,6 +94,12 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+#ifdef _DEBUG
+	ImGui::Begin("rotation");
+	ImGui::DragFloat("rotation", &sword->rotation, 0.01f);
+	ImGui::End();
+
+#endif // _DEBUG
 	if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
@@ -236,6 +245,7 @@ void GamePlayScene::Update()
 	demo_stage->ModelDebug("demo_stage");
 	playerlevel->Update();
 	player->Update();
+	sword->Update();
 
 	Vector3 weaponPos = player->GetPosition();
 
@@ -259,6 +269,7 @@ void GamePlayScene::Draw()
 	//particle->Draw(camera);
 	demo_stage->Draw(camera);
 	player->Draw(camera);
+	sword->Draw(camera);
 
 	if (player->GetIsUnderAttack())
 	{
