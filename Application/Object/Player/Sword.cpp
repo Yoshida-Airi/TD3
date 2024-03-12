@@ -75,10 +75,30 @@ void Sword::Attack()
 {
 	if (input_->IsLeftMouseClicked())
 	{
-		model_->worldTransform_->rotation_.y = rotation;
+		if (model_->worldTransform_->rotation_.y <= rotationmax) {
+			model_->worldTransform_->rotation_.y += rotationspeed;
+		}
+		if (model_->worldTransform_->rotation_.y >= rotationmax) {
+			model_->worldTransform_->rotation_.y = rotationmax;
+		}
 	}
 	else
 	{
-		model_->worldTransform_->rotation_.y = 0;
+		if (model_->worldTransform_->rotation_.y >= rotationmin) {
+			model_->worldTransform_->rotation_.y -= rotationspeed;
+		}
+		if (model_->worldTransform_->rotation_.y <= rotationmin) {
+			model_->worldTransform_->rotation_.y = rotationmin;
+		}
+	}
+}
+void Sword::Skill()
+{
+	if (input_->PushKey(DIK_LSHIFT)) {
+		isSkill = true;
+	}
+	else
+	{
+		isSkill = false;
 	}
 }

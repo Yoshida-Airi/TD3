@@ -94,12 +94,6 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
-#ifdef _DEBUG
-	ImGui::Begin("rotation");
-	ImGui::DragFloat("rotation", &sword->rotation, 0.01f);
-	ImGui::End();
-
-#endif // _DEBUG
 	if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
@@ -142,17 +136,18 @@ void GamePlayScene::Update()
 
 		for (Enemy* enemys : enemy_) {
 			enemys->Update();
+			if (enemys->GetIsDead()) {
+				playerlevel->Experiencepoint += 50.0f;
+			}
 		}
-
+		
 		enemy_.remove_if([](Enemy* enemys) {
 			if (enemys->GetIsDead()) {
-
 				delete enemys;
 				return true;
 			}
 			return false;
 			});
-
 		//ここから敵の弾の処理
 		for (EnemyBullet* enemyBullets : enemyBullet_) {
 			enemyBullets->Update();
@@ -278,7 +273,9 @@ void GamePlayScene::Draw()
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
+			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
 			player->model_->worldTransform_->translation_.z += 0.5f;
+			sword->model_->worldTransform_->translation_.z += 0.5f;
 			camera->transform.translate.z += 0.5f;
 		}
 	}

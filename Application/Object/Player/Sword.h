@@ -25,7 +25,10 @@ public:
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
 	
-	float rotation = 1.57f;
+	float rotationmax = 1.57f;
+	float rotationmin = 0.0f;
+	float rotationspeed = 0.2f;
+	bool isSkill = false; //skill中がどうか　true : skill発動中
 
 private:
 	Input* input_ = nullptr;
@@ -38,5 +41,7 @@ private:
 	void Move();
 	//攻撃
 	void Attack();
+	void Skill();
+
 };
 
