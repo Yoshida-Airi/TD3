@@ -137,7 +137,8 @@ void GamePlayScene::Update()
 		for (Enemy* enemys : enemy_) {
 			enemys->Update();
 			if (enemys->GetIsDead()) {
-				playerlevel->Experiencepoint += 50.0f;
+				//貰える経験値
+				playerlevel->Experiencepoint += 55.0f;
 			}
 		}
 		
