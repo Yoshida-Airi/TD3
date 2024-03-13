@@ -178,7 +178,7 @@ void GamePlayScene::Update()
 		}
 		if (timer.GetNowWaveSecond() == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
 		{
-			timer.AddNowWaveSecond();
+			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
 
 			isEnemySpawn = true;
@@ -199,14 +199,14 @@ void GamePlayScene::Update()
 			timer.ResetBossFrame();
 		}
 	}
-	//ImGui::Begin("Frame&Seconds");
-	//ImGui::DragInt("nowFrame", (int*)timer.GetNowFrame());
-	//ImGui::DragInt("nowWaveFrame", (int*)timer.GetNowWaveFrame());
-	//ImGui::DragInt("nowSecond", (int*)timer.GetNowSecond());
-	//ImGui::DragInt("nowWaveSecond", (int*)timer.GetNowWaveSecond());
-	//ImGui::DragInt("bossFrame", (int*)timer.GetBossFrame());
-	//ImGui::DragInt("bossSecond", (int*)timer.GetBossSecond());
-	//ImGui::End();
+	ImGui::Begin("Frame&Seconds");
+	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
+	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
+	ImGui::Text("nowSecond : %u", timer.GetNowSecond());
+	ImGui::Text("nowWaveSecond : %u", timer.GetNowWaveSecond());
+	ImGui::Text("bossFrame : %u", timer.GetBossFrame());
+	ImGui::Text("bossSecond : %u", timer.GetBossSecond());
+	ImGui::End();
 
 #ifdef _DEBUG
 
