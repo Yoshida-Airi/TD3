@@ -127,6 +127,7 @@
       <Filter>Application\Object\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Math\Timer.cpp" />
+    <ClCompile Include="Application\Object\Player\Sword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -253,6 +254,7 @@
       <Filter>Application\Object\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Timer.h" />
+    <ClInclude Include="Application\Object\Player\Sword.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

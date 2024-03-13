@@ -80,6 +80,9 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
+	sword = std::make_unique<Sword>();
+	sword->Initialize();
+
 	//sampleEnemy = std::make_unique<PlayerWeapon>();
 	//sampleEnemy->Initialize();
 
@@ -136,17 +139,19 @@ void GamePlayScene::Update()
 
 		for (Enemy* enemys : enemy_) {
 			enemys->Update();
+			if (enemys->GetIsDead()) {
+				//貰える経験値
+				playerlevel->Experiencepoint += 55.0f;
+			}
 		}
-
+		
 		enemy_.remove_if([](Enemy* enemys) {
 			if (enemys->GetIsDead()) {
-
 				delete enemys;
 				return true;
 			}
 			return false;
 			});
-
 		//ここから敵の弾の処理
 		for (EnemyBullet* enemyBullets : enemyBullet_) {
 			enemyBullets->Update();
@@ -239,6 +244,7 @@ void GamePlayScene::Update()
 	demo_stage->ModelDebug("demo_stage");
 	playerlevel->Update();
 	player->Update();
+	sword->Update();
 
 	Vector3 weaponPos = player->GetPosition();
 
@@ -262,6 +268,7 @@ void GamePlayScene::Draw()
 	//particle->Draw(camera);
 	demo_stage->Draw(camera);
 	player->Draw(camera);
+	sword->Draw(camera);
 
 	if (player->GetIsUnderAttack())
 	{
@@ -270,7 +277,9 @@ void GamePlayScene::Draw()
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
+			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
 			player->model_->worldTransform_->translation_.z += 0.5f;
+			sword->model_->worldTransform_->translation_.z += 0.5f;
 			camera->transform.translate.z += 0.5f;
 		}
 	}

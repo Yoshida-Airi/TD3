@@ -146,6 +146,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Timer.cpp" />
     <ClCompile Include="Application\Object\Player\Player.cpp" />
     <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp" />
+    <ClCompile Include="Application\Object\Player\Sword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Object\Collider\Collider.h" />
@@ -190,6 +191,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Timer.h" />
     <ClInclude Include="Application\Object\Player\Player.h" />
     <ClInclude Include="Application\Object\Player\PlayerWeapon.h" />
+    <ClInclude Include="Application\Object\Player\Sword.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">

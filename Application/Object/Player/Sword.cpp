@@ -1,9 +1,9 @@
-#include "Player.h"
+#include "Sword.h"
 #include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 
 
-void Player::Initialize()
+void Sword::Initialize()
 {
 	input_ = Input::GetInstance();
 
@@ -11,40 +11,29 @@ void Player::Initialize()
 
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
 	SetRadius(model_->worldTransform_->scale_.x);
 
 }
 
-void Player::Update()
+void Sword::Update()
 {
 	Collider::UpdateWorldTransform();
 	model_->Update();
-	model_->ModelDebug("player");
-
-#ifdef _DEBUG
-
-	ImGui::Begin("HitCheack");
-	ImGui::Text("HP : %d", HP);
-	ImGui::End();
-
-#endif // _DEBUG
-
+	model_->ModelDebug("Sword");
 
 	Move();
 
 	Attack();
-
-	Skill();
 }
 
-void Player::Draw(Camera* camera)
+void Sword::Draw(Camera* camera)
 {
 	model_->Draw(camera);
 }
 
-Vector3 Player::GetWorldPosition()
+Vector3 Sword::GetWorldPosition()
 {
 	// ワールド座標を入れる変数
 	Vector3 worldpos;
@@ -58,22 +47,11 @@ Vector3 Player::GetWorldPosition()
 }
 
 
-void Player::OnCollision([[maybe_unused]] Collider* other)
+void Sword::OnCollision([[maybe_unused]] Collider* other)
 {
-
-	uint32_t typeID = other->GetTypeID();
-	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
-	{
-		HP -= 1;
-	}
-
-	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
-	{
-		HP -= 1;
-	}
 }
 
-void Player::Move()
+void Sword::Move()
 {
 	if (input_->PushKey(DIK_W))
 	{
@@ -91,24 +69,30 @@ void Player::Move()
 	{
 		model_->worldTransform_->translation_.x += Speed;
 	}
-
-
-
 }
 
-void Player::Attack()
+void Sword::Attack()
 {
 	if (input_->IsLeftMouseClicked())
 	{
-		isUnderAttack = true;
+		if (model_->worldTransform_->rotation_.y <= rotationmax) {
+			model_->worldTransform_->rotation_.y += rotationspeed;
+		}
+		if (model_->worldTransform_->rotation_.y >= rotationmax) {
+			model_->worldTransform_->rotation_.y = rotationmax;
+		}
 	}
 	else
 	{
-		isUnderAttack = false;
+		if (model_->worldTransform_->rotation_.y >= rotationmin) {
+			model_->worldTransform_->rotation_.y -= rotationspeed;
+		}
+		if (model_->worldTransform_->rotation_.y <= rotationmin) {
+			model_->worldTransform_->rotation_.y = rotationmin;
+		}
 	}
 }
-
-void Player::Skill()
+void Sword::Skill()
 {
 	if (input_->PushKey(DIK_LSHIFT)) {
 		isSkill = true;
