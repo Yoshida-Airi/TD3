@@ -83,6 +83,9 @@ void GamePlayScene::Initialize()
 	sword = std::make_unique<Sword>();
 	sword->Initialize();
 
+	boss_ = std::make_unique<Boss>();
+	boss_->Initialize();
+
 	//sampleEnemy = std::make_unique<PlayerWeapon>();
 	//sampleEnemy->Initialize();
 
@@ -115,7 +118,7 @@ void GamePlayScene::Update()
 
 	input->TriggerKey(DIK_0);
 
-	if (timer.GetNowSecond() != 120)
+	if (timer.GetNowSecond() != 10)
 	{
 		sprite->worldTransform_->translation_ =
 		{
@@ -190,9 +193,20 @@ void GamePlayScene::Update()
 			};
 		}
 	}
-	else if (timer.GetNowSecond() >= 120)
+	else if (timer.GetNowSecond() >= 10)
 	{
 		timer.AddBossFrame();
+
+		enemy_.remove_if([](Enemy* enemys) {
+			return true;
+			});
+
+		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+			return true;
+			});
+
+		boss_->Update();
+
 		if (timer.GetBossFrame() == 60)
 		{
 			timer.AddBossSecond();
@@ -274,6 +288,7 @@ void GamePlayScene::Draw()
 	{
 		playerWeapon_->Draw(camera);
 	}
+
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
@@ -283,6 +298,7 @@ void GamePlayScene::Draw()
 			camera->transform.translate.z += 0.5f;
 		}
 	}
+
 	//sampleEnemy->Draw(camera);
 
 	//ここから敵の弾の処理
@@ -294,7 +310,14 @@ void GamePlayScene::Draw()
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
 	}
+
+	if (timer.GetNowSecond() >= 10) {
+		boss_->Draw(camera);
+	}
+
 	playerlevel->Draw();
+
+
 
 	//colliderManager_->Draw(camera);
 }
@@ -313,6 +336,7 @@ void GamePlayScene::CheckAllCollisions()
 			}
 			colliderManager_->AddColliders(enemyBullets);
 			colliderManager_->AddColliders(enemys);
+			colliderManager_->AddColliders(boss_.get());
 			//colliderManager_->AddColliders(sampleEnemy.get());
 
 			//当たり判定

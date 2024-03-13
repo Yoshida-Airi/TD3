@@ -25,6 +25,7 @@
 #include "Enemy/Enemy.h"
 #include "Enemy/EnemyBullet.h"
 #include <random>
+#include "../Boss.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -66,7 +67,7 @@ private:
 	std::unique_ptr<Sphere> sphere = nullptr;
 	std::unique_ptr<Model> model = nullptr;
 	std::unique_ptr<ParticleSystem> particle = nullptr;
-
+	std::unique_ptr<Boss> boss_ = nullptr;
 
 	std::unique_ptr<Model> demo_stage = nullptr;
 

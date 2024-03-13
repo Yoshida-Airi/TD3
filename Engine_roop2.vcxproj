@@ -115,6 +115,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Application\Object\Collider\Collider.cpp" />
     <ClCompile Include="Application\Object\Collider\CollisionManager.cpp" />
     <ClCompile Include="Application\Object\Player\Playerlevel\Playerlevel.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Engine\Base\Audio.cpp" />
     <ClCompile Include="Engine\Effect\EfectManager.cpp" />
     <ClCompile Include="Engine\Base\Scene\AbstractSceneFactory.cpp" />
@@ -155,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Application\Object\Player\Playerlevel\Playerlevel.h" />
     <ClInclude Include="Application\Object\Enemy\Enemy.h" />
     <ClInclude Include="Application\Object\Enemy\EnemyBullet.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Engine\Base\Audio.h" />
     <ClInclude Include="Engine\Effect\EfectManager.h" />
     <ClInclude Include="Engine\3D\Camera.h" />

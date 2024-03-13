@@ -55,4 +55,11 @@ void PlayerWeapon::OnCollision([[maybe_unused]] Collider* other)
 	{
 
 	}
+
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
+	{
+
+	}
+
+
 }
