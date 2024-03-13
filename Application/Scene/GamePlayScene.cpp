@@ -107,6 +107,9 @@ void GamePlayScene::Update()
 	{
 		camera->transform.translate.x += 0.03f;
 	}
+
+	camera->UpdateMatrix();
+
 	input->TriggerKey(DIK_0);
 
 	if (timer.GetNowSecond() != 120)
