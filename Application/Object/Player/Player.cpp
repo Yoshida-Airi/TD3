@@ -54,8 +54,6 @@ void Player::Update()
 
 	Direction();
 
-	Set3DReticleMousePosition(camera_);
-
 }
 
 void Player::Draw()
@@ -98,24 +96,53 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 
 void Player::Move()
 {
+	const float threshold = 0.7f;
+	Vector3 move = { 0.0f,0.0f,0.0f };
+	bool isMoveing = false;
+	
+
 	if (input_->PushKey(DIK_W))
 	{
-		model_->worldTransform_->translation_.z += Speed;
+		move.z = 1.0f;
 	}
 	if (input_->PushKey(DIK_S))
 	{
-		model_->worldTransform_->translation_.z -= Speed;
+		move.z = -1.0f;
 	}
 	if (input_->PushKey(DIK_A))
 	{
-		model_->worldTransform_->translation_.x -= Speed;
+		move.x = -1.0f;
 	}
 	if (input_->PushKey(DIK_D))
 	{
-		model_->worldTransform_->translation_.x += Speed;
+		move.x = 1.0f;
+	}
+
+	if (Length(move) > threshold)
+	{
+		isMoveing = true;
+		
+	}
+	if (isMoveing == true)
+	{
+		move.x *= Speed;
+		move.y = 0.0f;
+		move.z *= Speed;
+
+
+		//目標角度の算出
+		angle_ = std::atan2(move.x, move.z);
+
 	}
 
 
+	// Y軸周り角度(θy)	歩いている方向に顔を向ける
+	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
+
+	model_->worldTransform_->translation_.x += move.x;
+	model_->worldTransform_->translation_.z += move.z;
+
+	ImGui::Text("angle : %f", angle_);
 
 }
 
@@ -148,81 +175,42 @@ void Player::Direction()
 
 }
 
-void Player::Set3DReticleMousePosition(const Camera* camera)
+
+
+
+float Player::Lerp(const float& a, const float& b, float t) {
+	float result{};
+
+	result = a + b * t;
+
+	return result;
+}
+
+// 最短角度補間
+float Player::LerpShortAngle(float a, float b, float t)
 {
-	XINPUT_STATE joyState;
+	// 角度差分を求める
+	float diff = b - a;
 
-	// ビューポート行列
-	Matrix4x4 matViewport =
-		MakeViewportMatrix(0, 0, WinApp::kCilentWidth, WinApp::kCilentHeight, 0, 1);
-
-	if (!Input::GetInstance()->GetJoystickState(0, joyState))
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < 2 * (float)-std::numbers::pi)
 	{
-		POINT mousePosition;
-		//マウス座標(スクリーン座標)を取得する
-		GetCursorPos(&mousePosition);
-
-		//クライアントエリア座標に変換する
-		HWND hwnd = WinApp::GetInstance()->GetHwnd();
-		ScreenToClient(hwnd, &mousePosition);
-
-
-		//マウス座標を2Dレティクルのスプライトに代入する
-		sprite2DReticle_->SetPosition(Vector2(float(mousePosition.x), float(mousePosition.y)));
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= 2 * std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
 	}
 
-	// ビュー行列とプロジェクション行列、ビューポート行列を合成する
-	Matrix4x4 matVPV =
-		Multiply(camera->matView, Multiply(camera->matProjection, matViewport));
-
-	//合成行列の逆行列を計算する
-	Matrix4x4 matInverseVPV = Inverse(matVPV);
-
-	//スクリーン座標
-	Vector3 posNear =
-		Vector3(sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y, 0);
-	Vector3 posFar =
-		Vector3(sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y, 1);
-
-	Vector2 spritePosirion = sprite2DReticle_->GetPosition();
-
-
-	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < (float)-std::numbers::pi)
 	{
-		spritePosirion.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 10.0f;
-		spritePosirion.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 10.0f;
-
-		sprite2DReticle_->SetPosition(spritePosirion);
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= (float)std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
 	}
 
-	//スクリーン座標系からワールド座標系へ
-	posNear = CoorTransform(posNear, matInverseVPV);
-	posFar = CoorTransform(posFar, matInverseVPV);
-
-	//マウスレイの方向
-	Vector3 mouseDirection = Subtract(posFar, posNear);
-	mouseDirection = Normalize(mouseDirection);
-
-	//カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 100.0f;
-	directionModel_->worldTransform_->translation_ =
-		Add(posNear, Multiply(kDistanceTestObject, mouseDirection));
-
-	directionModel_->worldTransform_->UpdateWorldMatrix();
-
-
-#ifdef _DEBUG
-	ImGui::Begin("reticle");
-	ImGui::Text(
-		"2DReticle:(%f,%f)", sprite2DReticle_->worldTransform_->translation_.x, sprite2DReticle_->worldTransform_->translation_.y);
-	ImGui::Text("Near:(%+2f,%+2f,%+2f)", posNear.x, posNear.y, posNear.z);
-	ImGui::Text("Far:(%+2f,%+2f,%+2f)", posFar.x, posFar.y, posFar.z);
-	ImGui::Text(
-		"3DReticle:(%+2f,%+2f,%+2f)", directionModel_->worldTransform_->translation_.x,
-		directionModel_->worldTransform_->translation_.y, directionModel_->worldTransform_->translation_.z);
-	ImGui::End();
-#endif // _DEBUG
-
-
-
+	return Lerp(a, diff, t);
 }

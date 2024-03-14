@@ -44,6 +44,7 @@ private:
 	bool isSkill = false; //skill中がどうか　true : skill発動中
 
 	int HP = 50;
+	float angle_ = 0.0f;
 
 private:
 
@@ -55,6 +56,12 @@ private:
 	void Skill();
 
 	void Direction();
-	void Set3DReticleMousePosition(const Camera* camera);
+
+	float Lerp(const float& a, const float& b, float t);
+
+	float LerpShortAngle(float a, float b, float t);
+	
+	void Rotate();
+
 };
 
