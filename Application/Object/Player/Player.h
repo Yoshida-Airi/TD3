@@ -3,6 +3,7 @@
 #include"MathUtilty.h"
 
 #include"Model.h"
+#include"Sprite.h"
 #include"Collider.h"
 
 class PlayerWeapon;
@@ -10,14 +11,16 @@ class PlayerWeapon;
 class Player :public Collider
 {
 public:
-	void Initialize();
+	void Initialize(Camera* camera);
 	void Update();
-	void Draw(Camera* camera);
+	void Draw();
 
 	void SetWeapon(PlayerWeapon* playerWeapon)
 	{
 		Weapon_ = playerWeapon;
 	}
+
+	uint32_t direction = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/reticle.png");
 
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
@@ -26,9 +29,14 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Model> directionModel_ = nullptr;
+
+	std::unique_ptr<Sprite> sprite2DReticle_ = nullptr;
 
 private:
 	Input* input_ = nullptr;
+	Camera* camera_ = nullptr;
+
 	PlayerWeapon* Weapon_ = nullptr;
 
 	float Speed = 0.03f;	//速度
@@ -45,5 +53,8 @@ private:
 	void Attack();
 	//SKILL
 	void Skill();
+
+	void Direction();
+	void Set3DReticleMousePosition(const Camera* camera);
 };
 

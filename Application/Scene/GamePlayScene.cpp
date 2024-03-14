@@ -48,34 +48,16 @@ void GamePlayScene::Initialize()
 
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
-	//triangle.reset(Triangle::Create(uvTexture));
-	//triangle->SetisInvisible(true);
-	//
+
 
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
 
-	//sprite->SetisInvisible(true);
-
-
-	//sprite.reset(Sprite::Create(Doll));
-	//sprite->SetSize({ 64.0f, 64.0f });
-	//sprite->SetTextureLeftTop({ 0,0 });
-
-	//sphere.reset(Sphere::Create(monsterBall));
-	//sphere->worldTransform_->translation_.y = -1.0f;
-
-	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
-	//model->worldTransform_->rotation_.y = 3.14f;
-
-
-	//particle.reset(ParticleSystem::Create(circle));
-	//particle->emitter_->count = 100;
-	////particle->SetisInvisible(true);
+	
 
 	player = std::make_unique<Player>();
-	player->Initialize();
+	player->Initialize(camera);
 
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
@@ -83,8 +65,6 @@ void GamePlayScene::Initialize()
 	sword = std::make_unique<Sword>();
 	sword->Initialize();
 
-	//sampleEnemy = std::make_unique<PlayerWeapon>();
-	//sampleEnemy->Initialize();
 
 	player->SetWeapon(playerWeapon_.get());
 
@@ -222,24 +202,7 @@ void GamePlayScene::Update()
 
 	CheckAllCollisions();
 
-	//sprite->worldTransform_->translation_ = { 700.0f };
 
-	//triangle->Update();
-	//triangle->worldTransform_->rotation_.y += 0.03f;
-
-	//sprite->worldTransform_->translation_ = { 700.0f };
-	//sprite->Update();
-	//sprite->Debug("Doll");
-
-	//sphere->Update();
-	//sphere->worldTransform_->rotation_.y += 0.01f;
-
-	/*model->ModelDebug("plane");
-	model->Update();
-	model->worldTransform_->translation_.x = 3.0f;*/
-
-	//particle->Debug("circleParticle");
-	//particle->Update();
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
 	playerlevel->Update();
@@ -252,22 +215,14 @@ void GamePlayScene::Update()
 
 	playerWeapon_->SetPosition(weaponPos);
 
-
-	//sampleEnemy->Update();
 	playerWeapon_->Update();
-	//sampleEnemy->Update();
+	
 }
 
 void GamePlayScene::Draw()
 {
-
-	//triangle->Draw(camera);
-	//sphere->Draw(camera);
-	//model->Draw(camera);
-	//sprite->Draw(camera);
-	//particle->Draw(camera);
 	demo_stage->Draw(camera);
-	player->Draw(camera);
+	player->Draw();
 	sword->Draw(camera);
 
 	if (player->GetIsUnderAttack())
@@ -283,8 +238,7 @@ void GamePlayScene::Draw()
 			camera->transform.translate.z += 0.5f;
 		}
 	}
-	//sampleEnemy->Draw(camera);
-
+	
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Draw(camera);
