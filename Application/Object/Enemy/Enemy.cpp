@@ -11,7 +11,7 @@ void Enemy::Initialize() {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemy));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/bunny.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
