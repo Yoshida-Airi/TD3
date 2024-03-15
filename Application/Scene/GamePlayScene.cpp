@@ -261,6 +261,8 @@ void GamePlayScene::Update()
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
 	//sampleEnemy->Update();
+
+	
 }
 
 void GamePlayScene::Draw()

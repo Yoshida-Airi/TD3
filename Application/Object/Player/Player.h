@@ -26,7 +26,7 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
-	
+	int AttackPower = 5;
 
 private:
 	Input* input_ = nullptr;
@@ -42,7 +42,6 @@ private:
 	const int AttackPowerIncreasePerLevel = 5;
 
 	int HP = 5000;
-	int AttackPower = 5;
 
 private:
 
