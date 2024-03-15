@@ -677,3 +677,53 @@ Vector3 CoorTransform(const Vector3& vector, const Matrix4x4& matrix) {
 
 	return result;
 }
+
+
+// ベクトルを指定された角度で回転させる関数
+Vector3 RotateVector(const Vector3& vector, const Vector3& angles) {
+	float cosX = std::cos(angles.x);
+	float sinX = std::sin(angles.x);
+	float cosY = std::cos(angles.y);
+	float sinY = std::sin(angles.y);
+	float cosZ = std::cos(angles.z);
+	float sinZ = std::sin(angles.z);
+
+	// X軸周りの回転行列
+	float rotXMatrix[3][3] = {
+		{1, 0, 0},
+		{0, cosX, -sinX},
+		{0, sinX, cosX}
+	};
+
+	// Y軸周りの回転行列
+	float rotYMatrix[3][3] = {
+		{cosY, 0, sinY},
+		{0, 1, 0},
+		{-sinY, 0, cosY}
+	};
+
+	// Z軸周りの回転行列
+	float rotZMatrix[3][3] = {
+		{cosZ, -sinZ, 0},
+		{sinZ, cosZ, 0},
+		{0, 0, 1}
+	};
+
+	// 3x3の回転行列を計算
+	float rotationMatrix[3][3] = { 0 };
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			for (int k = 0; k < 3; ++k) {
+				rotationMatrix[i][j] += rotXMatrix[i][k] * rotYMatrix[k][j];
+			}
+		}
+	}
+
+	// ベクトルを回転行列で変換
+	Vector3 rotatedVector;
+	rotatedVector.x = rotationMatrix[0][0] * vector.x + rotationMatrix[0][1] * vector.y + rotationMatrix[0][2] * vector.z;
+	rotatedVector.y = rotationMatrix[1][0] * vector.x + rotationMatrix[1][1] * vector.y + rotationMatrix[1][2] * vector.z;
+	rotatedVector.z = rotationMatrix[2][0] * vector.x + rotationMatrix[2][1] * vector.y + rotationMatrix[2][2] * vector.z;
+
+	return rotatedVector;
+}

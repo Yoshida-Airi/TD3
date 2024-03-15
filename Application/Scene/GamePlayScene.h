@@ -90,6 +90,9 @@ private:
 
 	std::random_device generator;
 
+	Vector3 offset;
+	Vector3 targetPosition;
+
 #ifdef _DEBUG
 
 	ImGuiManager* imgui;
@@ -100,4 +103,3 @@ private:
 
 	void CheckAllCollisions();
 };
-

@@ -9,18 +9,10 @@ void Player::Initialize(Camera* camera)
 	input_ = Input::GetInstance();
 	camera_ = camera;
 
-
 	Collider::Initialize();
-
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
-	directionModel_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
-
-	sprite2DReticle_.reset(Sprite::Create(direction));
-	sprite2DReticle_->SetAnchorPoint({ 0.5f,0.5f });
-	sprite2DReticle_->worldTransform_->translation_ = { 640.0f,360.0f };
-	//sprite2DReticle_->SetPosition({ 640.0f,360.0f });
 
 	SetRadius(model_->worldTransform_->scale_.x);
 
@@ -30,11 +22,8 @@ void Player::Update()
 {
 	Collider::UpdateWorldTransform();
 	model_->Update();
-	directionModel_->Update();
-	sprite2DReticle_->Update();
-
+	
 	model_->ModelDebug("player");
-	directionModel_->ModelDebug("playerDirection");
 
 #ifdef _DEBUG
 
@@ -59,9 +48,6 @@ void Player::Update()
 void Player::Draw()
 {
 	model_->Draw(camera_);
-	directionModel_->Draw(camera_);
-
-	sprite2DReticle_->Draw(camera_);
 
 }
 

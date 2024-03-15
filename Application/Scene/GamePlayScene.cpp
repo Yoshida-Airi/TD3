@@ -70,29 +70,23 @@ void GamePlayScene::Initialize()
 
 	//colliderManager_->UpdateWorldTransform();
 
+	// カメラの初期位置からプレイヤーの位置へのベクトルを計算
+	offset = Subtract(camera->transform.translate, player->GetWorldPosition());
+
+
+
+
 }
 
 void GamePlayScene::Update()
 {
-	if (input->PushKey(DIK_W))
-	{
-		camera->transform.translate.z += 0.03f;
-	}
-	if (input->PushKey(DIK_S))
-	{
-		camera->transform.translate.z -= 0.03f;
-	}
-	if (input->PushKey(DIK_A))
-	{
-		camera->transform.translate.x -= 0.03f;
-	}
-	if (input->PushKey(DIK_D))
-	{
-		camera->transform.translate.x += 0.03f;
-	}
 
+
+
+	camera->transform.translate = Add(player->GetWorldPosition(), offset);
 	camera->UpdateMatrix();
 
+	
 	input->TriggerKey(DIK_0);
 
 	if (timer.GetNowSecond() != 120)
@@ -235,7 +229,7 @@ void GamePlayScene::Draw()
 			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
 			player->model_->worldTransform_->translation_.z += 0.5f;
 			sword->model_->worldTransform_->translation_.z += 0.5f;
-			camera->transform.translate.z += 0.5f;
+			//camera->transform.translate.z += 0.5f;
 		}
 	}
 	
@@ -332,3 +326,4 @@ void GamePlayScene::EnemyAttack() {
 	}
 
 }
+

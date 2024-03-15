@@ -20,8 +20,7 @@ public:
 		Weapon_ = playerWeapon;
 	}
 
-	uint32_t direction = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/reticle.png");
-
+	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
 	bool GetIsSkill() { return isSkill; };
@@ -29,9 +28,6 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
-	std::unique_ptr<Model> directionModel_ = nullptr;
-
-	std::unique_ptr<Sprite> sprite2DReticle_ = nullptr;
 
 private:
 	Input* input_ = nullptr;
