@@ -19,7 +19,7 @@ void Enemy::Initialize() {
 	model_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
 
 	SetRadius(model_->worldTransform_->scale_.x);
-
+	player = std::make_unique<Player>();
 }
 
 void Enemy::Update() {
@@ -34,7 +34,9 @@ void Enemy::Update() {
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
-
+	ImGui::Begin("EnemyHP");
+	ImGui::Text("%d", EnemyHP);
+	ImGui::End();
 }
 
 void Enemy::Draw(Camera* camera) {
@@ -74,7 +76,7 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		isDead_ = true;
+		EnemyHP -= player->AttackPower;
 	}
 
 	
