@@ -2,7 +2,6 @@
 #include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 
-
 void Player::Initialize()
 {
 	input_ = Input::GetInstance();
@@ -14,7 +13,6 @@ void Player::Initialize()
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	SetRadius(model_->worldTransform_->scale_.x);
-
 }
 
 void Player::Update()
@@ -22,6 +20,7 @@ void Player::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();
 	model_->ModelDebug("player");
+	
 #ifdef _DEBUG
 
 	ImGui::Begin("Status");
@@ -121,4 +120,5 @@ void Player::PLevel()
 {
 	HP += HPIncreasePerLevel;
 	AttackPower += AttackPowerIncreasePerLevel;
+	
 }
