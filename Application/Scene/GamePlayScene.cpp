@@ -3,11 +3,12 @@
 GamePlayScene::~GamePlayScene()
 {
 	delete camera;
+	delete playerlevel;
 
 	for (Enemy* enemys : enemy_) {
 		delete enemys;
 	}
-	
+
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		delete enemyBullets;
 	}
@@ -42,7 +43,7 @@ void GamePlayScene::Initialize()
 
 
 	triangle.reset(Triangle::Create(uvTexture));
-	
+
 	triangle->SetisInvisible(true);
 
 	playerlevel = new Playerlevel;
@@ -79,13 +80,16 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
-	sampleEnemy = std::make_unique<PlayerWeapon>();
-	sampleEnemy->Initialize();
+	sword = std::make_unique<Sword>();
+	sword->Initialize();
+
+	//sampleEnemy = std::make_unique<PlayerWeapon>();
+	//sampleEnemy->Initialize();
 
 	player->SetWeapon(playerWeapon_.get());
 
 	//colliderManager_->UpdateWorldTransform();
-	
+
 }
 
 void GamePlayScene::Update()
@@ -106,9 +110,12 @@ void GamePlayScene::Update()
 	{
 		camera->transform.translate.x += 0.03f;
 	}
+
+	camera->UpdateMatrix();
+
 	input->TriggerKey(DIK_0);
 
-	if(timer.GetNowSecond()!=120)
+	if (timer.GetNowSecond() != 120)
 	{
 		//sprite->worldTransform_->translation_ =
 		//{
@@ -116,9 +123,52 @@ void GamePlayScene::Update()
 		//};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
+
+		//敵の処理
+		EnemyAttack();
+
+		if (isEnemySpawn == true) {
+			if (enemyCount <= 4) {
+				EnemySpawn();
+				enemyCount++;
+			}
+			else {
+				isEnemySpawn = false;
+			}
+		}
+
+		for (Enemy* enemys : enemy_) {
+			enemys->Update();
+			if (enemys->GetIsDead()) {
+				//貰える経験値
+				playerlevel->Experiencepoint += 55.0f;
+			}
+		}
+		
+		enemy_.remove_if([](Enemy* enemys) {
+			if (enemys->GetIsDead()) {
+				delete enemys;
+				return true;
+			}
+			return false;
+			});
+		//ここから敵の弾の処理
+		for (EnemyBullet* enemyBullets : enemyBullet_) {
+			enemyBullets->Update();
+		}
+
+		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+			if (enemyBullets->GetIsDead()) {
+				delete enemyBullets;
+				return true;
+			}
+			return false;
+			});
+
+
 		if (timer.GetNowFrame() == 60)
 		{
-			timer.AddNowSecond(); 
+			timer.AddNowSecond();
 			timer.ResetNowFrame();
 		}
 		if (timer.GetNowWaveFrame() == 60)
@@ -130,13 +180,17 @@ void GamePlayScene::Update()
 		{
 			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
+
+			isEnemySpawn = true;
+			enemyCount = 0;
+
 			sprite->worldTransform_->translation_ =
 			{
 				1280.0f,300.0f,0.0f
 			};
 		}
 	}
-	else if(timer.GetNowSecond() >= 120)
+	else if (timer.GetNowSecond() >= 120)
 	{
 		timer.AddBossFrame();
 		if (timer.GetBossFrame() == 60)
@@ -190,13 +244,8 @@ void GamePlayScene::Update()
 	demo_stage->ModelDebug("demo_stage");
 	playerlevel->Update();
 	player->Update();
+	sword->Update();
 
-	//ここから敵の処理
-	EnemySpawn();
-
-	for (Enemy* enemys : enemy_) {
-		enemys->Update();
-	}
 	Vector3 weaponPos = player->GetPosition();
 
 	weaponPos.z = weaponPos.z + 5.0f;
@@ -206,34 +255,7 @@ void GamePlayScene::Update()
 
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
-	sampleEnemy->Update();
-
-
-
-	enemy_.remove_if([](Enemy* enemys) {
-		if (enemys->GetIsDead()) {
-		
-			delete enemys;
-			return true;
-		}
-		return false;
-	});
-
-	//ここから敵の弾の処理
-	EnemyAttack();
-
-	for (EnemyBullet* enemyBullets : enemyBullet_) {
-		enemyBullets->Update();
-	}
-
-	enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
-		if (enemyBullets->GetIsDead()) {
-			delete enemyBullets;
-			return true;
-		}
-		return false;
-	});
-
+	//sampleEnemy->Update();
 }
 
 void GamePlayScene::Draw()
@@ -246,6 +268,7 @@ void GamePlayScene::Draw()
 	//particle->Draw(camera);
 	demo_stage->Draw(camera);
 	player->Draw(camera);
+	sword->Draw(camera);
 
 	if (player->GetIsUnderAttack())
 	{
@@ -254,11 +277,13 @@ void GamePlayScene::Draw()
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
+			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
 			player->model_->worldTransform_->translation_.z += 0.5f;
+			sword->model_->worldTransform_->translation_.z += 0.5f;
 			camera->transform.translate.z += 0.5f;
 		}
 	}
-	sampleEnemy->Draw(camera);
+	//sampleEnemy->Draw(camera);
 
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
@@ -276,44 +301,43 @@ void GamePlayScene::Draw()
 
 void GamePlayScene::CheckAllCollisions()
 {
-	//コライダーのリストをクリア
-	colliderManager_->ListClear();
+	for (EnemyBullet* enemyBullets : enemyBullet_) {
+		for (Enemy* enemys : enemy_) {
+			//コライダーのリストをクリア
+			colliderManager_->ListClear();
 
-	//コライダーにオブジェクトを登録
-	colliderManager_->AddColliders(player.get());
-	colliderManager_->AddColliders(playerWeapon_.get());
-	colliderManager_->AddColliders(sampleEnemy.get());
+			//コライダーにオブジェクトを登録
+			colliderManager_->AddColliders(player.get());
+			if (player->GetIsUnderAttack() == true) {
+				colliderManager_->AddColliders(playerWeapon_.get());
+			}
+			colliderManager_->AddColliders(enemyBullets);
+			colliderManager_->AddColliders(enemys);
+			//colliderManager_->AddColliders(sampleEnemy.get());
 
-	//当たり判定
-	colliderManager_->ChackAllCollisions();
+			//当たり判定
+			colliderManager_->ChackAllCollisions();
+		}
+	}
 }
-	
+
 
 
 
 void GamePlayScene::EnemySpawn() {
 
-	if (enemyCount <= 2) {
-		Enemy* newEnemy = new Enemy();
-		newEnemy->Initialize();
-		
-		std::mt19937 random(generator());
+	Enemy* newEnemy = new Enemy();
+	newEnemy->Initialize();
 
-		newEnemy->SetTranslate(random);
+	std::mt19937 random(generator());
 
-		enemy_.push_back(newEnemy);
-		enemyCount++;
-	}
-	else if (enemyCount > 2) {
-		enemySpornTimer++;
-		if (enemySpornTimer >= 180) {
-			enemyCount = 0;
-			enemySpornTimer = 0;
-		}
-	}
+	newEnemy->SetTranslate(random, player->GetPosition());
+
+	enemy_.push_back(newEnemy);
+
 }
 
-void GamePlayScene::EnemyAttack(){
+void GamePlayScene::EnemyAttack() {
 
 	for (Enemy* enemy : enemy_) {
 		if (isEnemyAttack == true) {
@@ -338,7 +362,7 @@ void GamePlayScene::EnemyAttack(){
 			speed.y *= kBulletSpeed;
 			speed.z *= kBulletSpeed;
 
-			speed = TransformNormal(speed,enemy->GetMatWorld());
+			speed = TransformNormal(speed, enemy->GetMatWorld());
 
 			newBullet->SetSpeed(speed);
 

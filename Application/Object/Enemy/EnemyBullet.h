@@ -1,7 +1,8 @@
 #pragma once
 #include "Model.h"
+#include "Collider.h"
 
-class EnemyBullet
+class EnemyBullet : public Collider
 {
 public:
 	~EnemyBullet();
@@ -19,6 +20,10 @@ public:
 	bool GetIsDead() { return isDead_; }
 
 	void SetSpeed(Vector3 speed);
+
+	Vector3 GetWorldPosition()override;
+
+	void OnCollision([[maybe_unused]] Collider* other)override;
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;

@@ -16,7 +16,7 @@
 
 #include"Player.h"
 #include"playerWeapon.h"
-
+#include"Sword.h"
 #include"CollisionManager.h"
 
 #include"Input.h"
@@ -72,6 +72,8 @@ private:
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
+	
+	std::unique_ptr<Sword> sword = nullptr;
 
 	std::unique_ptr<PlayerWeapon> sampleEnemy = nullptr;
 
@@ -79,7 +81,9 @@ private:
 	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 0;
-	int enemySpornTimer = 0;
+
+	bool isEnemySpawn = true;
+	bool isEnemyReSpawn = false;
 
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
