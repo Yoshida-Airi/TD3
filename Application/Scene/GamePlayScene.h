@@ -89,6 +89,8 @@ private:
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
 
+	bool isBossSpawn = false;
+
 	std::random_device generator;
 
 #ifdef _DEBUG
@@ -100,5 +102,7 @@ private:
 private:
 
 	void CheckAllCollisions();
+
+	void BossSceneAllCollisions();
 };
 

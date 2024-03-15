@@ -147,7 +147,7 @@ void GamePlayScene::Update()
 				playerlevel->Experiencepoint += 55.0f;
 			}
 		}
-		
+
 		enemy_.remove_if([](Enemy* enemys) {
 			if (enemys->GetIsDead()) {
 				delete enemys;
@@ -168,6 +168,7 @@ void GamePlayScene::Update()
 			return false;
 			});
 
+		CheckAllCollisions();
 
 		if (timer.GetNowFrame() == 60)
 		{
@@ -207,6 +208,15 @@ void GamePlayScene::Update()
 
 		boss_->Update();
 
+		if (boss_->GetIsDead() == false) {
+			isBossSpawn = true;
+		}
+		else {
+			isBossSpawn = false;
+		}
+
+		BossSceneAllCollisions();
+
 		if (timer.GetBossFrame() == 60)
 		{
 			timer.AddBossSecond();
@@ -220,6 +230,7 @@ void GamePlayScene::Update()
 	ImGui::Text("nowWaveSecond : %u", timer.GetNowWaveSecond());
 	ImGui::Text("bossFrame : %u", timer.GetBossFrame());
 	ImGui::Text("bossSecond : %u", timer.GetBossSecond());
+	ImGui::Text("boss : %d", boss_->GetIsDead());
 	ImGui::End();
 
 #ifdef _DEBUG
@@ -232,9 +243,6 @@ void GamePlayScene::Update()
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}
-
-
-	CheckAllCollisions();
 
 	//sprite->worldTransform_->translation_ = { 700.0f };
 
@@ -311,7 +319,7 @@ void GamePlayScene::Draw()
 		enemys->Draw(camera);
 	}
 
-	if (timer.GetNowSecond() >= 10) {
+	if (isBossSpawn == true) {
 		boss_->Draw(camera);
 	}
 
@@ -336,7 +344,6 @@ void GamePlayScene::CheckAllCollisions()
 			}
 			colliderManager_->AddColliders(enemyBullets);
 			colliderManager_->AddColliders(enemys);
-			colliderManager_->AddColliders(boss_.get());
 			//colliderManager_->AddColliders(sampleEnemy.get());
 
 			//当たり判定
@@ -345,8 +352,20 @@ void GamePlayScene::CheckAllCollisions()
 	}
 }
 
+void GamePlayScene::BossSceneAllCollisions() {
+	colliderManager_->ListClear();
 
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	if (player->GetIsUnderAttack() == true) {
+		colliderManager_->AddColliders(playerWeapon_.get());
+	}
+	colliderManager_->AddColliders(boss_.get());
+	//colliderManager_->AddColliders(sampleEnemy.get());
 
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
+}
 
 void GamePlayScene::EnemySpawn() {
 
