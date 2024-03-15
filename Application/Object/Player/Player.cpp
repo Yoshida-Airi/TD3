@@ -22,11 +22,11 @@ void Player::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();
 	model_->ModelDebug("player");
-
 #ifdef _DEBUG
 
-	ImGui::Begin("HitCheack");
+	ImGui::Begin("Status");
 	ImGui::Text("HP : %d", HP);
+	ImGui::Text("Power : %d", AttackPower);
 	ImGui::End();
 
 #endif // _DEBUG
@@ -37,6 +37,7 @@ void Player::Update()
 	Attack();
 
 	Skill();
+
 }
 
 void Player::Draw(Camera* camera)
@@ -91,9 +92,6 @@ void Player::Move()
 	{
 		model_->worldTransform_->translation_.x += Speed;
 	}
-
-
-
 }
 
 void Player::Attack()
@@ -117,4 +115,10 @@ void Player::Skill()
 	{
 		isSkill = false;
 	}
+}
+
+void Player::PLevel()
+{
+	HP += HPIncreasePerLevel;
+	AttackPower += AttackPowerIncreasePerLevel;
 }

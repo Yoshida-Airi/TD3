@@ -11,6 +11,8 @@ void Playerlevel::Initialize() {
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG
+
+	player = std::make_unique<Player>();
 	textureManager_ = TextureManager::GetInstance();
 	levelbar = textureManager_->LoadTexture("Resources/DefaultAssets/Levelbar.png");
 	experiencepointbar = textureManager_->LoadTexture("Resources/DefaultAssets/Experiencepointbar.png");
@@ -44,6 +46,7 @@ void Playerlevel::Update() {
 #ifdef _DEBUG
 	camera->CameraDebug();
 #endif // _DEBUG
+	player->Update();
 	sprite1->worldTransform_->scale_.x = Experiencepoint;
 	if (sprite1->worldTransform_->scale_.x >= maxbar && nowlevel < maxlevel) {
 		Experiencepoint = 0.0f;
@@ -85,7 +88,7 @@ void Playerlevel::Draw() {
 }
 
 void Playerlevel::Levelup() {
-	//playerのHPやATTACKを増加するコードをここに書く
+	player->PLevel();
 	nowlevel += 1;
 	sprite2->worldTransform_->scale_.x += 1.0f;
 }

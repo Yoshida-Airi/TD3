@@ -8,6 +8,7 @@
 #include"Sphere.h"
 #include"Model.h"
 #include"Camera.h"
+#include"Player.h"
 #pragma once
 class Playerlevel
 {
@@ -26,6 +27,7 @@ private:
 	TextureManager* textureManager_ = nullptr;
 	Input* input;
 	Camera* camera;
+	std::unique_ptr<Player> player = nullptr;
 	uint32_t levelbar;
 	uint32_t experiencepointbar;
 	uint32_t levelpointbar;
