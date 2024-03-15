@@ -18,6 +18,8 @@ void Boss::Initialize() {
 
 	SetRadius(model_->worldTransform_->scale_.x);
 
+	hp = 100;
+
 }
 
 void Boss::Update() {
@@ -28,6 +30,11 @@ void Boss::Update() {
 	Collider::UpdateWorldTransform();
 
 	model_->worldTransform_->translation_.x += 0.001f;
+
+	if (hp <= 0)
+	{
+		isDead_ = true;
+	}
 
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
@@ -72,7 +79,7 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		isDead_ = true;
+		hp -= 2;
 	}
 
 

@@ -198,6 +198,14 @@ void GamePlayScene::Update()
 	{
 		timer.AddBossFrame();
 
+		for (EnemyBullet* enemyBullets : enemyBullet_) {
+			enemyBullets->Update();
+		}
+
+		for (Enemy* enemys : enemy_) {
+			enemys->Update();
+		}
+
 		enemy_.remove_if([](Enemy* enemys) {
 			return true;
 			});
@@ -231,6 +239,7 @@ void GamePlayScene::Update()
 	ImGui::Text("bossFrame : %u", timer.GetBossFrame());
 	ImGui::Text("bossSecond : %u", timer.GetBossSecond());
 	ImGui::Text("boss : %d", boss_->GetIsDead());
+	ImGui::Text("hp: %d", boss_->GetHP());
 	ImGui::End();
 
 #ifdef _DEBUG
