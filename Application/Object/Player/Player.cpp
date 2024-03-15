@@ -116,7 +116,7 @@ void Player::Skill()
 	}
 }
 
-void Player::PLevel()
+void Player::PLevelUp()
 {
 	HP += HPIncreasePerLevel;
 	AttackPower += AttackPowerIncreasePerLevel;
