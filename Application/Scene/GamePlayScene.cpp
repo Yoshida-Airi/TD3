@@ -200,6 +200,16 @@ void GamePlayScene::Update()
 	{
 		timer.AddBossFrame();
 
+		enemy_.remove_if([](Enemy* enemys) {
+			delete enemys;
+			return true;
+			});
+
+		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+			delete enemyBullets;
+			return true;
+			});
+
 		boss_->Update();
 
 		if (boss_->GetIsDead() == false) {
