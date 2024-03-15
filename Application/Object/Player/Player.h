@@ -1,7 +1,6 @@
 #pragma once
 #include"Input.h"
 #include"MathUtilty.h"
-
 #include"Model.h"
 #include"Collider.h"
 
