@@ -111,6 +111,11 @@ void GamePlayScene::Update()
 		camera->transform.translate.x += 0.03f;
 	}
 
+	if (playerlevel->nowlevel == playerlevel->count) {
+		player->PLevelUp();
+		playerlevel->count += 1;
+	}
+
 	camera->UpdateMatrix();
 
 	input->TriggerKey(DIK_0);

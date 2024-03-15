@@ -20,6 +20,7 @@ public:
 	void Skillup();
 	float Experiencepoint = 0.0f;//経験値
 	int nowlevel = 1;
+	int count = 2;
 	int nowskilllevel = 0;
 	std::unique_ptr<Sprite> sprite0 = nullptr;
 	std::unique_ptr<Sprite> sprite1 = nullptr;

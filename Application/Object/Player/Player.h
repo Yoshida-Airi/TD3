@@ -12,7 +12,7 @@ public:
 	void Initialize();
 	void Update();
 	void Draw(Camera* camera);
-	void PLevel();
+	void PLevelUp();
 
 	void SetWeapon(PlayerWeapon* playerWeapon)
 	{
@@ -37,11 +37,11 @@ private:
 	bool isSkill = false; //skill中がどうか　true : skill発動中
 
 	// レベルアップ時のHP増加量
-	const int HPIncreasePerLevel = 20;
+	const int HPIncreasePerLevel = 2000;
 	// レベルアップ時の攻撃力増加量
 	const int AttackPowerIncreasePerLevel = 5;
 
-	int HP = 50;
+	int HP = 5000;
 	int AttackPower = 5;
 
 private:
