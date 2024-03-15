@@ -365,7 +365,9 @@ void GamePlayScene::BossSceneAllCollisions() {
 	if (player->GetIsUnderAttack() == true) {
 		colliderManager_->AddColliders(playerWeapon_.get());
 	}
-	colliderManager_->AddColliders(boss_.get());
+	if (boss_->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(boss_.get());
+	}
 	//colliderManager_->AddColliders(sampleEnemy.get());
 
 	//当たり判定

@@ -34,6 +34,8 @@ public:
 
 	int GetHP() { return hp; }
 
+	bool GetIsCoolDown() { return isCoolDown; }
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Input* input_ = nullptr;
@@ -42,6 +44,13 @@ private:
 	bool isDead_ = false;
 
 	int hp = 0;
+
+	bool isCoolDown = false;
+	int coolDownTimer = 0;
+
+private:
+
+	void CoolDown();
 
 };
 

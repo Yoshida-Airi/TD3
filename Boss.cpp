@@ -36,6 +36,8 @@ void Boss::Update() {
 		isDead_ = true;
 	}
 
+	CoolDown();
+
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
@@ -72,6 +74,17 @@ Vector3 Boss::GetWorldPosition()
 	return worldpos;
 }
 
+void Boss::CoolDown() {
+	if (isCoolDown == true) {
+		coolDownTimer++;
+	}
+
+	if (coolDownTimer == 120) {
+		isCoolDown = false;
+		coolDownTimer = 0;
+	}
+
+}
 
 void Boss::OnCollision([[maybe_unused]] Collider* other)
 {
@@ -79,7 +92,8 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		hp -= 2;
+		hp -= 20;
+		isCoolDown = true;
 	}
 
 
