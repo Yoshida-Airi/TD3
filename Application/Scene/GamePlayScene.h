@@ -81,8 +81,8 @@ private:
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;
 
-	int enemyCount = 0;
-
+	int enemyCount = 1;
+	const int MaxEnemySpawn = 5;
 	bool isEnemySpawn = true;
 	bool isEnemyReSpawn = false;
 
@@ -90,6 +90,8 @@ private:
 	int enemyAttackCoolDown = 0;
 
 	bool isBossSpawn = false;
+
+	int enemyDeathCount = 0;
 
 	std::random_device generator;
 

@@ -131,7 +131,7 @@ void GamePlayScene::Update()
 		EnemyAttack();
 
 		if (isEnemySpawn == true) {
-			if (enemyCount <= 4) {
+			if (enemyCount <= MaxEnemySpawn) {
 				EnemySpawn();
 				enemyCount++;
 			}
@@ -145,6 +145,7 @@ void GamePlayScene::Update()
 			if (enemys->GetIsDead()) {
 				//貰える経験値
 				playerlevel->Experiencepoint += 55.0f;
+				enemyDeathCount++;
 			}
 		}
 
@@ -180,13 +181,14 @@ void GamePlayScene::Update()
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
 		}
-		if (timer.GetNowWaveSecond() == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
+		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)//TriggerKey->敵の数を参照して０になったらリセットに変更
 		{
 			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
 
 			isEnemySpawn = true;
-			enemyCount = 0;
+			enemyCount = 1;
+			enemyDeathCount = 0;
 
 			sprite->worldTransform_->translation_ =
 			{
