@@ -25,9 +25,6 @@ void GamePlayScene::Initialize()
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
 
-	followCamera_ = std::make_unique<FollowCamera>();
-	followCamera_->Initialize();
-
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG
@@ -68,38 +65,37 @@ void GamePlayScene::Initialize()
 
 
 	player->SetWeapon(playerWeapon_.get());
-	player->SetCamera(camera);
-
+	
 	//colliderManager_->UpdateWorldTransform();
-
-	//// カメラの初期位置からプレイヤーの位置へのベクトルを計算
-	//offset = Subtract(camera->transform.translate, player->GetWorldPosition());
-
-
-	//
-
-	followCamera_->SetTarget(player->GetWorldTransform());
 
 }
 
 void GamePlayScene::Update()
 {
+	if (input->PushKey(DIK_W))
+	{
+		camera->transform.translate.z += 0.03f;
+	}
+	if (input->PushKey(DIK_S))
+	{
+		camera->transform.translate.z -= 0.03f;
+	}
+	if (input->PushKey(DIK_A))
+	{
+		camera->transform.translate.x -= 0.03f;
+	}
+	if (input->PushKey(DIK_D))
+	{
+		camera->transform.translate.x += 0.03f;
+	}
 
-
+	camera->UpdateMatrix();
 
 	if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
 		playerlevel->count += 1;
 	}
-
-	//camera->transform.translate = Add(player->GetWorldPosition(), offset);
-	camera->UpdateMatrix();
-
-	followCamera_->Update();
-	camera->matView = followCamera_->GetCamera()->matView;
-	camera->matProjection = followCamera_->GetCamera()->matProjection;
-	camera->TransferMatrix();
-	//camera->UpdateMatrix();
+	
 
 	if (timer.GetNowSecond() != 120)
 	{
@@ -197,7 +193,6 @@ void GamePlayScene::Update()
 #ifdef _DEBUG
 
 	camera->CameraDebug();
-	followCamera_->CameraDebug();
 
 #endif // _DEBUG
 
@@ -225,11 +220,8 @@ void GamePlayScene::Update()
 
 	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
 
-
-	//sampleEnemy->Update();
 	playerWeapon_->Update();
 	//sampleEnemy->Update();
-
 	
 }
 
@@ -257,10 +249,10 @@ void GamePlayScene::Draw()
 			player->model_->worldTransform_->translation_.x += dashX;
 			player->model_->worldTransform_->translation_.z += dashZ;
 
-			////向いている方向にダッシュに変更予定。今はｚにダッシュのみ
-			//player->model_->worldTransform_->translation_.z += 0.5f;
-			//sword->model_->worldTransform_->translation_.z += 0.5f;
-			////camera->transform.translate.z += 0.5f;
+		
+			//カメラ直書き
+			camera->transform.translate.x += dashX;
+			camera->transform.translate.z += dashZ;
 		}
 	}
 	

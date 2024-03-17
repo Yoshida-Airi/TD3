@@ -18,7 +18,6 @@
 #include"playerWeapon.h"
 #include"Sword.h"
 #include"CollisionManager.h"
-#include"FollowCamera.h"
 
 #include"Input.h"
 
@@ -63,9 +62,6 @@ private:
 	Input* input;
 
 	std::unique_ptr<Sprite> sprite = nullptr;
-
-	std::unique_ptr<FollowCamera>followCamera_ = nullptr;
-
 	std::unique_ptr<Model> demo_stage = nullptr;
 
 	std::unique_ptr<Player> player = nullptr;

@@ -13,7 +13,6 @@ public:
 	void Initialize(Camera* camera);
 	void Update();
 	void Draw();
-	void Draw(Camera* camera);
 	void PLevelUp();
 
 	void SetWeapon(PlayerWeapon* playerWeapon)
@@ -31,11 +30,6 @@ public:
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
 	int AttackPower = 5;
-
-	void SetCamera(Camera* camera)
-	{
-		camera_ = camera;
-	}
 
 private:
 	Input* input_ = nullptr;
