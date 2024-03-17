@@ -57,16 +57,13 @@ void GamePlayScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize(camera);
 
-	playerWeapon_ = std::make_unique<PlayerWeapon>();
-	playerWeapon_->Initialize();
-
 	sword = std::make_unique<Sword>();
 	sword->Initialize();
 
 
-	player->SetWeapon(playerWeapon_.get());
+	player->SetWeapon(sword.get());
 	
-	//colliderManager_->UpdateWorldTransform();
+	colliderManager_->UpdateWorldTransform();
 
 }
 
@@ -214,15 +211,9 @@ void GamePlayScene::Update()
 	Vector3 weaponPos = player->GetPosition();
 	weaponPos.z = weaponPos.z + 5.0f;
 
-	playerWeapon_->SetPosition(weaponPos);
-	playerWeapon_->Update();
-	
-
 	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
 
-	playerWeapon_->Update();
-	//sampleEnemy->Update();
-	
+
 }
 
 void GamePlayScene::Draw()
@@ -233,7 +224,6 @@ void GamePlayScene::Draw()
 
 	if (player->GetIsUnderAttack())
 	{
-		playerWeapon_->Draw(camera);
 	}
 	if (player->GetIsSkill())
 	{
@@ -267,7 +257,7 @@ void GamePlayScene::Draw()
 	}
 	playerlevel->Draw();
 
-	//colliderManager_->Draw(camera);
+	colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
@@ -280,11 +270,10 @@ void GamePlayScene::CheckAllCollisions()
 			//コライダーにオブジェクトを登録
 			colliderManager_->AddColliders(player.get());
 			if (player->GetIsUnderAttack() == true) {
-				colliderManager_->AddColliders(playerWeapon_.get());
+				colliderManager_->AddColliders(sword.get());
 			}
 			colliderManager_->AddColliders(enemyBullets);
 			colliderManager_->AddColliders(enemys);
-			//colliderManager_->AddColliders(sampleEnemy.get());
 
 			//当たり判定
 			colliderManager_->ChackAllCollisions();

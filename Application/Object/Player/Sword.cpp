@@ -9,7 +9,7 @@ void Sword::Initialize()
 
 	Collider::Initialize();
 
-	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 

@@ -5,7 +5,7 @@
 #include"Sprite.h"
 #include"Collider.h"
 
-class PlayerWeapon;
+class Sword;
 
 class Player :public Collider
 {
@@ -15,7 +15,7 @@ public:
 	void Draw();
 	void PLevelUp();
 
-	void SetWeapon(PlayerWeapon* playerWeapon)
+	void SetWeapon(Sword* playerWeapon)
 	{
 		Weapon_ = playerWeapon;
 	}
@@ -35,7 +35,7 @@ private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 
-	PlayerWeapon* Weapon_ = nullptr;
+	Sword* Weapon_ = nullptr;
 
 	float Speed = 0.03f;	//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中
