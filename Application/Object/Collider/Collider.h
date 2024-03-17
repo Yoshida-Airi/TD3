@@ -21,10 +21,10 @@ public:
 	virtual void OnCollision([[maybe_unused]] Collider* other) {};
 
 	//半径を取得
-	float GetRadius() const { return radius_; };
+	Vector3 GetRadius() const { return radius_; };
 
 	//半径を設定
-	void SetRadius(float radius) { radius_ = radius; };
+	void SetRadius(Vector3 radius) { radius_ = radius; };
 
 	//衝突属性(自分)を取得
 	uint32_t GetCollisionAttribute() const { return collisionAttribute_; };
@@ -50,7 +50,7 @@ public:
 
 private:
 	//衝突半径
-	float radius_ = 2.0f;
+	Vector3 radius_ = { 1.0f,1.0f,1.0f };
 	uint32_t typeID_ = 0u;
 
 

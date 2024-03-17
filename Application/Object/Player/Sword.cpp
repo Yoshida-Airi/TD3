@@ -13,7 +13,7 @@ void Sword::Initialize()
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
-	SetRadius(model_->worldTransform_->scale_.x);
+	SetRadius({3.0f,1.0f,1.0f});
 
 }
 

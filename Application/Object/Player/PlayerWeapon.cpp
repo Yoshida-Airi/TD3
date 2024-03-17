@@ -14,7 +14,7 @@ void PlayerWeapon::Initialize()
 	model->worldTransform_->scale_.y = 0.5f;
 	model->worldTransform_->scale_.z = 0.5f;
 
-	SetRadius(model->worldTransform_->scale_.x);
+	SetRadius(model->worldTransform_->scale_);
 
 }
 

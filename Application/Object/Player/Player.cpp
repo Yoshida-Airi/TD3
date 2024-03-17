@@ -14,7 +14,7 @@ void Player::Initialize(Camera* camera)
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
-	SetRadius(model_->worldTransform_->scale_.x);
+	SetRadius(model_->worldTransform_->scale_);
 }
 
 void Player::Update()

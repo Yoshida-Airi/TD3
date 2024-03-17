@@ -18,7 +18,7 @@ void Enemy::Initialize() {
 
 	model_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
 
-	SetRadius(model_->worldTransform_->scale_.x);
+	SetRadius(model_->worldTransform_->scale_);
 	player = std::make_unique<Player>();
 }
 
