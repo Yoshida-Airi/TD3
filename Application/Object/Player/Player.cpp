@@ -22,10 +22,10 @@ void Player::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();
 	
-	model_->ModelDebug("player");
+	
 	
 #ifdef _DEBUG
-
+	model_->ModelDebug("player");
 	ImGui::Begin("Status");
 	ImGui::Text("HP : %d", HP);
 	ImGui::Text("Power : %d", AttackPower);
@@ -126,8 +126,6 @@ void Player::Move()
 
 	model_->worldTransform_->translation_.x += move.x;
 	model_->worldTransform_->translation_.z += move.z;
-
-	ImGui::Text("angle : %f", angle_);
 
 }
 
