@@ -63,7 +63,7 @@ void GamePlayScene::Initialize()
 
 	player->SetWeapon(sword.get());
 	
-	colliderManager_->UpdateWorldTransform();
+	//colliderManager_->UpdateWorldTransform();
 
 }
 
@@ -257,7 +257,7 @@ void GamePlayScene::Draw()
 	}
 	playerlevel->Draw();
 
-	colliderManager_->Draw(camera);
+	//colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
