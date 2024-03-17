@@ -2,6 +2,7 @@
 #include"Input.h"
 #include"MathUtilty.h"
 #include"Model.h"
+#include"Sprite.h"
 #include"Collider.h"
 
 class PlayerWeapon;
@@ -9,8 +10,9 @@ class PlayerWeapon;
 class Player :public Collider
 {
 public:
-	void Initialize();
+	void Initialize(Camera* camera);
 	void Update();
+	void Draw();
 	void Draw(Camera* camera);
 	void PLevelUp();
 
@@ -19,17 +21,26 @@ public:
 		Weapon_ = playerWeapon;
 	}
 
+	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
 	bool GetIsSkill() { return isSkill; };
 	Vector3 GetWorldPosition()override;
+	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
 	int AttackPower = 5;
 
+	void SetCamera(Camera* camera)
+	{
+		camera_ = camera;
+	}
+
 private:
 	Input* input_ = nullptr;
+	Camera* camera_ = nullptr;
+
 	PlayerWeapon* Weapon_ = nullptr;
 
 	float Speed = 0.03f;	//速度
@@ -42,6 +53,7 @@ private:
 	const int AttackPowerIncreasePerLevel = 5;
 
 	int HP = 5000;
+	float angle_ = 0.0f;
 
 private:
 
@@ -51,5 +63,13 @@ private:
 	void Attack();
 	//SKILL
 	void Skill();
+
+	void Direction();
+
+	float Lerp(const float& a, const float& b, float t);
+
+	float LerpShortAngle(float a, float b, float t);
 	
+	void Rotate();
+
 };

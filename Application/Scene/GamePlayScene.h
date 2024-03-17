@@ -18,6 +18,7 @@
 #include"playerWeapon.h"
 #include"Sword.h"
 #include"CollisionManager.h"
+#include"FollowCamera.h"
 
 #include"Input.h"
 
@@ -61,21 +62,15 @@ private:
 
 	Input* input;
 
-	std::unique_ptr<Triangle> triangle = nullptr;
 	std::unique_ptr<Sprite> sprite = nullptr;
-	std::unique_ptr<Sphere> sphere = nullptr;
-	std::unique_ptr<Model> model = nullptr;
-	std::unique_ptr<ParticleSystem> particle = nullptr;
 
+	std::unique_ptr<FollowCamera>followCamera_ = nullptr;
 
 	std::unique_ptr<Model> demo_stage = nullptr;
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
-	
 	std::unique_ptr<Sword> sword = nullptr;
-
-	std::unique_ptr<PlayerWeapon> sampleEnemy = nullptr;
 
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;
@@ -90,6 +85,9 @@ private:
 
 	std::random_device generator;
 
+	Vector3 offset;
+	Vector3 targetPosition;
+
 #ifdef _DEBUG
 
 	ImGuiManager* imgui;
@@ -100,4 +98,3 @@ private:
 
 	void CheckAllCollisions();
 };
-

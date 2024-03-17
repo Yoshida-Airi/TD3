@@ -79,7 +79,6 @@ void Camera::CameraDebug()
 	transform.rotate = { rotate[0],rotate[1],rotate[2] };
 	transform.scale = { scale[0],scale[1],scale[2] };
 
-	UpdateMatrix();
 
 	ImGui::End();
 

@@ -25,6 +25,9 @@ void GamePlayScene::Initialize()
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
 
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG
@@ -42,40 +45,20 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	triangle.reset(Triangle::Create(uvTexture));
-
-	triangle->SetisInvisible(true);
+	
 
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
-	//triangle.reset(Triangle::Create(uvTexture));
-	//triangle->SetisInvisible(true);
-	//
+
 
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
 
-	//sprite->SetisInvisible(true);
-
-
-	//sprite.reset(Sprite::Create(Doll));
-	//sprite->SetSize({ 64.0f, 64.0f });
-	//sprite->SetTextureLeftTop({ 0,0 });
-
-	//sphere.reset(Sphere::Create(monsterBall));
-	//sphere->worldTransform_->translation_.y = -1.0f;
-
-	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
-	//model->worldTransform_->rotation_.y = 3.14f;
-
-
-	//particle.reset(ParticleSystem::Create(circle));
-	//particle->emitter_->count = 100;
-	////particle->SetisInvisible(true);
+	
 
 	player = std::make_unique<Player>();
-	player->Initialize();
+	player->Initialize(camera);
 
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
@@ -83,42 +66,40 @@ void GamePlayScene::Initialize()
 	sword = std::make_unique<Sword>();
 	sword->Initialize();
 
-	//sampleEnemy = std::make_unique<PlayerWeapon>();
-	//sampleEnemy->Initialize();
 
 	player->SetWeapon(playerWeapon_.get());
+	player->SetCamera(camera);
 
 	//colliderManager_->UpdateWorldTransform();
+
+	//// カメラの初期位置からプレイヤーの位置へのベクトルを計算
+	//offset = Subtract(camera->transform.translate, player->GetWorldPosition());
+
+
+	//
+
+	followCamera_->SetTarget(player->GetWorldTransform());
 
 }
 
 void GamePlayScene::Update()
 {
-	if (input->PushKey(DIK_W))
-	{
-		camera->transform.translate.z += 0.03f;
-	}
-	if (input->PushKey(DIK_S))
-	{
-		camera->transform.translate.z -= 0.03f;
-	}
-	if (input->PushKey(DIK_A))
-	{
-		camera->transform.translate.x -= 0.03f;
-	}
-	if (input->PushKey(DIK_D))
-	{
-		camera->transform.translate.x += 0.03f;
-	}
+
+
 
 	if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
 		playerlevel->count += 1;
 	}
 
+	//camera->transform.translate = Add(player->GetWorldPosition(), offset);
 	camera->UpdateMatrix();
 
-	input->TriggerKey(DIK_0);
+	followCamera_->Update();
+	camera->matView = followCamera_->GetCamera()->matView;
+	camera->matProjection = followCamera_->GetCamera()->matProjection;
+	camera->TransferMatrix();
+	//camera->UpdateMatrix();
 
 	if (timer.GetNowSecond() != 120)
 	{
@@ -216,6 +197,7 @@ void GamePlayScene::Update()
 #ifdef _DEBUG
 
 	camera->CameraDebug();
+	followCamera_->CameraDebug();
 
 #endif // _DEBUG
 
@@ -227,24 +209,7 @@ void GamePlayScene::Update()
 
 	CheckAllCollisions();
 
-	//sprite->worldTransform_->translation_ = { 700.0f };
 
-	//triangle->Update();
-	//triangle->worldTransform_->rotation_.y += 0.03f;
-
-	//sprite->worldTransform_->translation_ = { 700.0f };
-	//sprite->Update();
-	//sprite->Debug("Doll");
-
-	//sphere->Update();
-	//sphere->worldTransform_->rotation_.y += 0.01f;
-
-	/*model->ModelDebug("plane");
-	model->Update();
-	model->worldTransform_->translation_.x = 3.0f;*/
-
-	//particle->Debug("circleParticle");
-	//particle->Update();
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
 	playerlevel->Update();
@@ -252,10 +217,11 @@ void GamePlayScene::Update()
 	sword->Update();
 
 	Vector3 weaponPos = player->GetPosition();
-
 	weaponPos.z = weaponPos.z + 5.0f;
 
 	playerWeapon_->SetPosition(weaponPos);
+	playerWeapon_->Update();
+	
 
 
 	//sampleEnemy->Update();
@@ -267,14 +233,8 @@ void GamePlayScene::Update()
 
 void GamePlayScene::Draw()
 {
-
-	//triangle->Draw(camera);
-	//sphere->Draw(camera);
-	//model->Draw(camera);
-	//sprite->Draw(camera);
-	//particle->Draw(camera);
 	demo_stage->Draw(camera);
-	player->Draw(camera);
+	player->Draw();
 	sword->Draw(camera);
 
 	if (player->GetIsUnderAttack())
@@ -287,11 +247,10 @@ void GamePlayScene::Draw()
 			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
 			player->model_->worldTransform_->translation_.z += 0.5f;
 			sword->model_->worldTransform_->translation_.z += 0.5f;
-			camera->transform.translate.z += 0.5f;
+			//camera->transform.translate.z += 0.5f;
 		}
 	}
-	//sampleEnemy->Draw(camera);
-
+	
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Draw(camera);
@@ -385,3 +344,4 @@ void GamePlayScene::EnemyAttack() {
 	}
 
 }
+
