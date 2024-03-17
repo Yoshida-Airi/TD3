@@ -34,13 +34,13 @@ void Player::Update()
 #endif // _DEBUG
 
 	
-
+	//移動
 	Move();
-
+	//攻撃
 	Attack();
-
+	//スキル
 	Skill();
-
+	//方向
 	Direction();
 
 }
@@ -86,7 +86,7 @@ void Player::Move()
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
 	
-
+	//移動
 	if (input_->PushKey(DIK_W))
 	{
 		move.z = 1.0f;
@@ -157,6 +157,9 @@ void Player::Skill()
 	{
 		isSkill = false;
 	}
+
+
+
 }
 
 void Player::PLevelUp()

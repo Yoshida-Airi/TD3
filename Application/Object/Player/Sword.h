@@ -25,6 +25,8 @@ public:
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
 	
+	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
+
 	float rotationmax = 1.57f;
 	float rotationmin = 0.0f;
 	float rotationspeed = 0.2f;
@@ -37,8 +39,6 @@ private:
 	float Speed = 0.03f;	//速度
 private:
 
-	//移動
-	void Move();
 	//攻撃
 	void Attack();
 	void Skill();

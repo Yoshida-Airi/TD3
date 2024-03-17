@@ -11,7 +11,7 @@ void FollowCamera::Initialize()
 	camera_ = new Camera();
 	camera_->Initialize();
 	//camera_->transform.translate = { 0.0f,20.0f,-10.0f };
-	camera_->transform.rotate.x = 0.2f;
+	camera_->transform.rotate.x = 0.0f;
 
 }
 

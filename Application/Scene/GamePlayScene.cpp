@@ -223,6 +223,8 @@ void GamePlayScene::Update()
 	playerWeapon_->Update();
 	
 
+	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
+
 
 	//sampleEnemy->Update();
 	playerWeapon_->Update();
@@ -244,10 +246,21 @@ void GamePlayScene::Draw()
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
-			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
-			player->model_->worldTransform_->translation_.z += 0.5f;
-			sword->model_->worldTransform_->translation_.z += 0.5f;
-			//camera->transform.translate.z += 0.5f;
+
+			float directionAngle = player->model_->worldTransform_->rotation_.y;
+
+			float dashSpeed = 0.5f;
+
+			float dashX = std::sin(directionAngle) * dashSpeed;
+			float dashZ = std::cos(directionAngle) * dashSpeed;
+
+			player->model_->worldTransform_->translation_.x += dashX;
+			player->model_->worldTransform_->translation_.z += dashZ;
+
+			////向いている方向にダッシュに変更予定。今はｚにダッシュのみ
+			//player->model_->worldTransform_->translation_.z += 0.5f;
+			//sword->model_->worldTransform_->translation_.z += 0.5f;
+			////camera->transform.translate.z += 0.5f;
 		}
 	}
 	
