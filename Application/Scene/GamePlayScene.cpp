@@ -70,10 +70,11 @@ void GamePlayScene::Initialize()
 
 	//colliderManager_->UpdateWorldTransform();
 
-	// カメラの初期位置からプレイヤーの位置へのベクトルを計算
-	offset = Subtract(camera->transform.translate, player->GetWorldPosition());
+	//// カメラの初期位置からプレイヤーの位置へのベクトルを計算
+	//offset = Subtract(camera->transform.translate, player->GetWorldPosition());
 
 
+	//
 
 
 }
@@ -83,8 +84,8 @@ void GamePlayScene::Update()
 
 
 
-	camera->transform.translate = Add(player->GetWorldPosition(), offset);
-	camera->UpdateMatrix();
+	//camera->transform.translate = Add(player->GetWorldPosition(), offset);
+	//camera->UpdateMatrix();
 
 	
 	input->TriggerKey(DIK_0);
