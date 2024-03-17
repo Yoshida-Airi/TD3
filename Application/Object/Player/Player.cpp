@@ -115,6 +115,10 @@ void Player::Move()
 		move.y = 0.0f;
 		move.z *= Speed;
 
+		// 移動ベクトルをカメラの角度だけ回転する
+		Matrix4x4 rotateMatrix = MakeRotateYMatrix(camera_->transform.rotate.y);
+
+		move = TransformNormal(move, rotateMatrix);
 
 		//目標角度の算出
 		angle_ = std::atan2(move.x, move.z);

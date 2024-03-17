@@ -25,6 +25,9 @@ void GamePlayScene::Initialize()
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
 
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+
 #ifdef _DEBUG
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG
@@ -42,9 +45,7 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	triangle.reset(Triangle::Create(uvTexture));
-
-	triangle->SetisInvisible(true);
+	
 
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
@@ -67,6 +68,7 @@ void GamePlayScene::Initialize()
 
 
 	player->SetWeapon(playerWeapon_.get());
+	player->SetCamera(camera);
 
 	//colliderManager_->UpdateWorldTransform();
 
@@ -76,6 +78,7 @@ void GamePlayScene::Initialize()
 
 	//
 
+	followCamera_->SetTarget(player->GetWorldTransform());
 
 }
 
@@ -85,10 +88,13 @@ void GamePlayScene::Update()
 
 
 	//camera->transform.translate = Add(player->GetWorldPosition(), offset);
-	//camera->UpdateMatrix();
+	camera->UpdateMatrix();
 
-	
-	input->TriggerKey(DIK_0);
+	followCamera_->Update();
+	camera->matView = followCamera_->GetCamera()->matView;
+	camera->matProjection = followCamera_->GetCamera()->matProjection;
+	camera->TransferMatrix();
+	//camera->UpdateMatrix();
 
 	if (timer.GetNowSecond() != 120)
 	{
@@ -186,6 +192,7 @@ void GamePlayScene::Update()
 #ifdef _DEBUG
 
 	camera->CameraDebug();
+	followCamera_->CameraDebug();
 
 #endif // _DEBUG
 
@@ -205,13 +212,13 @@ void GamePlayScene::Update()
 	sword->Update();
 
 	Vector3 weaponPos = player->GetPosition();
-
 	weaponPos.z = weaponPos.z + 5.0f;
 
 	playerWeapon_->SetPosition(weaponPos);
-
 	playerWeapon_->Update();
 	
+
+
 }
 
 void GamePlayScene::Draw()

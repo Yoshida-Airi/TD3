@@ -25,9 +25,15 @@ public:
 	bool GetIsUnderAttack() { return isUnderAttack; };
 	bool GetIsSkill() { return isSkill; };
 	Vector3 GetWorldPosition()override;
+	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
+
+	void SetCamera(Camera* camera)
+	{
+		camera_ = camera;
+	}
 
 private:
 	Input* input_ = nullptr;
