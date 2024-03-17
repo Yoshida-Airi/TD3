@@ -165,11 +165,10 @@ void Player::PLevelUp()
 	AttackPower += AttackPowerIncreasePerLevel;
 	
 }
-}
 
 void Player::Direction()
 {
-	
+
 
 }
 
