@@ -64,7 +64,7 @@ void GamePlayScene::Initialize()
 	sword->Initialize();
 
 	boss_ = std::make_unique<Boss>();
-	boss_->Initialize();
+	boss_->Initialize(player.get());
 
 	//sampleEnemy = std::make_unique<PlayerWeapon>();
 	//sampleEnemy->Initialize();
@@ -370,7 +370,7 @@ void GamePlayScene::BossSceneAllCollisions() {
 void GamePlayScene::EnemySpawn() {
 
 	Enemy* newEnemy = new Enemy();
-	newEnemy->Initialize();
+	newEnemy->Initialize(player.get());
 
 	std::mt19937 random(generator());
 
