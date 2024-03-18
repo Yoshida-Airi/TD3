@@ -25,6 +25,7 @@
 #include "Enemy/Enemy.h"
 #include "Enemy/EnemyBullet.h"
 #include <random>
+#include "../Boss.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -62,6 +63,11 @@ private:
 	Input* input;
 
 	std::unique_ptr<Sprite> sprite = nullptr;
+	std::unique_ptr<Sphere> sphere = nullptr;
+	std::unique_ptr<Model> model = nullptr;
+	std::unique_ptr<ParticleSystem> particle = nullptr;
+	std::unique_ptr<Boss> boss_ = nullptr;
+
 	std::unique_ptr<Model> demo_stage = nullptr;
 
 	std::unique_ptr<Player> player = nullptr;
@@ -70,13 +76,17 @@ private:
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;
 
-	int enemyCount = 0;
-
+	int enemyCount = 1;
+	const int MaxEnemySpawn = 5;
 	bool isEnemySpawn = true;
 	bool isEnemyReSpawn = false;
 
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
+
+	bool isBossSpawn = false;
+
+	int enemyDeathCount = 0;
 
 	std::random_device generator;
 
@@ -92,4 +102,6 @@ private:
 private:
 
 	void CheckAllCollisions();
+
+	void BossSceneAllCollisions();
 };

@@ -60,6 +60,11 @@ void GamePlayScene::Initialize()
 	sword = std::make_unique<Sword>();
 	sword->Initialize();
 
+	boss_ = std::make_unique<Boss>();
+	boss_->Initialize();
+
+	//sampleEnemy = std::make_unique<PlayerWeapon>();
+	//sampleEnemy->Initialize();
 
 	player->SetWeapon(sword.get());
 	
@@ -94,7 +99,7 @@ void GamePlayScene::Update()
 	}
 	
 
-	if (timer.GetNowSecond() != 120)
+	if (timer.GetNowSecond() != 10)
 	{
 		sprite->worldTransform_->translation_ =
 		{
@@ -107,7 +112,7 @@ void GamePlayScene::Update()
 		EnemyAttack();
 
 		if (isEnemySpawn == true) {
-			if (enemyCount <= 4) {
+			if (enemyCount <= MaxEnemySpawn) {
 				EnemySpawn();
 				enemyCount++;
 			}
@@ -121,9 +126,10 @@ void GamePlayScene::Update()
 			if (enemys->GetIsDead()) {
 				//貰える経験値
 				playerlevel->Experiencepoint += 55.0f;
+				enemyDeathCount++;
 			}
 		}
-		
+
 		enemy_.remove_if([](Enemy* enemys) {
 			if (enemys->GetIsDead()) {
 				delete enemys;
@@ -144,6 +150,7 @@ void GamePlayScene::Update()
 			return false;
 			});
 
+		CheckAllCollisions();
 
 		if (timer.GetNowFrame() == 60)
 		{
@@ -155,13 +162,14 @@ void GamePlayScene::Update()
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
 		}
-		if (timer.GetNowWaveSecond() == 20 || input->TriggerKey(DIK_SPACE))//TriggerKey->敵の数を参照して０になったらリセットに変更
+		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)//TriggerKey->敵の数を参照して０になったらリセットに変更
 		{
-			timer.AddNowWaveSecond();
+			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
 
 			isEnemySpawn = true;
-			enemyCount = 0;
+			enemyCount = 1;
+			enemyDeathCount = 0;
 
 			sprite->worldTransform_->translation_ =
 			{
@@ -169,23 +177,47 @@ void GamePlayScene::Update()
 			};
 		}
 	}
-	else if (timer.GetNowSecond() >= 120)
+	else if (timer.GetNowSecond() >= 10)
 	{
 		timer.AddBossFrame();
+
+		enemy_.remove_if([](Enemy* enemys) {
+			delete enemys;
+			return true;
+			});
+
+		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+			delete enemyBullets;
+			return true;
+			});
+
+		boss_->Update();
+
+		if (boss_->GetIsDead() == false) {
+			isBossSpawn = true;
+		}
+		else {
+			isBossSpawn = false;
+		}
+
+		BossSceneAllCollisions();
+
 		if (timer.GetBossFrame() == 60)
 		{
 			timer.AddBossSecond();
 			timer.ResetBossFrame();
 		}
 	}
-	//ImGui::Begin("Frame&Seconds");
-	//ImGui::DragInt("nowFrame", (int*)timer.GetNowFrame());
-	//ImGui::DragInt("nowWaveFrame", (int*)timer.GetNowWaveFrame());
-	//ImGui::DragInt("nowSecond", (int*)timer.GetNowSecond());
-	//ImGui::DragInt("nowWaveSecond", (int*)timer.GetNowWaveSecond());
-	//ImGui::DragInt("bossFrame", (int*)timer.GetBossFrame());
-	//ImGui::DragInt("bossSecond", (int*)timer.GetBossSecond());
-	//ImGui::End();
+	ImGui::Begin("Frame&Seconds");
+	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
+	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
+	ImGui::Text("nowSecond : %u", timer.GetNowSecond());
+	ImGui::Text("nowWaveSecond : %u", timer.GetNowWaveSecond());
+	ImGui::Text("bossFrame : %u", timer.GetBossFrame());
+	ImGui::Text("bossSecond : %u", timer.GetBossSecond());
+	ImGui::Text("boss : %d", boss_->GetIsDead());
+	ImGui::Text("hp: %d", boss_->GetHP());
+	ImGui::End();
 
 #ifdef _DEBUG
 
@@ -225,6 +257,7 @@ void GamePlayScene::Draw()
 	if (player->GetIsUnderAttack())
 	{
 	}
+
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
@@ -255,7 +288,14 @@ void GamePlayScene::Draw()
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
 	}
+
+	if (isBossSpawn == true) {
+		boss_->Draw(camera);
+	}
+
 	playerlevel->Draw();
+
+
 
 	//colliderManager_->Draw(camera);
 }
@@ -281,8 +321,22 @@ void GamePlayScene::CheckAllCollisions()
 	}
 }
 
+void GamePlayScene::BossSceneAllCollisions() {
+	colliderManager_->ListClear();
 
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	if (player->GetIsUnderAttack() == true) {
+		colliderManager_->AddColliders(playerWeapon_.get());
+	}
+	if (boss_->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(boss_.get());
+	}
+	//colliderManager_->AddColliders(sampleEnemy.get());
 
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
+}
 
 void GamePlayScene::EnemySpawn() {
 

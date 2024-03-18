@@ -128,6 +128,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Math\Timer.cpp" />
     <ClCompile Include="Application\Object\Player\Sword.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
@@ -261,6 +262,7 @@
     <ClInclude Include="Application\Object\Player\FollowCamera.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
