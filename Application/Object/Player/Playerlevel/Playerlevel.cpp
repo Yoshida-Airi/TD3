@@ -25,22 +25,18 @@ void Playerlevel::Initialize() {
 	sprite1.reset(Sprite::Create(experiencepointbar));
 	sprite1->SetSize({ 11.0f, 18.0f });
 	sprite1->SetTextureLeftTop({ 0,0 });
-	sprite1->worldTransform_->translation_.x = 54.0f;
-	sprite1->worldTransform_->translation_.y = 31.0f;
 
 	sprite2.reset(Sprite::Create(levelpointbar));
 	sprite2->SetSize({ 64.0f, 13.0f });
 	sprite2->SetTextureLeftTop({ 0,0 });
-	sprite2->worldTransform_->translation_.x = 96.0f;
-	sprite2->worldTransform_->translation_.y = 18.0f;
-
+	
 	sprite3.reset(Sprite::Create(skillbar));
 	sprite3->SetSize({ 64.0f, 13.0f });
 	sprite3->SetTextureLeftTop({ 0,0 });
-	sprite3->worldTransform_->translation_.x = -1008.0f;
-	sprite3->worldTransform_->translation_.y = -49.0f;
+	
 }
 void Playerlevel::Update() {
+	
 #ifdef _DEBUG
 	camera->CameraDebug();
 #endif // _DEBUG
@@ -81,7 +77,6 @@ void Playerlevel::Draw() {
 	sprite2->Draw(camera);
 	sprite1->Draw(camera);
 	sprite0->Draw(camera);
-
 }
 
 void Playerlevel::Levelup() {

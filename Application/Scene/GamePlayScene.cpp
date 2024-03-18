@@ -41,11 +41,14 @@ void GamePlayScene::Initialize()
 
 	timer.Initialize();
 
-
+	
 	
 
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
+
+	
+
 
 
 	sprite.reset(Sprite::Create(Doll));
@@ -74,6 +77,12 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
+	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
+	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
+	playerlevel->sprite2->worldTransform_->translation_.y = 18.0f;
+	playerlevel->sprite3->worldTransform_->translation_.x = -1008.0f;
+	playerlevel->sprite3->worldTransform_->translation_.y = -49.0f;
 	if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
@@ -272,7 +281,27 @@ void GamePlayScene::Draw()
 			player->model_->worldTransform_->translation_.x += dashX;
 			player->model_->worldTransform_->translation_.z += dashZ;
 
-		
+
+			//カメラ直書き
+			camera->transform.translate.x += dashX;
+			camera->transform.translate.z += dashZ;
+		}
+		if (playerlevel->nowskilllevel == 2) {
+
+			float directionAngle = player->model_->worldTransform_->rotation_.y;
+
+			float dashSpeed = 0.5f;
+
+			float dashX = std::sin(directionAngle) * dashSpeed;
+			float dashZ = std::cos(directionAngle) * dashSpeed;
+
+			player->model_->worldTransform_->translation_.x += dashX;
+			player->model_->worldTransform_->translation_.z += dashZ;
+			sword->model_->worldTransform_->rotation_.y += 1.0f;
+			if (sword->model_->worldTransform_->rotation_.y >= 6.28f) {
+				sword->model_->worldTransform_->rotation_.y = 0.0f;
+			}
+
 			//カメラ直書き
 			camera->transform.translate.x += dashX;
 			camera->transform.translate.z += dashZ;
