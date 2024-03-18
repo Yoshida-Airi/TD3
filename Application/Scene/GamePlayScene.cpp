@@ -160,7 +160,7 @@ void GamePlayScene::Update()
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
 		}
-		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)//TriggerKey->敵の数を参照して０になったらリセットに変更
+		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)
 		{
 			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
