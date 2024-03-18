@@ -20,6 +20,8 @@ void Boss::Initialize() {
 
 	hp = 100;
 
+	player_ = std::make_unique<Player>();
+
 }
 
 void Boss::Update() {
@@ -92,7 +94,7 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		hp -= 20;
+		hp -= player_->AttackPower;
 		isCoolDown = true;
 	}
 
