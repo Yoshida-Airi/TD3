@@ -504,6 +504,8 @@ void GamePlayScene::skill3Update()
 
 	if (MotionCount_ == 0)
 	{
+		
+
 		if (MotionTimer_ == 10)
 		{
 			MotionCount_ = 1;
@@ -533,8 +535,8 @@ void GamePlayScene::skill3Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180; 
-
+		skillCooldownTime_ = 180;
+	
 	}
 
 }
@@ -543,12 +545,17 @@ void GamePlayScene::skillRootInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+
 }
 
 void GamePlayScene::skill1Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+
+
 }
 
 void GamePlayScene::skill2Initialize()
