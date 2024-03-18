@@ -29,6 +29,7 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
+	uint32_t GetNowPower() { return AttackPower; };
 	int AttackPower = 5;
 
 private:

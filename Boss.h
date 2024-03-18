@@ -6,7 +6,7 @@
 #include <random>
 #include "Collider.h"
 #include "Player.h"
-
+#include "imgui.h"
 class Boss : public Collider {
 public:
 	~Boss();
