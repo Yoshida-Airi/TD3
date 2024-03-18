@@ -11,7 +11,7 @@ class Enemy : public Collider {
 public:
 	~Enemy();
 
-	void Initialize();
+	void Initialize(Player* player);
 
 	void Update();
 
@@ -35,7 +35,7 @@ public:
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;
-	std::unique_ptr<Player> player = nullptr;
+	Player* player_ = nullptr;
 	Input* input_ = nullptr;
 
 	int deathTimer = 120;
