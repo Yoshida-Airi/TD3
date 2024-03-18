@@ -5,6 +5,7 @@
 #include "Playerlevel/Playerlevel.h"
 #include <random>
 #include "Collider.h"
+#include "Player.h"
 
 class Boss : public Collider {
 public:
@@ -38,6 +39,8 @@ public:
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Player> player_ = nullptr;
+
 	Input* input_ = nullptr;
 
 	int deathTimer = 120;
