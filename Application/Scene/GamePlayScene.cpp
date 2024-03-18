@@ -437,9 +437,9 @@ void GamePlayScene::skill1Update()
 	if (MotionCount_ == 1)
 	{
 		behaviorRequest_ = Skill::kRoot;
-		// スキル1使用後、クールダウンを開始する
+		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180; // クールダウン時間を設定する（例えば、180フレーム）
+		skillCooldownTime_ = 180; 
 
 	}
 
