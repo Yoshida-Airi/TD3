@@ -43,7 +43,9 @@ void Boss::Update() {
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
-
+	ImGui::Begin("Boss");
+	ImGui::Text("HP : %d", hp);
+	ImGui::End();
 }
 
 void Boss::Draw(Camera* camera) {
