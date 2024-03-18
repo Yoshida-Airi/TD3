@@ -306,6 +306,7 @@ void GamePlayScene::Update()
 		behaviorRequest_ = std::nullopt;
 	}
 
+	//スキルの更新処理
 	switch (behavior_)
 	{
 	case  GamePlayScene::Skill::kRoot:
