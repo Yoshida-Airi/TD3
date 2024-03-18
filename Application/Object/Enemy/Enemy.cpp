@@ -47,6 +47,7 @@ void Enemy::Draw(Camera* camera) {
 
 void Enemy::Finalize() {
 	
+	
 }
 
 void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
