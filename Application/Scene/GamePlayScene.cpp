@@ -116,7 +116,9 @@ void GamePlayScene::Update()
 				EnemySpawn();
 				enemyCount++;
 			}
+			else {
 				isEnemySpawn = false;
+			}
 		}
 
 		for (Enemy* enemys : enemy_) {
@@ -169,10 +171,10 @@ void GamePlayScene::Update()
 			enemyCount = 1;
 			enemyDeathCount = 0;
 
-			sprite->worldTransform_->translation_ =
-			{
-				1280.0f,300.0f,0.0f
-			};
+			//sprite->worldTransform_->translation_ =
+			//{
+			//	1280.0f,300.0f,0.0f
+			//};
 		}
 	}
 	else if (timer.GetNowSecond() >= 10)
