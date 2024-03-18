@@ -327,7 +327,7 @@ void GamePlayScene::BossSceneAllCollisions() {
 	//コライダーにオブジェクトを登録
 	colliderManager_->AddColliders(player.get());
 	if (player->GetIsUnderAttack() == true) {
-		colliderManager_->AddColliders(playerWeapon_.get());
+		colliderManager_->AddColliders(sword.get());
 	}
 	if (boss_->GetIsCoolDown() == false) {
 		colliderManager_->AddColliders(boss_.get());

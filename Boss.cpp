@@ -16,7 +16,7 @@ void Boss::Initialize() {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
-	SetRadius(model_->worldTransform_->scale_.x);
+	SetRadius(model_->worldTransform_->scale_);
 
 	hp = 100;
 
