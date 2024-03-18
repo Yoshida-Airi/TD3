@@ -361,7 +361,9 @@ void GamePlayScene::CheckAllCollisions()
 			colliderManager_->ListClear();
 
 			//コライダーにオブジェクトを登録
-			colliderManager_->AddColliders(player.get());
+			if (player->GetIsCoolDown() == false) {
+				colliderManager_->AddColliders(player.get());
+			}
 			if (player->GetIsUnderAttack() == true) {
 				colliderManager_->AddColliders(sword.get());
 			}
@@ -378,7 +380,9 @@ void GamePlayScene::BossSceneAllCollisions() {
 	colliderManager_->ListClear();
 
 	//コライダーにオブジェクトを登録
-	colliderManager_->AddColliders(player.get());
+	if (player->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(player.get());
+	}
 	if (player->GetIsUnderAttack() == true) {
 		colliderManager_->AddColliders(sword.get());
 	}

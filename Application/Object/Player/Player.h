@@ -32,13 +32,15 @@ public:
 	uint32_t GetNowPower() { return AttackPower; };
 	int AttackPower = 5;
 
+	bool GetIsCoolDown() { return isCoolDown; }
+
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 
 	Sword* Weapon_ = nullptr;
 
-	float Speed = 0.03f;	//速度
+	float Speed = 0.03f;//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中
 	bool isSkill = false; //skill中がどうか　true : skill発動中
 
@@ -49,6 +51,9 @@ private:
 
 	int HP = 5000;
 	float angle_ = 0.0f;
+
+	bool isCoolDown = false;
+	int coolDownTimer = 0;
 
 private:
 
@@ -66,5 +71,7 @@ private:
 	float LerpShortAngle(float a, float b, float t);
 	
 	void Rotate();
+
+	void CoolDown();
 
 };

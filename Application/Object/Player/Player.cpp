@@ -42,6 +42,8 @@ void Player::Update()
 	Skill();
 	//方向
 	Direction();
+	//ヒット時のクールダウン
+	CoolDown();
 
 }
 
@@ -71,12 +73,14 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
 	{
-		HP -= 1;
+		HP -= 100;
+		isCoolDown = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
-		HP -= 1;
+		HP -= 200;
+		isCoolDown = true;
 	}
 }
 
@@ -160,6 +164,18 @@ void Player::PLevelUp()
 	HP += HPIncreasePerLevel;
 	AttackPower += AttackPowerIncreasePerLevel;
 	
+}
+
+void Player::CoolDown() {
+	if (isCoolDown == true) {
+		coolDownTimer++;
+	}
+
+	if (coolDownTimer == 120) {
+		isCoolDown = false;
+		coolDownTimer = 0;
+	}
+
 }
 
 void Player::Direction()
