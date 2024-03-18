@@ -85,7 +85,6 @@ void Playerlevel::Draw() {
 }
 
 void Playerlevel::Levelup() {
-	//playerのHPやATTACKを増加するコードをここに書く
 	nowlevel += 1;
 	sprite2->worldTransform_->scale_.x += 1.0f;
 }

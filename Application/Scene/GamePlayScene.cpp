@@ -42,52 +42,32 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	triangle.reset(Triangle::Create(uvTexture));
-
-	triangle->SetisInvisible(true);
+	
 
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
-	//triangle.reset(Triangle::Create(uvTexture));
-	//triangle->SetisInvisible(true);
-	//
+
 
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
 
-	//sprite->SetisInvisible(true);
-
-
-	//sprite.reset(Sprite::Create(Doll));
-	//sprite->SetSize({ 64.0f, 64.0f });
-	//sprite->SetTextureLeftTop({ 0,0 });
-
-	//sphere.reset(Sphere::Create(monsterBall));
-	//sphere->worldTransform_->translation_.y = -1.0f;
-
-	//model.reset(Model::Create("Resources/DefaultAssets/plane.gltf"));
-	//model->worldTransform_->rotation_.y = 3.14f;
-
-
-	//particle.reset(ParticleSystem::Create(circle));
-	//particle->emitter_->count = 100;
-	////particle->SetisInvisible(true);
+	
 
 	player = std::make_unique<Player>();
-	player->Initialize();
-
-	playerWeapon_ = std::make_unique<PlayerWeapon>();
-	playerWeapon_->Initialize();
+	player->Initialize(camera);
 
 	sword = std::make_unique<Sword>();
 	sword->Initialize();
 
+	boss_ = std::make_unique<Boss>();
+	boss_->Initialize();
+
 	//sampleEnemy = std::make_unique<PlayerWeapon>();
 	//sampleEnemy->Initialize();
 
-	player->SetWeapon(playerWeapon_.get());
-
+	player->SetWeapon(sword.get());
+	
 	//colliderManager_->UpdateWorldTransform();
 
 }
@@ -113,7 +93,11 @@ void GamePlayScene::Update()
 
 	camera->UpdateMatrix();
 
-	input->TriggerKey(DIK_0);
+	if (playerlevel->nowlevel == playerlevel->count) {
+		player->PLevelUp();
+		playerlevel->count += 1;
+	}
+	
 
 	if (timer.GetNowSecond() != 120)
 	{
@@ -128,7 +112,7 @@ void GamePlayScene::Update()
 		EnemyAttack();
 
 		if (isEnemySpawn == true) {
-			for (uint32_t i = 0; i < 5;i++) {
+			if (enemyCount <= MaxEnemySpawn) {
 				EnemySpawn();
 				enemyCount++;
 			}
@@ -140,10 +124,10 @@ void GamePlayScene::Update()
 			if (enemys->GetIsDead()) {
 				//貰える経験値
 				playerlevel->Experiencepoint += 55.0f;
-				enemyCount--;
+				enemyDeathCount++;
 			}
 		}
-		
+
 		enemy_.remove_if([](Enemy* enemys) {
 			if (enemys->GetIsDead()) {
 				delete enemys;
@@ -164,6 +148,7 @@ void GamePlayScene::Update()
 			return false;
 			});
 
+		CheckAllCollisions();
 
 		if (timer.GetNowFrame() == 60)
 		{
@@ -175,13 +160,14 @@ void GamePlayScene::Update()
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
 		}
-		if (timer.GetNowWaveSecond() == 20 || enemyCount == 0)
+		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)//TriggerKey->敵の数を参照して０になったらリセットに変更
 		{
 			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
 
 			isEnemySpawn = true;
-			
+			enemyCount = 1;
+			enemyDeathCount = 0;
 
 			sprite->worldTransform_->translation_ =
 			{
@@ -189,9 +175,31 @@ void GamePlayScene::Update()
 			};
 		}
 	}
-	else if (timer.GetNowSecond() >= 120)
+	else if (timer.GetNowSecond() >= 10)
 	{
 		timer.AddBossFrame();
+
+		enemy_.remove_if([](Enemy* enemys) {
+			delete enemys;
+			return true;
+			});
+
+		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+			delete enemyBullets;
+			return true;
+			});
+
+		boss_->Update();
+
+		if (boss_->GetIsDead() == false) {
+			isBossSpawn = true;
+		}
+		else {
+			isBossSpawn = false;
+		}
+
+		BossSceneAllCollisions();
+
 		if (timer.GetBossFrame() == 60)
 		{
 			timer.AddBossSecond();
@@ -199,12 +207,14 @@ void GamePlayScene::Update()
 		}
 	}
 	ImGui::Begin("Frame&Seconds");
-	ImGui::Text("%u", timer.GetNowFrame());
-	ImGui::Text("%u", timer.GetNowWaveFrame());
-	ImGui::Text("%u", timer.GetNowSecond());
-	ImGui::Text("%u", timer.GetNowWaveSecond());
-	ImGui::Text("%u", timer.GetBossFrame());
-	ImGui::Text("%u", timer.GetBossSecond());
+	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
+	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
+	ImGui::Text("nowSecond : %u", timer.GetNowSecond());
+	ImGui::Text("nowWaveSecond : %u", timer.GetNowWaveSecond());
+	ImGui::Text("bossFrame : %u", timer.GetBossFrame());
+	ImGui::Text("bossSecond : %u", timer.GetBossSecond());
+	ImGui::Text("boss : %d", boss_->GetIsDead());
+	ImGui::Text("hp: %d", boss_->GetHP());
 	ImGui::End();
 
 #ifdef _DEBUG
@@ -221,24 +231,7 @@ void GamePlayScene::Update()
 
 	CheckAllCollisions();
 
-	//sprite->worldTransform_->translation_ = { 700.0f };
 
-	//triangle->Update();
-	//triangle->worldTransform_->rotation_.y += 0.03f;
-
-	//sprite->worldTransform_->translation_ = { 700.0f };
-	//sprite->Update();
-	//sprite->Debug("Doll");
-
-	//sphere->Update();
-	//sphere->worldTransform_->rotation_.y += 0.01f;
-
-	/*model->ModelDebug("plane");
-	model->Update();
-	model->worldTransform_->translation_.x = 3.0f;*/
-
-	//particle->Debug("circleParticle");
-	//particle->Update();
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
 	playerlevel->Update();
@@ -246,44 +239,44 @@ void GamePlayScene::Update()
 	sword->Update();
 
 	Vector3 weaponPos = player->GetPosition();
-
 	weaponPos.z = weaponPos.z + 5.0f;
 
-	playerWeapon_->SetPosition(weaponPos);
+	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
 
 
-	//sampleEnemy->Update();
-	playerWeapon_->Update();
-	//sampleEnemy->Update();
 }
 
 void GamePlayScene::Draw()
 {
-
-	//triangle->Draw(camera);
-	//sphere->Draw(camera);
-	//model->Draw(camera);
-	//sprite->Draw(camera);
-	//particle->Draw(camera);
 	demo_stage->Draw(camera);
-	player->Draw(camera);
+	player->Draw();
 	sword->Draw(camera);
 
 	if (player->GetIsUnderAttack())
 	{
-		playerWeapon_->Draw(camera);
 	}
+
 	if (player->GetIsSkill())
 	{
 		if (playerlevel->nowskilllevel == 1) {
-			//向いている方向にダッシュに変更予定。今はｚにダッシュのみ
-			player->model_->worldTransform_->translation_.z += 0.5f;
-			sword->model_->worldTransform_->translation_.z += 0.5f;
-			camera->transform.translate.z += 0.5f;
+
+			float directionAngle = player->model_->worldTransform_->rotation_.y;
+
+			float dashSpeed = 0.5f;
+
+			float dashX = std::sin(directionAngle) * dashSpeed;
+			float dashZ = std::cos(directionAngle) * dashSpeed;
+
+			player->model_->worldTransform_->translation_.x += dashX;
+			player->model_->worldTransform_->translation_.z += dashZ;
+
+		
+			//カメラ直書き
+			camera->transform.translate.x += dashX;
+			camera->transform.translate.z += dashZ;
 		}
 	}
-	//sampleEnemy->Draw(camera);
-
+	
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Draw(camera);
@@ -293,7 +286,14 @@ void GamePlayScene::Draw()
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
 	}
+
+	if (isBossSpawn == true) {
+		boss_->Draw(camera);
+	}
+
 	playerlevel->Draw();
+
+
 
 	//colliderManager_->Draw(camera);
 }
@@ -308,11 +308,10 @@ void GamePlayScene::CheckAllCollisions()
 			//コライダーにオブジェクトを登録
 			colliderManager_->AddColliders(player.get());
 			if (player->GetIsUnderAttack() == true) {
-				colliderManager_->AddColliders(playerWeapon_.get());
+				colliderManager_->AddColliders(sword.get());
 			}
 			colliderManager_->AddColliders(enemyBullets);
 			colliderManager_->AddColliders(enemys);
-			//colliderManager_->AddColliders(sampleEnemy.get());
 
 			//当たり判定
 			colliderManager_->ChackAllCollisions();
@@ -320,8 +319,22 @@ void GamePlayScene::CheckAllCollisions()
 	}
 }
 
+void GamePlayScene::BossSceneAllCollisions() {
+	colliderManager_->ListClear();
 
+	//コライダーにオブジェクトを登録
+	colliderManager_->AddColliders(player.get());
+	if (player->GetIsUnderAttack() == true) {
+		colliderManager_->AddColliders(sword.get());
+	}
+	if (boss_->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(boss_.get());
+	}
+	//colliderManager_->AddColliders(sampleEnemy.get());
 
+	//当たり判定
+	colliderManager_->ChackAllCollisions();
+}
 
 void GamePlayScene::EnemySpawn() {
 
@@ -377,3 +390,4 @@ void GamePlayScene::EnemyAttack() {
 	}
 
 }
+

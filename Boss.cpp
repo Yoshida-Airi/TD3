@@ -1,28 +1,28 @@
-#include "Enemy.h"
+#include "Boss.h"
 #include"CollisionConfig.h"
 
-Enemy::~Enemy() {
+Boss::~Boss() {
 
 }
 
-void Enemy::Initialize() {
+void Boss::Initialize() {
 	Collider::Initialize();
 
 	//当たり判定用
-	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemy));
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kBoss));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
-	model_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
-
 	SetRadius(model_->worldTransform_->scale_);
-	player = std::make_unique<Player>();
+
+	hp = 100;
+
 }
 
-void Enemy::Update() {
+void Boss::Update() {
 	input_->Update();
 
 	model_->Update();
@@ -31,32 +31,37 @@ void Enemy::Update() {
 
 	model_->worldTransform_->translation_.x += 0.001f;
 
+	if (hp <= 0)
+	{
+		isDead_ = true;
+	}
+
+	CoolDown();
+
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
-	ImGui::Begin("EnemyHP");
-	ImGui::Text("%d", EnemyHP);
-	ImGui::End();
+
 }
 
-void Enemy::Draw(Camera* camera) {
+void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
 
 }
 
-void Enemy::Finalize() {
-	
+void Boss::Finalize() {
+
 }
 
-void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
-	std::uniform_real_distribution<float> translateX (-3.0f, 3.0f);
-	std::uniform_real_distribution<float> translateZ (-3.0f, 3.0f);
+void Boss::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
+	std::uniform_real_distribution<float> translateX(-3.0f, 3.0f);
+	std::uniform_real_distribution<float> translateZ(-3.0f, 3.0f);
 
 	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
 }
 
-Vector3 Enemy::GetWorldPosition()
+Vector3 Boss::GetWorldPosition()
 {
 	// ワールド座標を入れる変数
 	Vector3 worldpos;
@@ -69,15 +74,27 @@ Vector3 Enemy::GetWorldPosition()
 	return worldpos;
 }
 
+void Boss::CoolDown() {
+	if (isCoolDown == true) {
+		coolDownTimer++;
+	}
 
-void Enemy::OnCollision([[maybe_unused]] Collider* other)
+	if (coolDownTimer == 120) {
+		isCoolDown = false;
+		coolDownTimer = 0;
+	}
+
+}
+
+void Boss::OnCollision([[maybe_unused]] Collider* other)
 {
 
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		EnemyHP -= player->AttackPower;
+		hp -= 20;
+		isCoolDown = true;
 	}
 
-	
+
 }

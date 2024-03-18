@@ -9,11 +9,11 @@ void Sword::Initialize()
 
 	Collider::Initialize();
 
-	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
-	SetRadius(model_->worldTransform_->scale_.x);
+	SetRadius({3.0f,1.0f,1.0f});
 
 }
 
@@ -22,8 +22,6 @@ void Sword::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();
 	model_->ModelDebug("Sword");
-
-	Move();
 
 	Attack();
 }
@@ -51,25 +49,6 @@ void Sword::OnCollision([[maybe_unused]] Collider* other)
 {
 }
 
-void Sword::Move()
-{
-	if (input_->PushKey(DIK_W))
-	{
-		model_->worldTransform_->translation_.z += Speed;
-	}
-	if (input_->PushKey(DIK_S))
-	{
-		model_->worldTransform_->translation_.z -= Speed;
-	}
-	if (input_->PushKey(DIK_A))
-	{
-		model_->worldTransform_->translation_.x -= Speed;
-	}
-	if (input_->PushKey(DIK_D))
-	{
-		model_->worldTransform_->translation_.x += Speed;
-	}
-}
 
 void Sword::Attack()
 {

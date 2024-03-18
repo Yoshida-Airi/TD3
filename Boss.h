@@ -2,14 +2,13 @@
 #include "Model.h"
 #include "Camera.h"
 #include "Input.h"
-#include "Player.h"
+#include "Playerlevel/Playerlevel.h"
 #include <random>
 #include "Collider.h"
-#include"ImGuiManager.h"
 
-class Enemy : public Collider {
+class Boss : public Collider {
 public:
-	~Enemy();
+	~Boss();
 
 	void Initialize();
 
@@ -27,22 +26,31 @@ public:
 
 	Matrix4x4 GetMatWorld() { return model_->worldTransform_->matWorld_; }
 
-	bool GetIsDead() { return isDead_(); }
+	bool GetIsDead() { return isDead_; }
 
 	Vector3 GetWorldPosition()override;
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 
+	int GetHP() { return hp; }
+
+	bool GetIsCoolDown() { return isCoolDown; }
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
-	std::unique_ptr<Player> player = nullptr;
 	Input* input_ = nullptr;
 
 	int deathTimer = 120;
-	int EnemyHP = 2000;
-	bool isDead_() {
-		return EnemyHP < 0;
-	}
+	bool isDead_ = false;
+
+	int hp = 0;
+
+	bool isCoolDown = false;
+	int coolDownTimer = 0;
+
+private:
+
+	void CoolDown();
 
 };
 

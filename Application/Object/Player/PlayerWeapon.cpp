@@ -14,7 +14,7 @@ void PlayerWeapon::Initialize()
 	model->worldTransform_->scale_.y = 0.5f;
 	model->worldTransform_->scale_.z = 0.5f;
 
-	SetRadius(model->worldTransform_->scale_.x);
+	SetRadius(model->worldTransform_->scale_);
 
 }
 
@@ -55,4 +55,11 @@ void PlayerWeapon::OnCollision([[maybe_unused]] Collider* other)
 	{
 
 	}
+
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
+	{
+
+	}
+
+
 }
