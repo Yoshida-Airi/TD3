@@ -18,8 +18,6 @@ void TitleScene::Initialize()
 	camera = new Camera;
 	camera->Initialize();
 
-
-
 	fence_.reset(Model::Create("Resources/DefaultAssets/fence.obj"));
 	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	fence_->worldTransform_->rotation_.y = 3.1f;
@@ -50,12 +48,9 @@ void TitleScene::Update()
 	fence_->Update();
 	cube_->Update();
 
-
-	
 	cube_->ModelDebug("cube");
 	fence_->ModelDebug("fence");
 	fence_->Parent(cube_.get());
-
 
 }
 
@@ -63,6 +58,5 @@ void TitleScene::Draw()
 {
 	fence_->Draw(camera);
 	cube_->Draw(camera);
-
 }
 

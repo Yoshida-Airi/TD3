@@ -108,14 +108,29 @@
     <ClCompile Include="Application\Object\Player\Player.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Object\Player\Playerlevel\Playerlevel.cpp">
+      <Filter>Application\Object\Player</Filter>
+    </ClCompile>
     <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Object\CollisionManager.cpp">
-      <Filter>Application\Object</Filter>
+    <ClCompile Include="Application\Object\Enemy\Enemy.cpp">
+      <Filter>Application\Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Object\Collider.cpp">
-      <Filter>Application\Object</Filter>
+    <ClCompile Include="Application\Object\Enemy\EnemyBullet.cpp">
+      <Filter>Application\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Collider\Collider.cpp">
+      <Filter>Application\Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Collider\CollisionManager.cpp">
+      <Filter>Application\Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Timer.cpp" />
+    <ClCompile Include="Application\Object\Player\Sword.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
+      <Filter>Application\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,18 +236,33 @@
     <ClInclude Include="Application\Object\Player\Player.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Object\Player\Playerlevel\Playerlevel.h">
+      <Filter>Application\Object\Player</Filter>
+    </ClInclude>
     <ClInclude Include="Application\Object\Player\PlayerWeapon.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Object\Collider.h">
-      <Filter>Application\Object</Filter>
+    <ClInclude Include="Application\Object\Enemy\Enemy.h">
+      <Filter>Application\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Object\CollisionConfig.h">
-      <Filter>Application\Object</Filter>
+    <ClInclude Include="Application\Object\Enemy\EnemyBullet.h">
+      <Filter>Application\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Object\CollisionManager.h">
-      <Filter>Application\Object</Filter>
+    <ClInclude Include="Application\Object\Collider\Collider.h">
+      <Filter>Application\Object\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Object\Collider\CollisionConfig.h">
+      <Filter>Application\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Collider\CollisionManager.h">
+      <Filter>Application\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Math\Timer.h" />
+    <ClInclude Include="Application\Object\Player\Sword.h" />
+    <ClInclude Include="Application\Object\Player\FollowCamera.h">
+      <Filter>Application\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -278,10 +308,16 @@
       <UniqueIdentifier>{556e2eef-2ae5-495b-a0e2-ee7a5af59989}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Object">
-      <UniqueIdentifier>{52c1d885-234e-44f3-8036-5287b77e433a}</UniqueIdentifier>
+      <UniqueIdentifier>{1a26c2b3-630f-4055-8074-3b2da370584a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Object\Player">
-      <UniqueIdentifier>{49fab23e-1832-48b8-9542-e4c67e8a1557}</UniqueIdentifier>
+      <UniqueIdentifier>{255cc5f8-eacf-4913-ab32-a8b8992ed9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Object\Enemy">
+      <UniqueIdentifier>{1aacd8d3-6608-4ea7-9094-ae4b405147b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Object\Collider">
+      <UniqueIdentifier>{ed1fb180-d8cb-4589-80a0-98bb9052f55f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

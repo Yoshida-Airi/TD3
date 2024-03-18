@@ -6,6 +6,7 @@
 #include <math.h>
 
 
+
 // 加算
 Vector3 Add(const Vector3& v1, const Vector3& v2);
 
@@ -98,3 +99,6 @@ Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
 Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 // Quaternionから回転行列を求める
 Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
+
+Vector3 CoorTransform(const Vector3& vector, const Matrix4x4& matrix);
+
