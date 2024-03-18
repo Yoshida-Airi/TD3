@@ -38,6 +38,14 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	enum class Skill
+	{
+		kRoot,	//待機
+		kSkill1,	//ダッシュ
+		kSkill2,	//ダッシュ＋攻撃
+		kSkill3	//範囲攻撃
+	};
+
 private:
 
 	void EnemySpawn();
@@ -84,6 +92,8 @@ private:
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
 
+
+
 	bool isBossSpawn = false;
 
 	int enemyDeathCount = 0;
@@ -92,6 +102,16 @@ private:
 
 	Vector3 offset;
 	Vector3 targetPosition;
+
+	Skill behavior_ = Skill::kRoot;
+	std::optional<Skill>behaviorRequest_ = std::nullopt;
+
+	int MotionTimer_ = 0;
+	int MotionCount_ = 0;
+
+	bool isSkillCooldown_; // スキルのクールダウン中かどうかを示すフラグ
+	unsigned int skillCooldownTime_; // スキルのクールダウン時間
+	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
 #ifdef _DEBUG
 
@@ -102,6 +122,17 @@ private:
 private:
 
 	void CheckAllCollisions();
-
 	void BossSceneAllCollisions();
+
+	void skillRootUpdate();
+	void skill1Update();
+	void skill2Update();
+	void skill3Update();
+	
+	void skillRootInitialize();	//待機
+	void skill1Initialize();	//スキル１
+	void skill2Initialize();	//スキル２
+	void skill3Initialzie();	//スキル３
+	
+
 };
