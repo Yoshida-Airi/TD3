@@ -146,10 +146,7 @@ void Player::Skill()
 	if (input_->PushKey(DIK_LSHIFT)) {
 		isSkill = true;
 	}
-	else
-	{
-		isSkill = false;
-	}
+	
 
 
 
