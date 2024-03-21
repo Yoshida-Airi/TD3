@@ -109,8 +109,9 @@ private:
 	int MotionTimer_ = 0;
 	int MotionCount_ = 0;
 
+	bool isSkill;
 	bool isSkillCooldown_; // スキルのクールダウン中かどうかを示すフラグ
-	unsigned int skillCooldownTime_; // スキルのクールダウン時間
+	int skillCooldownTime_; // スキルのクールダウン時間
 	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
 #ifdef _DEBUG

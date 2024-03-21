@@ -230,6 +230,14 @@ void GamePlayScene::Update()
 	ImGui::Text("bossSecond : %u", timer.GetBossSecond());
 	ImGui::Text("boss : %d", boss_->GetIsDead());
 	ImGui::Text("hp: %d", boss_->GetHP());
+
+
+	ImGui::End();
+
+	ImGui::Begin("Status");
+	ImGui::Text("motionTimer: %d", MotionTimer_);
+	ImGui::Text("isSkill: %d", isSkill);
+	ImGui::Text("skillCoortime: %d", skillCooldownTime_);
 	ImGui::End();
 
 #ifdef _DEBUG
@@ -258,22 +266,7 @@ void GamePlayScene::Update()
 
 	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
 
-	//スキルのアニメーション
-	if (player->GetIsSkill())
-	{
-		if (playerlevel->nowskilllevel == 1)
-		{
-			behaviorRequest_ = Skill::kSkill1;
-		}
-		if (playerlevel->nowskilllevel == 2)
-		{
-			behaviorRequest_ = Skill::kSkill2;
-		}
-		if (playerlevel->nowskilllevel == 3)
-		{
-			behaviorRequest_ = Skill::kSkill3;
-		}
-	}
+
 
 
 	if (behaviorRequest_)
@@ -325,14 +318,9 @@ void GamePlayScene::Update()
 
 	}
 
-	// スキルのクールダウンを減らす
-	if (isSkillCooldown_) {
-		skillCooldownTime_--;
-		if (skillCooldownTime_ <= 0) {
-			// クールダウンが終了したらフラグをリセットする
-			isSkillCooldown_ = false;
-		}
-	}
+
+	
+
 }
 
 void GamePlayScene::Draw()
@@ -403,6 +391,42 @@ void GamePlayScene::BossSceneAllCollisions() {
 
 void GamePlayScene::skillRootUpdate()
 {
+	//スキルのアニメーション
+	if (input->PushKey(DIK_LSHIFT))
+	{
+		isSkill = true;
+
+
+	}
+
+	if (isSkill == true && isSkillCooldown_ == false)
+	{
+		if (playerlevel->nowskilllevel == 1)
+		{
+			behaviorRequest_ = Skill::kSkill1;
+		}
+		if (playerlevel->nowskilllevel == 2)
+		{
+			behaviorRequest_ = Skill::kSkill2;
+		}
+		if (playerlevel->nowskilllevel == 3)
+		{
+			behaviorRequest_ = Skill::kSkill3;
+		}
+	}
+
+	// スキルのクールダウンを減らす
+	if (isSkillCooldown_) {
+		skillCooldownTime_--;
+		if (skillCooldownTime_ <= 0) {
+			// クールダウンが終了したらフラグをリセットする
+			isSkillCooldown_ = false;
+			isSkill = false;
+
+		}
+	}
+
+
 }
 
 void GamePlayScene::skill1Update()
@@ -421,7 +445,7 @@ void GamePlayScene::skill1Update()
 		}
 		float directionAngle = player->model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.5f;
+		float dashSpeed = 0.7f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -439,8 +463,10 @@ void GamePlayScene::skill1Update()
 	{
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
+		
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180; 
+		skillCooldownTime_ = 180;
+	
 
 	}
 
@@ -458,7 +484,7 @@ void GamePlayScene::skill2Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 10)
+		if (MotionTimer_ == 15)
 		{
 			MotionCount_ = 1;
 		}

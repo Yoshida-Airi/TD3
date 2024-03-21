@@ -20,6 +20,10 @@ public:
 		Weapon_ = playerWeapon;
 	}
 
+	void SetSkill(bool isSkill)
+	{
+		this->isSkill = isSkill;
+	}
 	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
