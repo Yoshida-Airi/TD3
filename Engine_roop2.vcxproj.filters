@@ -129,7 +129,7 @@
 
     <ClCompile Include="Application\Object\Effect\HitEffect.cpp">
       <Filter>Application\Object\Effect</Filter>
-
+    </ClCompile>
     <ClCompile Include="Engine\Math\Timer.cpp" />
     <ClCompile Include="Application\Object\Player\Sword.cpp" />
     <ClCompile Include="Boss.cpp" />
