@@ -77,6 +77,8 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+	XINPUT_STATE joyState;
+
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
 	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
@@ -102,6 +104,14 @@ void GamePlayScene::Update()
 	if (input->PushKey(DIK_D))
 	{
 		camera->transform.translate.x += 0.03f;
+	}
+
+	if (input->GetJoystickState(0, joyState)) {
+		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
+		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
+	}
+
+	camera->UpdateMatrix();
 	}*/
 	
 
@@ -580,9 +590,32 @@ void GamePlayScene::skill1Initialize()
 	MotionCount_ = 0;
 
 
+			//コライダーにオブジェクトを登録
+			if (player->GetIsCoolDown() == false) {
+				colliderManager_->AddColliders(player.get());
+			}
+			if (player->GetIsUnderAttack() == true) {
+				colliderManager_->AddColliders(sword.get());
+			}
+			colliderManager_->AddColliders(enemyBullets);
+			colliderManager_->AddColliders(enemys);
 
 }
 
+void GamePlayScene::BossSceneAllCollisions() {
+	colliderManager_->ListClear();
+
+	//コライダーにオブジェクトを登録
+	if (player->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(player.get());
+	}
+	if (player->GetIsUnderAttack() == true) {
+		colliderManager_->AddColliders(sword.get());
+	}
+	if (boss_->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(boss_.get());
+	}
+	//colliderManager_->AddColliders(sampleEnemy.get());
 void GamePlayScene::skill2Initialize()
 {
 	MotionTimer_ = 0;

@@ -39,13 +39,15 @@ public:
 	float Lerp(const float& a, const float& b, float t);
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
+	bool GetIsCoolDown() { return isCoolDown; }
+
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 
 	Sword* Weapon_ = nullptr;
 
-	float Speed = 0.03f;	//速度
+	float Speed = 0.03f;//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中
 	bool isSkill = false; //skill中がどうか　true : skill発動中
 
@@ -57,7 +59,8 @@ private:
 	int HP = 5000;
 	float angle_ = 0.0f;
 
-	
+	bool isCoolDown = false;
+	int coolDownTimer = 0;
 
 private:
 
@@ -71,5 +74,7 @@ private:
 	void Direction();
 	
 	void Rotate();
+
+	void CoolDown();
 
 };
