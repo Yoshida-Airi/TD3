@@ -78,8 +78,6 @@ void GamePlayScene::Initialize()
 void GamePlayScene::Update()
 {
 
-	if(nowSecond!=120)
-
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
 	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
@@ -384,10 +382,6 @@ void GamePlayScene::BossSceneAllCollisions() {
 
 	//コライダーにオブジェクトを登録
 	colliderManager_->AddColliders(player.get());
-
-	colliderManager_->AddColliders(playerWeapon_.get());
-	
-
 	if (player->GetIsUnderAttack() == true) {
 		colliderManager_->AddColliders(sword.get());
 	}
@@ -395,7 +389,6 @@ void GamePlayScene::BossSceneAllCollisions() {
 		colliderManager_->AddColliders(boss_.get());
 	}
 	//colliderManager_->AddColliders(sampleEnemy.get());
-
 
 	//当たり判定
 	colliderManager_->ChackAllCollisions();
