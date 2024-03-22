@@ -77,7 +77,7 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
-	XINPUT_STATE joyState;
+	//XINPUT_STATE joyState;
 
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
@@ -588,34 +588,9 @@ void GamePlayScene::skill1Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
-
-
-			//コライダーにオブジェクトを登録
-			if (player->GetIsCoolDown() == false) {
-				colliderManager_->AddColliders(player.get());
-			}
-			if (player->GetIsUnderAttack() == true) {
-				colliderManager_->AddColliders(sword.get());
-			}
-			colliderManager_->AddColliders(enemyBullets);
-			colliderManager_->AddColliders(enemys);
-
 }
 
-void GamePlayScene::BossSceneAllCollisions() {
-	colliderManager_->ListClear();
 
-	//コライダーにオブジェクトを登録
-	if (player->GetIsCoolDown() == false) {
-		colliderManager_->AddColliders(player.get());
-	}
-	if (player->GetIsUnderAttack() == true) {
-		colliderManager_->AddColliders(sword.get());
-	}
-	if (boss_->GetIsCoolDown() == false) {
-		colliderManager_->AddColliders(boss_.get());
-	}
-	//colliderManager_->AddColliders(sampleEnemy.get());
 void GamePlayScene::skill2Initialize()
 {
 	MotionTimer_ = 0;
