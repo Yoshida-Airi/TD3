@@ -11,7 +11,7 @@ ParticleSystem::~ParticleSystem()
 
 }
 
-void ParticleSystem::Initialize(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity)
+void ParticleSystem::Initialize(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition)
 {
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -23,8 +23,7 @@ void ParticleSystem::Initialize(uint32_t textureHandle, Camera* camera, Vector3 
 	camera_ = camera;
 	isRandomPosition_ = isRandomPosition;
 	velocity_ = velocity;
-	isRandomVelocity_ = isRandomVelocity;
-
+	
 	//emitter_ = emitter;
 
 	uvTransform =
@@ -102,7 +101,7 @@ void ParticleSystem::Update()
 	{
 		if (emitter_->frequency <= emitter_->frequencyTime)
 		{
-			particles.splice(particles.end(), Emission(emitter_, randomEngine, velocity_, isRandomPosition_, isRandomVelocity_));
+			particles.splice(particles.end(), Emission(emitter_, randomEngine, velocity_, isRandomPosition_));
 			emitter_->frequencyTime -= emitter_->frequency;
 		}
 	}
@@ -207,10 +206,10 @@ void ParticleSystem::SetMaterialData(const Vector4 color)
 	materialData_[0].color = color;
 }
 
-ParticleSystem* ParticleSystem::Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity)
+ParticleSystem* ParticleSystem::Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition)
 {
 	ParticleSystem* sprite = new ParticleSystem();
-	sprite->Initialize(textureHandle, camera, velocity, isRandomPosition, isRandomVelocity);
+	sprite->Initialize(textureHandle, camera, velocity, isRandomPosition);
 	return sprite;
 }
 
@@ -238,8 +237,11 @@ void ParticleSystem::Debug(const char* name)
 			emitter_->transform.scale = { scale[0],scale[1],scale[2] };
 
 			ImGui::Checkbox("isRandomPosition", &isRandomPosition_);
-			ImGui::Checkbox("isRandomVelocity", &isRandomVelocity_);
 			ImGui::Checkbox("isBillboard", &isBillboard_);
+			ImGui::Checkbox("isRandomAllVelocity", &isRandomAllVelocity);
+			ImGui::Checkbox("isRandomVelocityX", &isRandomVelocityX);
+			ImGui::Checkbox("isRandomVelocityY", &isRandomVelocityY);
+			ImGui::Checkbox("isRandomVelocityZ", &isRandomVelocityZ);
 
 			ImGui::TreePop();
 		}
@@ -357,7 +359,7 @@ void ParticleSystem::SetSRV()
 	instancingSrvHandleGPU = srvManager_->GetGPUDescriptorHandle(srvIndex);
 }
 
-Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslate, bool isRandamVelocity)
+Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslate)
 {
 	std::uniform_real_distribution<float>distribution(-1.0f, 1.0f);
 	std::uniform_real_distribution<float>distColor(0.0f, 1.0f);
@@ -398,7 +400,7 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 		};
 	}
 
-	if (isRandamVelocity == true)
+	if (isRandomAllVelocity == true)
 	{
 		//ランダムな速度で動かす場合
 		particle.velocity.x = velocity.x + randomTranslate.x;
@@ -411,19 +413,34 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 		particle.velocity = velocity;
 	}
 
+	// 各成分が独立してランダムに動く場合の処理
+	if (isRandomVelocityX)
+	{
+		particle.velocity.x = velocity.x + randomTranslate.x;
+	}
+	if (isRandomVelocityY)
+	{
+		particle.velocity.y = velocity.y + randomTranslate.y;
+	}
+	if (isRandomVelocityZ)
+	{
+		particle.velocity.z = velocity.z + randomTranslate.z;
+	}
+
+
 	particle.color = { distColor(randomEngine) ,distColor(randomEngine) ,distColor(randomEngine) ,1.0f };
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0;
 	return particle;
 }
 
-std::list<Particle> ParticleSystem::Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslate, bool isRandomVelocity)
+std::list<Particle> ParticleSystem::Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslate)
 {
 	std::list<Particle>particle;
 
 	for (uint32_t count = 0; count < emitter->count; ++count)
 	{
-		particle.push_back(MakeNewParticle(randomEngine, emitter, velocity, isRandamTranslate, isRandomVelocity));
+		particle.push_back(MakeNewParticle(randomEngine, emitter, velocity, isRandamTranslate));
 	}
 
 	return particle;
@@ -435,4 +452,24 @@ std::list<Particle> ParticleSystem::Emission(Emitter* emitter, std::mt19937& ran
 void ParticleSystem::StopMakeParticle()
 {
 	isMakeParticle = false;
+}
+
+void ParticleSystem::SetRandomAllVelocity()
+{
+	isRandomAllVelocity = true;
+}
+
+void ParticleSystem::SetRandomVelocityX()
+{
+	isRandomVelocityX = true;
+}
+
+void ParticleSystem::SetRandomVelocityY()
+{
+	isRandomVelocityY = true;
+}
+
+void ParticleSystem::SetRandomVelocityZ()
+{
+	isRandomVelocityZ = true;
 }

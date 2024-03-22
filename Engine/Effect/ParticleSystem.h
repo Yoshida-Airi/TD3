@@ -52,7 +52,7 @@ class ParticleSystem
 public:
 	~ParticleSystem();
 
-	void Initialize(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity);
+	void Initialize(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition);
 	void Update();
 	void Draw();
 
@@ -111,7 +111,7 @@ public:
 	/// <param name="isRandomPosition">ランダムな位置に置くか　true : 置く</param>
 	/// <param name="isRandomVelocity">ランダムな速度にするか　true : する</param>
 	/// <returns>パーティクル</returns>
-	static ParticleSystem* Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity);
+	static ParticleSystem* Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition);
 
 	/// <summary>
 	/// 生存時間の設定
@@ -127,10 +127,9 @@ public:
 	/// <summary>
 	/// ビルボードを使用するかの設定
 	/// </summary>
-	/// <param name="isUseBillboard">true : 使用する</param>
-	void SetUseBillBoard(bool isUseBillboard)
+	void SetUseBillBoard()
 	{
-		isBillboard_ = isUseBillboard;
+		isBillboard_ = true;
 	}
 
 	/// <summary>
@@ -142,6 +141,12 @@ public:
 	/// 新しく粒を生成するのを防ぐ
 	/// </summary>
 	void StopMakeParticle();
+
+	//ランダムな速度に動かす
+	void SetRandomAllVelocity();	//すべての方向にランダムな速度で
+	void SetRandomVelocityX();		//X軸のみランダムな速度で
+	void SetRandomVelocityY();		//y軸のみランダムな速度で
+	void SetRandomVelocityZ();		//z軸のもランダムな速度で
 
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数
@@ -205,7 +210,6 @@ private://プライベート変数
 	std::list<Particle> particles;
 
 	bool isRandomPosition_ = false;
-	bool isRandomVelocity_ = false;
 	Vector3 velocity_;
 	Time lifeTime = { 1.0,3.0f };
 	bool isBillboard_ = false;
@@ -214,6 +218,10 @@ private://プライベート変数
 
 	const float kDeltaTime = 1.0f / 60.0f;
 
+	bool isRandomAllVelocity = false;
+	bool isRandomVelocityX = false;
+	bool isRandomVelocityY = false;
+	bool isRandomVelocityZ = false;
 
 
 private://プライベート関数
@@ -247,8 +255,8 @@ private://プライベート関数
 
 	void SetSRV();
 
-	Particle MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslata, bool isRandomVelocity);
+	Particle MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslata);
 
-	std::list<Particle>Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslata, bool isRandomVelocity);
+	std::list<Particle>Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslata);
 
 };
