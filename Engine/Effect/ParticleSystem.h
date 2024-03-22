@@ -138,6 +138,8 @@ public:
 	/// </summary>
 	void Debug(const char* name);
 
+	void StopEmission();
+
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数
 
@@ -205,6 +207,8 @@ private://プライベート変数
 	Time lifeTime = { 1.0,3.0f };
 	bool isBillboard_ = false;
 
+	bool isMakeParticle = true;	//新しく粒を生成するか。
+
 	const float kDeltaTime = 1.0f / 60.0f;
 
 
@@ -243,4 +247,5 @@ private://プライベート関数
 	Particle MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslata, bool isRandomVelocity);
 
 	std::list<Particle>Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslata, bool isRandomVelocity);
+
 };

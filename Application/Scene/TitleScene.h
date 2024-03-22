@@ -12,10 +12,11 @@
 #include"Model.h"
 #include"Camera.h"
 
-#include"EfectManager.h"
+#include"HitEffect.h"
 
 #include"Enemy.h"
 #include <random>
+
 
 class TitleScene :public BaseScene
 {
@@ -27,7 +28,6 @@ public:
 
 private:
 
-	EfectManager* efect = nullptr;
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
@@ -37,6 +37,7 @@ private:
 	std::unique_ptr<Model> fence_ = nullptr;
 	std::unique_ptr<Model> cube_ = nullptr;
 
+	std::unique_ptr<HitEffect> effect = nullptr;
 
 
 };

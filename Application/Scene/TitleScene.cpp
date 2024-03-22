@@ -4,7 +4,6 @@
 TitleScene::~TitleScene()
 {
 	delete camera;
-	delete efect;
 }
 
 void TitleScene::Initialize()
@@ -21,6 +20,11 @@ void TitleScene::Initialize()
 	fence_.reset(Model::Create("Resources/DefaultAssets/fence.obj"));
 	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	fence_->worldTransform_->rotation_.y = 3.1f;
+
+	effect = std::make_unique<HitEffect>();
+	effect->Initialize(camera);
+
+	effect->SetFlag(true);
 }
 
 void TitleScene::Update()
@@ -52,11 +56,16 @@ void TitleScene::Update()
 	fence_->ModelDebug("fence");
 	fence_->Parent(cube_.get());
 
+	effect->Update();
+
 }
 
 void TitleScene::Draw()
 {
 	fence_->Draw(camera);
 	cube_->Draw(camera);
+
+	effect->Draw();
+
 }
 

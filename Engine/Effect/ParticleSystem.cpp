@@ -98,10 +98,13 @@ void ParticleSystem::Update()
 	std::mt19937 randomEngine(seedGenerator());
 
 	emitter_->frequencyTime += kDeltaTime;
-	if (emitter_->frequency <= emitter_->frequencyTime)
+	if (isMakeParticle == true)
 	{
-		particles.splice(particles.end(), Emission(emitter_, randomEngine, velocity_, isRandomPosition_, isRandomVelocity_));
-		emitter_->frequencyTime -= emitter_->frequency;
+		if (emitter_->frequency <= emitter_->frequencyTime)
+		{
+			particles.splice(particles.end(), Emission(emitter_, randomEngine, velocity_, isRandomPosition_, isRandomVelocity_));
+			emitter_->frequencyTime -= emitter_->frequency;
+		}
 	}
 
 	Matrix4x4 uvTransformMatrix_ = MakeScaleMatrix(uvTransform.scale);
@@ -425,3 +428,7 @@ std::list<Particle> ParticleSystem::Emission(Emitter* emitter, std::mt19937& ran
 	return particle;
 }
 
+void ParticleSystem::StopEmission()
+{
+	isMakeParticle = false;
+}

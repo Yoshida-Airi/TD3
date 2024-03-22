@@ -16,9 +16,17 @@ void HitEffect::Initialize(Camera* camera)
 void HitEffect::Update()
 {
 	hitEffect->Debug("hitEffect");
+	
 	if (flag)
 	{
+		
+		playTime--;
 		hitEffect->Update();
+
+		if (playTime <= 0)
+		{
+			hitEffect->StopEmission();
+		}
 	}
 }
 
