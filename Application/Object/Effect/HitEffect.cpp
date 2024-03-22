@@ -25,7 +25,7 @@ void HitEffect::Update()
 
 		if (playTime <= 0)
 		{
-			hitEffect->StopEmission();
+			hitEffect->StopMakeParticle();
 		}
 	}
 }

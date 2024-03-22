@@ -138,7 +138,10 @@ public:
 	/// </summary>
 	void Debug(const char* name);
 
-	void StopEmission();
+	/// <summary>
+	/// 新しく粒を生成するのを防ぐ
+	/// </summary>
+	void StopMakeParticle();
 
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数

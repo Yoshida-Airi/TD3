@@ -428,7 +428,10 @@ std::list<Particle> ParticleSystem::Emission(Emitter* emitter, std::mt19937& ran
 	return particle;
 }
 
-void ParticleSystem::StopEmission()
+/// <summary>
+/// 粒を生成するのを防ぐ
+/// </summary>
+void ParticleSystem::StopMakeParticle()
 {
 	isMakeParticle = false;
 }
