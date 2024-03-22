@@ -86,6 +86,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 
 void Player::Move()
 {
+	XINPUT_STATE joyState;
 	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
@@ -106,6 +107,11 @@ void Player::Move()
 	if (input_->PushKey(DIK_D))
 	{
 		move.x = 1.0f;
+	}
+
+	if (input_->GetJoystickState(0, joyState)) {
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
+		move.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
 	}
 
 	if (Length(move) > threshold)
@@ -135,7 +141,13 @@ void Player::Move()
 
 void Player::Attack()
 {
-	if (input_->IsLeftMouseClicked())
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+
+	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		isUnderAttack = true;
 	}

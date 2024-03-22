@@ -77,6 +77,8 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+	XINPUT_STATE joyState;
+
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
 	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
@@ -102,6 +104,11 @@ void GamePlayScene::Update()
 	if (input->PushKey(DIK_D))
 	{
 		camera->transform.translate.x += 0.03f;
+	}
+
+	if (input->GetJoystickState(0, joyState)) {
+		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
+		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
 	}
 
 	camera->UpdateMatrix();
