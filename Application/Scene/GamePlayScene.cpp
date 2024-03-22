@@ -41,7 +41,7 @@ void GamePlayScene::Initialize()
 
 	timer.Initialize();
 
-
+	
 
 
 	playerlevel = new Playerlevel;
@@ -77,6 +77,8 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+	XINPUT_STATE joyState;
+
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
 	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
@@ -87,7 +89,7 @@ void GamePlayScene::Update()
 		playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
 		playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
 	}
-	if (input->PushKey(DIK_W))
+	/*if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
 	}
@@ -104,7 +106,14 @@ void GamePlayScene::Update()
 		camera->transform.translate.x += 0.03f;
 	}
 
+	if (input->GetJoystickState(0, joyState)) {
+		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
+		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
+	}
+
 	camera->UpdateMatrix();
+	}*/
+	
 
 	if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
@@ -317,10 +326,9 @@ void GamePlayScene::Update()
 		break;
 
 	}
-
-
-	
-
+	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
+	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
+	camera->UpdateMatrix();
 }
 
 void GamePlayScene::Draw()
@@ -439,7 +447,7 @@ void GamePlayScene::skill1Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 10)
+		if (MotionTimer_ == 20)
 		{
 			MotionCount_ = 1;
 		}
@@ -465,7 +473,7 @@ void GamePlayScene::skill1Update()
 		// スキル使用後、クールダウンを開始する
 		
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180;
+		skillCooldownTime_ = 60;
 	
 
 	}
@@ -484,7 +492,7 @@ void GamePlayScene::skill2Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 15)
+		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;
 		}
@@ -515,7 +523,7 @@ void GamePlayScene::skill2Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180; 
+		skillCooldownTime_ = 60; 
 
 	}
 
@@ -533,7 +541,7 @@ void GamePlayScene::skill3Update()
 	{
 		
 
-		if (MotionTimer_ == 10)
+		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;
 		}
@@ -562,7 +570,7 @@ void GamePlayScene::skill3Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180;
+		skillCooldownTime_ = 60;
 	
 	}
 
@@ -582,9 +590,32 @@ void GamePlayScene::skill1Initialize()
 	MotionCount_ = 0;
 
 
+			//コライダーにオブジェクトを登録
+			if (player->GetIsCoolDown() == false) {
+				colliderManager_->AddColliders(player.get());
+			}
+			if (player->GetIsUnderAttack() == true) {
+				colliderManager_->AddColliders(sword.get());
+			}
+			colliderManager_->AddColliders(enemyBullets);
+			colliderManager_->AddColliders(enemys);
 
 }
 
+void GamePlayScene::BossSceneAllCollisions() {
+	colliderManager_->ListClear();
+
+	//コライダーにオブジェクトを登録
+	if (player->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(player.get());
+	}
+	if (player->GetIsUnderAttack() == true) {
+		colliderManager_->AddColliders(sword.get());
+	}
+	if (boss_->GetIsCoolDown() == false) {
+		colliderManager_->AddColliders(boss_.get());
+	}
+	//colliderManager_->AddColliders(sampleEnemy.get());
 void GamePlayScene::skill2Initialize()
 {
 	MotionTimer_ = 0;

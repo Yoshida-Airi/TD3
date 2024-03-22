@@ -42,6 +42,8 @@ void Player::Update()
 	Skill();
 	//方向
 	Direction();
+	//ヒット時のクールダウン
+	CoolDown();
 
 }
 
@@ -71,17 +73,20 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
 	{
-		HP -= 1;
+		HP -= 100;
+		isCoolDown = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
-		HP -= 1;
+		HP -= 200;
+		isCoolDown = true;
 	}
 }
 
 void Player::Move()
 {
+	XINPUT_STATE joyState;
 	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
@@ -89,19 +94,24 @@ void Player::Move()
 	//移動
 	if (input_->PushKey(DIK_W))
 	{
-		move.z = 1.0f;
+		move.z = 2.0f;
 	}
 	if (input_->PushKey(DIK_S))
 	{
-		move.z = -1.0f;
+		move.z = -2.0f;
 	}
 	if (input_->PushKey(DIK_A))
 	{
-		move.x = -1.0f;
+		move.x = -2.0f;
 	}
 	if (input_->PushKey(DIK_D))
 	{
-		move.x = 1.0f;
+		move.x = 2.0f;
+	}
+
+	if (input_->GetJoystickState(0, joyState)) {
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
+		move.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
 	}
 
 	if (Length(move) > threshold)
@@ -123,7 +133,6 @@ void Player::Move()
 
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
-
 	model_->worldTransform_->translation_.x += move.x;
 	model_->worldTransform_->translation_.z += move.z;
 
@@ -131,7 +140,13 @@ void Player::Move()
 
 void Player::Attack()
 {
-	if (input_->IsLeftMouseClicked())
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+
+	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		isUnderAttack = true;
 	}
@@ -143,7 +158,13 @@ void Player::Attack()
 
 void Player::Skill()
 {
-	if (input_->PushKey(DIK_LSHIFT)) {
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+
+	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 		isSkill = true;
 	}
 	
@@ -157,6 +178,18 @@ void Player::PLevelUp()
 	HP += HPIncreasePerLevel;
 	AttackPower += AttackPowerIncreasePerLevel;
 	
+}
+
+void Player::CoolDown() {
+	if (isCoolDown == true) {
+		coolDownTimer++;
+	}
+
+	if (coolDownTimer == 120) {
+		isCoolDown = false;
+		coolDownTimer = 0;
+	}
+
 }
 
 void Player::Direction()
@@ -203,4 +236,8 @@ float Player::LerpShortAngle(float a, float b, float t)
 	}
 
 	return Lerp(a, diff, t);
+}
+
+float Player::LerpShortTranslate(float a, float b, float t) {
+	return a + t * (b - a);
 }
