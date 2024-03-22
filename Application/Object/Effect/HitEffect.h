@@ -21,7 +21,7 @@ private:
 
 	bool flag;	//実行中かどうかのフラグ
 
-	int playTime = 180;
+	int playTime = 2000;
 
 
 };

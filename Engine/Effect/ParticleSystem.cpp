@@ -379,34 +379,35 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 
 	if (isRandamTranslate == true)
 	{
+		//ランダムな位置に出現させる場合
 		particle.transform.translate =
 		{
 			emitter->transform.translate.x + randomTranslate.x * emitterScale.x,
 			emitter->transform.translate.y + randomTranslate.y * emitterScale.y,
 			emitter->transform.translate.z + randomTranslate.z * emitterScale.z
-
 		};
 	}
 	else
 	{
+		//一定の位置に出現させる場合
 		particle.transform.translate =
 		{
 			emitter->transform.translate.x ,
 			emitter->transform.translate.y ,
 			emitter->transform.translate.z
 		};
-
-
 	}
 
 	if (isRandamVelocity == true)
 	{
+		//ランダムな速度で動かす場合
 		particle.velocity.x = velocity.x + randomTranslate.x;
 		particle.velocity.y = velocity.y + randomTranslate.y;
 		particle.velocity.z = velocity.z + randomTranslate.z;
 	}
 	else
 	{
+		//一定方向に動かす場合
 		particle.velocity = velocity;
 	}
 

@@ -19,12 +19,12 @@ void HitEffect::Update()
 	
 	if (flag)
 	{
-		
 		playTime--;
 		hitEffect->Update();
 
 		if (playTime <= 0)
 		{
+			//実行時間を過ぎたら粒の生成を止める
 			hitEffect->StopMakeParticle();
 		}
 	}
