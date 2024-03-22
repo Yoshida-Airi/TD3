@@ -36,6 +36,9 @@ public:
 	uint32_t GetNowPower() { return AttackPower; };
 	int AttackPower = 5;
 
+	float Lerp(const float& a, const float& b, float t);
+	float LerpShortAngle(float a, float b, float t);
+	float LerpShortTranslate(float a, float b, float t);
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
@@ -54,6 +57,8 @@ private:
 	int HP = 5000;
 	float angle_ = 0.0f;
 
+	
+
 private:
 
 	//移動
@@ -64,10 +69,6 @@ private:
 	void Skill();
 
 	void Direction();
-
-	float Lerp(const float& a, const float& b, float t);
-
-	float LerpShortAngle(float a, float b, float t);
 	
 	void Rotate();
 

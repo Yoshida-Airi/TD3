@@ -123,7 +123,6 @@ void Player::Move()
 
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
-
 	model_->worldTransform_->translation_.x += move.x;
 	model_->worldTransform_->translation_.z += move.z;
 
@@ -203,4 +202,8 @@ float Player::LerpShortAngle(float a, float b, float t)
 	}
 
 	return Lerp(a, diff, t);
+}
+
+float Player::LerpShortTranslate(float a, float b, float t) {
+	return a + t * (b - a);
 }

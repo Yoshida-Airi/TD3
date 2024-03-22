@@ -41,7 +41,7 @@ void GamePlayScene::Initialize()
 
 	timer.Initialize();
 
-
+	
 
 
 	playerlevel = new Playerlevel;
@@ -87,7 +87,7 @@ void GamePlayScene::Update()
 		playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
 		playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
 	}
-	if (input->PushKey(DIK_W))
+	/*if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
 	}
@@ -102,9 +102,8 @@ void GamePlayScene::Update()
 	if (input->PushKey(DIK_D))
 	{
 		camera->transform.translate.x += 0.03f;
-	}
-
-	camera->UpdateMatrix();
+	}*/
+	
 
 	if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
@@ -317,10 +316,9 @@ void GamePlayScene::Update()
 		break;
 
 	}
-
-
-	
-
+	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
+	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
+	camera->UpdateMatrix();
 }
 
 void GamePlayScene::Draw()
