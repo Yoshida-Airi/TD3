@@ -439,7 +439,7 @@ void GamePlayScene::skill1Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 10)
+		if (MotionTimer_ == 20)
 		{
 			MotionCount_ = 1;
 		}
@@ -465,7 +465,7 @@ void GamePlayScene::skill1Update()
 		// スキル使用後、クールダウンを開始する
 		
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180;
+		skillCooldownTime_ = 60;
 	
 
 	}
@@ -484,7 +484,7 @@ void GamePlayScene::skill2Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 15)
+		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;
 		}
@@ -515,7 +515,7 @@ void GamePlayScene::skill2Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180; 
+		skillCooldownTime_ = 60; 
 
 	}
 
@@ -533,7 +533,7 @@ void GamePlayScene::skill3Update()
 	{
 		
 
-		if (MotionTimer_ == 10)
+		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;
 		}
@@ -562,7 +562,7 @@ void GamePlayScene::skill3Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180;
+		skillCooldownTime_ = 60;
 	
 	}
 
