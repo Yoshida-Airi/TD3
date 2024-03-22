@@ -59,6 +59,8 @@ private:
 	int HP = 5000;
 	float angle_ = 0.0f;
 
+	float PlayerSpeed = 2.0f;
+
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
