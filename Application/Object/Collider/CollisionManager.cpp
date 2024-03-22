@@ -69,9 +69,24 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 	// 座標AとBの距離を求める
 	Vector3 distance = { posB.x - posA.x, posB.y - posA.y, posB.z - posA.z };
 
+	// 各軸方向の距離の二乗を計算
+	float distanceSquaredX = distance.x * distance.x;
+	float distanceSquaredY = distance.y * distance.y;
+	float distanceSquaredZ = distance.z * distance.z;
+
+	// 各軸方向の半径を取得
+	Vector3 radiusA = colliderA->GetRadius();
+	Vector3 radiusB = colliderB->GetRadius();
+
+	// 各軸方向の半径の和を計算
+	float radiusSumX = radiusA.x + radiusB.x;
+	float radiusSumY = radiusA.y + radiusB.y;
+	float radiusSumZ = radiusA.z + radiusB.z;
+
 	// 球と球の交差判定
-	if ((distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z) <=
-		(colliderA->GetRadius() + colliderB->GetRadius()) * (colliderA->GetRadius() + colliderB->GetRadius()))
+	if (distanceSquaredX / (radiusSumX * radiusSumX) +
+		distanceSquaredY / (radiusSumY * radiusSumY) +
+		distanceSquaredZ / (radiusSumZ * radiusSumZ) <= 1.0f) 
 	{
 		// コライダーAの衝突時コールバックを呼び出す
 		colliderA->OnCollision(colliderB);

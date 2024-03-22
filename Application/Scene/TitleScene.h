@@ -11,7 +11,6 @@
 #include"Sphere.h"
 #include"Model.h"
 #include"Camera.h"
-#include"Playerlevel/Playerlevel.h"
 
 #include"EfectManager.h"
 
@@ -29,7 +28,6 @@ public:
 private:
 
 	EfectManager* efect = nullptr;
-	Playerlevel* playerlevel;
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;

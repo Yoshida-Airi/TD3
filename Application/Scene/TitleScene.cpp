@@ -5,7 +5,6 @@ TitleScene::~TitleScene()
 {
 	delete camera;
 	delete efect;
-	delete playerlevel;
 }
 
 void TitleScene::Initialize()
@@ -18,9 +17,6 @@ void TitleScene::Initialize()
 
 	camera = new Camera;
 	camera->Initialize();
-
-	playerlevel = new Playerlevel;
-	playerlevel->Initialize();
 
 	fence_.reset(Model::Create("Resources/DefaultAssets/fence.obj"));
 	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
@@ -51,7 +47,6 @@ void TitleScene::Update()
 
 	fence_->Update();
 	cube_->Update();
-	playerlevel->Update();
 
 	cube_->ModelDebug("cube");
 	fence_->ModelDebug("fence");
@@ -63,6 +58,5 @@ void TitleScene::Draw()
 {
 	fence_->Draw(camera);
 	cube_->Draw(camera);
-	playerlevel->Draw();
 }
 

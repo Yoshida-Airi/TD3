@@ -126,8 +126,16 @@
     <ClCompile Include="Application\Object\Collider\CollisionManager.cpp">
       <Filter>Application\Object\Collider</Filter>
     </ClCompile>
+
     <ClCompile Include="Application\Object\Effect\HitEffect.cpp">
       <Filter>Application\Object\Effect</Filter>
+
+    <ClCompile Include="Engine\Math\Timer.cpp" />
+    <ClCompile Include="Application\Object\Player\Sword.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
+      <Filter>Application\Object\Player</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +262,18 @@
     <ClInclude Include="Application\Object\Collider\CollisionManager.h">
       <Filter>Application\Object\Collider</Filter>
     </ClInclude>
+
     <ClInclude Include="Application\Object\Effect\HitEffect.h">
       <Filter>Application\Object\Effect</Filter>
     </ClInclude>
+
+    <ClInclude Include="Engine\Math\Timer.h" />
+    <ClInclude Include="Application\Object\Player\Sword.h" />
+    <ClInclude Include="Application\Object\Player\FollowCamera.h">
+      <Filter>Application\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h" />
+
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
