@@ -11,7 +11,7 @@ ParticleSystem::~ParticleSystem()
 
 }
 
-void ParticleSystem::Initialize(uint32_t textureHandle)
+void ParticleSystem::Initialize(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity)
 {
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -20,6 +20,10 @@ void ParticleSystem::Initialize(uint32_t textureHandle)
 	texture_ = TextureManager::GetInstance();
 
 	textureHandle_ = textureHandle;
+	camera_ = camera;
+	isRandomPosition_ = isRandomPosition;
+	velocity_ = velocity;
+	isRandomVelocity_ = isRandomVelocity;
 
 	//emitter_ = emitter;
 
@@ -68,7 +72,7 @@ void ParticleSystem::Initialize(uint32_t textureHandle)
 
 	SetMaterialData(color);
 
-	
+
 
 	indexData_[0] = 0;
 	indexData_[1] = 1;
@@ -96,7 +100,7 @@ void ParticleSystem::Update()
 	emitter_->frequencyTime += kDeltaTime;
 	if (emitter_->frequency <= emitter_->frequencyTime)
 	{
-		particles.splice(particles.end(), Emission(emitter_, randomEngine));
+		particles.splice(particles.end(), Emission(emitter_, randomEngine, velocity_, isRandomPosition_, isRandomVelocity_));
 		emitter_->frequencyTime -= emitter_->frequency;
 	}
 
@@ -105,24 +109,18 @@ void ParticleSystem::Update()
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranselateMatrix(uvTransform.translate));
 	materialData_->uvTransform = uvTransformMatrix_;
 
-
-}
-
-void ParticleSystem::Draw(Camera* camera)
-{
 	if (isInvisible_ == true)
 	{
 		return;
 	}
 
 	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
-	Matrix4x4 cameraMatrix = Inverse(camera->matView);
-	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix, cameraMatrix);
-	billboardMatrix.m[3][0] = 0.0f;
-	billboardMatrix.m[3][1] = 0.0f;
-	billboardMatrix.m[3][2] = 0.0f;
+	Matrix4x4 cameraMatrix = Inverse(camera_->matView);
+	
+	Matrix4x4 billboardMatrix;
 
-	uint32_t numInstance = 0;
+
+	numInstance = 0;
 	for (std::list<Particle>::iterator particleIterator = particles.begin(); particleIterator != particles.end(); )
 	{
 		if ((*particleIterator).lifeTime <= (*particleIterator).currentTime)
@@ -131,9 +129,28 @@ void ParticleSystem::Draw(Camera* camera)
 			continue;
 		}
 
+		Matrix4x4 Scale = MakeScaleMatrix((*particleIterator).transform.scale);
+		Matrix4x4 Translate = MakeTranselateMatrix((*particleIterator).transform.translate);
+		Matrix4x4 worldMatrix;
+
+	
 		float alpha = 1.0f - particleIterator->currentTime / particleIterator->lifeTime;
 
-		Matrix4x4 worldMatrix = MakeAffinMatrix(particleIterator->transform.scale, particleIterator->transform.rotate, particleIterator->transform.translate);
+
+		if (isBillboard_ == true)
+		{
+			billboardMatrix = Multiply(backToFrontMatrix, cameraMatrix);
+			billboardMatrix.m[3][0] = 0.0f;
+			billboardMatrix.m[3][1] = 0.0f;
+			billboardMatrix.m[3][2] = 0.0f;
+			worldMatrix = Multiply(Scale, Multiply(billboardMatrix, Translate));
+		}
+		else
+		{
+			worldMatrix = MakeAffinMatrix(particleIterator->transform.scale, particleIterator->transform.rotate, particleIterator->transform.translate);
+		}
+
+	
 
 		particleIterator->transform.translate.x += (*particleIterator).velocity.x * kDeltaTime;
 		particleIterator->transform.translate.y += (*particleIterator).velocity.y * kDeltaTime;
@@ -153,6 +170,12 @@ void ParticleSystem::Draw(Camera* camera)
 		++particleIterator;
 	}
 
+}
+
+void ParticleSystem::Draw()
+{
+
+
 	dxCommon_->GetCommandList()->SetGraphicsRootSignature(psoManager_->GetPsoMember().particle.rootSignature.Get());
 	dxCommon_->GetCommandList()->SetPipelineState(psoManager_->GetPsoMember().particle.graphicPipelineState.Get());
 
@@ -167,7 +190,7 @@ void ParticleSystem::Draw(Camera* camera)
 	//wvp用のCbufferの場所を設定
 	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(1, instancingSrvHandleGPU);
 	//カメラ用のCBufferの場所を設定
-	dxCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(2, camera->constBuffer_->GetGPUVirtualAddress());
+	dxCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(2, camera_->constBuffer_->GetGPUVirtualAddress());
 	//SRVのDescriptorTableの先頭を設定。3はrootParamater[3]である。
 	dxCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(3, texture_->GetSrvGPUHandle(textureHandle_));
 	//描画
@@ -181,15 +204,10 @@ void ParticleSystem::SetMaterialData(const Vector4 color)
 	materialData_[0].color = color;
 }
 
-void ParticleSystem::SetAlpha()
-{
-
-}
-
-ParticleSystem* ParticleSystem::Create(uint32_t textureHandle)
+ParticleSystem* ParticleSystem::Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity)
 {
 	ParticleSystem* sprite = new ParticleSystem();
-	sprite->Initialize(textureHandle);
+	sprite->Initialize(textureHandle, camera, velocity, isRandomPosition, isRandomVelocity);
 	return sprite;
 }
 
@@ -199,13 +217,29 @@ void ParticleSystem::Debug(const char* name)
 	ImGui::Begin("particle");
 	if (ImGui::TreeNode(name))
 	{
-		ImGui::DragFloat2("UVTransform", &uvTransform.translate.x, 0.01f, -10.0f, 10.0f);
-		ImGui::DragFloat2("UVScale", &uvTransform.scale.x, 0.01f, -10.0f, 10.0f);
-		ImGui::SliderAngle("UVRotate", &uvTransform.rotate.z);
+		if (ImGui::TreeNode("uv"))
+		{
+			ImGui::DragFloat2("UVTransform", &uvTransform.translate.x, 0.01f, -10.0f, 10.0f);
+			ImGui::DragFloat2("UVScale", &uvTransform.scale.x, 0.01f, -10.0f, 10.0f);
+			ImGui::SliderAngle("UVRotate", &uvTransform.rotate.z);
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("emitter"))
+		{
+			float translate[3] = { emitter_->transform.translate.x,emitter_->transform.translate.y,emitter_->transform.translate.z };
+			ImGui::DragFloat3("transform", translate, 0.1f);
+			emitter_->transform.translate = { translate[0],translate[1],translate[2] };
 
-		float translate[3] = { emitter_->transform.translate.x,emitter_->transform.translate.y,emitter_->transform.translate.z };
-		ImGui::DragFloat3("transform", translate, 1, 100);
-		emitter_->transform.translate = { translate[0],translate[1],translate[2] };
+			float scale[3] = { emitter_->transform.scale.x,emitter_->transform.scale.y,emitter_->transform.scale.z };
+			ImGui::DragFloat3("scale", scale, 0.1f);
+			emitter_->transform.scale = { scale[0],scale[1],scale[2] };
+
+			ImGui::Checkbox("isRandomPosition", &isRandomPosition_);
+			ImGui::Checkbox("isRandomVelocity", &isRandomVelocity_);
+			ImGui::Checkbox("isBillboard", &isBillboard_);
+
+			ImGui::TreePop();
+		}
 		ImGui::TreePop();
 	}
 	ImGui::End();
@@ -315,54 +349,77 @@ void ParticleSystem::InstancingBuffer()
 
 void ParticleSystem::SetSRV()
 {
-
-	/*instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
-	instancingSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	instancingSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
-	instancingSrvDesc.Buffer.FirstElement = 0;
-	instancingSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
-	instancingSrvDesc.Buffer.NumElements = kNumMaxInstance;
-	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);*/
-	//instancingSrvHandleCPU = texture_->GetCPUDescriptorHandle(srvManager_->GetDescriptorHeap(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 7);
-	//instancingSrvHandleGPU = texture_->GetGPUDescriptorHandle(srvManager_->GetDescriptorHeap(), D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 7);
-
-	////先頭はImGuiが使っているので次のを使う
-	//instancingSrvHandleCPU.ptr += (dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 10);
-	//instancingSrvHandleGPU.ptr += (dxCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * 10);
-
-	//dxCommon_->GetDevice()->CreateShaderResourceView(instancingResources_.Get(), &instancingSrvDesc, instancingSrvHandleCPU);
 	uint32_t srvIndex = srvManager_->Allocate();
 	srvManager_->CreateSRVforStructuredBuffer(srvIndex, instancingResources_.Get(), kNumMaxInstance, sizeof(ParticleForGPU));
 	instancingSrvHandleGPU = srvManager_->GetGPUDescriptorHandle(srvIndex);
 }
 
-Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate)
+Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslate, bool isRandamVelocity)
 {
 	std::uniform_real_distribution<float>distribution(-1.0f, 1.0f);
 	std::uniform_real_distribution<float>distColor(0.0f, 1.0f);
-	std::uniform_real_distribution<float>distTime(1.0f, 3.0f);
+	std::uniform_real_distribution<float>distTime(lifeTime.min, lifeTime.max);
 
-	Vector3 randomTranslate = { distribution(randomEngine),distribution(randomEngine),distribution(randomEngine) };
+	// エミッターのスケールを取得
+	Vector3 emitterScale = emitter->transform.scale;
 
+	// パーティクルのランダムな位置を生成（エミッターのスケールを考慮）
+	Vector3 randomTranslate = {
+		distribution(randomEngine) ,
+		distribution(randomEngine) ,
+		distribution(randomEngine)
+	};
 
 	Particle particle;
 	particle.transform.scale = { 0.005f,0.005f,0.005f };
 	particle.transform.rotate = { 0.0f,3.14f,3.14f };
-	particle.transform.translate = { translate.x + randomTranslate.x,translate.y + randomTranslate.y,translate.z + randomTranslate.z };
-	particle.velocity = { distribution(randomEngine) ,distribution(randomEngine) ,distribution(randomEngine) };
+
+	if (isRandamTranslate == true)
+	{
+		particle.transform.translate =
+		{
+			emitter->transform.translate.x + randomTranslate.x * emitterScale.x,
+			emitter->transform.translate.y + randomTranslate.y * emitterScale.y,
+			emitter->transform.translate.z + randomTranslate.z * emitterScale.z
+
+		};
+	}
+	else
+	{
+		particle.transform.translate =
+		{
+			emitter->transform.translate.x ,
+			emitter->transform.translate.y ,
+			emitter->transform.translate.z
+		};
+
+
+	}
+
+	if (isRandamVelocity == true)
+	{
+		particle.velocity.x = velocity.x + randomTranslate.x;
+		particle.velocity.y = velocity.y + randomTranslate.y;
+		particle.velocity.z = velocity.z + randomTranslate.z;
+	}
+	else
+	{
+		particle.velocity = velocity;
+	}
+
 	particle.color = { distColor(randomEngine) ,distColor(randomEngine) ,distColor(randomEngine) ,1.0f };
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0;
 	return particle;
 }
 
-std::list<Particle> ParticleSystem::Emission(const Emitter* emitter, std::mt19937& randomEngine)
+std::list<Particle> ParticleSystem::Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslate, bool isRandomVelocity)
 {
 	std::list<Particle>particle;
 
 	for (uint32_t count = 0; count < emitter->count; ++count)
 	{
-		particle.push_back(MakeNewParticle(randomEngine, emitter->transform.translate));
+		particle.push_back(MakeNewParticle(randomEngine, emitter, velocity, isRandamTranslate, isRandomVelocity));
 	}
 
 	return particle;

@@ -41,16 +41,22 @@ struct ParticleForGPU
 	Vector4 color;
 };
 
+struct Time
+{
+	float min;
+	float max;
+};
+
 class ParticleSystem
 {
 public:
 	~ParticleSystem();
 
-	void Initialize(uint32_t textureHandle);
+	void Initialize(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity);
 	void Update();
-	void Draw(Camera* camera);
+	void Draw();
 
-	
+
 	/// <summary>
 	/// マテリアルデータの設定
 	/// </summary>
@@ -96,14 +102,36 @@ public:
 		anchorPoint_ = anchorPoint;
 	}
 
-	void SetAlpha();
+	/// <summary>
+	/// パーティクルの生成
+	/// </summary>
+	/// <param name="textureHandle">テクスチャ番号</param>
+	/// <param name="camera">カメラ</param>
+	/// <param name="velocity">速度</param>
+	/// <param name="isRandomPosition">ランダムな位置に置くか　true : 置く</param>
+	/// <param name="isRandomVelocity">ランダムな速度にするか　true : する</param>
+	/// <returns>パーティクル</returns>
+	static ParticleSystem* Create(uint32_t textureHandle, Camera* camera, Vector3 velocity, bool isRandomPosition, bool isRandomVelocity);
 
 	/// <summary>
-	/// 四角の生成
+	/// 生存時間の設定
 	/// </summary>
-	/// <param name="textureHandle">テクスチャ</param>
-	/// <returns>四角形</returns>
-	static ParticleSystem* Create(uint32_t textureHandle);
+	/// <param name="timeMin">一番短く消したい時間</param>
+	/// <param name="timeMax">一番長く存在していい時間</param>
+	void SetLifeTime(float timeMin, float timeMax)
+	{
+		lifeTime.min = timeMin;
+		lifeTime.max = timeMax;
+	}
+
+	/// <summary>
+	/// ビルボードを使用するかの設定
+	/// </summary>
+	/// <param name="isUseBillboard">true : 使用する</param>
+	void SetUseBillBoard(bool isUseBillboard)
+	{
+		isBillboard_ = isUseBillboard;
+	}
 
 	/// <summary>
 	/// Imgui
@@ -116,11 +144,12 @@ private://プライベート変数
 	GraphicsPipelineManager* psoManager_ = nullptr;
 	SrvManager* srvManager_ = nullptr;
 
-	static const uint32_t kNumMaxInstance = 100;
+	static const uint32_t kNumMaxInstance = 500;
 	uint32_t numInstance = 0;
 
 	DirectXCommon* dxCommon_;
 	TextureManager* texture_;
+	Camera* camera_ = nullptr;
 
 	Microsoft::WRL::ComPtr< ID3D12Resource> vertexResource_;	//頂点リソース
 	Microsoft::WRL::ComPtr< ID3D12Resource> materialResource_;	//マテリアルリソース
@@ -169,10 +198,16 @@ private://プライベート変数
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU;
 
 	std::list<Particle> particles;
-	
 
+	bool isRandomPosition_ = false;
+	bool isRandomVelocity_ = false;
+	Vector3 velocity_;
+	Time lifeTime = { 1.0,3.0f };
+	bool isBillboard_ = false;
 
 	const float kDeltaTime = 1.0f / 60.0f;
+
+
 
 private://プライベート関数
 
@@ -205,7 +240,7 @@ private://プライベート関数
 
 	void SetSRV();
 
-	Particle MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate);
+	Particle MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslata, bool isRandomVelocity);
 
-	std::list<Particle>Emission(const Emitter* emitter, std::mt19937& randomEngine);
+	std::list<Particle>Emission(Emitter* emitter, std::mt19937& randomEngine, Vector3 velocity, bool isRandamTranslata, bool isRandomVelocity);
 };

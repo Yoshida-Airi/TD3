@@ -27,6 +27,7 @@
 #include <random>
 #include "../Boss.h"
 
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
@@ -70,19 +71,25 @@ private:
 
 	Input* input;
 
+
 	std::unique_ptr<Sprite> sprite = nullptr;
 	std::unique_ptr<Sphere> sphere = nullptr;
 	std::unique_ptr<Model> model = nullptr;
 	std::unique_ptr<ParticleSystem> particle = nullptr;
 	std::unique_ptr<Boss> boss_ = nullptr;
 
+
 	std::unique_ptr<Model> demo_stage = nullptr;
 
 	std::unique_ptr<Player> player = nullptr;
+
+	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
+	std::unique_ptr<HitEffect> hitEffect_ = nullptr;
+
 	std::unique_ptr<Sword> sword = nullptr;
 
+
 	std::list<Enemy*> enemy_;
-	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 1;
 	const int MaxEnemySpawn = 5;

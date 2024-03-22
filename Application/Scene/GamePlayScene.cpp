@@ -44,6 +44,7 @@ void GamePlayScene::Initialize()
 
 
 
+
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
 
@@ -57,6 +58,7 @@ void GamePlayScene::Initialize()
 
 
 
+
 	player = std::make_unique<Player>();
 	player->Initialize(camera);
 
@@ -66,8 +68,6 @@ void GamePlayScene::Initialize()
 	boss_ = std::make_unique<Boss>();
 	boss_->Initialize();
 
-	//sampleEnemy = std::make_unique<PlayerWeapon>();
-	//sampleEnemy->Initialize();
 
 	player->SetWeapon(sword.get());
 
@@ -77,6 +77,9 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+
+	if(nowSecond!=120)
+
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
 	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
@@ -113,6 +116,7 @@ void GamePlayScene::Update()
 
 
 	if (timer.GetNowSecond() != 10)
+
 	{
 		sprite->worldTransform_->translation_ =
 		{
@@ -243,6 +247,7 @@ void GamePlayScene::Update()
 #ifdef _DEBUG
 
 	camera->CameraDebug();
+	camera->UpdateMatrix();
 
 #endif // _DEBUG
 
@@ -265,9 +270,6 @@ void GamePlayScene::Update()
 	weaponPos.z = weaponPos.z + 5.0f;
 
 	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
-
-
-
 
 	if (behaviorRequest_)
 	{
@@ -321,6 +323,8 @@ void GamePlayScene::Update()
 
 	
 
+
+
 }
 
 void GamePlayScene::Draw()
@@ -329,6 +333,7 @@ void GamePlayScene::Draw()
 	player->Draw();
 	sword->Draw(camera);
 
+	
 
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
@@ -340,11 +345,13 @@ void GamePlayScene::Draw()
 		enemys->Draw(camera);
 	}
 
+
 	if (isBossSpawn == true) {
 		boss_->Draw(camera);
 	}
 
 	playerlevel->Draw();
+
 
 
 
@@ -377,6 +384,10 @@ void GamePlayScene::BossSceneAllCollisions() {
 
 	//コライダーにオブジェクトを登録
 	colliderManager_->AddColliders(player.get());
+
+	colliderManager_->AddColliders(playerWeapon_.get());
+	
+
 	if (player->GetIsUnderAttack() == true) {
 		colliderManager_->AddColliders(sword.get());
 	}
@@ -384,6 +395,7 @@ void GamePlayScene::BossSceneAllCollisions() {
 		colliderManager_->AddColliders(boss_.get());
 	}
 	//colliderManager_->AddColliders(sampleEnemy.get());
+
 
 	//当たり判定
 	colliderManager_->ChackAllCollisions();
