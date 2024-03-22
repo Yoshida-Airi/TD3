@@ -21,9 +21,9 @@ void Player::Update()
 {
 	Collider::UpdateWorldTransform();
 	model_->Update();
-	
-	
-	
+
+
+
 #ifdef _DEBUG
 	model_->ModelDebug("player");
 	ImGui::Begin("Status");
@@ -33,7 +33,7 @@ void Player::Update()
 
 #endif // _DEBUG
 
-	
+
 	//移動
 	Move();
 	//攻撃
@@ -90,7 +90,7 @@ void Player::Move()
 	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
-	
+
 	//移動
 	if (input_->PushKey(DIK_W))
 	{
@@ -117,7 +117,7 @@ void Player::Move()
 	if (Length(move) > threshold)
 	{
 		isMoveing = true;
-		
+
 	}
 	if (isMoveing == true)
 	{
@@ -142,32 +142,43 @@ void Player::Attack()
 {
 	XINPUT_STATE joyState;
 
-	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+		{
+			isUnderAttack = true;
+		}
+		else
+		{
+			isUnderAttack = false;
+		}
 	}
 
-	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+
+	if (input_->IsLeftMouseClicked())
 	{
 		isUnderAttack = true;
 	}
 	else
 	{
-		isUnderAttack = false;
+		isUnderAttack = true;
 	}
+
+
 }
 
 void Player::Skill()
 {
 	XINPUT_STATE joyState;
 
-	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+			isSkill = true;
+		}
 	}
 
-	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_RIGHT_SHOULDER) {
-		isSkill = true;
-	}
-	
+
+
 
 
 
@@ -177,7 +188,7 @@ void Player::PLevelUp()
 {
 	HP += HPIncreasePerLevel;
 	AttackPower += AttackPowerIncreasePerLevel;
-	
+
 }
 
 void Player::CoolDown() {

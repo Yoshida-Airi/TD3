@@ -41,7 +41,7 @@ void GamePlayScene::Initialize()
 
 	timer.Initialize();
 
-	
+
 
 
 	playerlevel = new Playerlevel;
@@ -113,7 +113,7 @@ void GamePlayScene::Update()
 
 	camera->UpdateMatrix();
 	}*/
-	
+
 
 	if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
@@ -400,12 +400,12 @@ void GamePlayScene::BossSceneAllCollisions() {
 void GamePlayScene::skillRootUpdate()
 {
 	//スキルのアニメーション
+
 	if (input->PushKey(DIK_LSHIFT))
 	{
 		isSkill = true;
-
-
 	}
+
 
 	if (isSkill == true && isSkillCooldown_ == false)
 	{
@@ -471,10 +471,10 @@ void GamePlayScene::skill1Update()
 	{
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
-		
+
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
-	
+
 
 	}
 
@@ -523,7 +523,7 @@ void GamePlayScene::skill2Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60; 
+		skillCooldownTime_ = 60;
 
 	}
 
@@ -539,7 +539,7 @@ void GamePlayScene::skill3Update()
 
 	if (MotionCount_ == 0)
 	{
-		
+
 
 		if (MotionTimer_ == 30)
 		{
@@ -571,7 +571,7 @@ void GamePlayScene::skill3Update()
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
-	
+
 	}
 
 }
