@@ -52,7 +52,13 @@ void Sword::OnCollision([[maybe_unused]] Collider* other)
 
 void Sword::Attack()
 {
-	if (input_->IsLeftMouseClicked())
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+
+	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		if (model_->worldTransform_->rotation_.y <= rotationmax) {
 			model_->worldTransform_->rotation_.y += rotationspeed;

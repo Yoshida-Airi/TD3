@@ -159,7 +159,13 @@ void Player::Attack()
 
 void Player::Skill()
 {
-	if (input_->PushKey(DIK_LSHIFT)) {
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+
+	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 		isSkill = true;
 	}
 	else
