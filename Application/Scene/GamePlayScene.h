@@ -24,7 +24,6 @@
 #include "EnemyBullet.h"
 #include <random>
 
-#include"HitEffect.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -77,7 +76,6 @@ private:
 	std::unique_ptr<HitEffect> hitEffect_ = nullptr;
 
 	std::list<Enemy*> enemy_;
-	std::list<EnemyBullet*> enemyBullet_;
 
 	int enemyCount = 0;
 	int enemySpornTimer = 0;

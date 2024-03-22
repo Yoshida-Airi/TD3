@@ -74,8 +74,6 @@ void GamePlayScene::Initialize()
 	playerWeapon_ = std::make_unique<PlayerWeapon>();
 	playerWeapon_->Initialize();
 
-	hitEffect_ = std::make_unique<HitEffect>();
-	hitEffect_->Initialize(camera);
 
 	player->SetWeapon(playerWeapon_.get());
 
@@ -199,9 +197,7 @@ void GamePlayScene::Update()
 		return false;
 	});
 
-	hitEffect_->Update();
 
-	
 
 }
 
@@ -233,7 +229,6 @@ void GamePlayScene::Draw()
 		enemys->Draw(camera);
 	}
 
-	hitEffect_->Draw();
 
 
 	//colliderManager_->Draw(camera);
