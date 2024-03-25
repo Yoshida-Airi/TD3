@@ -26,7 +26,7 @@
 #include "Enemy/EnemyBullet.h"
 #include <random>
 #include "../Boss.h"
-
+#include"HitEffect.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -50,8 +50,12 @@ public:
 private:
 
 	void EnemySpawn();
-
 	void EnemyAttack();
+
+	/// <summary>
+	/// 敵が消滅するときのエフェクト生成
+	/// </summary>
+	void CreateDeathEffect(Vector3 position);
 
 private:
 	TextureManager* textureManager_ = nullptr;
@@ -91,6 +95,7 @@ private:
 
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;
+	std::list<HitEffect*>deathEffect_;
 
 	int enemyCount = 1;
 	const int MaxEnemySpawn = 5;

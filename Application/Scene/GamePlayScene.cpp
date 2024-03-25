@@ -13,6 +13,10 @@ GamePlayScene::~GamePlayScene()
 		delete enemyBullets;
 	}
 
+	for (HitEffect* deathEffects : deathEffect_) {
+		delete deathEffects;
+	}
+
 }
 
 void GamePlayScene::Initialize()
@@ -142,6 +146,7 @@ void GamePlayScene::Update()
 				//貰える経験値
 				playerlevel->Experiencepoint += 240.0f;
 				enemyDeathCount++;
+				CreateDeathEffect(enemys->GetWorldPosition());
 			}
 		}
 
@@ -152,6 +157,20 @@ void GamePlayScene::Update()
 			}
 			return false;
 			});
+
+		deathEffect_.remove_if([](HitEffect* hitEffects) {
+			if (hitEffects->IsDead())
+			{
+				delete hitEffects;
+				return true;
+			}
+			return false;
+			});
+
+		for (HitEffect* deathEffects : deathEffect_) {
+			deathEffects->Update();
+		}
+
 		//ここから敵の弾の処理
 		for (EnemyBullet* enemyBullets : enemyBullet_) {
 			enemyBullets->Update();
@@ -198,6 +217,11 @@ void GamePlayScene::Update()
 
 		enemy_.remove_if([](Enemy* enemys) {
 			delete enemys;
+			return true;
+			});
+
+		deathEffect_.remove_if([](HitEffect* hitEffects) {
+			delete hitEffects;
 			return true;
 			});
 
@@ -341,6 +365,10 @@ void GamePlayScene::Draw()
 	//ここから敵を出す処理
 	for (Enemy* enemys : enemy_) {
 		enemys->Draw(camera);
+	}
+
+	for (HitEffect* deathEffects : deathEffect_) {
+		deathEffects->Draw();
 	}
 
 
@@ -655,5 +683,16 @@ void GamePlayScene::EnemyAttack() {
 		}
 	}
 
+}
+
+void GamePlayScene::CreateDeathEffect(Vector3 position)
+{
+	HitEffect* newDeathEffect = new HitEffect();
+	newDeathEffect->Initialize(camera);
+	newDeathEffect->SetFlag(true);
+
+	newDeathEffect->SetPosition(position);
+
+	deathEffect_.push_back(newDeathEffect);
 }
 
