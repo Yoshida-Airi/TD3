@@ -42,7 +42,7 @@ private:
 	uint32_t circleTexture;
 
 	bool flag;	//実行中かどうかのフラグ
-	int playTime = 1000;
+	int playTime = 20;
 	bool isDead = false;
 
 
