@@ -143,7 +143,7 @@ void Player::Attack()
 	XINPUT_STATE joyState;
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-
+		return;
 	}
 
 	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
@@ -161,7 +161,7 @@ void Player::Skill()
 	XINPUT_STATE joyState;
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		
+		return;
 	}
 
 	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
