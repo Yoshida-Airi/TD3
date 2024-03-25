@@ -94,19 +94,19 @@ void Player::Move()
 	//移動
 	if (input_->PushKey(DIK_W))
 	{
-		move.z = PlayerSpeed;
+		move.z = Speed;
 	}
 	if (input_->PushKey(DIK_S))
 	{
-		move.z = -PlayerSpeed;
+		move.z = -Speed;
 	}
 	if (input_->PushKey(DIK_A))
 	{
-		move.x = -PlayerSpeed;
+		move.x = -Speed;
 	}
 	if (input_->PushKey(DIK_D))
 	{
-		move.x = PlayerSpeed;
+		move.x = Speed;
 	}
 
 	if (input_->GetJoystickState(0, joyState)) {
