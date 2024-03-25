@@ -55,10 +55,10 @@ void Sword::Attack()
 	XINPUT_STATE joyState;
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
+	
 	}
 
-	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		if (model_->worldTransform_->rotation_.y <= rotationmax) {
 			model_->worldTransform_->rotation_.y += rotationspeed;
@@ -79,7 +79,13 @@ void Sword::Attack()
 }
 void Sword::Skill()
 {
-	if (input_->PushKey(DIK_LSHIFT)) {
+	XINPUT_STATE joyState;
+
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+
+	}
+
+	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 		isSkill = true;
 	}
 	else

@@ -143,10 +143,10 @@ void Player::Attack()
 	XINPUT_STATE joyState;
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
+
 	}
 
-	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		isUnderAttack = true;
 	}
@@ -161,10 +161,10 @@ void Player::Skill()
 	XINPUT_STATE joyState;
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
+		
 	}
 
-	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons && XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 		isSkill = true;
 	}
 	
