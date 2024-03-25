@@ -245,6 +245,21 @@ void ParticleSystem::Debug(const char* name)
 
 			ImGui::TreePop();
 		}
+		if (ImGui::TreeNode("color"))
+		{
+			float color[3] = { particleColor.x,particleColor.y,particleColor.z };
+			ImGui::DragFloat3("particleColor", color, 0.01f, 0.0f, 1.0f);
+
+			particleColor.x = color[0];
+			particleColor.y = color[1];
+			particleColor.z = color[2];
+
+			ImGui::Checkbox("isRandomColor", &isRandomColor);
+
+			ImGui::TreePop();
+		}
+
+
 		ImGui::TreePop();
 	}
 	ImGui::End();
@@ -362,7 +377,6 @@ void ParticleSystem::SetSRV()
 Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* emitter, Vector3 velocity, bool isRandamTranslate)
 {
 	std::uniform_real_distribution<float>distribution(-1.0f, 1.0f);
-	std::uniform_real_distribution<float>distColor(0.0f, 1.0f);
 	std::uniform_real_distribution<float>distTime(lifeTime.min, lifeTime.max);
 
 	// エミッターのスケールを取得
@@ -427,8 +441,19 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 		particle.velocity.z = velocity.z + randomTranslate.z;
 	}
 
+	if (isRandomColor)
+	{
+		std::uniform_real_distribution<float>distRedColor(0.0f, particleColor.x);
+		std::uniform_real_distribution<float>distGreenColor(0.0f, particleColor.y);
+		std::uniform_real_distribution<float>distBlueColor(0.0f, particleColor.z);
 
-	particle.color = { distColor(randomEngine) ,distColor(randomEngine) ,distColor(randomEngine) ,1.0f };
+
+		particle.color = { distRedColor(randomEngine) ,distGreenColor(randomEngine) ,distBlueColor(randomEngine) ,1.0f };
+	}
+	else
+	{
+		particle.color = { particleColor.x,particleColor.y,particleColor.z,1.0f };
+	}
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0;
 	return particle;
@@ -477,4 +502,14 @@ void ParticleSystem::SetRandomVelocityZ()
 bool ParticleSystem::GetIsParticleEmpty()
 {
 	return particles.empty();
+}
+
+void ParticleSystem::SetColor(Vector3 color)
+{
+	particleColor = color;
+}
+
+void ParticleSystem::SetRandomColor()
+{
+	isRandomColor = true;
 }

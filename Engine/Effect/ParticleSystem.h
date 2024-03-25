@@ -154,6 +154,17 @@ public:
 	/// <returns></returns>
 	bool GetIsParticleEmpty();
 
+	/// <summary>
+	/// パーティクルひと粒のカラーの設定
+	/// </summary>
+	/// <param name="color"></param>
+	void SetColor(Vector3 color);
+
+	/// <summary>
+	/// パーティクルひと粒の色をランダムに変える
+	/// </summary>
+	void SetRandomColor();
+
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数
 
@@ -228,6 +239,9 @@ private://プライベート変数
 	bool isRandomVelocityX = false;
 	bool isRandomVelocityY = false;
 	bool isRandomVelocityZ = false;
+
+	Vector3 particleColor = { 1.0f,1.0f,1.0f };
+	bool isRandomColor = false;
 
 
 private://プライベート関数

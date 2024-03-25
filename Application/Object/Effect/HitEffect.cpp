@@ -7,12 +7,14 @@ void HitEffect::Initialize(Camera* camera)
 
 	Vector3 velocity = { 0.0f,0.0f,0.0f };
 	hitEffect.reset(ParticleSystem::Create(circleTexture, camera, velocity, false));
-	hitEffect->emitter_->transform.scale = { 1.0f,1.0f,1.0f };
-	hitEffect->emitter_->count = 20;
+	hitEffect->emitter_->transform.scale = { 1.0f,0.6f,1.0f };
+	hitEffect->emitter_->count = 40;
 	hitEffect->emitter_->frequency = 0.2f;
 	hitEffect->SetLifeTime(1.0f, 3.0f);
 	hitEffect->SetUseBillBoard();
 	hitEffect->SetRandomAllVelocity();
+	hitEffect->SetColor({ 1.0f,1.0f,0.0f });
+	hitEffect->SetRandomColor();
 }
 
 void HitEffect::Update()
