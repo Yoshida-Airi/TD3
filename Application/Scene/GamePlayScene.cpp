@@ -64,7 +64,7 @@ void GamePlayScene::Initialize()
 	sword->Initialize();
 
 	boss_ = std::make_unique<Boss>();
-	boss_->Initialize();
+	boss_->Initialize(player.get());
 
 
 	player->SetWeapon(sword.get());
@@ -76,6 +76,9 @@ void GamePlayScene::Initialize()
 void GamePlayScene::Update()
 {
 
+	//XINPUT_STATE joyState;
+
+
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
 	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
@@ -86,7 +89,7 @@ void GamePlayScene::Update()
 		playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
 		playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
 	}
-	if (input->PushKey(DIK_W))
+	/*if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
 	}
@@ -103,7 +106,14 @@ void GamePlayScene::Update()
 		camera->transform.translate.x += 0.03f;
 	}
 
+	if (input->GetJoystickState(0, joyState)) {
+		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
+		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
+	}
+
 	camera->UpdateMatrix();
+	}*/
+
 
 	if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
@@ -337,10 +347,9 @@ void GamePlayScene::Update()
 
 	}
 
-
-	
-
-
+	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
+	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
+	camera->UpdateMatrix();
 
 }
 
@@ -420,12 +429,12 @@ void GamePlayScene::BossSceneAllCollisions() {
 void GamePlayScene::skillRootUpdate()
 {
 	//スキルのアニメーション
+
 	if (input->PushKey(DIK_LSHIFT))
 	{
 		isSkill = true;
-
-
 	}
+
 
 	if (isSkill == true && isSkillCooldown_ == false)
 	{
@@ -467,7 +476,7 @@ void GamePlayScene::skill1Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 10)
+		if (MotionTimer_ == 20)
 		{
 			MotionCount_ = 1;
 		}
@@ -491,10 +500,10 @@ void GamePlayScene::skill1Update()
 	{
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
-		
+
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180;
-	
+		skillCooldownTime_ = 60;
+
 
 	}
 
@@ -512,7 +521,7 @@ void GamePlayScene::skill2Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 15)
+		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;
 		}
@@ -543,7 +552,7 @@ void GamePlayScene::skill2Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180; 
+		skillCooldownTime_ = 60;
 
 	}
 
@@ -559,9 +568,9 @@ void GamePlayScene::skill3Update()
 
 	if (MotionCount_ == 0)
 	{
-		
 
-		if (MotionTimer_ == 10)
+
+		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;
 		}
@@ -590,8 +599,8 @@ void GamePlayScene::skill3Update()
 		behaviorRequest_ = Skill::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 180;
-	
+		skillCooldownTime_ = 60;
+
 	}
 
 }
@@ -608,10 +617,8 @@ void GamePlayScene::skill1Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
-
-
-
 }
+
 
 void GamePlayScene::skill2Initialize()
 {
@@ -628,7 +635,7 @@ void GamePlayScene::skill3Initialzie()
 void GamePlayScene::EnemySpawn() {
 
 	Enemy* newEnemy = new Enemy();
-	newEnemy->Initialize();
+	newEnemy->Initialize(player.get());
 
 	std::mt19937 random(generator());
 

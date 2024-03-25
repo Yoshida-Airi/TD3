@@ -13,7 +13,7 @@ void Sword::Initialize()
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
-	SetRadius({3.0f,1.0f,1.0f});
+	SetRadius({ 3.0f,1.0f,1.0f });
 
 }
 
@@ -52,6 +52,30 @@ void Sword::OnCollision([[maybe_unused]] Collider* other)
 
 void Sword::Attack()
 {
+	XINPUT_STATE joyState;
+
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+		{
+			if (model_->worldTransform_->rotation_.y <= rotationmax) {
+				model_->worldTransform_->rotation_.y += rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y >= rotationmax) {
+				model_->worldTransform_->rotation_.y = rotationmax;
+			}
+		}
+		else
+		{
+			if (model_->worldTransform_->rotation_.y >= rotationmin) {
+				model_->worldTransform_->rotation_.y -= rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y <= rotationmin) {
+				model_->worldTransform_->rotation_.y = rotationmin;
+			}
+		}
+	}
+
+
 	if (input_->IsLeftMouseClicked())
 	{
 		if (model_->worldTransform_->rotation_.y <= rotationmax) {
@@ -70,6 +94,8 @@ void Sword::Attack()
 			model_->worldTransform_->rotation_.y = rotationmin;
 		}
 	}
+
+
 }
 void Sword::Skill()
 {

@@ -127,6 +127,9 @@ private:
 	int skillCooldownTime_; // スキルのクールダウン時間
 	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
+	float cameraZ;//lerpしたときの誤差修正数値
+
+
 #ifdef _DEBUG
 
 	ImGuiManager* imgui;

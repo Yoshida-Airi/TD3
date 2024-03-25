@@ -6,12 +6,12 @@
 #include <random>
 #include "Collider.h"
 #include "Player.h"
-
+#include "imgui.h"
 class Boss : public Collider {
 public:
 	~Boss();
 
-	void Initialize();
+	void Initialize(Player* player);
 
 	void Update();
 
@@ -39,7 +39,7 @@ public:
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;
-	std::unique_ptr<Player> player_ = nullptr;
+	Player* player_ = nullptr;
 
 	Input* input_ = nullptr;
 
