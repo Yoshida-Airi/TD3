@@ -30,10 +30,7 @@ public:
 	/// 実行が終わったかどうか
 	/// </summary>
 	/// <returns></returns>
-	bool IsDead()
-	{
-		return playTime <= 0;
-	}
+	bool IsDead();
 
 private:
 
@@ -43,8 +40,8 @@ private:
 	uint32_t circleTexture;
 
 	bool flag;	//実行中かどうかのフラグ
-
-	int playTime = 180;
+	int playTime = 150;
+	bool isDead = false;
 
 
 };

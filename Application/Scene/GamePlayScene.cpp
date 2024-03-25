@@ -46,14 +46,8 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-
-
-
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
-
-
-
 
 
 	sprite.reset(Sprite::Create(Doll));
@@ -161,6 +155,7 @@ void GamePlayScene::Update()
 		deathEffect_.remove_if([](HitEffect* hitEffects) {
 			if (hitEffects->IsDead())
 			{
+				//実行時間をすぎたらメモリ削除
 				delete hitEffects;
 				return true;
 			}
@@ -684,6 +679,7 @@ void GamePlayScene::EnemyAttack() {
 	}
 
 }
+
 
 void GamePlayScene::CreateDeathEffect(Vector3 position)
 {

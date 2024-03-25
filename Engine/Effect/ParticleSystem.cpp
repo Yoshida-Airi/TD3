@@ -473,3 +473,8 @@ void ParticleSystem::SetRandomVelocityZ()
 {
 	isRandomVelocityZ = true;
 }
+
+bool ParticleSystem::GetIsParticleEmpty()
+{
+	return particles.empty();
+}

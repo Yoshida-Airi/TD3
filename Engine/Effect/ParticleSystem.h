@@ -148,6 +148,12 @@ public:
 	void SetRandomVelocityY();		//y軸のみランダムな速度で
 	void SetRandomVelocityZ();		//z軸のもランダムな速度で
 
+	/// <summary>
+	/// パーティクルの粒の存在が０のときtrueを返す
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsParticleEmpty();
+
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数
 
