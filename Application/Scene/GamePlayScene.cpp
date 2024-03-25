@@ -13,6 +13,10 @@ GamePlayScene::~GamePlayScene()
 		delete enemyBullets;
 	}
 
+	for (DeathEffect* deathEffects : deathEffect_) {
+		delete deathEffects;
+	}
+
 }
 
 void GamePlayScene::Initialize()
@@ -42,18 +46,14 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-
-
 	playerlevel = new Playerlevel;
 	playerlevel->Initialize();
-
-
-
 
 
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
+
 
 
 
@@ -66,8 +66,6 @@ void GamePlayScene::Initialize()
 	boss_ = std::make_unique<Boss>();
 	boss_->Initialize(player.get());
 
-	//sampleEnemy = std::make_unique<PlayerWeapon>();
-	//sampleEnemy->Initialize();
 
 	player->SetWeapon(sword.get());
 
@@ -77,7 +75,9 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
+
 	//XINPUT_STATE joyState;
+
 
 	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
@@ -122,6 +122,7 @@ void GamePlayScene::Update()
 
 
 	if (timer.GetNowSecond() != 10)
+
 	{
 		sprite->worldTransform_->translation_ =
 		{
@@ -149,6 +150,7 @@ void GamePlayScene::Update()
 				//貰える経験値
 				playerlevel->Experiencepoint += 240.0f;
 				enemyDeathCount++;
+				CreateDeathEffect({enemys->GetTranslate()});
 			}
 		}
 
@@ -159,6 +161,21 @@ void GamePlayScene::Update()
 			}
 			return false;
 			});
+
+		deathEffect_.remove_if([](DeathEffect* hitEffects) {
+			if (hitEffects->IsDead())
+			{
+				//実行時間をすぎたらメモリ削除
+				delete hitEffects;
+				return true;
+			}
+			return false;
+			});
+
+		for (DeathEffect* deathEffects : deathEffect_) {
+			deathEffects->Update();
+		}
+
 		//ここから敵の弾の処理
 		for (EnemyBullet* enemyBullets : enemyBullet_) {
 			enemyBullets->Update();
@@ -208,6 +225,11 @@ void GamePlayScene::Update()
 			return true;
 			});
 
+		deathEffect_.remove_if([](DeathEffect* hitEffects) {
+			delete hitEffects;
+			return true;
+			});
+
 		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
 			delete enemyBullets;
 			return true;
@@ -252,6 +274,7 @@ void GamePlayScene::Update()
 #ifdef _DEBUG
 
 	camera->CameraDebug();
+	camera->UpdateMatrix();
 
 #endif // _DEBUG
 
@@ -274,9 +297,6 @@ void GamePlayScene::Update()
 	weaponPos.z = weaponPos.z + 5.0f;
 
 	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
-
-
-
 
 	if (behaviorRequest_)
 	{
@@ -326,9 +346,11 @@ void GamePlayScene::Update()
 		break;
 
 	}
+
 	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
 	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
 	camera->UpdateMatrix();
+
 }
 
 void GamePlayScene::Draw()
@@ -337,6 +359,7 @@ void GamePlayScene::Draw()
 	player->Draw();
 	sword->Draw(camera);
 
+	
 
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
@@ -348,11 +371,17 @@ void GamePlayScene::Draw()
 		enemys->Draw(camera);
 	}
 
+	for (DeathEffect* deathEffects : deathEffect_) {
+		deathEffects->Draw();
+	}
+
+
 	if (isBossSpawn == true) {
 		boss_->Draw(camera);
 	}
 
 	playerlevel->Draw();
+
 
 
 
@@ -656,5 +685,17 @@ void GamePlayScene::EnemyAttack() {
 		}
 	}
 
+}
+
+
+void GamePlayScene::CreateDeathEffect(Vector3 position)
+{
+	DeathEffect* newDeathEffect = new DeathEffect();
+	newDeathEffect->Initialize(camera);
+	newDeathEffect->SetFlag(true);
+
+	newDeathEffect->SetPosition(position);
+
+	deathEffect_.push_back(newDeathEffect);
 }
 

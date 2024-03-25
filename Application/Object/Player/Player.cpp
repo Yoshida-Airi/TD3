@@ -13,6 +13,7 @@ void Player::Initialize(Camera* camera)
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
 
 	SetRadius(model_->worldTransform_->scale_);
 }
