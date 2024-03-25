@@ -21,7 +21,7 @@ void TitleScene::Initialize()
 	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	fence_->worldTransform_->rotation_.y = 3.1f;
 
-	effect = std::make_unique<HitEffect>();
+	effect = std::make_unique<DeathEffect>();
 	effect->Initialize(camera);
 
 	effect->SetFlag(true);

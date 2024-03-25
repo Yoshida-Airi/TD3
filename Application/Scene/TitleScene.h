@@ -12,7 +12,7 @@
 #include"Model.h"
 #include"Camera.h"
 
-#include"HitEffect.h"
+#include"DeathEffect.h"
 
 #include"Enemy.h"
 #include <random>
@@ -37,7 +37,7 @@ private:
 	std::unique_ptr<Model> fence_ = nullptr;
 	std::unique_ptr<Model> cube_ = nullptr;
 
-	std::unique_ptr<HitEffect> effect = nullptr;
+	std::unique_ptr<DeathEffect> effect = nullptr;
 
 
 };

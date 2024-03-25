@@ -13,7 +13,7 @@ GamePlayScene::~GamePlayScene()
 		delete enemyBullets;
 	}
 
-	for (HitEffect* deathEffects : deathEffect_) {
+	for (DeathEffect* deathEffects : deathEffect_) {
 		delete deathEffects;
 	}
 
@@ -152,7 +152,7 @@ void GamePlayScene::Update()
 			return false;
 			});
 
-		deathEffect_.remove_if([](HitEffect* hitEffects) {
+		deathEffect_.remove_if([](DeathEffect* hitEffects) {
 			if (hitEffects->IsDead())
 			{
 				//実行時間をすぎたらメモリ削除
@@ -162,7 +162,7 @@ void GamePlayScene::Update()
 			return false;
 			});
 
-		for (HitEffect* deathEffects : deathEffect_) {
+		for (DeathEffect* deathEffects : deathEffect_) {
 			deathEffects->Update();
 		}
 
@@ -215,7 +215,7 @@ void GamePlayScene::Update()
 			return true;
 			});
 
-		deathEffect_.remove_if([](HitEffect* hitEffects) {
+		deathEffect_.remove_if([](DeathEffect* hitEffects) {
 			delete hitEffects;
 			return true;
 			});
@@ -362,7 +362,7 @@ void GamePlayScene::Draw()
 		enemys->Draw(camera);
 	}
 
-	for (HitEffect* deathEffects : deathEffect_) {
+	for (DeathEffect* deathEffects : deathEffect_) {
 		deathEffects->Draw();
 	}
 
@@ -683,7 +683,7 @@ void GamePlayScene::EnemyAttack() {
 
 void GamePlayScene::CreateDeathEffect(Vector3 position)
 {
-	HitEffect* newDeathEffect = new HitEffect();
+	DeathEffect* newDeathEffect = new DeathEffect();
 	newDeathEffect->Initialize(camera);
 	newDeathEffect->SetFlag(true);
 

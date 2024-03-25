@@ -1,7 +1,7 @@
 #pragma once
 #include"ParticleSystem.h"
 
-class HitEffect
+class DeathEffect
 {
 public:
 	void Initialize(Camera* camera);

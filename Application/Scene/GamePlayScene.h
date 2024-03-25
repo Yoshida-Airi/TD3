@@ -26,7 +26,7 @@
 #include "Enemy/EnemyBullet.h"
 #include <random>
 #include "../Boss.h"
-#include"HitEffect.h"
+#include"DeathEffect.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -95,7 +95,7 @@ private:
 
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;
-	std::list<HitEffect*>deathEffect_;	//敵消滅エフェクト
+	std::list<DeathEffect*>deathEffect_;	//敵消滅エフェクト
 
 	int enemyCount = 1;
 	const int MaxEnemySpawn = 5;

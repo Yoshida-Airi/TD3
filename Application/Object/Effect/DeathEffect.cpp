@@ -1,6 +1,6 @@
-#include "HitEffect.h"
+#include "DeathEffect.h"
 
-void HitEffect::Initialize(Camera* camera)
+void DeathEffect::Initialize(Camera* camera)
 {
 	textureManager_ = TextureManager::GetInstance();
 	circleTexture = textureManager_->LoadTexture("Resources/DefaultAssets/circle.png");
@@ -17,9 +17,9 @@ void HitEffect::Initialize(Camera* camera)
 	hitEffect->SetRandomColor();
 }
 
-void HitEffect::Update()
+void DeathEffect::Update()
 {
-	hitEffect->Debug("hitEffect");
+	hitEffect->Debug("deathEffect");
 	hitEffect->Update();
 
 	if (flag)
@@ -41,7 +41,7 @@ void HitEffect::Update()
 	}
 }
 
-void HitEffect::Draw()
+void DeathEffect::Draw()
 {
 	if (flag)
 	{
@@ -49,7 +49,7 @@ void HitEffect::Draw()
 	}
 }
 
-bool HitEffect::IsDead()
+bool DeathEffect::IsDead()
 {
 	return isDead;
 }
