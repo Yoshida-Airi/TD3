@@ -23,7 +23,9 @@ public:
 	/// <param name="position"></param>
 	void SetPosition(Vector3 position)
 	{
-		hitEffect->emitter_->transform.translate = position;
+		hitEffect->emitter_->transform.translate.x = position.x;
+		hitEffect->emitter_->transform.translate.y = position.y + 0.7f;
+		hitEffect->emitter_->transform.translate.z = position.z;
 	}
 
 	/// <summary>
@@ -40,7 +42,7 @@ private:
 	uint32_t circleTexture;
 
 	bool flag;	//実行中かどうかのフラグ
-	int playTime = 150;
+	int playTime = 1000;
 	bool isDead = false;
 
 

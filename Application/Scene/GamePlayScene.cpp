@@ -140,7 +140,7 @@ void GamePlayScene::Update()
 				//貰える経験値
 				playerlevel->Experiencepoint += 240.0f;
 				enemyDeathCount++;
-				CreateDeathEffect(enemys->GetWorldPosition());
+				CreateDeathEffect({enemys->GetTranslate()});
 			}
 		}
 

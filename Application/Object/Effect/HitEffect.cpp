@@ -8,7 +8,7 @@ void HitEffect::Initialize(Camera* camera)
 	Vector3 velocity = { 0.0f,0.0f,0.0f };
 	hitEffect.reset(ParticleSystem::Create(circleTexture, camera, velocity, false));
 	hitEffect->emitter_->count = 20;
-	hitEffect->emitter_->transform.scale = { 0.0f,0.0f,0.0f };
+	hitEffect->emitter_->frequency = 0.5f;
 	hitEffect->SetLifeTime(1.0f, 3.0f);
 	hitEffect->SetUseBillBoard();
 	hitEffect->SetRandomAllVelocity();

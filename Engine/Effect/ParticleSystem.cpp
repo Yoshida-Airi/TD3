@@ -70,7 +70,7 @@ void ParticleSystem::Initialize(uint32_t textureHandle, Camera* camera, Vector3 
 
 
 	SetMaterialData(color);
-
+	SetAnchorPoint({0.5f,0.5f});
 
 
 	indexData_[0] = 0;
@@ -83,9 +83,9 @@ void ParticleSystem::Initialize(uint32_t textureHandle, Camera* camera, Vector3 
 	emitter_->count = 10;
 	emitter_->frequency = 1.0f;
 	emitter_->frequencyTime = 0.0f;
-	emitter_->transform.translate = { 0.0f,0.2f,0.0f };
+	emitter_->transform.translate = { 0.0f,0.0f,0.0f };
 	emitter_->transform.rotate = { 0.0f,0.0f,0.0f };
-	emitter_->transform.scale = { 1.0f,1.0f,1.0f };
+	emitter_->transform.scale = { 0.0f,0.0f,0.0f };
 }
 
 void ParticleSystem::Update()
@@ -370,9 +370,9 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 
 	// パーティクルのランダムな位置を生成（エミッターのスケールを考慮）
 	Vector3 randomTranslate = {
-		distribution(randomEngine) ,
-		distribution(randomEngine) ,
-		distribution(randomEngine)
+		distribution(randomEngine)*emitterScale.x ,
+		distribution(randomEngine)* emitterScale.y,
+		distribution(randomEngine)* emitterScale.z
 	};
 
 	Particle particle;
@@ -384,9 +384,9 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 		//ランダムな位置に出現させる場合
 		particle.transform.translate =
 		{
-			emitter->transform.translate.x + randomTranslate.x * emitterScale.x,
-			emitter->transform.translate.y + randomTranslate.y * emitterScale.y,
-			emitter->transform.translate.z + randomTranslate.z * emitterScale.z
+			emitter->transform.translate.x + randomTranslate.x ,
+			emitter->transform.translate.y + randomTranslate.y ,
+			emitter->transform.translate.z + randomTranslate.z 
 		};
 	}
 	else
