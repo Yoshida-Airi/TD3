@@ -16,6 +16,15 @@ void Player::Initialize(Camera* camera)
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
 	model_->worldTransform_->translation_.y = 0.5f;
 	SetRadius(model_->worldTransform_->scale_);
+
+
+	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
+	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
+	LeftArmModel_.reset(Model::Create("Resources/PlayerModel/leftArm.obj"));
+	RightArmModel_.reset(Model::Create("Resources/PlayerModel/RightArm.obj"));
+	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
+	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
+
 }
 
 void Player::Update()
@@ -23,6 +32,12 @@ void Player::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();
 
+	bodyModel_->Update();
+	headModel_->Update();
+	LeftArmModel_->Update();
+	RightArmModel_->Update();
+	LeftFootModel_->Update();
+	RightFootModel_->Update();
 
 
 #ifdef _DEBUG
@@ -51,6 +66,13 @@ void Player::Update()
 void Player::Draw()
 {
 	model_->Draw(camera_);
+
+	bodyModel_->Draw(camera_);
+	headModel_->Draw(camera_);
+	LeftArmModel_->Draw(camera_);
+	RightArmModel_->Draw(camera_);
+	LeftFootModel_->Draw(camera_);
+	RightFootModel_->Draw(camera_);
 
 }
 
