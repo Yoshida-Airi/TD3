@@ -22,6 +22,10 @@ void Sword::Update()
 	model_->Update();
 	model_->ModelDebug("Sword");
 
+	ImGui::Begin("combo");
+	ImGui::Text("isAttack : %d\ncombo1 : %d\ncombo2 : %d\ncount : %d", isAttack, combo1, combo2,count);
+	ImGui::End();
+
 	Attack();
 }
 
@@ -57,10 +61,11 @@ void Sword::Attack()
 			isAttack = true;
 		}
 	}
-	if (input_->IsLeftMouseClicked())
+	if (input_->IsLeftMouseClicked() && combo1 == false && combo2 == false)
 	{
 		isAttack = true;
 	}
+	//三連続攻撃とか作りたい
 	if (isAttack == true) {
 		if (model_->worldTransform_->rotation_.x >= -0.83f) {
 			model_->worldTransform_->rotation_.x -= 0.10f;
@@ -75,25 +80,47 @@ void Sword::Attack()
 			model_->worldTransform_->translation_.x += 0.1f;
 		}
 		if (model_->worldTransform_->rotation_.x <= -0.83f && model_->worldTransform_->rotation_.y >= 2.48f && model_->worldTransform_->rotation_.z <= -0.26f && model_->worldTransform_->translation_.x >= 1.0f) {
-			isAttack = false;
+			count++;
+			if (count <= 120) {
+				if (input_->IsLeftMouseClicked()) {
+					count = 0;
+					combo1 = true;
+					isAttack = false;
+				}
+				if (count >= 120) {
+					count = 0;
+					isAttack = false;
+				}
+			}
 		}
 	}
-	if (isAttack == false && isSkill == false) {
+	if (combo1 == true) {
+		model_->worldTransform_->rotation_.x += 0.10f;
+		count++;
+		if (count >= 20 && count <= 80) {
+			if (input_->IsLeftMouseClicked()) {
+				count = 0;
+				combo2 = true;
+				combo1 = false;
+			}
+			if (count >= 80) {
+				count = 0;
+				combo1 = false;
+			}
+		}
+	}
+	if (combo2 == true) {
+		model_->worldTransform_->rotation_.y += 0.10f;
+		count++;
+		if (count >= 120) {
+			count = 0;
+			combo2 = false;
+		}
+	}
+	if (isAttack == false &&  combo1 == false && combo2 == false) {
 		model_->worldTransform_->rotation_.x = 0.79f;
 		model_->worldTransform_->rotation_.y = -0.31f;
 		model_->worldTransform_->rotation_.z = 1.39f;
 		model_->worldTransform_->translation_.x = -1.0f;
-	}
-	
-}
-
-void Sword::Skill()
-{
-	if (input_->PushKey(DIK_LSHIFT)) {
-		isSkill = true;
-	}
-	else
-	{
-		isSkill = false;
 	}
 }

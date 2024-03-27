@@ -462,8 +462,6 @@ void GamePlayScene::skillRootUpdate()
 
 		}
 	}
-
-
 }
 
 void GamePlayScene::skill1Update()
