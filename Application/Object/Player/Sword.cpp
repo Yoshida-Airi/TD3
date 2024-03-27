@@ -14,7 +14,6 @@ void Sword::Initialize()
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
 	SetRadius({ 3.0f,1.0f,1.0f });
-	model_->worldTransform_->translation_.x = -1.0f;
 }
 
 void Sword::Update()
@@ -55,41 +54,35 @@ void Sword::Attack()
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
 		{
-			model_->worldTransform_->rotation_.x = 0.79f;
-			model_->worldTransform_->rotation_.y = -0.31f;
-			model_->worldTransform_->rotation_.z = 1.39f;
 			isAttack = true;
-			/*if (model_->worldTransform_->rotation_.y <= rotationmax) {
-				model_->worldTransform_->rotation_.y += rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y >= rotationmax) {
-				model_->worldTransform_->rotation_.y = rotationmax;
-			}*/
 		}
 	}
 	if (input_->IsLeftMouseClicked())
 	{
-		model_->worldTransform_->rotation_.x = 0.79f;
-		model_->worldTransform_->rotation_.y = -0.31f;
-		model_->worldTransform_->rotation_.z = 1.39f;
 		isAttack = true;
-		/*if (model_->worldTransform_->rotation_.y <= rotationmax) {
-			model_->worldTransform_->rotation_.y += rotationspeed;
-		}
-		if (model_->worldTransform_->rotation_.y >= rotationmax) {
-			model_->worldTransform_->rotation_.y = rotationmax;
-		}*/
 	}
 	if (isAttack == true) {
 		if (model_->worldTransform_->rotation_.x >= -0.83f) {
-			model_->worldTransform_->rotation_.x -= 0.08f;
+			model_->worldTransform_->rotation_.x -= 0.10f;
 		}
 		if (model_->worldTransform_->rotation_.y <= 2.48f) {
-			model_->worldTransform_->rotation_.y += 0.12f;
+			model_->worldTransform_->rotation_.y += 0.16f;
 		}
 		if (model_->worldTransform_->rotation_.z >= -0.26f) {
-			model_->worldTransform_->rotation_.z -= 0.08f;
+			model_->worldTransform_->rotation_.z -= 0.12f;
 		}
+		if (model_->worldTransform_->translation_.x <= 1.0f) {
+			model_->worldTransform_->translation_.x += 0.1f;
+		}
+		if (model_->worldTransform_->rotation_.x <= -0.83f && model_->worldTransform_->rotation_.y >= 2.48f && model_->worldTransform_->rotation_.z <= -0.26f && model_->worldTransform_->translation_.x >= 1.0f) {
+			isAttack = false;
+		}
+	}
+	if (isAttack == false && isSkill == false) {
+		model_->worldTransform_->rotation_.x = 0.79f;
+		model_->worldTransform_->rotation_.y = -0.31f;
+		model_->worldTransform_->rotation_.z = 1.39f;
+		model_->worldTransform_->translation_.x = -1.0f;
 	}
 	
 }
