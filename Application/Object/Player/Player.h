@@ -40,7 +40,7 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
-
+	float PlayerSpeed = 2.0f;
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
@@ -59,7 +59,6 @@ private:
 	int HP = 5000;
 	float angle_ = 0.0f;
 
-	float PlayerSpeed = 2.0f;
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;

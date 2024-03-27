@@ -2,6 +2,7 @@
 #include"Input.h"
 #include"MathUtilty.h"
 #include"Model.h"
+#include "Player.h"
 #include"Collider.h"
 
 class PlayerWeapon;
@@ -9,7 +10,7 @@ class PlayerWeapon;
 class Sword :public Collider
 {
 public:
-	void Initialize();
+	void Initialize(Player* player);
 	void Update();
 	void Draw(Camera* camera);
 
@@ -36,6 +37,7 @@ public:
 private:
 	Input* input_ = nullptr;
 	PlayerWeapon* Weapon_ = nullptr;
+	Player* player_ = nullptr;
 
 	float Speed = 0.03f;	//速度
 private:

@@ -3,7 +3,7 @@
 #include"CollisionConfig.h"
 
 
-void Sword::Initialize()
+void Sword::Initialize(Player* player)
 {
 	input_ = Input::GetInstance();
 
@@ -14,6 +14,7 @@ void Sword::Initialize()
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
 	SetRadius({ 3.0f,1.0f,1.0f });
+	player_ = player;
 }
 
 void Sword::Update()
@@ -87,6 +88,14 @@ void Sword::Attack()
 					combo1 = true;
 					isAttack = false;
 				}
+				if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+					if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+					{
+						count = 0;
+						combo1 = true;
+						isAttack = false;
+					}
+				}
 				if (count >= 120) {
 					count = 0;
 					isAttack = false;
@@ -103,6 +112,14 @@ void Sword::Attack()
 				combo2 = true;
 				combo1 = false;
 			}
+			if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+				if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+				{
+					count = 0;
+					combo2 = true;
+					combo1 = false;
+				}
+			}
 			if (count >= 80) {
 				count = 0;
 				combo1 = false;
@@ -111,9 +128,11 @@ void Sword::Attack()
 	}
 	if (combo2 == true) {
 		model_->worldTransform_->rotation_.y += 0.10f;
+		player_->PlayerSpeed = 4.0f;
 		count++;
-		if (count >= 120) {
+		if (count >= 40) {
 			count = 0;
+			player_->PlayerSpeed = 2.0f;
 			combo2 = false;
 		}
 	}

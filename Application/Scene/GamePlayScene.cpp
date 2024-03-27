@@ -61,7 +61,7 @@ void GamePlayScene::Initialize()
 	player->Initialize(camera);
 
 	sword = std::make_unique<Sword>();
-	sword->Initialize();
+	sword->Initialize(player.get());
 
 	boss_ = std::make_unique<Boss>();
 	boss_->Initialize(player.get());
