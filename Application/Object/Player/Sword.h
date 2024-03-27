@@ -30,6 +30,7 @@ public:
 	float rotationmax = 1.57f;
 	float rotationmin = 0.0f;
 	float rotationspeed = 0.2f;
+	bool isAttack = false;
 	bool isSkill = false; //skill中がどうか　true : skill発動中
 
 private:
