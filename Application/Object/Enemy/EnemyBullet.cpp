@@ -57,6 +57,16 @@ Vector3 EnemyBullet::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 EnemyBullet::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
+void EnemyBullet::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+}
+
 
 void EnemyBullet::OnCollision([[maybe_unused]] Collider* other)
 {

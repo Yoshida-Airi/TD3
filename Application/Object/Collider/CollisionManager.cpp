@@ -1,4 +1,5 @@
 #include "CollisionManager.h"
+#include"CollisionConfig.h"
 
 void CollisionManager::Initialize()
 {
@@ -66,32 +67,174 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 	// コライダーBのワールド座標を取得
 	Vector3 posB = colliderB->GetWorldPosition();
 
-	// 座標AとBの距離を求める
-	Vector3 distance = { posB.x - posA.x, posB.y - posA.y, posB.z - posA.z };
-
-	// 各軸方向の距離の二乗を計算
-	float distanceSquaredX = distance.x * distance.x;
-	float distanceSquaredY = distance.y * distance.y;
-	float distanceSquaredZ = distance.z * distance.z;
-
-	// 各軸方向の半径を取得
-	Vector3 radiusA = colliderA->GetRadius();
-	Vector3 radiusB = colliderB->GetRadius();
-
-	// 各軸方向の半径の和を計算
-	float radiusSumX = radiusA.x + radiusB.x;
-	float radiusSumY = radiusA.y + radiusB.y;
-	float radiusSumZ = radiusA.z + radiusB.z;
-
-	// 球と球の交差判定
-	if (distanceSquaredX / (radiusSumX * radiusSumX) +
-		distanceSquaredY / (radiusSumY * radiusSumY) +
-		distanceSquaredZ / (radiusSumZ * radiusSumZ) <= 1.0f) 
+	if (colliderA->GetTypeID() == uint32_t(CollisionTypeDef::kPlayer))
 	{
-		// コライダーAの衝突時コールバックを呼び出す
-		colliderA->OnCollision(colliderB);
-		// コライダーBの衝突時コールバックを呼び出す
-		colliderB->OnCollision(colliderA);
+		playerRotate = colliderA->GetRotate();
+		playerTranslate = colliderA->GetWorldPosition();
+	}
+
+	if (colliderA->GetTypeID() == uint32_t(CollisionTypeDef::kPlayerWeapon))
+	{
+		Collider::OBB obb
+		{
+			{posA.x,posA.y,posA.z},//obbの中心 x座標の位置に違和感
+			{{1.0f,0.0f,0.0f}, {0.0f,1.0f,0.0f},{0.0f,0.0f,1.0f}},//座標軸　正規化・直交必須 0=x 1=y 2=z
+			colliderA->GetRadius()//中心から各面までの距離　
+		};
+		Matrix4x4 rotateMatrix = Multiply(MakeRotateXMatrix(colliderA->GetRotate().x + playerRotate.x), Multiply(MakeRotateYMatrix(colliderA->GetRotate().y + playerRotate.y), MakeRotateYMatrix(colliderA->GetRotate().z + playerRotate.z)));
+		obb.orientations[0].x = rotateMatrix.m[0][0];
+		obb.orientations[0].y = rotateMatrix.m[0][1];
+		obb.orientations[0].z = rotateMatrix.m[0][2];
+
+		obb.orientations[1].x = rotateMatrix.m[1][0];
+		obb.orientations[1].y = rotateMatrix.m[1][1];
+		obb.orientations[1].z = rotateMatrix.m[1][2];
+
+		obb.orientations[2].x = rotateMatrix.m[2][0];
+		obb.orientations[2].y = rotateMatrix.m[2][1];
+		obb.orientations[2].z = rotateMatrix.m[2][2];
+
+		Matrix4x4 OBBWorldMatrix
+		{
+			obb.orientations[0].x,
+			obb.orientations[0].y,
+			obb.orientations[0].z,
+			0.0f,
+
+			obb.orientations[1].x,
+			obb.orientations[1].y,
+			obb.orientations[1].z,
+			0.0f,
+
+			obb.orientations[2].x,
+			obb.orientations[2].y,
+			obb.orientations[2].z,
+			0.0f,
+
+			obb.center.x,
+			obb.center.y,
+			obb.center.z,
+			1.0f
+		};
+		Collider::Sphere sphere
+		{
+			posB,
+			colliderB->GetRadius().x
+		};
+		Matrix4x4 OBBWorldMatrixInverce = Inverse(OBBWorldMatrix);
+		Vector3 centerInOBBLocalSpace = CoorTransform(sphere.center, OBBWorldMatrixInverce);
+		Collider::AABB aabbOBBLocal{ {-obb.size.x,-obb.size.y,-obb.size.z},{0.0f,obb.size.y,obb.size.z} };
+		Collider::Sphere sphereOBBLocal{ centerInOBBLocalSpace ,sphere.radius };
+		Vector3 closestPoint
+		{
+			std::clamp(sphereOBBLocal.center.x,aabbOBBLocal.min.x,aabbOBBLocal.max.x),
+			std::clamp(sphereOBBLocal.center.y,aabbOBBLocal.min.y,aabbOBBLocal.max.y),
+			std::clamp(sphereOBBLocal.center.z,aabbOBBLocal.min.z,aabbOBBLocal.max.z)
+		};
+		float distance = Length(Subtract(closestPoint, sphereOBBLocal.center));
+		if (distance <= sphereOBBLocal.radius)
+		{
+			// コライダーAの衝突時コールバックを呼び出す
+			colliderA->OnCollision(colliderB);
+			// コライダーBの衝突時コールバックを呼び出す
+			colliderB->OnCollision(colliderA);
+		}
+	}else if (colliderB->GetTypeID() == uint32_t(CollisionTypeDef::kPlayerWeapon))
+	{
+		Collider::OBB obb
+		{
+			{posB.x,posB.y,posB.z},
+			{{1.0f,0.0f,0.0f}, {0.0f,1.0f,0.0f},{0.0f,0.0f,1.0f}},
+			colliderB->GetRadius()
+		};
+		Matrix4x4 rotateMatrix = Multiply(MakeRotateXMatrix(colliderB->GetRotate().x + playerRotate.x), Multiply(MakeRotateYMatrix(colliderB->GetRotate().y + playerRotate.y), MakeRotateYMatrix(colliderB->GetRotate().z + playerRotate.z)));
+		obb.orientations[0].x = rotateMatrix.m[0][0];
+		obb.orientations[0].y = rotateMatrix.m[0][1];
+		obb.orientations[0].z = rotateMatrix.m[0][2];
+
+		obb.orientations[1].x = rotateMatrix.m[1][0];
+		obb.orientations[1].y = rotateMatrix.m[1][1];
+		obb.orientations[1].z = rotateMatrix.m[1][2];
+
+		obb.orientations[2].x = rotateMatrix.m[2][0];
+		obb.orientations[2].y = rotateMatrix.m[2][1];
+		obb.orientations[2].z = rotateMatrix.m[2][2];
+
+		Matrix4x4 OBBWorldMatrix
+		{
+			obb.orientations[0].x,
+			obb.orientations[0].y,
+			obb.orientations[0].z,
+			0.0f,
+
+			obb.orientations[1].x,
+			obb.orientations[1].y,
+			obb.orientations[1].z,
+			0.0f,
+
+			obb.orientations[2].x,
+			obb.orientations[2].y,
+			obb.orientations[2].z,
+			0.0f,
+
+			obb.center.x,
+			obb.center.y,
+			obb.center.z,
+			1.0f
+		};
+		Collider::Sphere sphere
+		{
+			posA,
+			colliderA->GetRadius().x
+		};
+		Matrix4x4 OBBWorldMatrixInverce = Inverse(OBBWorldMatrix);
+		Vector3 centerInOBBLocalSphace = CoorTransform(sphere.center, OBBWorldMatrixInverce);
+		Collider::AABB aabbOBBLocal{ {-obb.size.x,-obb.size.y,-obb.size.z},{0.0f,obb.size.y,obb.size.z} };
+		Collider::Sphere sphereOBBLocal{ centerInOBBLocalSphace ,sphere.radius };
+		Vector3 closestPoint
+		{
+			std::clamp(sphereOBBLocal.center.x,aabbOBBLocal.min.x,aabbOBBLocal.max.x),
+			std::clamp(sphereOBBLocal.center.y,aabbOBBLocal.min.y,aabbOBBLocal.max.y),
+			std::clamp(sphereOBBLocal.center.z,aabbOBBLocal.min.z,aabbOBBLocal.max.z)
+		};
+		float distance = Length(Subtract(closestPoint, sphereOBBLocal.center));
+		if (distance <= sphereOBBLocal.radius)
+		{
+			// コライダーAの衝突時コールバックを呼び出す
+			colliderA->OnCollision(colliderB); 
+			// コライダーBの衝突時コールバックを呼び出す
+			colliderB->OnCollision(colliderA);
+		}
+	}
+	else
+	{
+		// 座標AとBの距離を求める
+		Vector3 distance = { posB.x - posA.x, posB.y - posA.y, posB.z - posA.z };
+
+		// 各軸方向の距離の二乗を計算
+		float distanceSquaredX = distance.x * distance.x;
+		float distanceSquaredY = distance.y * distance.y;
+		float distanceSquaredZ = distance.z * distance.z;
+
+		// 各軸方向の半径を取得
+		Vector3 radiusA = colliderA->GetRadius();
+		Vector3 radiusB = colliderB->GetRadius();
+
+		// 各軸方向の半径の和を計算
+		float radiusSumX = radiusA.x + radiusB.x;
+		float radiusSumY = radiusA.y + radiusB.y;
+		float radiusSumZ = radiusA.z + radiusB.z;
+
+		// 球と球の交差判定
+		if (distanceSquaredX / (radiusSumX * radiusSumX) +
+			distanceSquaredY / (radiusSumY * radiusSumY) +
+			distanceSquaredZ / (radiusSumZ * radiusSumZ) <= 1.0f)
+		{
+			// コライダーAの衝突時コールバックを呼び出す
+			colliderA->OnCollision(colliderB);
+			// コライダーBの衝突時コールバックを呼び出す
+			colliderB->OnCollision(colliderA);
+		}
 	}
 }
 

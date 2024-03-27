@@ -13,7 +13,7 @@ void Sword::Initialize()
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
-	SetRadius({3.0f,1.0f,1.0f});
+	SetRadius({6.0f,1.0f,1.0f});
 
 }
 
@@ -31,6 +31,10 @@ void Sword::Draw(Camera* camera)
 	model_->Draw(camera);
 }
 
+void Sword::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+};
 Vector3 Sword::GetWorldPosition()
 {
 	// ワールド座標を入れる変数
@@ -42,6 +46,11 @@ Vector3 Sword::GetWorldPosition()
 	worldpos.z = model_->worldTransform_->matWorld_.m[3][2];
 
 	return worldpos;
+}
+
+Vector3 Sword::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
 }
 
 
