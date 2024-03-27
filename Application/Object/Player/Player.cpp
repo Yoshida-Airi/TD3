@@ -25,6 +25,7 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
+
 }
 
 void Player::Update()
