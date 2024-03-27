@@ -25,6 +25,12 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
+	bodyModel_->SetisInvisible(true);
+	headModel_->SetisInvisible(true);
+	LeftArmModel_->SetisInvisible(true);
+	RightArmModel_->SetisInvisible(true);
+	LeftFootModel_->SetisInvisible(true);
+	RightFootModel_->SetisInvisible(true);
 
 }
 
