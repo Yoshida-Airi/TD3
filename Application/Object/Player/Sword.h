@@ -37,6 +37,10 @@ private:
 	PlayerWeapon* Weapon_ = nullptr;
 
 	float Speed = 0.03f;	//速度
+
+	bool keyBoard = true;
+	bool gamePad = false;
+
 private:
 
 	//攻撃

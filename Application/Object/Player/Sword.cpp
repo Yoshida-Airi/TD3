@@ -23,6 +23,17 @@ void Sword::Update()
 	model_->Update();
 	model_->ModelDebug("Sword");
 
+	//コントローラーチェンジ
+	if (input_->PushKey(DIK_1)) {
+		gamePad = true;
+		keyBoard = false;
+	}
+	if (input_->PushKey(DIK_2)) {
+		gamePad = false;
+		keyBoard = true;
+	}
+
+
 	Attack();
 }
 
@@ -54,26 +65,48 @@ void Sword::Attack()
 {
 	XINPUT_STATE joyState;
 
-	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
-	}
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
 
-	if (input_->IsLeftMouseClicked() || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-	{
-		if (model_->worldTransform_->rotation_.y <= rotationmax) {
-			model_->worldTransform_->rotation_.y += rotationspeed;
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+		{
+			if (model_->worldTransform_->rotation_.y <= rotationmax) {
+				model_->worldTransform_->rotation_.y += rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y >= rotationmax) {
+				model_->worldTransform_->rotation_.y = rotationmax;
+			}
 		}
-		if (model_->worldTransform_->rotation_.y >= rotationmax) {
-			model_->worldTransform_->rotation_.y = rotationmax;
+		else
+		{
+			if (model_->worldTransform_->rotation_.y >= rotationmin) {
+				model_->worldTransform_->rotation_.y -= rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y <= rotationmin) {
+				model_->worldTransform_->rotation_.y = rotationmin;
+			}
 		}
 	}
-	else
-	{
-		if (model_->worldTransform_->rotation_.y >= rotationmin) {
-			model_->worldTransform_->rotation_.y -= rotationspeed;
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked())
+		{
+			if (model_->worldTransform_->rotation_.y <= rotationmax) {
+				model_->worldTransform_->rotation_.y += rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y >= rotationmax) {
+				model_->worldTransform_->rotation_.y = rotationmax;
+			}
 		}
-		if (model_->worldTransform_->rotation_.y <= rotationmin) {
-			model_->worldTransform_->rotation_.y = rotationmin;
+		else
+		{
+			if (model_->worldTransform_->rotation_.y >= rotationmin) {
+				model_->worldTransform_->rotation_.y -= rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y <= rotationmin) {
+				model_->worldTransform_->rotation_.y = rotationmin;
+			}
 		}
 	}
 }
@@ -81,15 +114,27 @@ void Sword::Skill()
 {
 	XINPUT_STATE joyState;
 
-	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
-	}
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
 
-	if (input_->PushKey(DIK_LSHIFT) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
-		isSkill = true;
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			isSkill = true;
+		}
+		else
+		{
+			isSkill = false;
+		}
 	}
-	else
-	{
-		isSkill = false;
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked()) {
+			isSkill = true;
+		}
+		else
+		{
+			isSkill = false;
+		}
 	}
 }
