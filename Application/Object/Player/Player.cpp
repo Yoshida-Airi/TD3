@@ -93,26 +93,39 @@ void Player::Move()
 	bool isMoveing = false;
 
 	//移動
-	if (input_->PushKey(DIK_W))
-	{
-		move.z = PlayerSpeed;
+	if (keyBoard == true) {
+		if (input_->PushKey(DIK_W))
+		{
+			move.z = 2.0f;
+		}
+		if (input_->PushKey(DIK_S))
+		{
+			move.z = -2.0f;
+		}
+		if (input_->PushKey(DIK_A))
+		{
+			move.x = -2.0f;
+		}
+		if (input_->PushKey(DIK_D))
+		{
+			move.x = 2.0f;
+		}
 	}
-	if (input_->PushKey(DIK_S))
-	{
-		move.z = -PlayerSpeed;
+	//コントローラーチェンジ
+	if (input_->PushKey(DIK_1)) {
+		gamePad = true;
+		keyBoard = false;
 	}
-	if (input_->PushKey(DIK_A))
-	{
-		move.x = -PlayerSpeed;
-	}
-	if (input_->PushKey(DIK_D))
-	{
-		move.x = PlayerSpeed;
+	if (input_->PushKey(DIK_2)) {
+		gamePad = false;
+		keyBoard = true;
 	}
 
-	if (input_->GetJoystickState(0, joyState)) {
-		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
-		move.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
+	if (gamePad == true) {
+		if (input_->GetJoystickState(0, joyState)) {
+			move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
+			move.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
+		}
 	}
 
 	if (Length(move) > threshold)
@@ -143,9 +156,12 @@ void Player::Attack()
 {
 	XINPUT_STATE joyState;
 
-	if (Input::GetInstance()->GetJoystickState(0, joyState))
-	{
-		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
+
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 		{
 			isUnderAttack = true;
 		}
@@ -154,17 +170,15 @@ void Player::Attack()
 			isUnderAttack = false;
 		}
 	}
-
-
-	if (input_->IsLeftMouseClicked())
-	{
-		isUnderAttack = true;
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked()) {
+			isUnderAttack = true;
+		}
+		else
+		{
+			isUnderAttack = false;
+		}
 	}
-	else
-	{
-		isUnderAttack = true;
-	}
-
 
 }
 
@@ -172,17 +186,29 @@ void Player::Skill()
 {
 	XINPUT_STATE joyState;
 
-	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
+
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
 			isSkill = true;
 		}
+		else
+		{
+			isSkill = false;
+		}
 	}
-
-
-
-
-
-
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked()) {
+			isSkill = true;
+		}
+		else
+		{
+			isSkill = false;
+		}
+	}
 }
 
 void Player::PLevelUp()
