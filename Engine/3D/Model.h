@@ -25,6 +25,8 @@ public:
 		isInvisible_ = isInvisible;
 	}
 
+
+
 	WorldTransform* worldTransform_;
 
 	/// <summary>
@@ -42,6 +44,10 @@ public:
 	/// <param name="model">親のモデル</param>
 	void Parent(Model* model);
 
+	void SetTexture(uint32_t textureIndex)
+	{
+		textureHandle_ = textureIndex;
+	}
 
 private:
 	DirectXCommon* dxCommon_;
