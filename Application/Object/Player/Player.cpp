@@ -150,6 +150,8 @@ void Player::Move()
 	model_->worldTransform_->translation_.x += move.x;
 	model_->worldTransform_->translation_.z += move.z;
 
+	CoolDown();
+
 }
 
 void Player::Attack()
