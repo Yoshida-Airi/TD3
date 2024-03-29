@@ -47,11 +47,12 @@ void Playerlevel::Update() {
 		//経験値がMAXになったらレベルを上げてメーターを０にする
 		Levelup();
 		if (nowlevel == 3) {
-			sprite3->worldTransform_->translation_.x = 1008.0f;
-			sprite3->worldTransform_->translation_.y = 49.0f;
 			nowskilllevel += 1;
 		}
 		if (nowlevel == 6 || nowlevel == 10) {
+			//nowskilllevel += 1;
+			sprite3->worldTransform_->translation_.x = 1008.0f;
+			sprite3->worldTransform_->translation_.y = 49.0f;
 			Skillup();
 		}
 	}

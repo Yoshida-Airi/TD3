@@ -5,7 +5,7 @@ Boss::~Boss() {
 
 }
 
-void Boss::Initialize() {
+void Boss::Initialize(Player* player) {
 	Collider::Initialize();
 
 	//当たり判定用
@@ -20,7 +20,7 @@ void Boss::Initialize() {
 
 	hp = 100;
 
-	player_ = std::make_unique<Player>();
+	player_ = player;
 
 }
 
@@ -43,7 +43,9 @@ void Boss::Update() {
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
-
+	ImGui::Begin("Boss");
+	ImGui::Text("HP : %d", hp);
+	ImGui::End();
 }
 
 void Boss::Draw(Camera* camera) {

@@ -1,8 +1,8 @@
 #pragma once
 #include"Input.h"
 #include"MathUtilty.h"
-
 #include"Model.h"
+#include "Player.h"
 #include"Collider.h"
 
 class PlayerWeapon;
@@ -10,7 +10,7 @@ class PlayerWeapon;
 class Sword :public Collider
 {
 public:
-	void Initialize();
+	void Initialize(Player* player);
 	void Update();
 	void Draw(Camera* camera);
 
@@ -32,18 +32,20 @@ public:
 	float rotationmax = 1.57f;
 	float rotationmin = 0.0f;
 	float rotationspeed = 0.2f;
-	bool isSkill = false; //skill中がどうか　true : skill発動中
-
+	bool isAttack = false;
+	bool combo1 = false;
+	bool combo2 = false;
+	int count = 0;
 private:
 	Input* input_ = nullptr;
 	PlayerWeapon* Weapon_ = nullptr;
+	Player* player_ = nullptr;
 
 	float Speed = 0.03f;	//速度
 private:
 
 	//攻撃
 	void Attack();
-	void Skill();
 
 };
 
