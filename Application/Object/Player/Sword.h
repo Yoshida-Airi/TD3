@@ -33,6 +33,7 @@ public:
 	float rotationmin = 0.0f;
 	float rotationspeed = 0.2f;
 	bool isAttack = false;
+	bool isSkill = false; //skill中がどうか　true : skill発動中
 	bool combo1 = false;
 	bool combo2 = false;
 	int count = 0;
@@ -42,10 +43,16 @@ private:
 	Player* player_ = nullptr;
 
 	float Speed = 0.03f;	//速度
+
+	bool keyBoard = true;
+	bool gamePad = false;
+
 private:
 
 	//攻撃
 	void Attack();
+
+	void Skill();
 
 };
 

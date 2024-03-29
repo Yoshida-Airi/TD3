@@ -31,13 +31,14 @@ void Boss::Update() {
 
 	Collider::UpdateWorldTransform();
 
-	model_->worldTransform_->translation_.x += 0.001f;
+	//model_->worldTransform_->translation_.x += 0.001f;
 
 	if (hp <= 0)
 	{
 		isDead_ = true;
 	}
 
+	Move();
 	CoolDown();
 
 	/*if (--deathTimer <= 0) {
@@ -97,6 +98,31 @@ void Boss::CoolDown() {
 		isCoolDown = false;
 		coolDownTimer = 0;
 	}
+
+}
+
+void Boss::Move() {
+
+	const float kBulletSpeed = 0.04f;
+	Vector3 playerPos = player_->GetPosition();
+	Vector3 enemyPos = model_->worldTransform_->translation_;
+	Vector3 speed;
+
+	speed.x = playerPos.x - enemyPos.x;
+	speed.y = playerPos.y - enemyPos.y;
+	speed.z = playerPos.z - enemyPos.z;
+
+	speed = Normalize(speed);
+
+	speed.x *= kBulletSpeed;
+	speed.y *= kBulletSpeed;
+	speed.z *= kBulletSpeed;
+
+	speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
+
+	model_->worldTransform_->translation_.x += speed.x;
+	model_->worldTransform_->translation_.y += speed.y;
+	model_->worldTransform_->translation_.z += speed.z;
 
 }
 

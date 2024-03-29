@@ -23,9 +23,16 @@ void Sword::Update()
 	model_->Update();
 	model_->ModelDebug("Sword");
 
-	ImGui::Begin("combo");
-	ImGui::Text("isAttack : %d\ncombo1 : %d\ncombo2 : %d\ncount : %d", isAttack, combo1, combo2,count);
-	ImGui::End();
+	//コントローラーチェンジ
+	if (input_->PushKey(DIK_1)) {
+		gamePad = true;
+		keyBoard = false;
+	}
+	if (input_->PushKey(DIK_2)) {
+		gamePad = false;
+		keyBoard = true;
+	}
+
 
 	Attack();
 }
@@ -66,90 +73,76 @@ void Sword::Attack()
 {
 	XINPUT_STATE joyState;
 
-	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
+
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 		{
-			isAttack = true;
+			if (model_->worldTransform_->rotation_.y <= rotationmax) {
+				model_->worldTransform_->rotation_.y += rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y >= rotationmax) {
+				model_->worldTransform_->rotation_.y = rotationmax;
+			}
 		}
-	}
-	if (input_->IsLeftMouseClicked() && combo1 == false && combo2 == false)
-	{
-		isAttack = true;
-	}
-	//三連続攻撃とか作りたい
-	if (isAttack == true) {
-		if (model_->worldTransform_->rotation_.x >= -0.83f) {
-			model_->worldTransform_->rotation_.x -= 0.10f;
-		}
-		if (model_->worldTransform_->rotation_.y <= 2.48f) {
-			model_->worldTransform_->rotation_.y += 0.16f;
-		}
-		if (model_->worldTransform_->rotation_.z >= -0.26f) {
-			model_->worldTransform_->rotation_.z -= 0.12f;
-		}
-		if (model_->worldTransform_->translation_.x <= 1.0f) {
-			model_->worldTransform_->translation_.x += 0.1f;
-		}
-		if (model_->worldTransform_->rotation_.x <= -0.83f && model_->worldTransform_->rotation_.y >= 2.48f && model_->worldTransform_->rotation_.z <= -0.26f && model_->worldTransform_->translation_.x >= 1.0f) {
-			count++;
-			if (count <= 120) {
-				if (input_->IsLeftMouseClicked()) {
-					count = 0;
-					combo1 = true;
-					isAttack = false;
-				}
-				if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-					if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
-					{
-						count = 0;
-						combo1 = true;
-						isAttack = false;
-					}
-				}
-				if (count >= 120) {
-					count = 0;
-					isAttack = false;
-				}
+		else
+		{
+			if (model_->worldTransform_->rotation_.y >= rotationmin) {
+				model_->worldTransform_->rotation_.y -= rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y <= rotationmin) {
+				model_->worldTransform_->rotation_.y = rotationmin;
 			}
 		}
 	}
-	if (combo1 == true) {
-		model_->worldTransform_->rotation_.x += 0.10f;
-		count++;
-		if (count >= 20 && count <= 80) {
-			if (input_->IsLeftMouseClicked()) {
-				count = 0;
-				combo2 = true;
-				combo1 = false;
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked())
+		{
+			if (model_->worldTransform_->rotation_.y <= rotationmax) {
+				model_->worldTransform_->rotation_.y += rotationspeed;
 			}
-			if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-				if (joyState.Gamepad.wButtons && XINPUT_GAMEPAD_LEFT_SHOULDER)
-				{
-					count = 0;
-					combo2 = true;
-					combo1 = false;
-				}
+			if (model_->worldTransform_->rotation_.y >= rotationmax) {
+				model_->worldTransform_->rotation_.y = rotationmax;
 			}
-			if (count >= 80) {
-				count = 0;
-				combo1 = false;
+		}
+		else
+		{
+			if (model_->worldTransform_->rotation_.y >= rotationmin) {
+				model_->worldTransform_->rotation_.y -= rotationspeed;
+			}
+			if (model_->worldTransform_->rotation_.y <= rotationmin) {
+				model_->worldTransform_->rotation_.y = rotationmin;
 			}
 		}
 	}
-	if (combo2 == true) {
-		model_->worldTransform_->rotation_.y += 0.10f;
-		player_->PlayerSpeed = 4.0f;
-		count++;
-		if (count >= 40) {
-			count = 0;
-			player_->PlayerSpeed = 2.0f;
-			combo2 = false;
+}
+void Sword::Skill()
+{
+	XINPUT_STATE joyState;
+
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
+
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			isSkill = true;
+		}
+		else
+		{
+			isSkill = false;
 		}
 	}
-	if (isAttack == false &&  combo1 == false && combo2 == false) {
-		model_->worldTransform_->rotation_.x = 0.79f;
-		model_->worldTransform_->rotation_.y = -0.31f;
-		model_->worldTransform_->rotation_.z = 1.39f;
-		model_->worldTransform_->translation_.x = -1.0f;
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked()) {
+			isSkill = true;
+		}
+		else
+		{
+			isSkill = false;
+		}
 	}
 }

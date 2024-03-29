@@ -64,6 +64,18 @@ private:
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
+	
+	bool keyBoard = true;
+	bool gamePad = false;
+
+
+	std::unique_ptr<Model> bodyModel_ = nullptr;
+	std::unique_ptr<Model> headModel_ = nullptr;
+	std::unique_ptr<Model> LeftArmModel_ = nullptr;
+	std::unique_ptr<Model> RightArmModel_ = nullptr;
+	std::unique_ptr<Model> LeftFootModel_ = nullptr;
+	std::unique_ptr<Model> RightFootModel_ = nullptr;
+
 
 private:
 

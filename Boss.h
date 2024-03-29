@@ -57,5 +57,7 @@ private:
 
 	void CoolDown();
 
+	void Move();
+
 };
 
