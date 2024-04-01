@@ -242,7 +242,6 @@ void Player::Move()
 
 	}
 
-
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 	model_->worldTransform_->translation_.x += move.x;
@@ -266,7 +265,6 @@ void Player::Attack()
 		}
 	}
 
-
 	if (input_->IsLeftMouseClicked())
 	{
 		isUnderAttack = true;
@@ -275,8 +273,6 @@ void Player::Attack()
 	{
 		isUnderAttack = true;
 	}
-
-
 }
 
 void Player::Skill()
@@ -288,8 +284,6 @@ void Player::Skill()
 			isSkill = true;
 		}
 	}
-
-
 }
 
 void Player::PLevelUp()

@@ -3,8 +3,7 @@
 GamePlayScene::~GamePlayScene()
 {
 	delete camera;
-	/*delete playerlevel;*/
-
+	
 	for (Enemy* enemys : enemy_) {
 		delete enemys;
 	}
@@ -234,7 +233,6 @@ void GamePlayScene::Update()
 
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
-	/*playerlevel->Update();*/
 	player->Update();
 	sword->Update();
 
