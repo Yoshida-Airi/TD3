@@ -60,50 +60,5 @@ void Sword::OnCollision([[maybe_unused]] Collider* other)
 
 void Sword::Attack()
 {
-	XINPUT_STATE joyState;
 
-	if (gamePad == true) {
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-		{
-			if (model_->worldTransform_->rotation_.y <= rotationmax) {
-				model_->worldTransform_->rotation_.y += rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y >= rotationmax) {
-				model_->worldTransform_->rotation_.y = rotationmax;
-			}
-		}
-		else
-		{
-			if (model_->worldTransform_->rotation_.y >= rotationmin) {
-				model_->worldTransform_->rotation_.y -= rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y <= rotationmin) {
-				model_->worldTransform_->rotation_.y = rotationmin;
-			}
-		}
-	}
-	else if (keyBoard == true) {
-		if (input_->IsLeftMouseClicked())
-		{
-			if (model_->worldTransform_->rotation_.y <= rotationmax) {
-				model_->worldTransform_->rotation_.y += rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y >= rotationmax) {
-				model_->worldTransform_->rotation_.y = rotationmax;
-			}
-		}
-		else
-		{
-			if (model_->worldTransform_->rotation_.y >= rotationmin) {
-				model_->worldTransform_->rotation_.y -= rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y <= rotationmin) {
-				model_->worldTransform_->rotation_.y = rotationmin;
-			}
-		}
-	}
 }

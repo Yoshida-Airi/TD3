@@ -99,6 +99,10 @@ private:
 	int skillCooldownTime_; // スキルのクールダウン時間
 	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
+	float rotationmax = 1.57f;
+	float rotationmin = 0.0f;
+	float rotationspeed = 0.2f;
+
 private:
 
 	//移動

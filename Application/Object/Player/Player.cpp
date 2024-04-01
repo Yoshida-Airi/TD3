@@ -264,21 +264,18 @@ void Player::Attack()
 		{
 			isUnderAttack = true;
 		}
-		else
-		{
-			isUnderAttack = false;
-		}
 	}
 	else if (keyBoard == true) {
 		if (input_->IsLeftMouseClicked()) {
 			isUnderAttack = true;
 		}
-		else
-		{
-			isUnderAttack = false;
-		}
 	}
 
+
+	if (isUnderAttack == true )
+	{
+		behaviorRequest_ = Animation::kAttack;
+	}
 }
 
 void Player::Skill()
@@ -303,6 +300,9 @@ void Player::Skill()
 		}
 		
 	}
+
+
+
 }
 
 void Player::PLevelUp()
@@ -328,6 +328,70 @@ void Player::CoolDown() {
 
 void Player::AttackUpdate()
 {
+	if (isSkillCooldown_) {
+		return;
+	}
+
+	MotionTimer_++;
+
+	//移動
+	Move();
+
+	if (MotionCount_ == 0)
+	{
+		if (MotionTimer_ == 10)
+		{
+			MotionCount_ = 1;
+		}
+	
+		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmax) {
+			weapon_->GetWorldTransform()->rotation_.y += rotationspeed;
+		}
+		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmax) {
+			weapon_->GetWorldTransform()->rotation_.y = rotationmax;
+		}
+
+	}
+
+	if (MotionCount_ == 1)
+	{
+		if (MotionTimer_ == 20)
+		{
+			MotionCount_ = 2;
+		}
+
+		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmin) {
+			weapon_->GetWorldTransform()->rotation_.y -= rotationspeed;
+		}
+		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmin) {
+			weapon_->GetWorldTransform()->rotation_.y = rotationmin;
+		}
+
+	
+	}
+
+
+	if (MotionCount_ == 2)
+	{
+		if (MotionTimer_ == 30)
+		{
+			MotionCount_ = 3;
+		}
+
+
+		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmin) {
+			weapon_->GetWorldTransform()->rotation_.y -= rotationspeed;
+		}
+		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmin) {
+			weapon_->GetWorldTransform()->rotation_.y = rotationmin;
+		}
+	}
+
+	if (MotionCount_ == 3)
+	{
+		behaviorRequest_ = Animation::kRoot;
+		isUnderAttack = false;
+	}
 }
 
 
@@ -340,8 +404,12 @@ void Player::RootUpdate()
 		isSkill = true;
 	}
 
-	//攻撃
-	Attack();
+	if (isSkill == false)
+	{
+		//攻撃
+		Attack();
+	}
+	
 	//移動
 	Move();
 
