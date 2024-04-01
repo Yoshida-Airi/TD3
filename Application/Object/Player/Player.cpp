@@ -14,16 +14,16 @@ void Player::Initialize(Camera* camera)
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
-	model_->worldTransform_->translation_.y = 0.5f;
+	//model_->worldTransform_->translation_.y = 0.5f;
 	SetRadius(model_->worldTransform_->scale_);
 
 
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
 	LeftArmModel_.reset(Model::Create("Resources/PlayerModel/leftArm.obj"));
-	RightArmModel_.reset(Model::Create("Resources/PlayerModel/RightArm.obj"));
-	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
-	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
+	RightArmModel_.reset(Model::Create("Resources/PlayerModel/rightArm.obj"));
+	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/leftFoot.obj"));
+	RightFootModel_.reset(Model::Create("Resources/PlayerModel/rightFoot.obj"));
 
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());

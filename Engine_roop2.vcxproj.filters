@@ -132,9 +132,6 @@
     <ClCompile Include="Engine\Math\Timer.cpp" />
     <ClCompile Include="Application\Object\Player\Sword.cpp" />
     <ClCompile Include="Boss.cpp" />
-    <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
-      <Filter>Application\Object\Player</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -265,9 +262,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Math\Timer.h" />
     <ClInclude Include="Application\Object\Player\Sword.h" />
-    <ClInclude Include="Application\Object\Player\FollowCamera.h">
-      <Filter>Application\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Boss.h" />
   </ItemGroup>
   <ItemGroup>
