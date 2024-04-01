@@ -9,11 +9,13 @@ void Player::Initialize(Camera* camera)
 	camera_ = camera;
 
 	Collider::Initialize();
-	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
+	//属性　：　プレイヤー
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));	
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
 	model_->worldTransform_->translation_.y = 0.5f;
+	model_->SetisInvisible(true);
 	SetRadius(model_->worldTransform_->scale_);
 
 	playerLevel = std::make_unique<Playerlevel>();
@@ -26,12 +28,19 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
-	bodyModel_->SetisInvisible(true);
-	headModel_->SetisInvisible(true);
-	LeftArmModel_->SetisInvisible(true);
-	RightArmModel_->SetisInvisible(true);
-	LeftFootModel_->SetisInvisible(true);
-	RightFootModel_->SetisInvisible(true);
+	bodyModel_->Parent(model_.get());
+	headModel_->Parent(bodyModel_.get());
+	LeftArmModel_->Parent(bodyModel_.get());
+	RightArmModel_->Parent(bodyModel_.get());
+	LeftFootModel_->Parent(bodyModel_.get());
+	RightFootModel_->Parent(bodyModel_.get());
+
+	//bodyModel_->SetisInvisible(true);
+	//headModel_->SetisInvisible(true);
+	//LeftArmModel_->SetisInvisible(true);
+	//RightArmModel_->SetisInvisible(true);
+	//LeftFootModel_->SetisInvisible(true);
+	//RightFootModel_->SetisInvisible(true);
 
 }
 
@@ -130,10 +139,7 @@ void Player::Update()
 	case  Player::Animation::kSkill3:
 		Skill3Update();
 		break;
-
 	}
-
-
 }
 
 void Player::Draw()
@@ -171,12 +177,14 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
 	{
+		//敵にあたったら
 		HP -= 100;
 		isCoolDown = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
+		//敵の弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
 	}
@@ -297,12 +305,8 @@ void Player::Skill()
 		if (input_->PushKey(DIK_LSHIFT))
 		{
 			isSkill = true;
-		}
-		
+		}	
 	}
-
-
-
 }
 
 void Player::PLevelUp()
@@ -328,14 +332,16 @@ void Player::CoolDown() {
 
 void Player::AttackUpdate()
 {
+	//剣を振りかぶる
+
 	if (isSkillCooldown_) {
 		return;
 	}
 
-	MotionTimer_++;
-
 	//移動
 	Move();
+
+	MotionTimer_++;
 
 	if (MotionCount_ == 0)
 	{
@@ -448,7 +454,7 @@ void Player::RootUpdate()
 
 void Player::Skill1Update()
 {
-	//ダッシュ
+	//スキル　：　ダッシュ
 
 	if (isSkillCooldown_) {
 		return;
@@ -490,7 +496,7 @@ void Player::Skill1Update()
 
 void Player::Skill2Update()
 {
-	//ダッシュ＋回転
+	//スキル　：　ダッシュ＋回転
 
 	if (isSkillCooldown_) {
 		return;
@@ -539,7 +545,7 @@ void Player::Skill2Update()
 
 void Player::Skill3Update()
 {
-	//範囲攻撃
+	//スキル　：　範囲攻撃
 
 	if (isSkillCooldown_) {
 		return;
