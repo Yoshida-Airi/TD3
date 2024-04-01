@@ -28,8 +28,14 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
-	LeftFootModel_->worldTransform_->translation_.y = 1.5f;
-	RightFootModel_->worldTransform_->translation_.y = 1.5f;
+	LeftFootModel_->worldTransform_->translation_.y = 1.57f;
+	RightFootModel_->worldTransform_->translation_.y = 1.57f;
+
+	RightArmModel_->worldTransform_->translation_.x = 0.26f;
+	RightArmModel_->worldTransform_->translation_.y = 2.38f;
+	LeftArmModel_->worldTransform_->translation_.x = -0.26f;
+	LeftArmModel_->worldTransform_->translation_.y = 2.38f;
+	
 
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
