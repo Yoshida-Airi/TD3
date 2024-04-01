@@ -28,6 +28,9 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
+	LeftFootModel_->worldTransform_->translation_.y = 1.5f;
+	RightFootModel_->worldTransform_->translation_.y = 1.5f;
+
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
 	LeftArmModel_->Parent(bodyModel_.get());
@@ -76,12 +79,20 @@ void Player::Update()
 	playerLevel->Update();
 
 
+
 #ifdef _DEBUG
 	model_->ModelDebug("player");
 	ImGui::Begin("Status");
 	ImGui::Text("HP : %d", HP);
 	ImGui::Text("Power : %d", AttackPower);
 	ImGui::End();
+
+	bodyModel_->ModelDebug("body");
+	headModel_->ModelDebug("head");
+	LeftArmModel_->ModelDebug("leftArm");
+	RightArmModel_->ModelDebug("rightArm");
+	LeftFootModel_->ModelDebug("leftFoot");
+	RightFootModel_->ModelDebug("rightFoot");
 
 #endif // _DEBUG
 
