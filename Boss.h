@@ -59,6 +59,8 @@ private:
 
 	void Move();
 
+
+	//ここから下は回転用
 	float Lerp(const float& a, const float& b, float t);
 
 	// 最短角度補間
