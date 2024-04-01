@@ -45,14 +45,9 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	
-
-
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
-
-
 
 
 	player = std::make_unique<Player>();
@@ -73,39 +68,6 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
-
-	//XINPUT_STATE joyState;
-
-
-
-	/*if (input->PushKey(DIK_W))
-	{
-		camera->transform.translate.z += 0.03f;
-	}
-	if (input->PushKey(DIK_S))
-	{
-		camera->transform.translate.z -= 0.03f;
-	}
-	if (input->PushKey(DIK_A))
-	{
-		camera->transform.translate.x -= 0.03f;
-	}
-	if (input->PushKey(DIK_D))
-	{
-		camera->transform.translate.x += 0.03f;
-	}
-
-	if (input->GetJoystickState(0, joyState)) {
-		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
-		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
-	}
-
-	camera->UpdateMatrix();
-	}*/
-
-
-
-
 	if (timer.GetNowSecond() != 10)
 
 	{
@@ -237,6 +199,8 @@ void GamePlayScene::Update()
 			timer.ResetBossFrame();
 		}
 	}
+
+
 	ImGui::Begin("Frame&Seconds");
 	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
 	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
@@ -312,9 +276,6 @@ void GamePlayScene::Draw()
 	}
 
 	
-
-
-
 
 	//colliderManager_->Draw(camera);
 }

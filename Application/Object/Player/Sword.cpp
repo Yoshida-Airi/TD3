@@ -107,31 +107,3 @@ void Sword::Attack()
 		}
 	}
 }
-void Sword::Skill()
-{
-	XINPUT_STATE joyState;
-
-	if (gamePad == true) {
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			isSkill = true;
-		}
-		else
-		{
-			isSkill = false;
-		}
-	}
-	else if (keyBoard == true) {
-		if (input_->IsLeftMouseClicked()) {
-			isSkill = true;
-		}
-		else
-		{
-			isSkill = false;
-		}
-	}
-}

@@ -31,7 +31,6 @@ public:
 	float rotationmin = 0.0f;
 	float rotationspeed = 0.2f;
 	bool isAttack = false;
-	bool isSkill = false; //skill中がどうか　true : skill発動中
 	bool combo1 = false;
 	bool combo2 = false;
 	int count = 0;
@@ -50,8 +49,6 @@ private:
 
 	//攻撃
 	void Attack();
-
-	void Skill();
 
 };
 

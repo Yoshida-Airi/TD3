@@ -14,7 +14,8 @@ public:
 
 	enum class Animation
 	{
-		kRoot,	//待機
+		kRoot,		//待機
+		kAttack,	//攻撃
 		kSkill1,	//ダッシュ
 		kSkill2,	//ダッシュ＋攻撃
 		kSkill3	//範囲攻撃
@@ -111,15 +112,17 @@ private:
 	void CoolDown();
 
 
-	void skillRootUpdate();
-	void skill1Update();
-	void skill2Update();
-	void skill3Update();
+	void RootUpdate();
+	void AttackUpdate();
+	void Skill1Update();
+	void Skill2Update();
+	void Skill3Update();
 
-	void skillRootInitialize();	//待機
-	void skill1Initialize();	//スキル１
-	void skill2Initialize();	//スキル２
-	void skill3Initialzie();	//スキル３
+	void RootInitialize();	//待機
+	void AttackInitialize();
+	void Skill1Initialize();	//スキル１
+	void Skill2Initialize();	//スキル２
+	void Skill3Initialzie();	//スキル３
 
 
 };

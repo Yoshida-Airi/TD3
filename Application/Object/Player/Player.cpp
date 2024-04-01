@@ -77,9 +77,6 @@ void Player::Update()
 #endif // _DEBUG
 
 
-
-
-
 	if (behaviorRequest_)
 	{
 		//振る舞いを変更する
@@ -90,19 +87,23 @@ void Player::Update()
 		case Player::Animation::kRoot:
 		default:
 			//待機モーション
-			skillRootInitialize();
+			RootInitialize();
+			break;
+		case  Player::Animation::kAttack:
+			//攻撃
+			AttackInitialize();
 			break;
 		case  Player::Animation::kSkill1:
 			//スキル１
-			skill1Initialize();
+			Skill1Initialize();
 			break;
 		case  Player::Animation::kSkill2:
 			//スキル２
-			skill2Initialize();
+			Skill2Initialize();
 			break;
 		case  Player::Animation::kSkill3:
 			//スキル３
-			skill3Initialzie();
+			Skill3Initialzie();
 			break;
 
 		}
@@ -115,16 +116,19 @@ void Player::Update()
 	{
 	case  Player::Animation::kRoot:
 	default:
-		skillRootUpdate();
+		RootUpdate();
+		break;
+	case  Player::Animation::kAttack:
+		AttackUpdate();
 		break;
 	case  Player::Animation::kSkill1:
-		skill1Update();
+		Skill1Update();
 		break;
 	case  Player::Animation::kSkill2:
-		skill2Update();
+		Skill2Update();
 		break;
 	case  Player::Animation::kSkill3:
-		skill3Update();
+		Skill3Update();
 		break;
 
 	}
@@ -322,12 +326,15 @@ void Player::CoolDown() {
 
 }
 
+void Player::AttackUpdate()
+{
+}
 
 
-void Player::skillRootUpdate()
+
+void Player::RootUpdate()
 {
 	//スキルのアニメーション
-
 	if (input_->PushKey(DIK_LSHIFT))
 	{
 		isSkill = true;
@@ -371,8 +378,10 @@ void Player::skillRootUpdate()
 	}
 }
 
-void Player::skill1Update()
+void Player::Skill1Update()
 {
+	//ダッシュ
+
 	if (isSkillCooldown_) {
 		return;
 	}
@@ -408,16 +417,13 @@ void Player::skill1Update()
 
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
-
-
 	}
-
-
-
 }
 
-void Player::skill2Update()
+void Player::Skill2Update()
 {
+	//ダッシュ＋回転
+
 	if (isSkillCooldown_) {
 		return;
 	}
@@ -463,8 +469,10 @@ void Player::skill2Update()
 
 }
 
-void Player::skill3Update()
+void Player::Skill3Update()
 {
+	//範囲攻撃
+
 	if (isSkillCooldown_) {
 		return;
 	}
@@ -510,28 +518,32 @@ void Player::skill3Update()
 
 }
 
-void Player::skillRootInitialize()
-{
-	MotionTimer_ = 0;
-	MotionCount_ = 0;
-
-
-}
-
-void Player::skill1Initialize()
+void Player::RootInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 }
 
-
-void Player::skill2Initialize()
+void Player::AttackInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 }
 
-void Player::skill3Initialzie()
+void Player::Skill1Initialize()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
+}
+
+
+void Player::Skill2Initialize()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
+}
+
+void Player::Skill3Initialzie()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
