@@ -11,6 +11,15 @@ class Sword;
 class Player :public Collider
 {
 public:
+
+	enum class Animation
+	{
+		kRoot,	//待機
+		kSkill1,	//ダッシュ
+		kSkill2,	//ダッシュ＋攻撃
+		kSkill3	//範囲攻撃
+	};
+
 	void Initialize(Camera* camera);
 	void Update();
 	void Draw();
@@ -78,6 +87,16 @@ private:
 	std::unique_ptr<Model> LeftFootModel_ = nullptr;
 	std::unique_ptr<Model> RightFootModel_ = nullptr;
 
+	Animation behavior_ = Animation::kRoot;
+	std::optional<Animation>behaviorRequest_ = std::nullopt;
+
+
+	int MotionTimer_ = 0;
+	int MotionCount_ = 0;
+
+	bool isSkillCooldown_; // スキルのクールダウン中かどうかを示すフラグ
+	int skillCooldownTime_; // スキルのクールダウン時間
+	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
 private:
 
@@ -88,6 +107,19 @@ private:
 	//SKILL
 	void Skill();
 
+	//一回あたったときの無敵時間
 	void CoolDown();
+
+
+	void skillRootUpdate();
+	void skill1Update();
+	void skill2Update();
+	void skill3Update();
+
+	void skillRootInitialize();	//待機
+	void skill1Initialize();	//スキル１
+	void skill2Initialize();	//スキル２
+	void skill3Initialzie();	//スキル３
+
 
 };

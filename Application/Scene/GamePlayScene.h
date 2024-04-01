@@ -37,13 +37,7 @@ public:
 	void Update()override;
 	void Draw()override;
 
-	enum class Skill
-	{
-		kRoot,	//待機
-		kSkill1,	//ダッシュ
-		kSkill2,	//ダッシュ＋攻撃
-		kSkill3	//範囲攻撃
-	};
+
 
 private:
 
@@ -110,16 +104,7 @@ private:
 	Vector3 offset;
 	Vector3 targetPosition;
 
-	Skill behavior_ = Skill::kRoot;
-	std::optional<Skill>behaviorRequest_ = std::nullopt;
 
-	int MotionTimer_ = 0;
-	int MotionCount_ = 0;
-
-	bool isSkill;
-	bool isSkillCooldown_; // スキルのクールダウン中かどうかを示すフラグ
-	int skillCooldownTime_; // スキルのクールダウン時間
-	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
 	float cameraZ;//lerpしたときの誤差修正数値
 
@@ -135,15 +120,5 @@ private:
 	void CheckAllCollisions();
 	void BossSceneAllCollisions();
 
-	void skillRootUpdate();
-	void skill1Update();
-	void skill2Update();
-	void skill3Update();
-	
-	void skillRootInitialize();	//待機
-	void skill1Initialize();	//スキル１
-	void skill2Initialize();	//スキル２
-	void skill3Initialzie();	//スキル３
-	
 
 };

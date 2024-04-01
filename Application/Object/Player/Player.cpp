@@ -1,7 +1,7 @@
 #include "Player.h"
 #include"CollisionConfig.h"
-
 #include"numbers"
+#include"Player/Sword.h"
 
 void Player::Initialize(Camera* camera)
 {
@@ -38,7 +38,7 @@ void Player::Initialize(Camera* camera)
 void Player::Update()
 {
 	Collider::UpdateWorldTransform();
-	model_->Update();
+	model_->Update();	//移動用モデル
 
 	bodyModel_->Update();
 	headModel_->Update();
@@ -77,14 +77,58 @@ void Player::Update()
 #endif // _DEBUG
 
 
-	//移動
-	Move();
-	//攻撃
-	Attack();
-	//スキル
-	Skill();
-	//ヒット時のクールダウン
-	CoolDown();
+
+
+
+	if (behaviorRequest_)
+	{
+		//振る舞いを変更する
+		behavior_ = behaviorRequest_.value();
+		//各振る舞いごとの初期化を実行
+		switch (behavior_)
+		{
+		case Player::Animation::kRoot:
+		default:
+			//待機モーション
+			skillRootInitialize();
+			break;
+		case  Player::Animation::kSkill1:
+			//スキル１
+			skill1Initialize();
+			break;
+		case  Player::Animation::kSkill2:
+			//スキル２
+			skill2Initialize();
+			break;
+		case  Player::Animation::kSkill3:
+			//スキル３
+			skill3Initialzie();
+			break;
+
+		}
+
+		behaviorRequest_ = std::nullopt;
+	}
+
+	//スキルの更新処理
+	switch (behavior_)
+	{
+	case  Player::Animation::kRoot:
+	default:
+		skillRootUpdate();
+		break;
+	case  Player::Animation::kSkill1:
+		skill1Update();
+		break;
+	case  Player::Animation::kSkill2:
+		skill2Update();
+		break;
+	case  Player::Animation::kSkill3:
+		skill3Update();
+		break;
+
+	}
+
 
 }
 
@@ -246,19 +290,14 @@ void Player::Skill()
 		{
 			isSkill = true;
 		}
-		else
-		{
-			isSkill = false;
-		}
+	
 	}
 	else if (keyBoard == true) {
-		if (input_->IsLeftMouseClicked()) {
+		if (input_->PushKey(DIK_LSHIFT))
+		{
 			isSkill = true;
 		}
-		else
-		{
-			isSkill = false;
-		}
+		
 	}
 }
 
@@ -270,6 +309,8 @@ void Player::PLevelUp()
 }
 
 void Player::CoolDown() {
+
+	//無敵時間
 	if (isCoolDown == true) {
 		coolDownTimer++;
 	}
@@ -279,6 +320,221 @@ void Player::CoolDown() {
 		coolDownTimer = 0;
 	}
 
+}
+
+
+
+void Player::skillRootUpdate()
+{
+	//スキルのアニメーション
+
+	if (input_->PushKey(DIK_LSHIFT))
+	{
+		isSkill = true;
+	}
+
+	//攻撃
+	Attack();
+	//移動
+	Move();
+
+	//スキル
+	Skill();
+	//ヒット時のクールダウン
+	CoolDown();
+
+	if (isSkill == true && isSkillCooldown_ == false)
+	{
+		if (playerLevel->nowskilllevel == 1)
+		{
+			behaviorRequest_ = Animation::kSkill1;
+		}
+		if (playerLevel->nowskilllevel == 2)
+		{
+			behaviorRequest_ = Animation::kSkill2;
+		}
+		if (playerLevel->nowskilllevel == 3)
+		{
+			behaviorRequest_ = Animation::kSkill3;
+		}
+	}
+
+	// スキルのクールダウンを減らす
+	if (isSkillCooldown_) {
+		skillCooldownTime_--;
+		if (skillCooldownTime_ <= 0) {
+			// クールダウンが終了したらフラグをリセットする
+			isSkillCooldown_ = false;
+			isSkill = false;
+
+		}
+	}
+}
+
+void Player::skill1Update()
+{
+	if (isSkillCooldown_) {
+		return;
+	}
+
+	MotionTimer_++;
+
+	if (MotionCount_ == 0)
+	{
+		if (MotionTimer_ == 20)
+		{
+			MotionCount_ = 1;
+		}
+		float directionAngle = model_->worldTransform_->rotation_.y;
+
+		float dashSpeed = 0.7f;
+
+		float dashX = std::sin(directionAngle) * dashSpeed;
+		float dashZ = std::cos(directionAngle) * dashSpeed;
+
+		model_->worldTransform_->translation_.x += dashX;
+		model_->worldTransform_->translation_.z += dashZ;
+
+
+		//カメラ直書き
+		camera_->transform.translate.x += dashX;
+		camera_->transform.translate.z += dashZ;
+	}
+
+	if (MotionCount_ == 1)
+	{
+		behaviorRequest_ = Animation::kRoot;
+		// スキル使用後、クールダウンを開始する
+
+		isSkillCooldown_ = true;
+		skillCooldownTime_ = 60;
+
+
+	}
+
+
+
+}
+
+void Player::skill2Update()
+{
+	if (isSkillCooldown_) {
+		return;
+	}
+
+	MotionTimer_++;
+
+	if (MotionCount_ == 0)
+	{
+		if (MotionTimer_ == 30)
+		{
+			MotionCount_ = 1;
+		}
+
+		float directionAngle = model_->worldTransform_->rotation_.y;
+
+		float dashSpeed = 0.5f;
+
+		float dashX = std::sin(directionAngle) * dashSpeed;
+		float dashZ = std::cos(directionAngle) * dashSpeed;
+
+		model_->worldTransform_->translation_.x += dashX;
+		model_->worldTransform_->translation_.z += dashZ;
+		weapon_->GetWorldTransform()->rotation_.y += 1.0f;
+		if (weapon_->GetWorldTransform()->rotation_.y >= 6.28f) {
+			weapon_->GetWorldTransform()->rotation_.y = 0.0f;
+		}
+
+		//カメラ直書き
+		camera_->transform.translate.x += dashX;
+		camera_->transform.translate.z += dashZ;
+
+	}
+
+
+	if (MotionCount_ == 1)
+	{
+		behaviorRequest_ = Animation::kRoot;
+		// スキル使用後、クールダウンを開始する
+		isSkillCooldown_ = true;
+		skillCooldownTime_ = 60;
+
+	}
+
+}
+
+void Player::skill3Update()
+{
+	if (isSkillCooldown_) {
+		return;
+	}
+
+	MotionTimer_++;
+
+	if (MotionCount_ == 0)
+	{
+
+
+		if (MotionTimer_ == 30)
+		{
+			MotionCount_ = 1;
+		}
+		float directionAngle = model_->worldTransform_->rotation_.y;
+
+		float dashSpeed = 0.5f;
+
+		float dashX = std::sin(directionAngle) * dashSpeed;
+		float dashZ = std::cos(directionAngle) * dashSpeed;
+
+		model_->worldTransform_->translation_.x += dashX;
+		model_->worldTransform_->translation_.z += dashZ;
+		weapon_->model_->worldTransform_->rotation_.y += 1.0f;
+		if (weapon_->model_->worldTransform_->rotation_.y >= 6.28f) {
+			weapon_->model_->worldTransform_->rotation_.y = 0.0f;
+		}
+
+		//カメラ直書き
+		camera_->transform.translate.x += dashX;
+		camera_->transform.translate.z += dashZ;
+
+	}
+
+	if (MotionCount_ == 1)
+	{
+		behaviorRequest_ = Animation::kRoot;
+		// スキル使用後、クールダウンを開始する
+		isSkillCooldown_ = true;
+		skillCooldownTime_ = 60;
+
+	}
+
+}
+
+void Player::skillRootInitialize()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
+
+
+}
+
+void Player::skill1Initialize()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
+}
+
+
+void Player::skill2Initialize()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
+}
+
+void Player::skill3Initialzie()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
 }
 
 

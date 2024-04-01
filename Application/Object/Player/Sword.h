@@ -35,6 +35,7 @@ public:
 	bool combo1 = false;
 	bool combo2 = false;
 	int count = 0;
+
 private:
 	Input* input_ = nullptr;
 	PlayerWeapon* Weapon_ = nullptr;
