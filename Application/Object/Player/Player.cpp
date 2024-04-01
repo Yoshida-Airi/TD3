@@ -14,7 +14,7 @@ void Player::Initialize(Camera* camera)
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
-	model_->worldTransform_->translation_.y = 0.5f;
+	//model_->worldTransform_->translation_.y = 0.5f;
 	model_->SetisInvisible(true);
 	SetRadius(model_->worldTransform_->scale_);
 
