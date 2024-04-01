@@ -83,8 +83,6 @@ void Player::Update()
 	Attack();
 	//スキル
 	Skill();
-	//方向
-	Direction();
 	//ヒット時のクールダウン
 	CoolDown();
 
@@ -282,14 +280,6 @@ void Player::CoolDown() {
 	}
 
 }
-
-void Player::Direction()
-{
-
-
-}
-
-
 
 
 float Player::Lerp(const float& a, const float& b, float t) {

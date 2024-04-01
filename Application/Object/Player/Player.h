@@ -88,8 +88,6 @@ private:
 	//SKILL
 	void Skill();
 
-	void Direction();
-
 	void CoolDown();
 
 };
