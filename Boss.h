@@ -51,11 +51,20 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	float angle_ = 0.0f;
+
 private:
 
 	void CoolDown();
 
 	void Move();
+
+	float Lerp(const float& a, const float& b, float t);
+
+	// 最短角度補間
+	float LerpShortAngle(float a, float b, float t);
+	
+	float LerpShortTranslate(float a, float b, float t);
 
 };
 
