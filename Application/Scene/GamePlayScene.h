@@ -15,7 +15,6 @@
 #include"Timer.h"
 
 #include"Player.h"
-#include"playerWeapon.h"
 #include"Sword.h"
 #include"CollisionManager.h"
 
@@ -86,10 +85,6 @@ private:
 	std::unique_ptr<Model> demo_stage = nullptr;
 
 	std::unique_ptr<Player> player = nullptr;
-
-	std::unique_ptr<PlayerWeapon> playerWeapon_ = nullptr;
-	
-
 	std::unique_ptr<Sword> sword = nullptr;
 
 

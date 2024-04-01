@@ -111,9 +111,6 @@
     <ClCompile Include="Application\Object\Player\Playerlevel\Playerlevel.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp">
-      <Filter>Application\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Object\Enemy\Enemy.cpp">
       <Filter>Application\Object\Enemy</Filter>
     </ClCompile>
@@ -130,9 +127,11 @@
       <Filter>Application\Object\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Math\Timer.cpp" />
-    <ClCompile Include="Application\Object\Player\Sword.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
+      <Filter>Application\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Player\Sword.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -242,9 +241,6 @@
     <ClInclude Include="Application\Object\Player\Playerlevel\Playerlevel.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Object\Player\PlayerWeapon.h">
-      <Filter>Application\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Object\Enemy\Enemy.h">
       <Filter>Application\Object\Enemy</Filter>
     </ClInclude>
@@ -264,11 +260,13 @@
       <Filter>Application\Object\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Timer.h" />
-    <ClInclude Include="Application\Object\Player\Sword.h" />
     <ClInclude Include="Application\Object\Player\FollowCamera.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="Application\Object\Player\Sword.h">
+      <Filter>Application\Object\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

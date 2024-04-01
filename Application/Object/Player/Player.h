@@ -17,7 +17,7 @@ public:
 
 	void SetWeapon(Sword* playerWeapon)
 	{
-		Weapon_ = playerWeapon;
+		weapon_ = playerWeapon;
 	}
 
 	void SetSkill(bool isSkill)
@@ -45,7 +45,7 @@ private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 
-	Sword* Weapon_ = nullptr;
+	Sword* weapon_ = nullptr;
 
 	float Speed = 0.03f;//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中
@@ -85,8 +85,6 @@ private:
 	void Skill();
 
 	void Direction();
-	
-	void Rotate();
 
 	void CoolDown();
 
