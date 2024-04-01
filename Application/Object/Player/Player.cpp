@@ -15,7 +15,7 @@ void Player::Initialize(Camera* camera)
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
 	//model_->worldTransform_->translation_.y = 0.5f;
-	model_->SetisInvisible(true);
+	//model_->SetisInvisible(true);
 	SetRadius(model_->worldTransform_->scale_);
 
 	playerLevel = std::make_unique<Playerlevel>();
@@ -44,12 +44,12 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_->Parent(bodyModel_.get());
 	RightFootModel_->Parent(bodyModel_.get());
 
-	//bodyModel_->SetisInvisible(true);
-	//headModel_->SetisInvisible(true);
-	//LeftArmModel_->SetisInvisible(true);
-	//RightArmModel_->SetisInvisible(true);
-	//LeftFootModel_->SetisInvisible(true);
-	//RightFootModel_->SetisInvisible(true);
+	bodyModel_->SetisInvisible(true);
+	headModel_->SetisInvisible(true);
+	LeftArmModel_->SetisInvisible(true);
+	RightArmModel_->SetisInvisible(true);
+	LeftFootModel_->SetisInvisible(true);
+	RightFootModel_->SetisInvisible(true);
 
 }
 
