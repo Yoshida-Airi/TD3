@@ -46,17 +46,11 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	//playerlevel = new Playerlevel;
-	//playerlevel->Initialize();
-
-
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
 
-
-
-
+	//自機
 	player = std::make_unique<Player>();
 	player->Initialize(camera);
 
@@ -75,51 +69,6 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
-
-	//XINPUT_STATE joyState;
-
-
-	//playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
-	//playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
-	//playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
-	//playerlevel->sprite2->worldTransform_->translation_.y = 18.0f;
-	//playerlevel->sprite3->worldTransform_->translation_.x = -1008.0f;
-	//playerlevel->sprite3->worldTransform_->translation_.y = -49.0f;
-	//if (playerlevel->nowlevel >= 3) {
-	//	playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
-	//	playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
-	//}
-	/*if (input->PushKey(DIK_W))
-	{
-		camera->transform.translate.z += 0.03f;
-	}
-	if (input->PushKey(DIK_S))
-	{
-		camera->transform.translate.z -= 0.03f;
-	}
-	if (input->PushKey(DIK_A))
-	{
-		camera->transform.translate.x -= 0.03f;
-	}
-	if (input->PushKey(DIK_D))
-	{
-		camera->transform.translate.x += 0.03f;
-	}
-
-	if (input->GetJoystickState(0, joyState)) {
-		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
-		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
-	}
-
-	camera->UpdateMatrix();
-	}*/
-
-
-	/*if (playerlevel->nowlevel == playerlevel->count) {
-		player->PLevelUp();
-		playerlevel->count += 1;
-	}*/
-
 
 	if (timer.GetNowSecond() != 10)
 
@@ -252,6 +201,10 @@ void GamePlayScene::Update()
 			timer.ResetBossFrame();
 		}
 	}
+	
+
+#ifdef _DEBUG
+
 	ImGui::Begin("Frame&Seconds");
 	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
 	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
@@ -270,8 +223,6 @@ void GamePlayScene::Update()
 	ImGui::Text("isSkill: %d", isSkill);
 	ImGui::Text("skillCoortime: %d", skillCooldownTime_);
 	ImGui::End();
-
-#ifdef _DEBUG
 
 	camera->CameraDebug();
 	camera->UpdateMatrix();
@@ -359,8 +310,6 @@ void GamePlayScene::Draw()
 	player->Draw();
 	sword->Draw(camera);
 
-	
-
 	//ここから敵の弾の処理
 	for (EnemyBullet* enemyBullets : enemyBullet_) {
 		enemyBullets->Draw(camera);
@@ -380,12 +329,6 @@ void GamePlayScene::Draw()
 		boss_->Draw(camera);
 	}
 
-	//playerlevel->Draw();
-
-
-
-
-	//colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
@@ -503,12 +446,7 @@ void GamePlayScene::skill1Update()
 
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
-
-
 	}
-
-
-
 }
 
 void GamePlayScene::skill2Update()
