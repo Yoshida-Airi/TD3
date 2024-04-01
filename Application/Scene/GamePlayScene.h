@@ -59,7 +59,7 @@ private:
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
-	Playerlevel* playerlevel;
+	
 	//当たり判定処理
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
 

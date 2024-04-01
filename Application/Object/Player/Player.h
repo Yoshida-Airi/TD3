@@ -4,6 +4,7 @@
 #include"Model.h"
 #include"Sprite.h"
 #include"Collider.h"
+#include "Playerlevel/Playerlevel.h"
 
 class Sword;
 
@@ -40,7 +41,8 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
-	float PlayerSpeed = 2.0f;
+	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
+		float PlayerSpeed = 2.0f;
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
@@ -66,6 +68,8 @@ private:
 	bool keyBoard = true;
 	bool gamePad = false;
 
+	//Playerlevel* playerlevel;
+	std::unique_ptr<Playerlevel>playerLevel = nullptr;
 
 	std::unique_ptr<Model> bodyModel_ = nullptr;
 	std::unique_ptr<Model> headModel_ = nullptr;

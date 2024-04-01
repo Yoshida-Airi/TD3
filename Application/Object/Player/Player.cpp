@@ -16,6 +16,8 @@ void Player::Initialize(Camera* camera)
 	model_->worldTransform_->translation_.y = 0.5f;
 	SetRadius(model_->worldTransform_->scale_);
 
+	playerLevel = std::make_unique<Playerlevel>();
+	playerLevel->Initialize();
 
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
@@ -44,6 +46,25 @@ void Player::Update()
 	RightArmModel_->Update();
 	LeftFootModel_->Update();
 	RightFootModel_->Update();
+
+
+	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
+	playerLevel->sprite1->worldTransform_->translation_.y = 31.0f;
+	playerLevel->sprite2->worldTransform_->translation_.x = 96.0f;
+	playerLevel->sprite2->worldTransform_->translation_.y = 18.0f;
+	playerLevel->sprite3->worldTransform_->translation_.x = -1008.0f;
+	playerLevel->sprite3->worldTransform_->translation_.y = -49.0f;
+	if (playerLevel->nowlevel >= 3) {
+		playerLevel->sprite3->worldTransform_->translation_.x = 1008.0f;
+		playerLevel->sprite3->worldTransform_->translation_.y = 49.0f;
+	}
+
+	if (playerLevel->nowlevel == playerLevel->count) {
+		PLevelUp();
+		playerLevel->count += 1;
+	}
+
+	playerLevel->Update();
 
 
 #ifdef _DEBUG
@@ -80,6 +101,8 @@ void Player::Draw()
 	LeftFootModel_->Draw(camera_);
 	RightFootModel_->Draw(camera_);
 
+
+	playerLevel->Draw();
 }
 
 Vector3 Player::GetWorldPosition()
