@@ -4,6 +4,11 @@
 
 #include"numbers"
 
+Player::~Player()
+{
+	delete playerlevel;
+}
+
 void Player::Initialize(Camera* camera)
 {
 	input_ = Input::GetInstance();
@@ -32,6 +37,10 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_->Parent(bodyModel_.get());
 	RightFootModel_->Parent(bodyModel_.get());
 
+	playerlevel = new Playerlevel;
+	playerlevel->Initialize();
+
+
 }
 
 void Player::Update()
@@ -46,6 +55,24 @@ void Player::Update()
 	LeftFootModel_->Update();
 	RightFootModel_->Update();
 
+	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
+	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
+	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
+	playerlevel->sprite2->worldTransform_->translation_.y = 18.0f;
+	playerlevel->sprite3->worldTransform_->translation_.x = -1008.0f;
+	playerlevel->sprite3->worldTransform_->translation_.y = -49.0f;
+	if (playerlevel->nowlevel >= 3) {
+		playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
+		playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
+	}
+
+
+	if (playerlevel->nowlevel == playerlevel->count) {
+		PLevelUp();
+		playerlevel->count += 1;
+	}
+
+	playerlevel->Update();
 
 #ifdef _DEBUG
 	model_->ModelDebug("player");
@@ -81,6 +108,8 @@ void Player::Draw()
 	LeftFootModel_->Draw(camera_);
 	RightFootModel_->Draw(camera_);
 
+
+	playerlevel->Draw();
 }
 
 Vector3 Player::GetWorldPosition()

@@ -4,12 +4,14 @@
 #include"Model.h"
 #include"Sprite.h"
 #include"Collider.h"
+#include "Playerlevel/Playerlevel.h"
 
 class Sword;
 
 class Player :public Collider
 {
 public:
+	~Player();
 	void Initialize(Camera* camera);
 	void Update();
 	void Draw();
@@ -40,6 +42,7 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
+	Playerlevel* GetPlayerLevel() { return playerlevel; };
 
 private:
 	Input* input_ = nullptr;
@@ -64,6 +67,7 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	Playerlevel* playerlevel;
 
 	std::unique_ptr<Model> bodyModel_ = nullptr;
 	std::unique_ptr<Model> headModel_ = nullptr;

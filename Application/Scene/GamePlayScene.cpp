@@ -3,7 +3,7 @@
 GamePlayScene::~GamePlayScene()
 {
 	delete camera;
-	delete playerlevel;
+	/*delete playerlevel;*/
 
 	for (Enemy* enemys : enemy_) {
 		delete enemys;
@@ -46,8 +46,8 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	playerlevel = new Playerlevel;
-	playerlevel->Initialize();
+	//playerlevel = new Playerlevel;
+	//playerlevel->Initialize();
 
 
 	sprite.reset(Sprite::Create(Doll));
@@ -79,16 +79,16 @@ void GamePlayScene::Update()
 	//XINPUT_STATE joyState;
 
 
-	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
-	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
-	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
-	playerlevel->sprite2->worldTransform_->translation_.y = 18.0f;
-	playerlevel->sprite3->worldTransform_->translation_.x = -1008.0f;
-	playerlevel->sprite3->worldTransform_->translation_.y = -49.0f;
-	if (playerlevel->nowlevel >= 3) {
-		playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
-		playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
-	}
+	//playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
+	//playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
+	//playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
+	//playerlevel->sprite2->worldTransform_->translation_.y = 18.0f;
+	//playerlevel->sprite3->worldTransform_->translation_.x = -1008.0f;
+	//playerlevel->sprite3->worldTransform_->translation_.y = -49.0f;
+	//if (playerlevel->nowlevel >= 3) {
+	//	playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
+	//	playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
+	//}
 	/*if (input->PushKey(DIK_W))
 	{
 		camera->transform.translate.z += 0.03f;
@@ -115,10 +115,10 @@ void GamePlayScene::Update()
 	}*/
 
 
-	if (playerlevel->nowlevel == playerlevel->count) {
+	/*if (playerlevel->nowlevel == playerlevel->count) {
 		player->PLevelUp();
 		playerlevel->count += 1;
-	}
+	}*/
 
 
 	if (timer.GetNowSecond() != 10)
@@ -148,7 +148,7 @@ void GamePlayScene::Update()
 			enemys->Update();
 			if (enemys->GetIsDead()) {
 				//貰える経験値
-				playerlevel->Experiencepoint += 240.0f;
+				player->GetPlayerLevel()->Experiencepoint += 240.0f;
 				enemyDeathCount++;
 				CreateDeathEffect({enemys->GetTranslate()});
 			}
@@ -289,7 +289,7 @@ void GamePlayScene::Update()
 
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
-	playerlevel->Update();
+	/*playerlevel->Update();*/
 	player->Update();
 	sword->Update();
 
@@ -380,7 +380,7 @@ void GamePlayScene::Draw()
 		boss_->Draw(camera);
 	}
 
-	playerlevel->Draw();
+	//playerlevel->Draw();
 
 
 
@@ -438,15 +438,15 @@ void GamePlayScene::skillRootUpdate()
 
 	if (isSkill == true && isSkillCooldown_ == false)
 	{
-		if (playerlevel->nowskilllevel == 1)
+		if (player->GetPlayerLevel()->nowskilllevel == 1)
 		{
 			behaviorRequest_ = Skill::kSkill1;
 		}
-		if (playerlevel->nowskilllevel == 2)
+		if (player->GetPlayerLevel()->nowskilllevel == 2)
 		{
 			behaviorRequest_ = Skill::kSkill2;
 		}
-		if (playerlevel->nowskilllevel == 3)
+		if (player->GetPlayerLevel()->nowskilllevel == 3)
 		{
 			behaviorRequest_ = Skill::kSkill3;
 		}

@@ -21,7 +21,6 @@
 
 #include"Input.h"
 
-#include "Playerlevel/Playerlevel.h"
 #include "Enemy/Enemy.h"
 #include "Enemy/EnemyBullet.h"
 #include <random>
@@ -60,7 +59,7 @@ private:
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
-	Playerlevel* playerlevel;
+	/*Playerlevel* playerlevel;*/
 	//当たり判定処理
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
 
