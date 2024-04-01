@@ -44,12 +44,13 @@ public:
 	bool GetIsCoolDown() { return isCoolDown; }
 	Playerlevel* GetPlayerLevel() { return playerlevel; };
 
-	enum class Skill
+	enum class Animation
 	{
-		kRoot,	//待機
+		kRoot,		//待機
+		kAttack,	//攻撃
 		kSkill1,	//ダッシュ
 		kSkill2,	//ダッシュ＋攻撃
-		kSkill3	//範囲攻撃
+		kSkill3		//範囲攻撃
 	};
 
 
@@ -86,8 +87,8 @@ private:
 	std::unique_ptr<Model> RightFootModel_ = nullptr;
 
 
-	Skill behavior_ = Skill::kRoot;
-	std::optional<Skill>behaviorRequest_ = std::nullopt;
+	Animation behavior_ = Animation::kRoot;
+	std::optional<Animation>behaviorRequest_ = std::nullopt;
 
 	int MotionTimer_ = 0;
 	int MotionCount_ = 0;
@@ -105,17 +106,20 @@ private:
 	//SKILL
 	void Skill();
 	void Direction();
-	void Rotate();
 	void CoolDown();
 
-	void skillRootUpdate();
-	void skill1Update();
-	void skill2Update();
-	void skill3Update();
 
-	void skillRootInitialize();	//待機
-	void skill1Initialize();	//スキル１
-	void skill2Initialize();	//スキル２
-	void skill3Initialzie();	//スキル３
+
+	void RootUpdate();
+	void AttackUpdate();
+	void Skill1Update();
+	void Skill2Update();
+	void Skill3Update();
+
+	void RootInitialize();		//待機
+	void AttackInitialize();	//攻撃
+	void Skill1Initialize();	//スキル１
+	void Skill2Initialize();	//スキル２
+	void Skill3Initialzie();	//スキル３
 
 };

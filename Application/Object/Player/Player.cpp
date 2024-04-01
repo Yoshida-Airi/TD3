@@ -1,5 +1,4 @@
 #include "Player.h"
-#include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 #include"Player/Sword.h"
 
@@ -20,6 +19,7 @@ void Player::Initialize(Camera* camera)
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
+	model_->SetisInvisible(true);
 	//model_->worldTransform_->translation_.y = 0.5f;
 	SetRadius(model_->worldTransform_->scale_);
 
@@ -82,6 +82,7 @@ void Player::Update()
 	ImGui::Text("Power : %d", AttackPower);
 	ImGui::Text("motionTimer: %d", MotionTimer_);
 	ImGui::Text("isSkill: %d", isSkill);
+	ImGui::Text("isUnderAttack: %d", isUnderAttack);
 	ImGui::Text("skillCoortime: %d", skillCooldownTime_);
 	ImGui::End();
 
@@ -107,22 +108,25 @@ void Player::Update()
 		//各振る舞いごとの初期化を実行
 		switch (behavior_)
 		{
-		case Player::Skill::kRoot:
+		case Player::Animation::kRoot:
 		default:
 			//待機モーション
-			skillRootInitialize();
+			RootInitialize();
 			break;
-		case  Player::Skill::kSkill1:
+		case Player::Animation::kAttack:
+			AttackInitialize();
+			break;
+		case  Player::Animation::kSkill1:
 			//スキル１
-			skill1Initialize();
+			Skill1Initialize();
 			break;
-		case Player::Skill::kSkill2:
+		case Player::Animation::kSkill2:
 			//スキル２
-			skill2Initialize();
+			Skill2Initialize();
 			break;
-		case Player::Skill::kSkill3:
+		case Player::Animation::kSkill3:
 			//スキル３
-			skill3Initialzie();
+			Skill3Initialzie();
 			break;
 
 		}
@@ -133,18 +137,21 @@ void Player::Update()
 	//スキルの更新処理
 	switch (behavior_)
 	{
-	case  Player::Skill::kRoot:
+	case  Player::Animation::kRoot:
 	default:
-		skillRootUpdate();
+		RootUpdate();
 		break;
-	case  Player::Skill::kSkill1:
-		skill1Update();
+	case Player::Animation::kAttack:
+		AttackUpdate();
 		break;
-	case Player::Skill::kSkill2:
-		skill2Update();
+	case  Player::Animation::kSkill1:
+		Skill1Update();
 		break;
-	case Player::Skill::kSkill3:
-		skill3Update();
+	case Player::Animation::kSkill2:
+		Skill2Update();
+		break;
+	case Player::Animation::kSkill3:
+		Skill3Update();
 		break;
 
 	}
@@ -259,20 +266,18 @@ void Player::Attack()
 		{
 			isUnderAttack = true;
 		}
-		else
-		{
-			isUnderAttack = false;
-		}
 	}
 
 	if (input_->IsLeftMouseClicked())
 	{
 		isUnderAttack = true;
 	}
-	else
+
+	if (isUnderAttack == true)
 	{
-		isUnderAttack = true;
+		behaviorRequest_ = Animation::kAttack;
 	}
+
 }
 
 void Player::Skill()
@@ -312,7 +317,7 @@ void Player::Direction()
 }
 
 
-void Player::skillRootUpdate()
+void Player::RootUpdate()
 {
 	//スキルのアニメーション
 
@@ -326,15 +331,15 @@ void Player::skillRootUpdate()
 	{
 		if (playerlevel->nowskilllevel == 1)
 		{
-			behaviorRequest_ = Skill::kSkill1;
+			behaviorRequest_ = Animation::kSkill1;
 		}
 		if (playerlevel->nowskilllevel == 2)
 		{
-			behaviorRequest_ = Skill::kSkill2;
+			behaviorRequest_ = Animation::kSkill2;
 		}
 		if (playerlevel->nowskilllevel == 3)
 		{
-			behaviorRequest_ = Skill::kSkill3;
+			behaviorRequest_ = Animation::kSkill3;
 		}
 	}
 
@@ -352,7 +357,39 @@ void Player::skillRootUpdate()
 
 }
 
-void Player::skill1Update()
+void Player::AttackUpdate()
+{
+	MotionTimer_++;
+
+	if (MotionCount_ == 0)
+	{
+		if (MotionTimer_ == 20)
+		{
+			MotionCount_ = 1;
+		}
+
+		//武器の振りかぶり
+		if (weapon_->GetWorldTransform()->rotation_.x >= -0.83f) {
+			weapon_->GetWorldTransform()->rotation_.x -= 0.08f;
+		}
+		if (weapon_->GetWorldTransform()->rotation_.y <= 2.48f) {
+			weapon_->GetWorldTransform()->rotation_.y += 0.12f;
+		}
+		if (weapon_->GetWorldTransform()->rotation_.z >= -0.26f) {
+			weapon_->GetWorldTransform()->rotation_.z -= 0.08f;
+		}
+
+	}
+
+	if (MotionCount_ == 1)
+	{
+		behaviorRequest_ = Animation::kRoot;
+		isUnderAttack = false;
+	}
+}
+
+
+void Player::Skill1Update()
 {
 	if (isSkillCooldown_) {
 		return;
@@ -384,7 +421,7 @@ void Player::skill1Update()
 
 	if (MotionCount_ == 1)
 	{
-		behaviorRequest_ = Skill::kRoot;
+		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 
 		isSkillCooldown_ = true;
@@ -392,7 +429,7 @@ void Player::skill1Update()
 	}
 }
 
-void Player::skill2Update()
+void Player::Skill2Update()
 {
 	if (isSkillCooldown_) {
 		return;
@@ -430,7 +467,7 @@ void Player::skill2Update()
 
 	if (MotionCount_ == 1)
 	{
-		behaviorRequest_ = Skill::kRoot;
+		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
@@ -439,7 +476,7 @@ void Player::skill2Update()
 
 }
 
-void Player::skill3Update()
+void Player::Skill3Update()
 {
 	if (isSkillCooldown_) {
 		return;
@@ -477,7 +514,7 @@ void Player::skill3Update()
 
 	if (MotionCount_ == 1)
 	{
-		behaviorRequest_ = Skill::kRoot;
+		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
@@ -486,28 +523,39 @@ void Player::skill3Update()
 
 }
 
-void Player::skillRootInitialize()
+void Player::RootInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 
-
+	isUnderAttack = false;
 }
 
-void Player::skill1Initialize()
+void Player::AttackInitialize()
+{
+	MotionTimer_ = 0;
+	MotionCount_ = 0;
+
+	//weapon_->GetWorldTransform()->rotation_.x = 0.79f;
+	//weapon_->GetWorldTransform()->rotation_.y = -0.31f;
+	//weapon_->GetWorldTransform()->rotation_.z = 1.39f;
+}
+
+
+void Player::Skill1Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 }
 
 
-void Player::skill2Initialize()
+void Player::Skill2Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 }
 
-void Player::skill3Initialzie()
+void Player::Skill3Initialzie()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;

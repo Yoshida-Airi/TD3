@@ -1,5 +1,4 @@
 #include "Sword.h"
-#include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 
 
@@ -23,7 +22,7 @@ void Sword::Update()
 	model_->Update();
 	model_->ModelDebug("Sword");
 
-	Attack();
+	//Attack();
 }
 
 void Sword::Draw(Camera* camera)
@@ -81,7 +80,7 @@ void Sword::Attack()
 		}*/
 	}
 	if (isAttack == true) {
-		if (model_->worldTransform_->rotation_.x >= -0.83f) {
+		/*if (model_->worldTransform_->rotation_.x >= -0.83f) {
 			model_->worldTransform_->rotation_.x -= 0.08f;
 		}
 		if (model_->worldTransform_->rotation_.y <= 2.48f) {
@@ -89,7 +88,7 @@ void Sword::Attack()
 		}
 		if (model_->worldTransform_->rotation_.z >= -0.26f) {
 			model_->worldTransform_->rotation_.z -= 0.08f;
-		}
+		}*/
 	}
 	
 }
