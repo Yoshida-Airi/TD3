@@ -108,6 +108,10 @@ void Boss::Move() {
 	Vector3 enemyPos = model_->worldTransform_->translation_;
 	Vector3 speed;
 
+	const float threshold = 0.7f;
+	Vector3 move = { 0.0f,0.0f,0.0f };
+	bool isMoveing = false;
+
 	speed.x = playerPos.x - enemyPos.x;
 	speed.y = playerPos.y - enemyPos.y;
 	speed.z = playerPos.z - enemyPos.z;
@@ -118,8 +122,12 @@ void Boss::Move() {
 	speed.y *= kBulletSpeed;
 	speed.z *= kBulletSpeed;
 
-	speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
+	//目標角度の算出
+	angle_ = std::atan2(speed.x, speed.z);
 
+	//speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
+
+	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 	model_->worldTransform_->translation_.x += speed.x;
 	model_->worldTransform_->translation_.y += speed.y;
 	model_->worldTransform_->translation_.z += speed.z;
@@ -137,4 +145,45 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	}
 
 
+}
+
+float Boss::Lerp(const float& a, const float& b, float t) {
+	float result{};
+
+	result = a + b * t;
+
+	return result;
+}
+
+// 最短角度補間
+float Boss::LerpShortAngle(float a, float b, float t)
+{
+	// 角度差分を求める
+	float diff = b - a;
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < 2 * (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= 2 * std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= (float)std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	return Lerp(a, diff, t);
+}
+
+float Boss::LerpShortTranslate(float a, float b, float t) {
+	return a + t * (b - a);
 }
