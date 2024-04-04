@@ -15,7 +15,7 @@ void Player::Initialize(Camera* camera)
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
 	//model_->worldTransform_->translation_.y = 0.5f;
-	//model_->SetisInvisible(true);
+	model_->SetisInvisible(true);
 	SetRadius(model_->worldTransform_->scale_);
 
 	playerLevel = std::make_unique<Playerlevel>();
@@ -28,14 +28,27 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
-	LeftFootModel_->worldTransform_->translation_.y = 1.57f;
-	RightFootModel_->worldTransform_->translation_.y = 1.57f;
-
-	RightArmModel_->worldTransform_->translation_.x = 0.26f;
-	RightArmModel_->worldTransform_->translation_.y = 2.38f;
-	LeftArmModel_->worldTransform_->translation_.x = -0.26f;
-	LeftArmModel_->worldTransform_->translation_.y = 2.38f;
 	
+	
+
+
+	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
+	bodyModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	headModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
+	headModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	LeftArmModel_->worldTransform_->translation_ = { 0.18f,2.38f,0.0f };
+	LeftArmModel_->worldTransform_->rotation_ = { 0.0f,1.6f,0.72f };
+
+	RightArmModel_->worldTransform_->translation_ = { -0.18f,2.38f,0.0f };
+	RightArmModel_->worldTransform_->rotation_ = { 0.0f,-1.6f,-0.72f };
+
+	LeftFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
+	LeftFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	RightFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
+	RightFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
@@ -44,12 +57,13 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_->Parent(bodyModel_.get());
 	RightFootModel_->Parent(bodyModel_.get());
 
-	bodyModel_->SetisInvisible(true);
-	headModel_->SetisInvisible(true);
-	LeftArmModel_->SetisInvisible(true);
-	RightArmModel_->SetisInvisible(true);
-	LeftFootModel_->SetisInvisible(true);
-	RightFootModel_->SetisInvisible(true);
+
+	//bodyModel_->SetisInvisible(true);
+	//headModel_->SetisInvisible(true);
+	//LeftArmModel_->SetisInvisible(true);
+	//RightArmModel_->SetisInvisible(true);
+	//LeftFootModel_->SetisInvisible(true);
+	//RightFootModel_->SetisInvisible(true);
 
 }
 
@@ -360,6 +374,7 @@ void Player::AttackUpdate()
 
 	MotionTimer_++;
 
+	//
 	if (MotionCount_ == 0)
 	{
 		if (MotionTimer_ == 10)
@@ -367,12 +382,28 @@ void Player::AttackUpdate()
 			MotionCount_ = 1;
 		}
 	
+		//剣の回転
 		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmax) {
 			weapon_->GetWorldTransform()->rotation_.y += rotationspeed;
 		}
 		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmax) {
 			weapon_->GetWorldTransform()->rotation_.y = rotationmax;
 		}
+
+
+
+
+		
+		LeftFootModel_->worldTransform_->rotation_.x += 0.1f/10;
+		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f/10;
+	
+		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
+
+
+
+		bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
+		bodyModel_->worldTransform_->rotation_.y -= 1.0f/10;
 
 	}
 
@@ -391,6 +422,8 @@ void Player::AttackUpdate()
 		}
 
 	
+		bodyModel_->worldTransform_->rotation_.y += 0.4f / 10;
+
 	}
 
 
@@ -408,6 +441,21 @@ void Player::AttackUpdate()
 		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmin) {
 			weapon_->GetWorldTransform()->rotation_.y = rotationmin;
 		}
+
+
+
+
+		LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+		LeftFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
+
+		RightFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+		RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+
+
+
+		bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
+		bodyModel_->worldTransform_->rotation_.y += 0.3f / 10;
+
 	}
 
 	if (MotionCount_ == 3)
@@ -613,12 +661,35 @@ void Player::RootInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
+	bodyModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	headModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
+	headModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	LeftArmModel_->worldTransform_->translation_ = { 0.18f,2.38f,0.0f };
+	LeftArmModel_->worldTransform_->rotation_ = { 0.0f,1.6f,0.72f };
+
+	RightArmModel_->worldTransform_->translation_ = { -0.18f,2.38f,0.0f };
+	RightArmModel_->worldTransform_->rotation_ = { 0.0f,-1.6f,-0.72f };
+
+	LeftFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
+	LeftFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	RightFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
+	RightFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
 }
 
 void Player::AttackInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+
+
+
 }
 
 void Player::Skill1Initialize()
