@@ -12,6 +12,7 @@ void Sword::Initialize(Player* player)
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
+	//
 	model_->worldTransform_->translation_ = { -0.03f,1.48f,0.86f };
 	model_->worldTransform_->scale_ = { 0.4f,0.4f,0.4f };
 
