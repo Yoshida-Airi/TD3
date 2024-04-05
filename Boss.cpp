@@ -16,6 +16,9 @@ void Boss::Initialize(Player* player) {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	int currentTime = int(time(nullptr));
+	srand(currentTime);
+
 	SetRadius(model_->worldTransform_->scale_);
 
 	hp = 100;
@@ -31,19 +34,30 @@ void Boss::Update() {
 
 	Collider::UpdateWorldTransform();
 
-	//model_->worldTransform_->translation_.x += 0.001f;
-
 	if (hp <= 0)
 	{
 		isDead_ = true;
 	}
 
+	action = rand() % 2;
+
+	switch (bAction)
+	{
+	case MOVE:
+
+
+
+		break;
+
+	case ATTACK:
+
+		break;
+
+	}
+
 	Move();
 	CoolDown();
 
-	/*if (--deathTimer <= 0) {
-		isDead_ = true;
-	}*/
 	ImGui::Begin("Boss");
 	ImGui::Text("HP : %d", hp);
 	ImGui::End();
@@ -108,8 +122,11 @@ void Boss::Move() {
 	speed.y *= kBulletSpeed;
 	speed.z *= kBulletSpeed;
 
-	speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
+	angle_ = std::atan2(speed.x, speed.z);
 
+	//speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
+
+	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 	model_->worldTransform_->translation_.x += speed.x;
 	model_->worldTransform_->translation_.y += speed.y;
 	model_->worldTransform_->translation_.z += speed.z;
@@ -127,4 +144,45 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	}
 
 
+}
+
+float Boss::Lerp(const float& a, const float& b, float t) {
+	float result{};
+
+	result = a + b * t;
+
+	return result;
+}
+
+// 最短角度補間
+float Boss::LerpShortAngle(float a, float b, float t)
+{
+	// 角度差分を求める
+	float diff = b - a;
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < 2 * (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= 2 * std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= (float)std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	return Lerp(a, diff, t);
+}
+
+float Boss::LerpShortTranslate(float a, float b, float t) {
+	return a + t * (b - a);
 }
