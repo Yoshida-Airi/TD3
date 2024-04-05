@@ -16,6 +16,9 @@ void Boss::Initialize(Player* player) {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	bullet_ = std::make_unique<EnemyBullet>();
+	bullet_->Initialize();
+
 	currentTime = int(time(nullptr));
 	srand(currentTime);
 
@@ -46,6 +49,9 @@ void Boss::Update() {
 
 	case ATTACK:
 
+		Attack();
+		bullet_->Update();
+
 		break;
 
 	}
@@ -69,6 +75,10 @@ void Boss::Update() {
 void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
+
+
+	bullet_->Draw(camera);
+
 
 }
 
@@ -117,10 +127,33 @@ void Boss::Move() {
 
 void Boss::Attack() {
 
+	if (aimTimer <= 120 && isAttack == false) {
+		aimTimer++;
+		Direction(0.08f);
+	}
+	else {
+		aimTimer = 0;
+		isAttack = true;
+	}
+
+	if (isAttack == true && isAssignment == false) {
+		bullet_->SetSpeed(speed_);
+		bullet_->SetTranslate(model_->worldTransform_->translation_);
+		isAssignment = true;
+	}
+
+	if (bullet_->GetIsDead() == true) {
+		isAttack = false;
+		isAssignment = false;
+		isNextAction = true;
+	}
+
 }
 
 void Boss::NextAction() {
-	nextActionTimer++;
+	if (isNextAction == true) {
+		nextActionTimer++;
+	}
 
 	if (nextActionTimer >= 120) {
 		action = rand() % 2;
@@ -132,6 +165,7 @@ void Boss::NextAction() {
 	}
 	else if (action == 1) {
 		bAction = ATTACK;
+		isNextAction = false;
 	}
 
 }

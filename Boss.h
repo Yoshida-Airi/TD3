@@ -7,6 +7,7 @@
 #include "Collider.h"
 #include "Player.h"
 #include "imgui.h"
+#include "EnemyBullet.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,6 +51,7 @@ public:
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Player* player_ = nullptr;
+	std::unique_ptr<EnemyBullet> bullet_ = nullptr;
 
 	Input* input_ = nullptr;
 
@@ -70,6 +72,12 @@ private:
 	int action = 0;
 
 	int nextActionTimer = 0;
+	bool isNextAction = true;
+
+	bool isAttack = false;
+	bool isAssignment = false;
+	int aimTimer = 0;
+
 
 private:
 
