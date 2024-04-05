@@ -115,6 +115,10 @@ void Boss::Move() {
 	model_->worldTransform_->translation_.z += speed.z;
 }
 
+void Boss::Attack() {
+
+}
+
 void Boss::NextAction() {
 	nextActionTimer++;
 

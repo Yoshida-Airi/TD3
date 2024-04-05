@@ -80,6 +80,8 @@ private:
 	void NextAction();
 
 	void Direction();
+	
+	void Attack();
 
 	//ここから下は回転用
 	float Lerp(const float& a, const float& b, float t);
