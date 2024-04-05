@@ -377,7 +377,6 @@ void Player::AttackUpdate()
 
 	MotionTimer_++;
 
-	//
 	if (MotionCount_ == 0)
 	{
 		if (MotionTimer_ == 10)
@@ -407,8 +406,6 @@ void Player::AttackUpdate()
 		}
 
 
-
-
 		weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
 
 
@@ -419,12 +416,9 @@ void Player::AttackUpdate()
 		RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
 
-
 		bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
 		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;
-		//bodyModel_->worldTransform_->rotation_.y += 0.4f / 10;
-
-
+		
 	}
 
 
