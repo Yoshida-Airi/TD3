@@ -61,7 +61,7 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
-	Vector3 speed;
+	Vector3 speed_;
 
 	float angle_ = 0.0f;
 
@@ -79,7 +79,7 @@ private:
 
 	void NextAction();
 
-	void Direction();
+	void Direction(float speed);
 	
 	void Attack();
 

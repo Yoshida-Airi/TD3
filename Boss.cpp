@@ -109,10 +109,10 @@ void Boss::CoolDown() {
 }
 
 void Boss::Move() {
-	Direction();
-	model_->worldTransform_->translation_.x += speed.x;
-	model_->worldTransform_->translation_.y += speed.y;
-	model_->worldTransform_->translation_.z += speed.z;
+	Direction(0.04f);
+	model_->worldTransform_->translation_.x += speed_.x;
+	model_->worldTransform_->translation_.y += speed_.y;
+	model_->worldTransform_->translation_.z += speed_.z;
 }
 
 void Boss::Attack() {
@@ -136,8 +136,8 @@ void Boss::NextAction() {
 
 }
 
-void Boss::Direction() {
-	const float kBulletSpeed = 0.04f;
+void Boss::Direction(float speed) {
+	const float kBulletSpeed = speed;
 	Vector3 playerPos = player_->GetPosition();
 	Vector3 enemyPos = model_->worldTransform_->translation_;
 
@@ -145,18 +145,18 @@ void Boss::Direction() {
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
 
-	speed.x = playerPos.x - enemyPos.x;
-	speed.y = playerPos.y - enemyPos.y;
-	speed.z = playerPos.z - enemyPos.z;
+	speed_.x = playerPos.x - enemyPos.x;
+	speed_.y = playerPos.y - enemyPos.y;
+	speed_.z = playerPos.z - enemyPos.z;
 
-	speed = Normalize(speed);
+	speed_ = Normalize(speed_);
 
-	speed.x *= kBulletSpeed;
-	speed.y *= kBulletSpeed;
-	speed.z *= kBulletSpeed;
+	speed_.x *= kBulletSpeed;
+	speed_.y *= kBulletSpeed;
+	speed_.z *= kBulletSpeed;
 
 	//目標角度の算出
-	angle_ = std::atan2(speed.x, speed.z);
+	angle_ = std::atan2(speed_.x, speed_.z);
 
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 
