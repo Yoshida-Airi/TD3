@@ -160,17 +160,22 @@ void Player::Update()
 	case  Player::Animation::kRoot:
 	default:
 		RootUpdate();
+		ImGui::Text("behavior : Root");
 		break;
 	case  Player::Animation::kAttack:
 		AttackUpdate();
+		ImGui::Text("behavior : Attack");
 		break;
 	case  Player::Animation::kSkill1:
 		Skill1Update();
+		ImGui::Text("behavior : Skill1");
 		break;
 	case  Player::Animation::kSkill2:
 		Skill2Update();
+		ImGui::Text("behavior : Skill2");
 		break;
 	case  Player::Animation::kSkill3:
+		ImGui::Text("behavior : Skill3");
 		Skill3Update();
 		break;
 	}
@@ -367,10 +372,6 @@ void Player::CoolDown() {
 void Player::AttackUpdate()
 {
 	//剣を振りかぶる
-
-	if (isSkillCooldown_) {
-		return;
-	}
 
 	//移動
 	Move();
@@ -662,6 +663,27 @@ void Player::AttackInitialize()
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 
+
+	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
+
+
+	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
+	bodyModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	headModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
+	headModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	LeftArmModel_->worldTransform_->translation_ = { 0.28f,2.38f,0.0f };
+	LeftArmModel_->worldTransform_->rotation_ = { 0.0f,1.6f,0.72f };
+
+	RightArmModel_->worldTransform_->translation_ = { -0.28f,2.38f,0.0f };
+	RightArmModel_->worldTransform_->rotation_ = { 0.0f,-1.6f,-0.72f };
+
+	LeftFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
+	LeftFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+	RightFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
+	RightFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
 
 
