@@ -16,6 +16,9 @@ void Boss::Initialize(Player* player) {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	currentTime = int(time(nullptr));
+	srand(currentTime);
+
 	SetRadius(model_->worldTransform_->scale_);
 
 	hp = 100;
@@ -31,14 +34,28 @@ void Boss::Update() {
 
 	Collider::UpdateWorldTransform();
 
-	//model_->worldTransform_->translation_.x += 0.001f;
+	NextAction();
+
+	switch (bAction)
+	{
+	case MOVE:
+
+		Move();
+
+		break;
+
+	case ATTACK:
+
+		break;
+
+	}
+
 
 	if (hp <= 0)
 	{
 		isDead_ = true;
 	}
 
-	Move();
 	CoolDown();
 
 	/*if (--deathTimer <= 0) {
@@ -121,6 +138,23 @@ void Boss::Move() {
 	model_->worldTransform_->translation_.x += speed.x;
 	model_->worldTransform_->translation_.y += speed.y;
 	model_->worldTransform_->translation_.z += speed.z;
+
+}
+
+void Boss::NextAction() {
+	nextActionTimer++;
+
+	if (nextActionTimer >= 120) {
+		action = rand() % 2;
+		nextActionTimer = 0;
+	}
+
+	if (action == 0) {
+		bAction = MOVE;
+	}
+	else if (action == 1) {
+		bAction = ATTACK;
+	}
 
 }
 
