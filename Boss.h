@@ -61,6 +61,8 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	Vector3 speed;
+
 	float angle_ = 0.0f;
 
 	BossAction bAction = MOVE;
@@ -76,6 +78,8 @@ private:
 	void Move();
 
 	void NextAction();
+
+	void Direction();
 
 	//ここから下は回転用
 	float Lerp(const float& a, const float& b, float t);

@@ -109,11 +109,33 @@ void Boss::CoolDown() {
 }
 
 void Boss::Move() {
+	Direction();
+	model_->worldTransform_->translation_.x += speed.x;
+	model_->worldTransform_->translation_.y += speed.y;
+	model_->worldTransform_->translation_.z += speed.z;
+}
 
+void Boss::NextAction() {
+	nextActionTimer++;
+
+	if (nextActionTimer >= 120) {
+		action = rand() % 2;
+		nextActionTimer = 0;
+	}
+
+	if (action == 0) {
+		bAction = MOVE;
+	}
+	else if (action == 1) {
+		bAction = ATTACK;
+	}
+
+}
+
+void Boss::Direction() {
 	const float kBulletSpeed = 0.04f;
 	Vector3 playerPos = player_->GetPosition();
 	Vector3 enemyPos = model_->worldTransform_->translation_;
-	Vector3 speed;
 
 	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
@@ -132,29 +154,7 @@ void Boss::Move() {
 	//目標角度の算出
 	angle_ = std::atan2(speed.x, speed.z);
 
-	//speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
-
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
-	model_->worldTransform_->translation_.x += speed.x;
-	model_->worldTransform_->translation_.y += speed.y;
-	model_->worldTransform_->translation_.z += speed.z;
-
-}
-
-void Boss::NextAction() {
-	nextActionTimer++;
-
-	if (nextActionTimer >= 120) {
-		action = rand() % 2;
-		nextActionTimer = 0;
-	}
-
-	if (action == 0) {
-		bAction = MOVE;
-	}
-	else if (action == 1) {
-		bAction = ATTACK;
-	}
 
 }
 
