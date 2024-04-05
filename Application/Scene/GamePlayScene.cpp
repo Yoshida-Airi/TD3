@@ -235,6 +235,7 @@ void GamePlayScene::Update()
 			return true;
 			});
 
+		bossPosY = boss_->GetTranslate().y;
 		boss_->Update();
 
 		if (boss_->GetIsDead() == false) {
@@ -344,9 +345,21 @@ void GamePlayScene::Update()
 	case GamePlayScene::Skill::kSkill3:
 		skill3Update();
 		break;
-
 	}
 
+	if (boss_->GetTranslate().y < 0.0f /*&& bossPosY != boss_->GetTranslate().y*/ && isCameraShake == false && cameraShakeTime < 60)
+	{
+		isCameraShake = true;
+	}
+	if (isCameraShake && cameraShakeTime < 60)
+	{
+		if (cameraShakeTime == 60)
+		{
+			isCameraShake = false;
+		}
+		cameraShakeTime++;
+		camera->ShakeCamera(cameraShakeTime);
+	}
 	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
 	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
 	camera->UpdateMatrix();

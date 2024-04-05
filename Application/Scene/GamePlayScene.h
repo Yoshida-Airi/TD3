@@ -128,7 +128,10 @@ private:
 	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
 
 	float cameraZ;//lerpしたときの誤差修正数値
-
+	
+	float bossPosY;
+	bool isCameraShake = false;
+	uint32_t cameraShakeTime;
 
 #ifdef _DEBUG
 

@@ -67,17 +67,17 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 	// コライダーBのワールド座標を取得
 	Vector3 posB = colliderB->GetWorldPosition();
 
-	if (colliderA->GetTypeID() == uint32_t(CollisionTypeDef::kPlayer))
+	if (colliderA->GetTypeID() == static_cast<uint32_t>(CollisionTypeDef::kPlayer))
 	{
 		playerRotate = colliderA->GetRotate();
 		playerTranslate = colliderA->GetWorldPosition();
 	}
 
-	if (colliderA->GetTypeID() == uint32_t(CollisionTypeDef::kPlayerWeapon))
+	if (colliderA->GetTypeID() == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
 		Collider::OBB obb
 		{
-			{posA.x,posA.y,posA.z},//obbの中心 x座標の位置に違和感
+			posA,//obbの中心 x座標の位置に違和感
 			{{1.0f,0.0f,0.0f}, {0.0f,1.0f,0.0f},{0.0f,0.0f,1.0f}},//座標軸　正規化・直交必須 0=x 1=y 2=z
 			colliderA->GetRadius()//中心から各面までの距離　
 		};
@@ -139,11 +139,11 @@ void CollisionManager::CheakCollisionPair(Collider* colliderA, Collider* collide
 			// コライダーBの衝突時コールバックを呼び出す
 			colliderB->OnCollision(colliderA);
 		}
-	}else if (colliderB->GetTypeID() == uint32_t(CollisionTypeDef::kPlayerWeapon))
+	}else if (colliderB->GetTypeID() == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
 		Collider::OBB obb
 		{
-			{posB.x,posB.y,posB.z},
+			posB,
 			{{1.0f,0.0f,0.0f}, {0.0f,1.0f,0.0f},{0.0f,0.0f,1.0f}},
 			colliderB->GetRadius()
 		};

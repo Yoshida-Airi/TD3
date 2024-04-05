@@ -17,7 +17,7 @@ void Boss::Initialize(Player* player) {
 	input_->Initialize();
 
 	SetRadius(model_->worldTransform_->scale_);
-
+	model_->worldTransform_->translation_ = { 0.0f,6.0f,0.0f };
 	hp = 100;
 
 	player_ = player;
@@ -124,6 +124,13 @@ void Boss::Move() {
 
 	//目標角度の算出
 	angle_ = std::atan2(speed.x, speed.z);
+
+	if (enemyPos.y > 0.0f)
+	{
+		speed.x = 0.0f;
+		speed.y = -0.05f;
+		speed.z = 0.0f;
+	}
 
 	//speed = TransformNormal(speed, model_->worldTransform_->matWorld_);
 
