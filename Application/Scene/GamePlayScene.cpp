@@ -347,13 +347,13 @@ void GamePlayScene::Update()
 		break;
 	}
 
-	if (boss_->GetTranslate().y < 0.0f /*&& bossPosY != boss_->GetTranslate().y*/ && isCameraShake == false && cameraShakeTime < 60)
+	if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)
 	{
 		isCameraShake = true;
 	}
-	if (isCameraShake && cameraShakeTime < 60)
+	if (isCameraShake && cameraShakeTime < 51)
 	{
-		if (cameraShakeTime == 60)
+		if (cameraShakeTime == 50)
 		{
 			isCameraShake = false;
 		}
