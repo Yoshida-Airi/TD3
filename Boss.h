@@ -7,6 +7,16 @@
 #include "Collider.h"
 #include "Player.h"
 #include "imgui.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+enum BossAction {
+	MOVE,
+	ATTACK,
+};
+
 class Boss : public Collider {
 public:
 	~Boss();
@@ -51,7 +61,15 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	Vector3 speed;
+
 	float angle_ = 0.0f;
+
+	BossAction bAction = MOVE;
+	unsigned int currentTime;
+	int action = 0;
+
+	int nextActionTimer = 0;
 
 private:
 
@@ -59,6 +77,9 @@ private:
 
 	void Move();
 
+	void NextAction();
+
+	void Direction();
 
 	//ここから下は回転用
 	float Lerp(const float& a, const float& b, float t);
