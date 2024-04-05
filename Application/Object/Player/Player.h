@@ -4,12 +4,23 @@
 #include"Model.h"
 #include"Sprite.h"
 #include"Collider.h"
+#include "Playerlevel/Playerlevel.h"
 
 class Sword;
 
 class Player :public Collider
 {
 public:
+
+	enum class Animation
+	{
+		kRoot,		//待機
+		kAttack,	//攻撃
+		kSkill1,	//ダッシュ
+		kSkill2,	//ダッシュ＋攻撃
+		kSkill3	//範囲攻撃
+	};
+
 	void Initialize(Camera* camera);
 	void Update();
 	void Draw();
@@ -17,7 +28,7 @@ public:
 
 	void SetWeapon(Sword* playerWeapon)
 	{
-		Weapon_ = playerWeapon;
+		weapon_ = playerWeapon;
 	}
 
 	void SetSkill(bool isSkill)
@@ -29,7 +40,8 @@ public:
 	bool GetIsUnderAttack() { return isUnderAttack; };
 	bool GetIsSkill() { return isSkill; };
 	Vector3 GetWorldPosition()override;
-	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
+	WorldTransform* GetWorldTransform() { return bodyModel_->worldTransform_; };
+	WorldTransform* GetLeftArmWorldTransform() { return LeftArmModel_->worldTransform_; };
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
@@ -40,12 +52,13 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
-	float PlayerSpeed = 2.0f;
+	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
+		float PlayerSpeed = 2.0f;
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
 
-	Sword* Weapon_ = nullptr;
+	Sword* weapon_ = nullptr;
 
 	float Speed = 0.03f;//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中
@@ -66,6 +79,8 @@ private:
 	bool keyBoard = true;
 	bool gamePad = false;
 
+	//Playerlevel* playerlevel;
+	std::unique_ptr<Playerlevel>playerLevel = nullptr;
 
 	std::unique_ptr<Model> bodyModel_ = nullptr;
 	std::unique_ptr<Model> headModel_ = nullptr;
@@ -74,6 +89,20 @@ private:
 	std::unique_ptr<Model> LeftFootModel_ = nullptr;
 	std::unique_ptr<Model> RightFootModel_ = nullptr;
 
+	Animation behavior_ = Animation::kRoot;
+	std::optional<Animation>behaviorRequest_ = std::nullopt;
+
+
+	int MotionTimer_ = 0;
+	int MotionCount_ = 0;
+
+	bool isSkillCooldown_; // スキルのクールダウン中かどうかを示すフラグ
+	int skillCooldownTime_; // スキルのクールダウン時間
+	unsigned int skillCooldownDuration_; // スキルのクールダウン期間
+
+	float rotationmax = 1.57f;
+	float rotationmin = 0.0f;
+	float rotationspeed = 0.2f;
 
 private:
 
@@ -84,10 +113,21 @@ private:
 	//SKILL
 	void Skill();
 
-	void Direction();
-	
-	void Rotate();
-
+	//一回あたったときの無敵時間
 	void CoolDown();
+
+
+	void RootUpdate();
+	void AttackUpdate();
+	void Skill1Update();
+	void Skill2Update();
+	void Skill3Update();
+
+	void RootInitialize();	//待機
+	void AttackInitialize();
+	void Skill1Initialize();	//スキル１
+	void Skill2Initialize();	//スキル２
+	void Skill3Initialzie();	//スキル３
+
 
 };

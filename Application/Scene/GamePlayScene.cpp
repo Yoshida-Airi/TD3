@@ -3,7 +3,6 @@
 GamePlayScene::~GamePlayScene()
 {
 	delete camera;
-	delete playerlevel;
 
 	for (Enemy* enemys : enemy_) {
 		delete enemys;
@@ -46,15 +45,9 @@ void GamePlayScene::Initialize()
 	timer.Initialize();
 
 
-	playerlevel = new Playerlevel;
-	playerlevel->Initialize();
-
-
 	sprite.reset(Sprite::Create(Doll));
 	sprite->SetSize({ 64.0f, 64.0f });
 	sprite->SetTextureLeftTop({ 0,0 });
-
-
 
 
 	player = std::make_unique<Player>();
@@ -75,52 +68,6 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Update()
 {
-
-	//XINPUT_STATE joyState;
-
-
-	playerlevel->sprite1->worldTransform_->translation_.x = 54.0f;
-	playerlevel->sprite1->worldTransform_->translation_.y = 31.0f;
-	playerlevel->sprite2->worldTransform_->translation_.x = 96.0f;
-	playerlevel->sprite2->worldTransform_->translation_.y = 18.0f;
-	playerlevel->sprite3->worldTransform_->translation_.x = -1008.0f;
-	playerlevel->sprite3->worldTransform_->translation_.y = -49.0f;
-	if (playerlevel->nowlevel >= 3) {
-		playerlevel->sprite3->worldTransform_->translation_.x = 1008.0f;
-		playerlevel->sprite3->worldTransform_->translation_.y = 49.0f;
-	}
-	/*if (input->PushKey(DIK_W))
-	{
-		camera->transform.translate.z += 0.03f;
-	}
-	if (input->PushKey(DIK_S))
-	{
-		camera->transform.translate.z -= 0.03f;
-	}
-	if (input->PushKey(DIK_A))
-	{
-		camera->transform.translate.x -= 0.03f;
-	}
-	if (input->PushKey(DIK_D))
-	{
-		camera->transform.translate.x += 0.03f;
-	}
-
-	if (input->GetJoystickState(0, joyState)) {
-		camera->transform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.03f;
-		camera->transform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.03f;
-	}
-
-	camera->UpdateMatrix();
-	}*/
-
-
-	if (playerlevel->nowlevel == playerlevel->count) {
-		player->PLevelUp();
-		playerlevel->count += 1;
-	}
-
-
 	if (timer.GetNowSecond() != 10)
 
 	{
@@ -148,7 +95,7 @@ void GamePlayScene::Update()
 			enemys->Update();
 			if (enemys->GetIsDead()) {
 				//貰える経験値
-				playerlevel->Experiencepoint += 240.0f;
+				player->GetPlayerLevel()->Experiencepoint += 240.0f;
 				enemyDeathCount++;
 				CreateDeathEffect({enemys->GetTranslate()});
 			}
@@ -252,6 +199,8 @@ void GamePlayScene::Update()
 			timer.ResetBossFrame();
 		}
 	}
+
+
 	ImGui::Begin("Frame&Seconds");
 	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
 	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
@@ -265,11 +214,6 @@ void GamePlayScene::Update()
 
 	ImGui::End();
 
-	ImGui::Begin("Status");
-	ImGui::Text("motionTimer: %d", MotionTimer_);
-	ImGui::Text("isSkill: %d", isSkill);
-	ImGui::Text("skillCoortime: %d", skillCooldownTime_);
-	ImGui::End();
 
 #ifdef _DEBUG
 
@@ -289,63 +233,10 @@ void GamePlayScene::Update()
 
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
-	playerlevel->Update();
+	
 	player->Update();
 	sword->Update();
 
-	Vector3 weaponPos = player->GetPosition();
-	weaponPos.z = weaponPos.z + 5.0f;
-
-	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
-
-	if (behaviorRequest_)
-	{
-		//振る舞いを変更する
-		behavior_ = behaviorRequest_.value();
-		//各振る舞いごとの初期化を実行
-		switch (behavior_)
-		{
-		case GamePlayScene::Skill::kRoot:
-		default:
-			//待機モーション
-			skillRootInitialize();
-			break;
-		case  GamePlayScene::Skill::kSkill1:
-			//スキル１
-			skill1Initialize();
-			break;
-		case GamePlayScene::Skill::kSkill2:
-			//スキル２
-			skill2Initialize();
-			break;
-		case GamePlayScene::Skill::kSkill3:
-			//スキル３
-			skill3Initialzie();
-			break;
-
-		}
-
-		behaviorRequest_ = std::nullopt;
-	}
-
-	//スキルの更新処理
-	switch (behavior_)
-	{
-	case  GamePlayScene::Skill::kRoot:
-	default:
-		skillRootUpdate();
-		break;
-	case  GamePlayScene::Skill::kSkill1:
-		skill1Update();
-		break;
-	case GamePlayScene::Skill::kSkill2:
-		skill2Update();
-		break;
-	case GamePlayScene::Skill::kSkill3:
-		skill3Update();
-		break;
-
-	}
 
 	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
 	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
@@ -380,10 +271,7 @@ void GamePlayScene::Draw()
 		boss_->Draw(camera);
 	}
 
-	playerlevel->Draw();
-
-
-
+	
 
 	//colliderManager_->Draw(camera);
 }
@@ -428,210 +316,6 @@ void GamePlayScene::BossSceneAllCollisions() {
 
 	//当たり判定
 	colliderManager_->ChackAllCollisions();
-}
-
-void GamePlayScene::skillRootUpdate()
-{
-	//スキルのアニメーション
-
-	if (input->PushKey(DIK_LSHIFT))
-	{
-		isSkill = true;
-	}
-
-
-	if (isSkill == true && isSkillCooldown_ == false)
-	{
-		if (playerlevel->nowskilllevel == 1)
-		{
-			behaviorRequest_ = Skill::kSkill1;
-		}
-		if (playerlevel->nowskilllevel == 2)
-		{
-			behaviorRequest_ = Skill::kSkill2;
-		}
-		if (playerlevel->nowskilllevel == 3)
-		{
-			behaviorRequest_ = Skill::kSkill3;
-		}
-	}
-
-	// スキルのクールダウンを減らす
-	if (isSkillCooldown_) {
-		skillCooldownTime_--;
-		if (skillCooldownTime_ <= 0) {
-			// クールダウンが終了したらフラグをリセットする
-			isSkillCooldown_ = false;
-			isSkill = false;
-
-		}
-	}
-}
-
-void GamePlayScene::skill1Update()
-{
-	if (isSkillCooldown_) {
-		return;
-	}
-
-	MotionTimer_++;
-
-	if (MotionCount_ == 0)
-	{
-		if (MotionTimer_ == 20)
-		{
-			MotionCount_ = 1;
-		}
-		float directionAngle = player->model_->worldTransform_->rotation_.y;
-
-		float dashSpeed = 0.7f;
-
-		float dashX = std::sin(directionAngle) * dashSpeed;
-		float dashZ = std::cos(directionAngle) * dashSpeed;
-
-		player->model_->worldTransform_->translation_.x += dashX;
-		player->model_->worldTransform_->translation_.z += dashZ;
-
-
-		//カメラ直書き
-		camera->transform.translate.x += dashX;
-		camera->transform.translate.z += dashZ;
-	}
-
-	if (MotionCount_ == 1)
-	{
-		behaviorRequest_ = Skill::kRoot;
-		// スキル使用後、クールダウンを開始する
-
-		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
-
-
-	}
-
-
-
-}
-
-void GamePlayScene::skill2Update()
-{
-	if (isSkillCooldown_) {
-		return;
-	}
-
-	MotionTimer_++;
-
-	if (MotionCount_ == 0)
-	{
-		if (MotionTimer_ == 30)
-		{
-			MotionCount_ = 1;
-		}
-
-		float directionAngle = player->model_->worldTransform_->rotation_.y;
-
-		float dashSpeed = 0.5f;
-
-		float dashX = std::sin(directionAngle) * dashSpeed;
-		float dashZ = std::cos(directionAngle) * dashSpeed;
-
-		player->model_->worldTransform_->translation_.x += dashX;
-		player->model_->worldTransform_->translation_.z += dashZ;
-		sword->model_->worldTransform_->rotation_.y += 1.0f;
-		if (sword->model_->worldTransform_->rotation_.y >= 6.28f) {
-			sword->model_->worldTransform_->rotation_.y = 0.0f;
-		}
-
-		//カメラ直書き
-		camera->transform.translate.x += dashX;
-		camera->transform.translate.z += dashZ;
-
-	}
-
-
-	if (MotionCount_ == 1)
-	{
-		behaviorRequest_ = Skill::kRoot;
-		// スキル使用後、クールダウンを開始する
-		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
-
-	}
-
-}
-
-void GamePlayScene::skill3Update()
-{
-	if (isSkillCooldown_) {
-		return;
-	}
-
-	MotionTimer_++;
-
-	if (MotionCount_ == 0)
-	{
-
-
-		if (MotionTimer_ == 30)
-		{
-			MotionCount_ = 1;
-		}
-		float directionAngle = player->model_->worldTransform_->rotation_.y;
-
-		float dashSpeed = 0.5f;
-
-		float dashX = std::sin(directionAngle) * dashSpeed;
-		float dashZ = std::cos(directionAngle) * dashSpeed;
-
-		player->model_->worldTransform_->translation_.x += dashX;
-		player->model_->worldTransform_->translation_.z += dashZ;
-		sword->model_->worldTransform_->rotation_.y += 1.0f;
-		if (sword->model_->worldTransform_->rotation_.y >= 6.28f) {
-			sword->model_->worldTransform_->rotation_.y = 0.0f;
-		}
-
-		//カメラ直書き
-		camera->transform.translate.x += dashX;
-		camera->transform.translate.z += dashZ;
-
-	}
-
-	if (MotionCount_ == 1)
-	{
-		behaviorRequest_ = Skill::kRoot;
-		// スキル使用後、クールダウンを開始する
-		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
-
-	}
-
-}
-
-void GamePlayScene::skillRootInitialize()
-{
-	MotionTimer_ = 0;
-	MotionCount_ = 0;
-
-
-}
-
-void GamePlayScene::skill1Initialize()
-{
-	MotionTimer_ = 0;
-	MotionCount_ = 0;
-}
-
-
-void GamePlayScene::skill2Initialize()
-{
-	MotionTimer_ = 0;
-	MotionCount_ = 0;
-}
-
-void GamePlayScene::skill3Initialzie()
-{
-	MotionTimer_ = 0;
-	MotionCount_ = 0;
 }
 
 void GamePlayScene::EnemySpawn() {

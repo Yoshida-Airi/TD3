@@ -1,5 +1,4 @@
 #include "Sword.h"
-#include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 
 
@@ -13,8 +12,14 @@ void Sword::Initialize(Player* player)
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
+	//
+	model_->worldTransform_->translation_ = { -0.03f,1.48f,0.86f };
+	model_->worldTransform_->scale_ = { 0.4f,0.4f,0.4f };
+
 	SetRadius({ 3.0f,1.0f,1.0f });
 	player_ = player;
+
+	model_->worldTransform_->parent_ = player_->GetWorldTransform();
 }
 
 void Sword::Update()
@@ -61,78 +66,5 @@ void Sword::OnCollision([[maybe_unused]] Collider* other)
 
 void Sword::Attack()
 {
-	XINPUT_STATE joyState;
 
-	if (gamePad == true) {
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-		{
-			if (model_->worldTransform_->rotation_.y <= rotationmax) {
-				model_->worldTransform_->rotation_.y += rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y >= rotationmax) {
-				model_->worldTransform_->rotation_.y = rotationmax;
-			}
-		}
-		else
-		{
-			if (model_->worldTransform_->rotation_.y >= rotationmin) {
-				model_->worldTransform_->rotation_.y -= rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y <= rotationmin) {
-				model_->worldTransform_->rotation_.y = rotationmin;
-			}
-		}
-	}
-	else if (keyBoard == true) {
-		if (input_->IsLeftMouseClicked())
-		{
-			if (model_->worldTransform_->rotation_.y <= rotationmax) {
-				model_->worldTransform_->rotation_.y += rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y >= rotationmax) {
-				model_->worldTransform_->rotation_.y = rotationmax;
-			}
-		}
-		else
-		{
-			if (model_->worldTransform_->rotation_.y >= rotationmin) {
-				model_->worldTransform_->rotation_.y -= rotationspeed;
-			}
-			if (model_->worldTransform_->rotation_.y <= rotationmin) {
-				model_->worldTransform_->rotation_.y = rotationmin;
-			}
-		}
-	}
-}
-void Sword::Skill()
-{
-	XINPUT_STATE joyState;
-
-	if (gamePad == true) {
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			isSkill = true;
-		}
-		else
-		{
-			isSkill = false;
-		}
-	}
-	else if (keyBoard == true) {
-		if (input_->IsLeftMouseClicked()) {
-			isSkill = true;
-		}
-		else
-		{
-			isSkill = false;
-		}
-	}
 }

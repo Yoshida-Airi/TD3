@@ -27,14 +27,12 @@ public:
 	
 	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
 
-	float rotationmax = 1.57f;
-	float rotationmin = 0.0f;
-	float rotationspeed = 0.2f;
+
 	bool isAttack = false;
-	bool isSkill = false; //skill中がどうか　true : skill発動中
 	bool combo1 = false;
 	bool combo2 = false;
 	int count = 0;
+
 private:
 	Input* input_ = nullptr;
 	PlayerWeapon* Weapon_ = nullptr;
@@ -49,8 +47,6 @@ private:
 
 	//攻撃
 	void Attack();
-
-	void Skill();
 
 };
 
