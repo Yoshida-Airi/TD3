@@ -5,6 +5,7 @@
 #include"Sprite.h"
 #include"Collider.h"
 #include "Playerlevel/Playerlevel.h"
+#include"SlashingEffect.h"
 
 class Sword;
 
@@ -88,6 +89,8 @@ private:
 	std::unique_ptr<Model> RightArmModel_ = nullptr;
 	std::unique_ptr<Model> LeftFootModel_ = nullptr;
 	std::unique_ptr<Model> RightFootModel_ = nullptr;
+
+	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
 
 	Animation behavior_ = Animation::kRoot;
 	std::optional<Animation>behaviorRequest_ = std::nullopt;

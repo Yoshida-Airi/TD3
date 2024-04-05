@@ -150,6 +150,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Timer.cpp" />
     <ClCompile Include="Application\Object\Player\Player.cpp" />
     <ClCompile Include="Application\Object\Player\Sword.cpp" />
+    <ClCompile Include="Application\Object\Effect\SlashingEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Object\Collider\Collider.h" />
@@ -197,6 +198,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Application\Object\Effect\DeathEffect.h" />
     <ClInclude Include="Application\Object\Player\Sword.h" />
     <ClInclude Include="Application\Object\Player\FollowCamera.h" />
+    <ClInclude Include="Application\Object\Effect\SlashingEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">

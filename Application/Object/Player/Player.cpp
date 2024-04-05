@@ -29,7 +29,10 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
 	
+	slashingEffect = std::make_unique<SlashingEffect>();
+	slashingEffect->Initialize(camera);
 	
+
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
@@ -101,7 +104,7 @@ void Player::Update()
 
 	playerLevel->Update();
 
-
+	
 
 #ifdef _DEBUG
 	model_->ModelDebug("player");
@@ -118,6 +121,7 @@ void Player::Update()
 	RightFootModel_->ModelDebug("rightFoot");
 
 #endif // _DEBUG
+
 
 
 	if (behaviorRequest_)
@@ -194,6 +198,8 @@ void Player::Draw()
 
 
 	playerLevel->Draw();
+
+	slashingEffect->Draw();
 }
 
 Vector3 Player::GetWorldPosition()
@@ -322,6 +328,7 @@ void Player::Attack()
 	if (isUnderAttack == true )
 	{
 		behaviorRequest_ = Animation::kAttack;
+	
 	}
 }
 
@@ -375,6 +382,10 @@ void Player::AttackUpdate()
 	//移動
 	Move();
 
+	
+	slashingEffect->SetPosition(weapon_->GetWorldPosition());
+	slashingEffect->Update();
+
 	MotionTimer_++;
 
 	if (MotionCount_ == 0)
@@ -426,6 +437,7 @@ void Player::AttackUpdate()
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
+	//	slashingEffect->SetFlag(false);
 	}
 }
 
@@ -665,6 +677,8 @@ void Player::AttackInitialize()
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 
+
+	slashingEffect->SetFlag(true);
 
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
 
