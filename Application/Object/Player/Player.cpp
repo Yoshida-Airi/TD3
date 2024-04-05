@@ -433,12 +433,13 @@ void Player::AttackUpdate()
 
 void Player::RootUpdate()
 {
-	//スキルのアニメーション
+	//スキルのフラグ
 	if (input_->PushKey(DIK_LSHIFT))
 	{
 		isSkill = true;
 	}
 
+	//スキルと攻撃の併用を禁止
 	if (isSkill == false)
 	{
 		//攻撃
@@ -453,6 +454,7 @@ void Player::RootUpdate()
 	//ヒット時のクールダウン
 	CoolDown();
 
+	//スキルフラグとクールタイムが終わっていたら
 	if (isSkill == true && isSkillCooldown_ == false)
 	{
 		if (playerLevel->nowskilllevel == 1)
@@ -469,6 +471,7 @@ void Player::RootUpdate()
 		}
 		else
 		{
+			//該当するスキルなし
 			isSkill = false;
 		}
 
