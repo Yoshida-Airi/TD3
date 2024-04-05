@@ -372,7 +372,6 @@ void Player::CoolDown() {
 void Player::AttackUpdate()
 {
 	//剣を振りかぶる
-
 	//移動
 	Move();
 
