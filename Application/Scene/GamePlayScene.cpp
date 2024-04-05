@@ -240,7 +240,7 @@ void GamePlayScene::Update()
 	Vector3 weaponPos = player->GetPosition();
 	weaponPos.z = weaponPos.z + 5.0f;
 
-	sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
+	//sword->GetWorldTransform()->parent_ = player->GetWorldTransform();
 
 	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
 	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);

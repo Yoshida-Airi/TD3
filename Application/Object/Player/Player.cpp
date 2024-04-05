@@ -38,10 +38,10 @@ void Player::Initialize(Camera* camera)
 	headModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
 	headModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
-	LeftArmModel_->worldTransform_->translation_ = { 0.18f,2.38f,0.0f };
+	LeftArmModel_->worldTransform_->translation_ = { 0.28f,2.38f,0.0f };
 	LeftArmModel_->worldTransform_->rotation_ = { 0.0f,1.6f,0.72f };
 
-	RightArmModel_->worldTransform_->translation_ = { -0.18f,2.38f,0.0f };
+	RightArmModel_->worldTransform_->translation_ = { -0.28f,2.38f,0.0f };
 	RightArmModel_->worldTransform_->rotation_ = { 0.0f,-1.6f,-0.72f };
 
 	LeftFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
@@ -49,6 +49,9 @@ void Player::Initialize(Camera* camera)
 
 	RightFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
 	RightFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
+
+
+	
 
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
@@ -382,16 +385,7 @@ void Player::AttackUpdate()
 			MotionCount_ = 1;
 		}
 	
-		//剣の回転
-		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmax) {
-			weapon_->GetWorldTransform()->rotation_.y += rotationspeed;
-		}
-		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmax) {
-			weapon_->GetWorldTransform()->rotation_.y = rotationmax;
-		}
-
-
-
+		weapon_->GetWorldTransform()->rotation_.y += 1.6f / 10;
 
 		
 		LeftFootModel_->worldTransform_->rotation_.x += 0.1f/10;
@@ -400,10 +394,8 @@ void Player::AttackUpdate()
 		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
 		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-
-
 		bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
-		bodyModel_->worldTransform_->rotation_.y -= 1.0f/10;
+		bodyModel_->worldTransform_->rotation_.y += 1.0f/10;
 
 	}
 
@@ -414,35 +406,10 @@ void Player::AttackUpdate()
 			MotionCount_ = 2;
 		}
 
-		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmin) {
-			weapon_->GetWorldTransform()->rotation_.y -= rotationspeed;
-		}
-		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmin) {
-			weapon_->GetWorldTransform()->rotation_.y = rotationmin;
-		}
-
-	
-		bodyModel_->worldTransform_->rotation_.y += 0.4f / 10;
-
-	}
 
 
-	if (MotionCount_ == 2)
-	{
-		if (MotionTimer_ == 30)
-		{
-			MotionCount_ = 3;
-		}
 
-
-		if (weapon_->GetWorldTransform()->rotation_.y >= rotationmin) {
-			weapon_->GetWorldTransform()->rotation_.y -= rotationspeed;
-		}
-		if (weapon_->GetWorldTransform()->rotation_.y <= rotationmin) {
-			weapon_->GetWorldTransform()->rotation_.y = rotationmin;
-		}
-
-
+		weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
 
 
 		LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
@@ -454,11 +421,14 @@ void Player::AttackUpdate()
 
 
 		bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
-		bodyModel_->worldTransform_->rotation_.y += 0.3f / 10;
+		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;
+		//bodyModel_->worldTransform_->rotation_.y += 0.4f / 10;
+
 
 	}
 
-	if (MotionCount_ == 3)
+
+	if (MotionCount_ == 2)
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
@@ -662,16 +632,19 @@ void Player::RootInitialize()
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
 
+	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
+
+
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
 	bodyModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
 	headModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
 	headModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
-	LeftArmModel_->worldTransform_->translation_ = { 0.18f,2.38f,0.0f };
+	LeftArmModel_->worldTransform_->translation_ = { 0.28f,2.38f,0.0f };
 	LeftArmModel_->worldTransform_->rotation_ = { 0.0f,1.6f,0.72f };
 
-	RightArmModel_->worldTransform_->translation_ = { -0.18f,2.38f,0.0f };
+	RightArmModel_->worldTransform_->translation_ = { -0.28f,2.38f,0.0f };
 	RightArmModel_->worldTransform_->rotation_ = { 0.0f,-1.6f,-0.72f };
 
 	LeftFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };

@@ -40,7 +40,8 @@ public:
 	bool GetIsUnderAttack() { return isUnderAttack; };
 	bool GetIsSkill() { return isSkill; };
 	Vector3 GetWorldPosition()override;
-	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
+	WorldTransform* GetWorldTransform() { return bodyModel_->worldTransform_; };
+	WorldTransform* GetLeftArmWorldTransform() { return LeftArmModel_->worldTransform_; };
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
