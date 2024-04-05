@@ -459,14 +459,19 @@ void Player::RootUpdate()
 		{
 			behaviorRequest_ = Animation::kSkill1;
 		}
-		if (playerLevel->nowskilllevel == 2)
+		else if (playerLevel->nowskilllevel == 2)
 		{
 			behaviorRequest_ = Animation::kSkill2;
 		}
-		if (playerLevel->nowskilllevel == 3)
+		else if (playerLevel->nowskilllevel == 3)
 		{
 			behaviorRequest_ = Animation::kSkill3;
 		}
+		else
+		{
+			isSkill = false;
+		}
+
 	}
 
 	// スキルのクールダウンを減らす
@@ -625,6 +630,9 @@ void Player::RootInitialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+	isSkill = false;
+	isUnderAttack = false;
 
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
 
