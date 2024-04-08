@@ -142,6 +142,8 @@ public:
 	/// </summary>
 	void StopMakeParticle();
 
+	void MoveMakeParticle();
+
 	//ランダムな速度に動かす
 	void SetRandomAllVelocity();	//すべての方向にランダムな速度で
 	void SetRandomVelocityX();		//X軸のみランダムな速度で

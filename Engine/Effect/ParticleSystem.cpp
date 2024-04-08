@@ -479,6 +479,14 @@ void ParticleSystem::StopMakeParticle()
 	isMakeParticle = false;
 }
 
+/// <summary>
+/// 粒の生成を再開する
+/// </summary>
+void ParticleSystem::MoveMakeParticle()
+{
+	isMakeParticle = true;
+}
+
 void ParticleSystem::SetRandomAllVelocity()
 {
 	isRandomAllVelocity = true;

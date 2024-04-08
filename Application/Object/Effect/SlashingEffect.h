@@ -33,6 +33,12 @@ public:
 	/// <returns></returns>
 	bool IsDead();
 
+	//粒の生成を始める
+	void StartParticle();
+
+	//粒の生成を終える
+	void StopMakeParticle();
+
 private:
 
 	TextureManager* textureManager_ = nullptr;

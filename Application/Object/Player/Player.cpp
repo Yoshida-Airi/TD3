@@ -120,6 +120,11 @@ void Player::Update()
 	LeftFootModel_->ModelDebug("leftFoot");
 	RightFootModel_->ModelDebug("rightFoot");
 
+	
+	slashingEffect->SetPosition(weapon_->GetWorldPosition());
+
+	slashingEffect->Update();
+
 #endif // _DEBUG
 
 
@@ -328,7 +333,8 @@ void Player::Attack()
 	if (isUnderAttack == true )
 	{
 		behaviorRequest_ = Animation::kAttack;
-	
+		slashingEffect->SetFlag(true);
+		slashingEffect->StartParticle();
 	}
 }
 
@@ -379,12 +385,9 @@ void Player::CoolDown() {
 void Player::AttackUpdate()
 {
 	//剣を振りかぶる
-	//移動
-	Move();
-
 	
-	slashingEffect->SetPosition(weapon_->GetWorldPosition());
-	slashingEffect->Update();
+	//移動
+	//Move();
 
 	MotionTimer_++;
 
@@ -437,7 +440,7 @@ void Player::AttackUpdate()
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
-	//	slashingEffect->SetFlag(false);
+		slashingEffect->StopMakeParticle();
 	}
 }
 
@@ -678,8 +681,7 @@ void Player::AttackInitialize()
 	MotionCount_ = 0;
 
 
-	slashingEffect->SetFlag(true);
-
+	
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
 
 
