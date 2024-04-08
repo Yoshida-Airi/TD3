@@ -528,8 +528,8 @@ void Player::AttackUpdate()
 		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
 		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.1f / 10;
-		bodyModel_->worldTransform_->rotation_.y += 1.0f / 10;
+		bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
+		bodyModel_->worldTransform_->rotation_.y += 1.0f/10;
 
 	}
 
@@ -862,7 +862,7 @@ void Player::RootInitialize()
 	isSkill = false;
 	isUnderAttack = false;
 
-	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
+	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,-2.4f };
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
