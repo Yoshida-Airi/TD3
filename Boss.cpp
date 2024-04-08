@@ -79,7 +79,7 @@ void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
 
-	if (isAttack == true) {
+	if (isBAlive == true) {
 		bullet_->Draw(camera);
 	}
 
@@ -130,9 +130,9 @@ void Boss::Move() {
 
 void Boss::Attack() {
 
-	if (aimTimer <= 120 && isAttack == false) {
+	if (aimTimer <= 90 && isAttack == false) {
 		aimTimer++;
-		Direction(0.8f);
+		Direction(0.1f);
 	}
 	else {
 		aimTimer = 0;
@@ -143,14 +143,16 @@ void Boss::Attack() {
 		bullet_->SetSpeed(speed_);
 		bullet_->SetTranslate(model_->worldTransform_->translation_);
 		isAssignment = true;
+		isBAlive = true;
 	}
 
-	if (isAssignment == true) {
+	if (isAssignment == true && isNextAction == false) {
 		BTimer++;
 	}
 
 	if (BTimer >= 60) {
 		isNextAction = true;
+		isBAlive = false;
 		BTimer = 0;
 	}
 
@@ -161,7 +163,7 @@ void Boss::NextAction() {
 		nextActionTimer++;
 	}
 
-	if (nextActionTimer >= 120) {
+	if (nextActionTimer >= 60) {
 		action = rand() % 2;
 		nextActionTimer = 0;
 		isNext = true;
