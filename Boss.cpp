@@ -16,6 +16,9 @@ void Boss::Initialize(Player* player) {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	bullet_ = std::make_unique<EnemyBullet>();
+	bullet_->Initialize();
+
 	currentTime = int(time(nullptr));
 	srand(currentTime);
 
@@ -46,6 +49,9 @@ void Boss::Update() {
 
 	case ATTACK:
 
+		Attack();
+		bullet_->Update();
+
 		break;
 
 	}
@@ -63,12 +69,19 @@ void Boss::Update() {
 	}*/
 	ImGui::Begin("Boss");
 	ImGui::Text("HP : %d", hp);
+	ImGui::Text("Action : %d", isNextAction);
+	ImGui::Text("NextA : %d", action);
+	ImGui::Text("NTimer : %d", nextActionTimer);
 	ImGui::End();
 }
 
 void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
+
+	if (isBAlive == true) {
+		bullet_->Draw(camera);
+	}
 
 }
 
@@ -109,35 +122,70 @@ void Boss::CoolDown() {
 }
 
 void Boss::Move() {
-	Direction();
-	model_->worldTransform_->translation_.x += speed.x;
-	model_->worldTransform_->translation_.y += speed.y;
-	model_->worldTransform_->translation_.z += speed.z;
+	Direction(0.04f);
+	model_->worldTransform_->translation_.x += speed_.x;
+	model_->worldTransform_->translation_.y += speed_.y;
+	model_->worldTransform_->translation_.z += speed_.z;
 }
 
 void Boss::Attack() {
 
+	if (aimTimer <= 90 && isAttack == false) {
+		aimTimer++;
+		Direction(0.1f);
+	}
+	else {
+		aimTimer = 0;
+		isAttack = true;
+	}
+
+	if (isAttack == true && isAssignment == false) {
+		bullet_->SetSpeed(speed_);
+		bullet_->SetTranslate(model_->worldTransform_->translation_);
+		isAssignment = true;
+		isBAlive = true;
+	}
+
+	if (isAssignment == true && isNextAction == false) {
+		BTimer++;
+	}
+
+	if (BTimer >= 60) {
+		isNextAction = true;
+		isBAlive = false;
+		BTimer = 0;
+	}
+
 }
 
 void Boss::NextAction() {
-	nextActionTimer++;
+	if (isNextAction == true) {
+		nextActionTimer++;
+	}
 
-	if (nextActionTimer >= 120) {
+	if (nextActionTimer >= 60) {
 		action = rand() % 2;
 		nextActionTimer = 0;
+		bullet_->SetScale({ 0.5f,0.5f,0.5f });
+		isNext = true;
 	}
 
-	if (action == 0) {
+	if (action == 0 && isNext == true) {
 		bAction = MOVE;
+		isNext = false;
 	}
-	else if (action == 1) {
+	else if (action == 1 && isNext == true) {
 		bAction = ATTACK;
+		isNextAction = false;
+		isNext = false;
+		isAttack = false;
+		isAssignment = false;
 	}
 
 }
 
-void Boss::Direction() {
-	const float kBulletSpeed = 0.04f;
+void Boss::Direction(float speed) {
+	const float kBulletSpeed = speed;
 	Vector3 playerPos = player_->GetPosition();
 	Vector3 enemyPos = model_->worldTransform_->translation_;
 
@@ -145,18 +193,18 @@ void Boss::Direction() {
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
 
-	speed.x = playerPos.x - enemyPos.x;
-	speed.y = playerPos.y - enemyPos.y;
-	speed.z = playerPos.z - enemyPos.z;
+	speed_.x = playerPos.x - enemyPos.x;
+	speed_.y = playerPos.y - enemyPos.y;
+	speed_.z = playerPos.z - enemyPos.z;
 
-	speed = Normalize(speed);
+	speed_ = Normalize(speed_);
 
-	speed.x *= kBulletSpeed;
-	speed.y *= kBulletSpeed;
-	speed.z *= kBulletSpeed;
+	speed_.x *= kBulletSpeed;
+	speed_.y *= kBulletSpeed;
+	speed_.z *= kBulletSpeed;
 
 	//目標角度の算出
-	angle_ = std::atan2(speed.x, speed.z);
+	angle_ = std::atan2(speed_.x, speed_.z);
 
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 

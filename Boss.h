@@ -7,6 +7,7 @@
 #include "Collider.h"
 #include "Player.h"
 #include "imgui.h"
+#include "EnemyBullet.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,6 +51,7 @@ public:
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Player* player_ = nullptr;
+	std::unique_ptr<EnemyBullet> bullet_ = nullptr;
 
 	Input* input_ = nullptr;
 
@@ -61,7 +63,7 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
-	Vector3 speed;
+	Vector3 speed_;
 
 	float angle_ = 0.0f;
 
@@ -70,6 +72,14 @@ private:
 	int action = 0;
 
 	int nextActionTimer = 0;
+	bool isNextAction = true;
+
+	bool isAttack = false;
+	bool isAssignment = false;
+	bool isNext = false;
+	bool isBAlive = false;
+	int aimTimer = 0;
+	int BTimer = 0;
 
 private:
 
@@ -79,7 +89,7 @@ private:
 
 	void NextAction();
 
-	void Direction();
+	void Direction(float speed);
 	
 	void Attack();
 
