@@ -76,8 +76,9 @@ private:
 
 	bool isAttack = false;
 	bool isAssignment = false;
+	bool isNext = false;
 	int aimTimer = 0;
-
+	int BTimer = 0;
 
 private:
 

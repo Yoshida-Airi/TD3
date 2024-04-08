@@ -69,6 +69,9 @@ void Boss::Update() {
 	}*/
 	ImGui::Begin("Boss");
 	ImGui::Text("HP : %d", hp);
+	ImGui::Text("Action : %d", isNextAction);
+	ImGui::Text("NextA : %d", action);
+	ImGui::Text("NTimer : %d", nextActionTimer);
 	ImGui::End();
 }
 
@@ -76,9 +79,9 @@ void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
 
-
-	bullet_->Draw(camera);
-
+	if (isAttack == true) {
+		bullet_->Draw(camera);
+	}
 
 }
 
@@ -129,7 +132,7 @@ void Boss::Attack() {
 
 	if (aimTimer <= 120 && isAttack == false) {
 		aimTimer++;
-		Direction(0.08f);
+		Direction(0.8f);
 	}
 	else {
 		aimTimer = 0;
@@ -142,10 +145,13 @@ void Boss::Attack() {
 		isAssignment = true;
 	}
 
-	if (bullet_->GetIsDead() == true) {
-		isAttack = false;
-		isAssignment = false;
+	if (isAssignment == true) {
+		BTimer++;
+	}
+
+	if (BTimer >= 60) {
 		isNextAction = true;
+		BTimer = 0;
 	}
 
 }
@@ -158,14 +164,19 @@ void Boss::NextAction() {
 	if (nextActionTimer >= 120) {
 		action = rand() % 2;
 		nextActionTimer = 0;
+		isNext = true;
 	}
 
-	if (action == 0) {
+	if (action == 0 && isNext == true) {
 		bAction = MOVE;
+		isNext = false;
 	}
-	else if (action == 1) {
+	else if (action == 1 && isNext == true) {
 		bAction = ATTACK;
 		isNextAction = false;
+		isNext = false;
+		isAttack = false;
+		isAssignment = false;
 	}
 
 }
