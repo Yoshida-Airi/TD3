@@ -166,6 +166,7 @@ void Boss::NextAction() {
 	if (nextActionTimer >= 60) {
 		action = rand() % 2;
 		nextActionTimer = 0;
+		bullet_->SetScale({ 0.5f,0.5f,0.5f });
 		isNext = true;
 	}
 

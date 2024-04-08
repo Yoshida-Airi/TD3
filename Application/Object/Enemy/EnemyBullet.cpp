@@ -57,6 +57,9 @@ Vector3 EnemyBullet::GetWorldPosition()
 	return worldpos;
 }
 
+void EnemyBullet::SetScale(Vector3 scale) {
+	model_->worldTransform_->scale_ = scale;
+}
 
 void EnemyBullet::OnCollision([[maybe_unused]] Collider* other)
 {

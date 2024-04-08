@@ -25,6 +25,8 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 
+	void SetScale(Vector3 scale);
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 
