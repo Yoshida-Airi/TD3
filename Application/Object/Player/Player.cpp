@@ -384,7 +384,9 @@ void Player::AttackUpdate()
 			MotionCount_ = 1;
 		}
 	
-		weapon_->GetWorldTransform()->rotation_.y += 1.6f / 10;
+		//weapon_->GetWorldTransform()->rotation_.y += 1.6f / 10;
+		weapon_->GetWorldTransform()->rotation_.x += 0.252f;
+		weapon_->GetWorldTransform()->rotation_.y += 0.3f;
 
 		
 		LeftFootModel_->worldTransform_->rotation_.x += 0.1f/10;
@@ -393,8 +395,8 @@ void Player::AttackUpdate()
 		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
 		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
-		bodyModel_->worldTransform_->rotation_.y += 1.0f/10;
+		/*bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
+		bodyModel_->worldTransform_->rotation_.y += 1.0f/10;*/
 
 	}
 
@@ -406,8 +408,9 @@ void Player::AttackUpdate()
 		}
 
 
-		weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
-
+		//weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
+		weapon_->GetWorldTransform()->rotation_.x -= 0.252f;
+		weapon_->GetWorldTransform()->rotation_.y -= 0.3f;
 
 		LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
 		LeftFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
@@ -416,11 +419,11 @@ void Player::AttackUpdate()
 		RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
 
-		bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
-		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;
+		/*bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
+		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;*/
 		
 	}
-
+	
 
 	if (MotionCount_ == 2)
 	{
@@ -637,7 +640,7 @@ void Player::RootInitialize()
 	isSkill = false;
 	isUnderAttack = false;
 
-	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
+	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,-2.4f };
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
@@ -666,7 +669,7 @@ void Player::AttackInitialize()
 	MotionCount_ = 0;
 
 
-	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
+	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,-2.4f };
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
