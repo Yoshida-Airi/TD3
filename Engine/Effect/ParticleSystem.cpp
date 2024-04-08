@@ -390,7 +390,7 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 	};
 
 	Particle particle;
-	particle.transform.scale = { 0.005f,0.005f,0.005f };
+	particle.transform.scale = particleScale;
 	particle.transform.rotate = { 0.0f,3.14f,3.14f };
 
 	if (isRandamTranslate == true)
@@ -520,4 +520,9 @@ void ParticleSystem::SetColor(Vector3 color)
 void ParticleSystem::SetRandomColor()
 {
 	isRandomColor = true;
+}
+
+void ParticleSystem::SetParitcleScale(Vector3 scale)
+{
+	particleScale = scale;
 }

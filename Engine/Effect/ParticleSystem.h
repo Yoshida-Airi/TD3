@@ -167,6 +167,8 @@ public:
 	/// </summary>
 	void SetRandomColor();
 
+	void SetParitcleScale(Vector3 scale);
+
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数
 
@@ -245,6 +247,7 @@ private://プライベート変数
 	Vector3 particleColor = { 1.0f,1.0f,1.0f };
 	bool isRandomColor = false;
 
+	Vector3 particleScale = { 0.005f ,0.005f ,0.005f };
 
 private://プライベート関数
 

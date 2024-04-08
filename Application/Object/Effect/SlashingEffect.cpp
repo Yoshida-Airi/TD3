@@ -15,6 +15,7 @@ void SlashingEffect::Initialize(Camera* camera)
 	//hitEffect->SetRandomAllVelocity();
 	hitEffect->SetColor({ 0.0f,1.0f,1.0f });
 	hitEffect->SetRandomColor();
+	hitEffect->SetParitcleScale({ 0.005f,0.002f,0.005f });
 
 	hitEffect->StopMakeParticle();
 
@@ -29,8 +30,6 @@ void SlashingEffect::Update()
 	if (flag)
 	{
 		playTime--;
-
-
 		if (playTime <= 0)
 		{
 			//実行時間を過ぎたら粒の生成を止める
@@ -41,8 +40,6 @@ void SlashingEffect::Update()
 				isDead = true;
 			}
 		}
-
-		
 	}
 }
 
@@ -54,7 +51,7 @@ void SlashingEffect::Draw()
 	}
 }
 
-bool SlashingEffect::IsDead()
+bool SlashingEffect::GetIsDead()
 {
 	return isDead;
 }

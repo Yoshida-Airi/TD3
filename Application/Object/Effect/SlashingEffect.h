@@ -31,7 +31,7 @@ public:
 	/// 実行が終わったかどうか
 	/// </summary>
 	/// <returns></returns>
-	bool IsDead();
+	bool GetIsDead();
 
 	//粒の生成を始める
 	void StartParticle();

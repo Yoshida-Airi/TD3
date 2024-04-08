@@ -120,9 +120,31 @@ void Player::Update()
 	LeftFootModel_->ModelDebug("leftFoot");
 	RightFootModel_->ModelDebug("rightFoot");
 
-	
-	slashingEffect->SetPosition(weapon_->GetWorldPosition());
+	// 剣の先端の座標
+	Vector3 tipPosition = weapon_->GetWorldPosition();
 
+	// 剣の基点（柄など）の座標
+	Vector3 basePosition =
+	{
+		weapon_->GetWorldPosition().x + 0.5f,
+		weapon_->GetWorldPosition().y - 0.5f,
+		weapon_->GetWorldPosition().z
+	};
+
+	// 剣の方向ベクトルを計算
+	Vector3 swordDirection = Subtract(tipPosition, basePosition);
+
+	// 剣の長さ（方向ベクトルの長さ）を計算
+	float swordLength = Length(swordDirection);
+
+	swordDirection = Normalize(swordDirection);
+
+	Vector3 particleOffsetDistance = { 0.5f,0.5f,0.0f };
+
+	// パーティクルの発生位置を計算（例: 剣の先端から一定距離離れた位置）
+	Vector3 particleStartPosition = Add(tipPosition, swordDirection);
+	
+	slashingEffect->SetPosition(particleStartPosition);
 	slashingEffect->Update();
 
 #endif // _DEBUG
