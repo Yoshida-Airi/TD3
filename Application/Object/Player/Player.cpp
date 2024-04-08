@@ -227,6 +227,14 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 200;
 		isCoolDown = true;
 	}
+
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
+	{
+		//敵の弾にあたったら
+		HP -= 100;
+		isCoolDown = true;
+	}
+
 }
 
 void Player::Move()
