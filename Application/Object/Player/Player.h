@@ -107,6 +107,7 @@ private:
 	float rotationmin = 0.0f;
 	float rotationspeed = 0.2f;
 
+
 private:
 
 	//移動

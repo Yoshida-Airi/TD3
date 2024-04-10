@@ -482,7 +482,7 @@ void Player::RootUpdate()
 		//攻撃
 		Attack();
 	}
-	
+
 	//移動
 	Move();
 
@@ -524,6 +524,69 @@ void Player::RootUpdate()
 
 		}
 	}
+
+
+	//歩行アニメーション
+	MotionTimer_++;
+
+	if (MotionCount_ == 0)
+	{
+		if (MotionTimer_ == 20)
+		{
+			MotionCount_ = 1;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y += 0.02f;
+
+	}
+
+	if (MotionCount_ == 1)
+	{
+		if (MotionTimer_ == 40)
+		{
+			MotionCount_ = 2;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+
+	}
+
+	if (MotionCount_ == 2)
+	{
+		if (MotionTimer_ == 60)
+		{
+			MotionCount_ = 3;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y += 0.01f;
+
+	}
+
+	if (MotionCount_ == 3)
+	{
+		if (MotionTimer_ == 80)
+		{
+			MotionCount_ = 0;
+			MotionTimer_ = 0;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+
+	}
+
+
 }
 
 void Player::Skill1Update()
