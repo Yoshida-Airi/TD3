@@ -545,10 +545,12 @@ void Player::RootUpdate()
 		MotionTimer_ = 0;
 		MotionCount_ = 0;
 
-		LeftFootModel_->worldTransform_->rotation_.x = 0.0f;
-		RightFootModel_->worldTransform_->rotation_.x = 0.0f;
 
-		bodyModel_->worldTransform_->translation_.y = 0.0f;
+
+		LeftFootModel_->worldTransform_->rotation_.x = LerpShortTranslate(LeftFootModel_->worldTransform_->rotation_.x, 0.0f, 0.2f);
+		RightFootModel_->worldTransform_->rotation_.x = LerpShortTranslate(RightFootModel_->worldTransform_->rotation_.x, 0.0f, 0.2f);
+
+		bodyModel_->worldTransform_->translation_.y = LerpShortTranslate(bodyModel_->worldTransform_->rotation_.y, 0.0f, 0.2f);
 
 	}
 	
