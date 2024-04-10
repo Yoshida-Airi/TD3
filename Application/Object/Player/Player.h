@@ -108,6 +108,8 @@ private:
 	float rotationspeed = 0.2f;
 
 
+	bool isMove;
+
 private:
 
 	//移動

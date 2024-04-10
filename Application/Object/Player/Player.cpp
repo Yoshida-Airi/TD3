@@ -268,24 +268,28 @@ void Player::Move()
 	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
-
+	isMove = false;
 	//移動
 	if (keyBoard == true) {
 		if (input_->PushKey(DIK_W))
 		{
 			move.z = 2.0f;
+			isMove = true;
 		}
 		if (input_->PushKey(DIK_S))
 		{
 			move.z = -2.0f;
+			isMove = true;
 		}
 		if (input_->PushKey(DIK_A))
 		{
 			move.x = -2.0f;
+			isMove = true;
 		}
 		if (input_->PushKey(DIK_D))
 		{
 			move.x = 2.0f;
+			isMove = true;
 		}
 	}
 	//コントローラーチェンジ
@@ -525,17 +529,33 @@ void Player::RootUpdate()
 		}
 	}
 
-
 	//歩行アニメーション
 	MotionTimer_++;
 
-	if (MotionCount_ == 0)
+	if (isMove == true)
+	{
+		if (MotionCount_ == 0)
+		{
+			
+			MotionCount_ = 1;
+		}
+	}
+	else
+	{
+		MotionTimer_ = 0;
+		MotionCount_ = 0;
+	}
+	
+	
+
+	if (MotionCount_ == 1)
 	{
 		if (MotionTimer_ == 20)
 		{
-			MotionCount_ = 1;
+			MotionCount_ = 2;
 		}
 
+		
 		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 
@@ -543,11 +563,11 @@ void Player::RootUpdate()
 
 	}
 
-	if (MotionCount_ == 1)
+	if (MotionCount_ == 2)
 	{
 		if (MotionTimer_ == 40)
 		{
-			MotionCount_ = 2;
+			MotionCount_ = 3;
 		}
 
 		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
@@ -557,11 +577,11 @@ void Player::RootUpdate()
 
 	}
 
-	if (MotionCount_ == 2)
+	if (MotionCount_ == 3)
 	{
 		if (MotionTimer_ == 60)
 		{
-			MotionCount_ = 3;
+			MotionCount_ = 4;
 		}
 
 		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
@@ -571,7 +591,7 @@ void Player::RootUpdate()
 
 	}
 
-	if (MotionCount_ == 3)
+	if (MotionCount_ == 4)
 	{
 		if (MotionTimer_ == 80)
 		{
