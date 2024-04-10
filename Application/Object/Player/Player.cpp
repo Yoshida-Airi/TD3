@@ -544,6 +544,12 @@ void Player::RootUpdate()
 	{
 		MotionTimer_ = 0;
 		MotionCount_ = 0;
+
+		LeftFootModel_->worldTransform_->rotation_.x = 0.0f;
+		RightFootModel_->worldTransform_->rotation_.x = 0.0f;
+
+		bodyModel_->worldTransform_->translation_.y = 0.0f;
+
 	}
 	
 	
