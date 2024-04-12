@@ -134,6 +134,7 @@
     <ClCompile Include="Application\Object\Player\Sword.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="BossBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -267,6 +268,7 @@
     <ClInclude Include="Application\Object\Player\Sword.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="BossBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
