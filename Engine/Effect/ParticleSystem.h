@@ -146,9 +146,9 @@ public:
 
 	//ランダムな速度に動かす
 	void SetRandomAllVelocity();	//すべての方向にランダムな速度で
-	void SetRandomVelocityX();		//X軸のみランダムな速度で
-	void SetRandomVelocityY();		//y軸のみランダムな速度で
-	void SetRandomVelocityZ();		//z軸のもランダムな速度で
+	void SetRandomVelocityX(bool isMove);		//X軸のみランダムな速度で
+	void SetRandomVelocityY(bool isMove);		//y軸のみランダムな速度で
+	void SetRandomVelocityZ(bool isMove);		//z軸のもランダムな速度で
 
 	/// <summary>
 	/// パーティクルの粒の存在が０のときtrueを返す

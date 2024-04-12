@@ -289,13 +289,13 @@ void Player::Move()
 	{
 		weapon_->GetWorldPosition().x-0.5f ,
 		weapon_->GetWorldPosition().y ,
-		weapon_->GetWorldPosition().z - 0.5f
+		weapon_->GetWorldPosition().z - 1.2f
 	};
 
 	// 剣の基点（柄など）の座標
 	Vector3 rightBasePosition =
 	{
-		weapon_->GetWorldPosition().x ,
+		weapon_->GetWorldPosition().x +0.5f,
 		weapon_->GetWorldPosition().y,
 		weapon_->GetWorldPosition().z - 0.3f
 	};
@@ -306,6 +306,8 @@ void Player::Move()
 		{
 			slashingEffect->SetPosition(backBasePosition);
 			slashingEffect->SetVelocity({ -0.7f,0.0f,0.0f });
+			slashingEffect->SetVelocityX(false);
+			slashingEffect->SetVelocityZ(true);
 			move.z = 2.0f;
 			isMove = true;
 		}
@@ -313,6 +315,8 @@ void Player::Move()
 		{
 			slashingEffect->SetPosition(basePosition);
 			slashingEffect->SetVelocity({ 0.3f,0.0f,0.0f });
+			slashingEffect->SetVelocityX(false);
+			slashingEffect->SetVelocityZ(true);
 			move.z = -2.0f;
 			isMove = true;
 		}
@@ -320,6 +324,8 @@ void Player::Move()
 		{
 			slashingEffect->SetPosition(leftBasePosition);
 			slashingEffect->SetVelocity({ 0.0f,0.0f,-0.5f });
+			slashingEffect->SetVelocityZ(false);
+			slashingEffect->SetVelocityX(true);
 			move.x = -2.0f;
 			isMove = true;
 		}
@@ -327,6 +333,8 @@ void Player::Move()
 		{
 			slashingEffect->SetPosition(rightBasePosition);
 			slashingEffect->SetVelocity({ 0.2f,0.0f,0.7f });
+			slashingEffect->SetVelocityZ(false);
+			slashingEffect->SetVelocityX(true);
 			move.x = 2.0f;
 			isMove = true;
 		}

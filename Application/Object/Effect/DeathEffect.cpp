@@ -15,7 +15,7 @@ void DeathEffect::Initialize(Camera* camera)
 	hitEffect->SetRandomAllVelocity();
 	hitEffect->SetColor({ 1.0f,1.0f,0.0f });
 	hitEffect->SetRandomColor();
-	hitEffect->SetRandomVelocityY();
+	hitEffect->SetRandomVelocityZ(true);
 
 }
 

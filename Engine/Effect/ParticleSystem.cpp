@@ -496,19 +496,19 @@ void ParticleSystem::SetRandomAllVelocity()
 	isRandomAllVelocity = true;
 }
 
-void ParticleSystem::SetRandomVelocityX()
+void ParticleSystem::SetRandomVelocityX(bool isMove)
 {
-	isRandomVelocityX = true;
+	isRandomVelocityX = isMove;
 }
 
-void ParticleSystem::SetRandomVelocityY()
+void ParticleSystem::SetRandomVelocityY(bool isMove)
 {
-	isRandomVelocityY = true;
+	isRandomVelocityY = isMove;
 }
 
-void ParticleSystem::SetRandomVelocityZ()
+void ParticleSystem::SetRandomVelocityZ(bool isMove)
 {
-	isRandomVelocityZ = true;
+	isRandomVelocityZ = isMove;
 }
 
 bool ParticleSystem::GetIsParticleEmpty()

@@ -41,6 +41,15 @@ public:
 
 	void SetVelocity(Vector3 velocity);
 
+	void SetVelocityX(bool isMove)
+	{
+		hitEffect->SetRandomVelocityX(isMove);
+	}	
+	void SetVelocityZ(bool isMove)
+	{
+		hitEffect->SetRandomVelocityZ(isMove);
+	}
+
 private:
 
 	TextureManager* textureManager_ = nullptr;
