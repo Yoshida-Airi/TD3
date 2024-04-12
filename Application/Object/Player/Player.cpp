@@ -318,7 +318,6 @@ void Player::Attack()
 		}
 	}
 
-
 	if (isUnderAttack == true )
 	{
 		behaviorRequest_ = Animation::kAttack;
@@ -400,32 +399,36 @@ void Player::AttackUpdate()
 
 	}
 
-	if (MotionCount_ == 1)
-	{
-		if (MotionTimer_ == 20)
-		{
-			MotionCount_ = 2;
-		}
+	//if (MotionCount_ == 1)
+	//{
+	//	if (MotionTimer_ == 20)
+	//	{
+	//		MotionCount_ = 2;
+	//	}
 
 
-		//weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
-		weapon_->GetWorldTransform()->rotation_.x -= 0.252f;
-		weapon_->GetWorldTransform()->rotation_.y -= 0.3f;
+	//	//weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
+	//	weapon_->GetWorldTransform()->rotation_.x -= 0.252f;
+	//	weapon_->GetWorldTransform()->rotation_.y -= 0.3f;
 
-		LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-		LeftFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
+	//	LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+	//	LeftFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-		RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+	//	RightFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+	//	RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
 
-		/*bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
-		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;*/
-		
+	//	/*bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
+	//	bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;*/
+	//	
+	//}
+
+	if (MotionCount_ == 1 && input_->IsLeftMouseClicked() && MotionCount_ <= 60) {
+
 	}
 	
 
-	if (MotionCount_ == 2)
+	if (MotionCount_ == 4)
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
