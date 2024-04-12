@@ -461,6 +461,11 @@ void Player::Attack()
 			isUnderAttack = true;
 		}
 	}
+	else if (keyBoard == true) {
+		if (input_->IsLeftMouseClicked()) {
+			isUnderAttack = true;
+		}
+	}
 
 
 	if (isUnderAttack == true)
@@ -473,13 +478,25 @@ void Player::Attack()
 
 void Player::Skill()
 {
+	XINPUT_STATE joyState;
 
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
 
-	if (input_->PushKey(DIK_LSHIFT))
-	{
-		isSkill = true;
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			isSkill = true;
+		}
+	
 	}
-
+	else if (keyBoard == true) {
+		if (input_->PushKey(DIK_LSHIFT))
+		{
+			isSkill = true;
+		}	
+	}
 }
 
 void Player::PLevelUp()
@@ -544,12 +561,14 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
 
 
-		LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-		LeftFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
+	//	RightFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+	//	RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-		RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
+	//	/*bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
+	//	bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;*/
+	//	
+	//}
 
 		bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
 		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;
@@ -557,7 +576,7 @@ void Player::AttackUpdate()
 	}
 
 
-	if (MotionCount_ == 2)
+	if (MotionCount_ == 4)
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
