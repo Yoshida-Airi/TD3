@@ -25,6 +25,11 @@ void TitleScene::Initialize()
 	effect->Initialize(camera);
 
 	effect->SetFlag(true);
+
+	slashingEffect = std::make_unique<SlashingEffect>();
+	slashingEffect->Initialize(camera);
+
+	slashingEffect->SetFlag(true);
 }
 
 void TitleScene::Update()
@@ -58,6 +63,8 @@ void TitleScene::Update()
 
 	effect->Update();
 
+	slashingEffect->Update();
+
 }
 
 void TitleScene::Draw()
@@ -66,6 +73,7 @@ void TitleScene::Draw()
 	cube_->Draw(camera);
 
 	effect->Draw();
+	slashingEffect->Draw();
 
 }
 

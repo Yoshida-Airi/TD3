@@ -7,7 +7,7 @@ void DeathEffect::Initialize(Camera* camera)
 
 	Vector3 velocity = { 0.0f,0.0f,0.0f };
 	hitEffect.reset(ParticleSystem::Create(circleTexture, camera, velocity, false));
-	hitEffect->emitter_->transform.scale = { 1.0f,0.6f,1.0f };
+	hitEffect->emitter_->transform.scale = { 1.2f,0.6f,1.0f };
 	hitEffect->emitter_->count = 40;
 	hitEffect->emitter_->frequency = 0.2f;
 	hitEffect->SetLifeTime(1.0f, 3.0f);
@@ -15,6 +15,8 @@ void DeathEffect::Initialize(Camera* camera)
 	hitEffect->SetRandomAllVelocity();
 	hitEffect->SetColor({ 1.0f,1.0f,0.0f });
 	hitEffect->SetRandomColor();
+	hitEffect->SetRandomVelocityZ(true);
+
 }
 
 void DeathEffect::Update()

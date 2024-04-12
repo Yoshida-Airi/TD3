@@ -29,7 +29,10 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
 	
+	slashingEffect = std::make_unique<SlashingEffect>();
+	slashingEffect->Initialize(camera);
 	
+
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
@@ -101,7 +104,7 @@ void Player::Update()
 
 	playerLevel->Update();
 
-
+	
 
 #ifdef _DEBUG
 	model_->ModelDebug("player");
@@ -117,7 +120,33 @@ void Player::Update()
 	LeftFootModel_->ModelDebug("leftFoot");
 	RightFootModel_->ModelDebug("rightFoot");
 
+	// 剣の先端の座標
+	Vector3 tipPosition =
+	{
+		weapon_->GetWorldPosition().x,
+		weapon_->GetWorldPosition().y,
+		weapon_->GetWorldPosition().z,
+
+	};
+	// 剣の基点（柄など）の座標
+	Vector3 basePosition = weapon_->GetWorldPosition();
+
+	// 剣の方向ベクトルを計算
+	Vector3 swordDirection = Subtract(tipPosition, basePosition);
+
+	// 剣の長さ（方向ベクトルの長さ）を計算
+	float swordLength = Length(swordDirection);
+
+	Vector3 particleOffsetDistance = { 0.5f,0.0f,0.5f };
+
+	// パーティクルの発生位置を計算（例: 剣の先端から一定距離離れた位置）
+	Vector3 particleStartPosition = Subtract(Add(tipPosition, swordDirection), particleOffsetDistance);
+	
+	//slashingEffect->SetPosition(particleStartPosition);
+	slashingEffect->Update();
+
 #endif // _DEBUG
+
 
 
 	if (behaviorRequest_)
@@ -194,6 +223,8 @@ void Player::Draw()
 
 
 	playerLevel->Draw();
+
+	slashingEffect->Draw();
 }
 
 Vector3 Player::GetWorldPosition()
@@ -243,24 +274,77 @@ void Player::Move()
 	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
+	isMove = false;
+
+	// 剣の基点（柄など）の座標
+	Vector3 basePosition =
+	{
+		weapon_->GetWorldPosition().x + 0.7f,
+		weapon_->GetWorldPosition().y ,
+		weapon_->GetWorldPosition().z - 0.5f
+	};
+
+	// 剣の基点（柄など）の座標
+	Vector3 backBasePosition =
+	{
+		weapon_->GetWorldPosition().x - 0.5f,
+		weapon_->GetWorldPosition().y,
+		weapon_->GetWorldPosition().z - 0.5f
+	};
+
+	// 剣の基点（柄など）の座標
+	Vector3 leftBasePosition =
+	{
+		weapon_->GetWorldPosition().x-0.5f ,
+		weapon_->GetWorldPosition().y ,
+		weapon_->GetWorldPosition().z - 1.2f
+	};
+
+	// 剣の基点（柄など）の座標
+	Vector3 rightBasePosition =
+	{
+		weapon_->GetWorldPosition().x +0.5f,
+		weapon_->GetWorldPosition().y,
+		weapon_->GetWorldPosition().z - 0.3f
+	};
 
 	//移動
 	if (keyBoard == true) {
 		if (input_->PushKey(DIK_W))
 		{
+			slashingEffect->SetPosition(backBasePosition);
+			slashingEffect->SetVelocity({ -0.7f,0.0f,0.0f });
+			slashingEffect->SetVelocityX(false);
+			slashingEffect->SetVelocityZ(true);
 			move.z = 2.0f;
+			isMove = true;
 		}
 		if (input_->PushKey(DIK_S))
 		{
+			slashingEffect->SetPosition(basePosition);
+			slashingEffect->SetVelocity({ 0.3f,0.0f,0.0f });
+			slashingEffect->SetVelocityX(false);
+			slashingEffect->SetVelocityZ(true);
 			move.z = -2.0f;
+			isMove = true;
 		}
 		if (input_->PushKey(DIK_A))
 		{
+			slashingEffect->SetPosition(leftBasePosition);
+			slashingEffect->SetVelocity({ 0.0f,0.0f,-0.5f });
+			slashingEffect->SetVelocityZ(false);
+			slashingEffect->SetVelocityX(true);
 			move.x = -2.0f;
+			isMove = true;
 		}
 		if (input_->PushKey(DIK_D))
 		{
+			slashingEffect->SetPosition(rightBasePosition);
+			slashingEffect->SetVelocity({ 0.2f,0.0f,0.7f });
+			slashingEffect->SetVelocityZ(false);
+			slashingEffect->SetVelocityX(true);
 			move.x = 2.0f;
+			isMove = true;
 		}
 	}
 	//コントローラーチェンジ
@@ -330,6 +414,8 @@ void Player::Attack()
 	if (isUnderAttack == true )
 	{
 		behaviorRequest_ = Animation::kAttack;
+		slashingEffect->SetFlag(true);
+		slashingEffect->StartParticle();
 	}
 }
 
@@ -380,8 +466,9 @@ void Player::CoolDown() {
 void Player::AttackUpdate()
 {
 	//剣を振りかぶる
+	
 	//移動
-	Move();
+	//Move();
 
 	MotionTimer_++;
 
@@ -434,6 +521,7 @@ void Player::AttackUpdate()
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
+		slashingEffect->StopMakeParticle();
 	}
 }
 
@@ -453,7 +541,7 @@ void Player::RootUpdate()
 		//攻撃
 		Attack();
 	}
-	
+
 	//移動
 	Move();
 
@@ -495,6 +583,93 @@ void Player::RootUpdate()
 
 		}
 	}
+
+	//歩行アニメーション
+	MotionTimer_++;
+
+	if (isMove == true)
+	{
+		if (MotionCount_ == 0)
+		{
+			
+			MotionCount_ = 1;
+		}
+	}
+	else
+	{
+		MotionTimer_ = 0;
+		MotionCount_ = 0;
+
+
+
+		LeftFootModel_->worldTransform_->rotation_.x = LerpShortTranslate(LeftFootModel_->worldTransform_->rotation_.x, 0.0f, 0.2f);
+		RightFootModel_->worldTransform_->rotation_.x = LerpShortTranslate(RightFootModel_->worldTransform_->rotation_.x, 0.0f, 0.2f);
+
+		bodyModel_->worldTransform_->translation_.y = LerpShortTranslate(bodyModel_->worldTransform_->rotation_.y, 0.0f, 0.2f);
+
+	}
+	
+	
+
+	if (MotionCount_ == 1)
+	{
+		if (MotionTimer_ == 20)
+		{
+			MotionCount_ = 2;
+		}
+
+		
+		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y += 0.02f;
+
+	}
+
+	if (MotionCount_ == 2)
+	{
+		if (MotionTimer_ == 40)
+		{
+			MotionCount_ = 3;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+
+	}
+
+	if (MotionCount_ == 3)
+	{
+		if (MotionTimer_ == 60)
+		{
+			MotionCount_ = 4;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y += 0.01f;
+
+	}
+
+	if (MotionCount_ == 4)
+	{
+		if (MotionTimer_ == 80)
+		{
+			MotionCount_ = 0;
+			MotionTimer_ = 0;
+		}
+
+		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
+		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
+
+		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+
+	}
+
+
 }
 
 void Player::Skill1Update()
@@ -674,6 +849,7 @@ void Player::AttackInitialize()
 	MotionCount_ = 0;
 
 
+	
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
 
 

@@ -13,6 +13,7 @@
 #include"Camera.h"
 
 #include"DeathEffect.h"
+#include"SlashingEffect.h"
 
 #include"Enemy.h"
 #include <random>
@@ -38,6 +39,9 @@ private:
 	std::unique_ptr<Model> cube_ = nullptr;
 
 	std::unique_ptr<DeathEffect> effect = nullptr;
+	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
+
+
 
 
 };

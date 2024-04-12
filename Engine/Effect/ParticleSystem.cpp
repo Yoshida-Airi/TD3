@@ -232,6 +232,10 @@ void ParticleSystem::Debug(const char* name)
 			ImGui::DragFloat3("transform", translate, 0.1f);
 			emitter_->transform.translate = { translate[0],translate[1],translate[2] };
 
+			float rotate[3] = { emitter_->transform.rotate.x,emitter_->transform.rotate.y,emitter_->transform.rotate.z };
+			ImGui::DragFloat3("rotate", rotate, 0.1f);
+			emitter_->transform.rotate = { rotate[0],rotate[1],rotate[2] };
+
 			float scale[3] = { emitter_->transform.scale.x,emitter_->transform.scale.y,emitter_->transform.scale.z };
 			ImGui::DragFloat3("scale", scale, 0.1f);
 			emitter_->transform.scale = { scale[0],scale[1],scale[2] };
@@ -390,7 +394,7 @@ Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine, Emitter* em
 	};
 
 	Particle particle;
-	particle.transform.scale = { 0.005f,0.005f,0.005f };
+	particle.transform.scale = particleScale;
 	particle.transform.rotate = { 0.0f,3.14f,3.14f };
 
 	if (isRandamTranslate == true)
@@ -479,24 +483,32 @@ void ParticleSystem::StopMakeParticle()
 	isMakeParticle = false;
 }
 
+/// <summary>
+/// 粒の生成を再開する
+/// </summary>
+void ParticleSystem::MoveMakeParticle()
+{
+	isMakeParticle = true;
+}
+
 void ParticleSystem::SetRandomAllVelocity()
 {
 	isRandomAllVelocity = true;
 }
 
-void ParticleSystem::SetRandomVelocityX()
+void ParticleSystem::SetRandomVelocityX(bool isMove)
 {
-	isRandomVelocityX = true;
+	isRandomVelocityX = isMove;
 }
 
-void ParticleSystem::SetRandomVelocityY()
+void ParticleSystem::SetRandomVelocityY(bool isMove)
 {
-	isRandomVelocityY = true;
+	isRandomVelocityY = isMove;
 }
 
-void ParticleSystem::SetRandomVelocityZ()
+void ParticleSystem::SetRandomVelocityZ(bool isMove)
 {
-	isRandomVelocityZ = true;
+	isRandomVelocityZ = isMove;
 }
 
 bool ParticleSystem::GetIsParticleEmpty()
@@ -512,4 +524,9 @@ void ParticleSystem::SetColor(Vector3 color)
 void ParticleSystem::SetRandomColor()
 {
 	isRandomColor = true;
+}
+
+void ParticleSystem::SetParitcleScale(Vector3 scale)
+{
+	particleScale = scale;
 }

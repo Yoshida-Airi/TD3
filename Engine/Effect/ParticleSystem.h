@@ -142,11 +142,13 @@ public:
 	/// </summary>
 	void StopMakeParticle();
 
+	void MoveMakeParticle();
+
 	//ランダムな速度に動かす
 	void SetRandomAllVelocity();	//すべての方向にランダムな速度で
-	void SetRandomVelocityX();		//X軸のみランダムな速度で
-	void SetRandomVelocityY();		//y軸のみランダムな速度で
-	void SetRandomVelocityZ();		//z軸のもランダムな速度で
+	void SetRandomVelocityX(bool isMove);		//X軸のみランダムな速度で
+	void SetRandomVelocityY(bool isMove);		//y軸のみランダムな速度で
+	void SetRandomVelocityZ(bool isMove);		//z軸のもランダムな速度で
 
 	/// <summary>
 	/// パーティクルの粒の存在が０のときtrueを返す
@@ -164,6 +166,8 @@ public:
 	/// パーティクルひと粒の色をランダムに変える
 	/// </summary>
 	void SetRandomColor();
+
+	void SetParitcleScale(Vector3 scale);
 
 	Emitter* emitter_ = new Emitter();
 private://プライベート変数
@@ -243,6 +247,7 @@ private://プライベート変数
 	Vector3 particleColor = { 1.0f,1.0f,1.0f };
 	bool isRandomColor = false;
 
+	Vector3 particleScale = { 0.005f ,0.005f ,0.005f };
 
 private://プライベート関数
 
