@@ -120,6 +120,10 @@ void Player::Update()
 	LeftFootModel_->ModelDebug("leftFoot");
 	RightFootModel_->ModelDebug("rightFoot");
 
+	
+
+#endif // _DEBUG
+
 	// 剣の先端の座標
 	Vector3 tipPosition =
 	{
@@ -141,13 +145,9 @@ void Player::Update()
 
 	// パーティクルの発生位置を計算（例: 剣の先端から一定距離離れた位置）
 	Vector3 particleStartPosition = Subtract(Add(tipPosition, swordDirection), particleOffsetDistance);
-	
+
 	//slashingEffect->SetPosition(particleStartPosition);
 	slashingEffect->Update();
-
-#endif // _DEBUG
-
-
 
 	if (behaviorRequest_)
 	{
