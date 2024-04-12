@@ -132,6 +132,7 @@ private:
 	float bossPosY;
 	bool isCameraShake = false;
 	uint32_t cameraShakeTime;
+	bool hitstop = false;
 
 #ifdef _DEBUG
 

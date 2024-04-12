@@ -56,18 +56,20 @@ void Player::Update()
 
 #endif // _DEBUG
 
-
-	//移動
-	Move();
-	//攻撃
-	Attack();
-	//スキル
-	Skill();
-	//方向
-	Direction();
+	if (isHit==false)
+	{
+		//移動
+		Move();
+		//攻撃
+		Attack();
+		//スキル
+		Skill();
+		//方向
+		Direction();
+	}
 	//ヒット時のクールダウン
 	CoolDown();
-
+	Hitstop();
 }
 
 void Player::Draw()
@@ -115,12 +117,14 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		HP -= 100;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
 		HP -= 200;
 		isCoolDown = true;
+		isHit = true;
 	}
 }
 
@@ -190,7 +194,7 @@ void Player::Move()
 	model_->worldTransform_->translation_.z += move.z;
 
 	CoolDown();
-
+	Hitstop();
 }
 
 void Player::Attack()
@@ -269,6 +273,24 @@ void Player::CoolDown() {
 		coolDownTimer = 0;
 	}
 
+}
+
+void Player::Hitstop()
+{
+	if (isHit == true && throughTimer == 0)
+	{
+		hitstopTimer++;
+	}
+	if (hitstopTimer == 15)
+	{
+		isHit = false;
+		throughTimer++;
+	}
+	if (throughTimer == 30)
+	{
+		hitstopTimer = 0;
+		throughTimer = 0;
+	}
 }
 
 void Player::Direction()

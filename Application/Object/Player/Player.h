@@ -66,6 +66,8 @@ private:
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
+	int hitstopTimer = 0;
+	int throughTimer = 0;
 	
 	bool keyBoard = true;
 	bool gamePad = false;
@@ -94,4 +96,5 @@ private:
 
 	void CoolDown();
 
+	void Hitstop();
 };
