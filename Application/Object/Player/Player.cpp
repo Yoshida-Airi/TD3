@@ -121,15 +121,15 @@ void Player::Update()
 	RightFootModel_->ModelDebug("rightFoot");
 
 	// 剣の先端の座標
-	Vector3 tipPosition = weapon_->GetWorldPosition();
-
-	// 剣の基点（柄など）の座標
-	Vector3 basePosition =
+	Vector3 tipPosition =
 	{
-		weapon_->GetWorldPosition().x + 0.5f,
-		weapon_->GetWorldPosition().y - 0.5f,
-		weapon_->GetWorldPosition().z
+		weapon_->GetWorldPosition().x,
+		weapon_->GetWorldPosition().y,
+		weapon_->GetWorldPosition().z,
+
 	};
+	// 剣の基点（柄など）の座標
+	Vector3 basePosition = weapon_->GetWorldPosition();
 
 	// 剣の方向ベクトルを計算
 	Vector3 swordDirection = Subtract(tipPosition, basePosition);
@@ -137,14 +137,12 @@ void Player::Update()
 	// 剣の長さ（方向ベクトルの長さ）を計算
 	float swordLength = Length(swordDirection);
 
-	swordDirection = Normalize(swordDirection);
-
-	Vector3 particleOffsetDistance = { 0.5f,0.5f,0.0f };
+	Vector3 particleOffsetDistance = { 0.5f,0.0f,0.5f };
 
 	// パーティクルの発生位置を計算（例: 剣の先端から一定距離離れた位置）
-	Vector3 particleStartPosition = Add(tipPosition, swordDirection);
+	Vector3 particleStartPosition = Subtract(Add(tipPosition, swordDirection), particleOffsetDistance);
 	
-	slashingEffect->SetPosition(particleStartPosition);
+	//slashingEffect->SetPosition(particleStartPosition);
 	slashingEffect->Update();
 
 #endif // _DEBUG
@@ -269,25 +267,66 @@ void Player::Move()
 	Vector3 move = { 0.0f,0.0f,0.0f };
 	bool isMoveing = false;
 	isMove = false;
+
+	// 剣の基点（柄など）の座標
+	Vector3 basePosition =
+	{
+		weapon_->GetWorldPosition().x + 0.7f,
+		weapon_->GetWorldPosition().y ,
+		weapon_->GetWorldPosition().z - 0.5f
+	};
+
+	// 剣の基点（柄など）の座標
+	Vector3 backBasePosition =
+	{
+		weapon_->GetWorldPosition().x - 0.5f,
+		weapon_->GetWorldPosition().y,
+		weapon_->GetWorldPosition().z - 0.5f
+	};
+
+	// 剣の基点（柄など）の座標
+	Vector3 leftBasePosition =
+	{
+		weapon_->GetWorldPosition().x-0.5f ,
+		weapon_->GetWorldPosition().y ,
+		weapon_->GetWorldPosition().z - 0.5f
+	};
+
+	// 剣の基点（柄など）の座標
+	Vector3 rightBasePosition =
+	{
+		weapon_->GetWorldPosition().x ,
+		weapon_->GetWorldPosition().y,
+		weapon_->GetWorldPosition().z - 0.3f
+	};
+
 	//移動
 	if (keyBoard == true) {
 		if (input_->PushKey(DIK_W))
 		{
+			slashingEffect->SetPosition(backBasePosition);
+			slashingEffect->SetVelocity({ -0.7f,0.0f,0.0f });
 			move.z = 2.0f;
 			isMove = true;
 		}
 		if (input_->PushKey(DIK_S))
 		{
+			slashingEffect->SetPosition(basePosition);
+			slashingEffect->SetVelocity({ 0.3f,0.0f,0.0f });
 			move.z = -2.0f;
 			isMove = true;
 		}
 		if (input_->PushKey(DIK_A))
 		{
+			slashingEffect->SetPosition(leftBasePosition);
+			slashingEffect->SetVelocity({ 0.0f,0.0f,-0.5f });
 			move.x = -2.0f;
 			isMove = true;
 		}
 		if (input_->PushKey(DIK_D))
 		{
+			slashingEffect->SetPosition(rightBasePosition);
+			slashingEffect->SetVelocity({ 0.2f,0.0f,0.7f });
 			move.x = 2.0f;
 			isMove = true;
 		}

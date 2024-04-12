@@ -5,7 +5,6 @@ void SlashingEffect::Initialize(Camera* camera)
 	textureManager_ = TextureManager::GetInstance();
 	circleTexture = textureManager_->LoadTexture("Resources/DefaultAssets/circle.png");
 
-	Vector3 velocity = { 0.0f,0.0f,0.0f };
 	hitEffect.reset(ParticleSystem::Create(circleTexture, camera, velocity, false));
 	hitEffect->emitter_->transform.scale = { 1.0f,0.6f,1.0f };
 	hitEffect->emitter_->count = 10;
@@ -18,6 +17,9 @@ void SlashingEffect::Initialize(Camera* camera)
 	hitEffect->SetParitcleScale({ 0.005f,0.002f,0.005f });
 
 	hitEffect->StopMakeParticle();
+
+	//hitEffect->SetRandomVelocityX();
+	hitEffect->SetRandomVelocityZ();
 
 }
 
@@ -64,5 +66,10 @@ void SlashingEffect::StartParticle()
 void SlashingEffect::StopMakeParticle()
 {
 	hitEffect->StopMakeParticle();
+}
+
+void SlashingEffect::SetVelocity(Vector3 velocity)
+{
+	this->velocity = velocity;
 }
 

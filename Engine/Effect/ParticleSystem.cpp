@@ -232,6 +232,10 @@ void ParticleSystem::Debug(const char* name)
 			ImGui::DragFloat3("transform", translate, 0.1f);
 			emitter_->transform.translate = { translate[0],translate[1],translate[2] };
 
+			float rotate[3] = { emitter_->transform.rotate.x,emitter_->transform.rotate.y,emitter_->transform.rotate.z };
+			ImGui::DragFloat3("rotate", rotate, 0.1f);
+			emitter_->transform.rotate = { rotate[0],rotate[1],rotate[2] };
+
 			float scale[3] = { emitter_->transform.scale.x,emitter_->transform.scale.y,emitter_->transform.scale.z };
 			ImGui::DragFloat3("scale", scale, 0.1f);
 			emitter_->transform.scale = { scale[0],scale[1],scale[2] };

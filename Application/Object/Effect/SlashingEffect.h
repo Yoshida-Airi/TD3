@@ -39,6 +39,8 @@ public:
 	//粒の生成を終える
 	void StopMakeParticle();
 
+	void SetVelocity(Vector3 velocity);
+
 private:
 
 	TextureManager* textureManager_ = nullptr;
@@ -46,6 +48,7 @@ private:
 	std::unique_ptr<ParticleSystem> hitEffect = nullptr;
 	uint32_t circleTexture;
 
+	Vector3 velocity = { 0,0,0 };
 	bool flag;	//実行中かどうかのフラグ
 	int playTime = 20;
 	bool isDead = false;
