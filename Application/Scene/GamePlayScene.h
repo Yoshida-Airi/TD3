@@ -49,6 +49,10 @@ private:
 	/// </summary>
 	void CreateDeathEffect(Vector3 position);
 
+	void StartFadeOut();
+
+	void UpdateFadeOut();
+
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
@@ -108,6 +112,11 @@ private:
 
 	float cameraZ;//lerpしたときの誤差修正数値
 
+	uint32_t fadeTex;
+	std::unique_ptr<Sprite>fadeSprite = nullptr;
+
+	float alpha = 0;
+	bool isFadingOut = false;
 
 #ifdef _DEBUG
 
