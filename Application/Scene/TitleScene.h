@@ -27,6 +27,10 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	void StartFadeIn();
+
+	void UpdateFadeIn();
+
 private:
 
 	Input* input;
@@ -41,7 +45,11 @@ private:
 	std::unique_ptr<DeathEffect> effect = nullptr;
 	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
 
+	uint32_t fadeTex;
+	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
+	float alpha = 0;
+	bool isFadingIn = false;
 
 
 };

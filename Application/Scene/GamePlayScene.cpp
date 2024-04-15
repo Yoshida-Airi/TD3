@@ -64,10 +64,27 @@ void GamePlayScene::Initialize()
 
 	//colliderManager_->UpdateWorldTransform();
 
+	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
+
+	fadeSprite.reset(Sprite::Create(fadeTex));
+	fadeSprite->SetSize({ 1280,720 });
+	fadeSprite->SetisInvisible(false);
+	alpha = 1.0f;
+	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,alpha });
+
+	StartFadeOut();
+
+
 }
 
 void GamePlayScene::Update()
 {
+
+	if (isFadingOut == true)
+	{
+		UpdateFadeOut();
+	}
+
 	if (timer.GetNowSecond() != 10)
 
 	{
@@ -242,6 +259,8 @@ void GamePlayScene::Update()
 	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
 	camera->UpdateMatrix();
 
+	fadeSprite->Update();
+
 }
 
 void GamePlayScene::Draw()
@@ -271,7 +290,8 @@ void GamePlayScene::Draw()
 		boss_->Draw(camera);
 	}
 
-	
+	fadeSprite->Draw(camera);
+
 
 	//colliderManager_->Draw(camera);
 }
@@ -385,3 +405,20 @@ void GamePlayScene::CreateDeathEffect(Vector3 position)
 	deathEffect_.push_back(newDeathEffect);
 }
 
+void GamePlayScene::StartFadeOut()
+{
+	isFadingOut = true;
+	fadeSprite->SetisInvisible(false);
+}
+
+void GamePlayScene::UpdateFadeOut()
+{
+	alpha -= 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, alpha });
+
+	if (alpha <= 0.0f)
+	{
+		// フェードイン完了時の処理
+		isFadingOut = false;
+	}
+}

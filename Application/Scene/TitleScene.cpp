@@ -30,6 +30,14 @@ void TitleScene::Initialize()
 	slashingEffect->Initialize(camera);
 
 	slashingEffect->SetFlag(true);
+
+	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
+	fadeSprite.reset(Sprite::Create(fadeTex));
+
+	fadeSprite->SetSize({ 1280,720 });
+	fadeSprite->SetisInvisible(true);
+	alpha = 0;
+	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,alpha });
 }
 
 void TitleScene::Update()
@@ -43,15 +51,22 @@ void TitleScene::Update()
 	{
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
-			sceneManager_->ChangeScene("GAMEPLAY");
-			Audio::GetInstance()->SoundStopWave(soundData);
+			// フェードイン開始
+			StartFadeIn();
+		
 		}
 	}
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
-		sceneManager_->ChangeScene("GAMEPLAY");
-		Audio::GetInstance()->SoundStopWave(soundData);
+		// フェードイン開始
+		StartFadeIn();
+	}
+
+	// フェードイン中の処理
+	if (isFadingIn)
+	{
+		UpdateFadeIn();
 	}
 
 	fence_->Update();
@@ -65,6 +80,7 @@ void TitleScene::Update()
 
 	slashingEffect->Update();
 
+	fadeSprite->Update();
 }
 
 void TitleScene::Draw()
@@ -75,5 +91,26 @@ void TitleScene::Draw()
 	effect->Draw();
 	slashingEffect->Draw();
 
+	fadeSprite->Draw(camera);
+
 }
 
+void TitleScene::StartFadeIn()
+{
+	isFadingIn = true;
+	fadeSprite->SetisInvisible(false);
+}
+
+void TitleScene::UpdateFadeIn()
+{
+	alpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, alpha });
+
+	if (alpha >= 1.0f)
+	{
+		// フェードイン完了時の処理
+		isFadingIn = false;
+		sceneManager_->ChangeScene("GAMEPLAY");
+		Audio::GetInstance()->SoundStopWave(soundData);
+	}
+}
