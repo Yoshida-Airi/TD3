@@ -12,10 +12,12 @@
 #include"Model.h"
 #include"Camera.h"
 
-#include"EfectManager.h"
+#include"DeathEffect.h"
+#include"SlashingEffect.h"
 
 #include"Enemy.h"
 #include <random>
+
 
 class TitleScene :public BaseScene
 {
@@ -25,9 +27,12 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	void StartFadeIn();
+
+	void UpdateFadeIn();
+
 private:
 
-	EfectManager* efect = nullptr;
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
@@ -37,6 +42,14 @@ private:
 	std::unique_ptr<Model> fence_ = nullptr;
 	std::unique_ptr<Model> cube_ = nullptr;
 
+	std::unique_ptr<DeathEffect> effect = nullptr;
+	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
+
+	uint32_t fadeTex;
+	std::unique_ptr<Sprite>fadeSprite = nullptr;
+
+	float alpha = 0;
+	bool isFadingIn = false;
 
 
 };

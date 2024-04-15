@@ -5,7 +5,7 @@ Boss::~Boss() {
 
 }
 
-void Boss::Initialize() {
+void Boss::Initialize(Player* player) {
 	Collider::Initialize();
 
 	//当たり判定用
@@ -16,11 +16,17 @@ void Boss::Initialize() {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	bullet_ = std::make_unique<EnemyBullet>();
+	bullet_->Initialize();
+
+	currentTime = int(time(nullptr));
+	srand(currentTime);
+
 	SetRadius(model_->worldTransform_->scale_);
 
 	hp = 100;
 
-	player_ = std::make_unique<Player>();
+	player_ = player;
 
 }
 
@@ -31,7 +37,25 @@ void Boss::Update() {
 
 	Collider::UpdateWorldTransform();
 
-	model_->worldTransform_->translation_.x += 0.001f;
+	NextAction();
+
+	switch (bAction)
+	{
+	case MOVE:
+
+		Move();
+
+		break;
+
+	case ATTACK:
+
+		Attack();
+		bullet_->Update();
+
+		break;
+
+	}
+
 
 	if (hp <= 0)
 	{
@@ -43,12 +67,21 @@ void Boss::Update() {
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
-
+	ImGui::Begin("Boss");
+	ImGui::Text("HP : %d", hp);
+	ImGui::Text("Action : %d", isNextAction);
+	ImGui::Text("NextA : %d", action);
+	ImGui::Text("NTimer : %d", nextActionTimer);
+	ImGui::End();
 }
 
 void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
+
+	if (isBAlive == true) {
+		bullet_->Draw(camera);
+	}
 
 }
 
@@ -88,6 +121,95 @@ void Boss::CoolDown() {
 
 }
 
+void Boss::Move() {
+	Direction(0.04f);
+	model_->worldTransform_->translation_.x += speed_.x;
+	model_->worldTransform_->translation_.y += speed_.y;
+	model_->worldTransform_->translation_.z += speed_.z;
+}
+
+void Boss::Attack() {
+
+	if (aimTimer <= 90 && isAttack == false) {
+		aimTimer++;
+		Direction(0.1f);
+	}
+	else {
+		aimTimer = 0;
+		isAttack = true;
+	}
+
+	if (isAttack == true && isAssignment == false) {
+		bullet_->SetSpeed(speed_);
+		bullet_->SetTranslate(model_->worldTransform_->translation_);
+		isAssignment = true;
+		isBAlive = true;
+	}
+
+	if (isAssignment == true && isNextAction == false) {
+		BTimer++;
+	}
+
+	if (BTimer >= 60) {
+		isNextAction = true;
+		isBAlive = false;
+		BTimer = 0;
+	}
+
+}
+
+void Boss::NextAction() {
+	if (isNextAction == true) {
+		nextActionTimer++;
+	}
+
+	if (nextActionTimer >= 60) {
+		action = rand() % 2;
+		nextActionTimer = 0;
+		bullet_->SetScale({ 0.5f,0.5f,0.5f });
+		isNext = true;
+	}
+
+	if (action == 0 && isNext == true) {
+		bAction = MOVE;
+		isNext = false;
+	}
+	else if (action == 1 && isNext == true) {
+		bAction = ATTACK;
+		isNextAction = false;
+		isNext = false;
+		isAttack = false;
+		isAssignment = false;
+	}
+
+}
+
+void Boss::Direction(float speed) {
+	const float kBulletSpeed = speed;
+	Vector3 playerPos = player_->GetPosition();
+	Vector3 enemyPos = model_->worldTransform_->translation_;
+
+	const float threshold = 0.7f;
+	Vector3 move = { 0.0f,0.0f,0.0f };
+	bool isMoveing = false;
+
+	speed_.x = playerPos.x - enemyPos.x;
+	speed_.y = playerPos.y - enemyPos.y;
+	speed_.z = playerPos.z - enemyPos.z;
+
+	speed_ = Normalize(speed_);
+
+	speed_.x *= kBulletSpeed;
+	speed_.y *= kBulletSpeed;
+	speed_.z *= kBulletSpeed;
+
+	//目標角度の算出
+	angle_ = std::atan2(speed_.x, speed_.z);
+
+	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
+
+}
+
 void Boss::OnCollision([[maybe_unused]] Collider* other)
 {
 
@@ -99,4 +221,45 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	}
 
 
+}
+
+float Boss::Lerp(const float& a, const float& b, float t) {
+	float result{};
+
+	result = a + b * t;
+
+	return result;
+}
+
+// 最短角度補間
+float Boss::LerpShortAngle(float a, float b, float t)
+{
+	// 角度差分を求める
+	float diff = b - a;
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < 2 * (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= 2 * std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= (float)std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	return Lerp(a, diff, t);
+}
+
+float Boss::LerpShortTranslate(float a, float b, float t) {
+	return a + t * (b - a);
 }

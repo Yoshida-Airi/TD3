@@ -6,12 +6,23 @@
 #include <random>
 #include "Collider.h"
 #include "Player.h"
+#include "imgui.h"
+#include "EnemyBullet.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+enum BossAction {
+	MOVE,
+	ATTACK,
+};
 
 class Boss : public Collider {
 public:
 	~Boss();
 
-	void Initialize();
+	void Initialize(Player* player);
 
 	void Update();
 
@@ -39,7 +50,8 @@ public:
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;
-	std::unique_ptr<Player> player_ = nullptr;
+	Player* player_ = nullptr;
+	std::unique_ptr<EnemyBullet> bullet_ = nullptr;
 
 	Input* input_ = nullptr;
 
@@ -51,9 +63,43 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	Vector3 speed_;
+
+	float angle_ = 0.0f;
+
+	BossAction bAction = MOVE;
+	unsigned int currentTime;
+	int action = 0;
+
+	int nextActionTimer = 0;
+	bool isNextAction = true;
+
+	bool isAttack = false;
+	bool isAssignment = false;
+	bool isNext = false;
+	bool isBAlive = false;
+	int aimTimer = 0;
+	int BTimer = 0;
+
 private:
 
 	void CoolDown();
+
+	void Move();
+
+	void NextAction();
+
+	void Direction(float speed);
+	
+	void Attack();
+
+	//ここから下は回転用
+	float Lerp(const float& a, const float& b, float t);
+
+	// 最短角度補間
+	float LerpShortAngle(float a, float b, float t);
+	
+	float LerpShortTranslate(float a, float b, float t);
 
 };
 

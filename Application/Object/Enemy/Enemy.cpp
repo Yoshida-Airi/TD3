@@ -5,13 +5,13 @@ Enemy::~Enemy() {
 
 }
 
-void Enemy::Initialize() {
+void Enemy::Initialize(Player* player) {
 	Collider::Initialize();
 
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemy));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_.reset(Model::Create("Resources/Enemy/enemy.obj"));
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
@@ -19,7 +19,7 @@ void Enemy::Initialize() {
 	model_->worldTransform_->scale_ = { 0.3f,0.3f,0.3f };
 
 	SetRadius(model_->worldTransform_->scale_);
-	player = std::make_unique<Player>();
+	player_ = player;
 }
 
 void Enemy::Update() {
@@ -77,7 +77,7 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
-		EnemyHP -= player->AttackPower;
+		EnemyHP -= player_->AttackPower;
 	}
 
 	

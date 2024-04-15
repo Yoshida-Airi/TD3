@@ -4,7 +4,6 @@
 TitleScene::~TitleScene()
 {
 	delete camera;
-	delete efect;
 }
 
 void TitleScene::Initialize()
@@ -21,6 +20,24 @@ void TitleScene::Initialize()
 	fence_.reset(Model::Create("Resources/DefaultAssets/fence.obj"));
 	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	fence_->worldTransform_->rotation_.y = 3.1f;
+
+	effect = std::make_unique<DeathEffect>();
+	effect->Initialize(camera);
+
+	effect->SetFlag(true);
+
+	slashingEffect = std::make_unique<SlashingEffect>();
+	slashingEffect->Initialize(camera);
+
+	slashingEffect->SetFlag(true);
+
+	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
+	fadeSprite.reset(Sprite::Create(fadeTex));
+
+	fadeSprite->SetSize({ 1280,720 });
+	fadeSprite->SetisInvisible(true);
+	alpha = 0;
+	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,alpha });
 }
 
 void TitleScene::Update()
@@ -34,15 +51,22 @@ void TitleScene::Update()
 	{
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
-			sceneManager_->ChangeScene("GAMEPLAY");
-			Audio::GetInstance()->SoundStopWave(soundData);
+			// フェードイン開始
+			StartFadeIn();
+		
 		}
 	}
 
 	if (input->TriggerKey(DIK_RETURN))
 	{
-		sceneManager_->ChangeScene("GAMEPLAY");
-		Audio::GetInstance()->SoundStopWave(soundData);
+		// フェードイン開始
+		StartFadeIn();
+	}
+
+	// フェードイン中の処理
+	if (isFadingIn)
+	{
+		UpdateFadeIn();
 	}
 
 	fence_->Update();
@@ -52,11 +76,41 @@ void TitleScene::Update()
 	fence_->ModelDebug("fence");
 	fence_->Parent(cube_.get());
 
+	effect->Update();
+
+	slashingEffect->Update();
+
+	fadeSprite->Update();
 }
 
 void TitleScene::Draw()
 {
 	fence_->Draw(camera);
 	cube_->Draw(camera);
+
+	effect->Draw();
+	slashingEffect->Draw();
+
+	fadeSprite->Draw(camera);
+
 }
 
+void TitleScene::StartFadeIn()
+{
+	isFadingIn = true;
+	fadeSprite->SetisInvisible(false);
+}
+
+void TitleScene::UpdateFadeIn()
+{
+	alpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, alpha });
+
+	if (alpha >= 1.0f)
+	{
+		// フェードイン完了時の処理
+		isFadingIn = false;
+		sceneManager_->ChangeScene("GAMEPLAY");
+		Audio::GetInstance()->SoundStopWave(soundData);
+	}
+}

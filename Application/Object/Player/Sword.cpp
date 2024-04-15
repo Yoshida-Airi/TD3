@@ -1,9 +1,8 @@
 #include "Sword.h"
-#include"PlayerWeapon.h"
 #include"CollisionConfig.h"
 
 
-void Sword::Initialize()
+void Sword::Initialize(Player* player)
 {
 	input_ = Input::GetInstance();
 
@@ -13,8 +12,13 @@ void Sword::Initialize()
 
 	model_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
 
-	SetRadius({3.0f,1.0f,1.0f});
+	model_->worldTransform_->translation_ = {0.0f,1.66f,0.87f };
 
+	SetRadius({ 3.0f,1.0f,1.0f });
+	player_ = player;
+
+	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
+	model_->worldTransform_->parent_ = player_->GetWorldTransform();
 }
 
 void Sword::Update()
@@ -22,6 +26,17 @@ void Sword::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();
 	model_->ModelDebug("Sword");
+
+	//コントローラーチェンジ
+	if (input_->PushKey(DIK_1)) {
+		gamePad = true;
+		keyBoard = false;
+	}
+	if (input_->PushKey(DIK_2)) {
+		gamePad = false;
+		keyBoard = true;
+	}
+
 
 	Attack();
 }
@@ -44,40 +59,11 @@ Vector3 Sword::GetWorldPosition()
 	return worldpos;
 }
 
-
 void Sword::OnCollision([[maybe_unused]] Collider* other)
 {
 }
 
-
 void Sword::Attack()
 {
-	if (input_->IsLeftMouseClicked())
-	{
-		if (model_->worldTransform_->rotation_.y <= rotationmax) {
-			model_->worldTransform_->rotation_.y += rotationspeed;
-		}
-		if (model_->worldTransform_->rotation_.y >= rotationmax) {
-			model_->worldTransform_->rotation_.y = rotationmax;
-		}
-	}
-	else
-	{
-		if (model_->worldTransform_->rotation_.y >= rotationmin) {
-			model_->worldTransform_->rotation_.y -= rotationspeed;
-		}
-		if (model_->worldTransform_->rotation_.y <= rotationmin) {
-			model_->worldTransform_->rotation_.y = rotationmin;
-		}
-	}
-}
-void Sword::Skill()
-{
-	if (input_->PushKey(DIK_LSHIFT)) {
-		isSkill = true;
-	}
-	else
-	{
-		isSkill = false;
-	}
+
 }

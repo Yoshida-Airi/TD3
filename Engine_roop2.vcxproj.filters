@@ -111,9 +111,6 @@
     <ClCompile Include="Application\Object\Player\Playerlevel\Playerlevel.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Object\Player\PlayerWeapon.cpp">
-      <Filter>Application\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Object\Enemy\Enemy.cpp">
       <Filter>Application\Object\Enemy</Filter>
     </ClCompile>
@@ -126,11 +123,19 @@
     <ClCompile Include="Application\Object\Collider\CollisionManager.cpp">
       <Filter>Application\Object\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Object\Effect\DeathEffect.cpp">
+      <Filter>Application\Object\Effect</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Math\Timer.cpp" />
-    <ClCompile Include="Application\Object\Player\Sword.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
       <Filter>Application\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Player\Sword.cpp">
+      <Filter>Application\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Effect\SlashingEffect.cpp">
+      <Filter>Application\Object\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +244,6 @@
     <ClInclude Include="Application\Object\Player\Playerlevel\Playerlevel.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Object\Player\PlayerWeapon.h">
-      <Filter>Application\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Object\Enemy\Enemy.h">
       <Filter>Application\Object\Enemy</Filter>
     </ClInclude>
@@ -257,12 +259,20 @@
     <ClInclude Include="Application\Object\Collider\CollisionManager.h">
       <Filter>Application\Object\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Object\Effect\DeathEffect.h">
+      <Filter>Application\Object\Effect</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Math\Timer.h" />
-    <ClInclude Include="Application\Object\Player\Sword.h" />
     <ClInclude Include="Application\Object\Player\FollowCamera.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="Application\Object\Player\Sword.h">
+      <Filter>Application\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Effect\SlashingEffect.h">
+      <Filter>Application\Object\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -318,6 +328,9 @@
     </Filter>
     <Filter Include="Application\Object\Collider">
       <UniqueIdentifier>{ed1fb180-d8cb-4589-80a0-98bb9052f55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Object\Effect">
+      <UniqueIdentifier>{ef364f01-aeeb-4c43-ab84-a8de2b13dc85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
