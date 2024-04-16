@@ -341,7 +341,7 @@ void GamePlayScene::EnemyAttack() {
 			newBullet->Initialize();
 			newBullet->SetTranslate(enemy->GetTranslate());
 
-			const float kBulletSpeed = 0.05f;
+			const float kBulletSpeed = 0.08f;
 			Vector3 playerPos = player->GetPosition();
 			Vector3 enemyPos = enemy->GetTranslate();
 			Vector3 speed;
@@ -364,7 +364,7 @@ void GamePlayScene::EnemyAttack() {
 		}
 		else if (isEnemyAttack == false) {
 			enemyAttackCoolDown++;
-			if (enemyAttackCoolDown >= 60) {
+			if (enemyAttackCoolDown >= 180) {
 				enemyAttackCoolDown = 0;
 				isEnemyAttack = true;
 			}
