@@ -108,6 +108,8 @@ void Player::Update()
 	ImGui::Begin("Status");
 	ImGui::Text("HP : %d", HP);
 	ImGui::Text("Power : %d", AttackPower);
+	ImGui::Text("MotionCount : %d", MotionCount_);
+	ImGui::Text("MotionTimer : %d", MotionTimer_);
 	ImGui::End();
 
 	bodyModel_->ModelDebug("body");
@@ -423,12 +425,47 @@ void Player::AttackUpdate()
 	//	
 	//}
 
-	if (MotionCount_ == 1 && input_->IsLeftMouseClicked() && MotionCount_ <= 60) {
+	if (MotionCount_ == 1 && input_->IsLeftMouseClicked() && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
+		MotionCount_ = 2;
+	}
+	if (MotionCount_ == 1 && MotionTimer_ >= 60) {
+		MotionCount_ = 99;
+	}
+
+	if (MotionCount_ == 2) {
+		if (MotionTimer_ == 70) {
+			MotionCount_ = 3;
+		}
+		//ここに１コンボ目の剣の動きを書く
+
+
+
+
+
 
 	}
-	
+	if (MotionCount_ == 3 && input_->IsLeftMouseClicked() && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
+		MotionCount_ = 4;
+	}
+	if (MotionCount_ == 3 && MotionTimer_ >= 130) {
+		MotionCount_ = 99;
+	}
+	if (MotionCount_ == 4) {
+		if (MotionTimer_ == 140) {
+			MotionCount_ = 99;
+		}
+		//ここに2コンボ目の剣の動きを書く
 
-	if (MotionCount_ == 4)
+
+
+
+
+
+	}
+
+
+
+	if (MotionCount_ == 99)
 	{
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
