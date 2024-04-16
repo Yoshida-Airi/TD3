@@ -250,6 +250,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵にあたったら
 		HP -= 100;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
@@ -257,6 +258,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵の弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
@@ -264,6 +266,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵の弾にあたったら
 		HP -= 100;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 }
@@ -461,6 +464,24 @@ void Player::CoolDown() {
 		coolDownTimer = 0;
 	}
 
+}
+
+void Player::Hitstop()
+{
+	if (isHit == true && throughTimer == 0)
+	{
+		hitstopTimer++;
+	}
+	if (hitstopTimer == 15)
+	{
+		isHit = false;
+		throughTimer++;
+	}
+	if (throughTimer == 30)
+	{
+		hitstopTimer = 0;
+		throughTimer = 0;
+	}
 }
 
 void Player::AttackUpdate()

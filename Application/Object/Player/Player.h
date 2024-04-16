@@ -53,6 +53,7 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
+	bool GetIsHit() { return isHit; }
 	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
 		float PlayerSpeed = 2.0f;
 private:
@@ -73,10 +74,15 @@ private:
 	int HP = 5000;
 	float angle_ = 0.0f;
 
+	bool isHit = false;
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
-	
+	//被弾時硬直の時間
+	int hitstopTimer = 0;
+	//被弾後の無敵時間
+	int throughTimer = 0;
+
 	bool keyBoard = true;
 	bool gamePad = false;
 
@@ -121,7 +127,8 @@ private:
 
 	//一回あたったときの無敵時間
 	void CoolDown();
-
+	//hitstop管理
+	void Hitstop();
 
 	void RootUpdate();
 	void AttackUpdate();
