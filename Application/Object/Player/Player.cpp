@@ -556,18 +556,21 @@ void Player::RootUpdate()
 		isSkill = true;
 	}
 
-	//スキルと攻撃の併用を禁止
-	if (isSkill == false)
+	if (isHit == false)//被弾時硬直中の移動・攻撃不可
 	{
-		//攻撃
-		Attack();
+		//スキルと攻撃の併用を禁止
+		if (isSkill == false)
+		{
+			//攻撃
+			Attack();
+		}
+
+		//移動
+		Move();
+
+		//スキル
+		Skill();
 	}
-
-	//移動
-	Move();
-
-	//スキル
-	Skill();
 	//ヒット時のクールダウン
 	CoolDown();
 
