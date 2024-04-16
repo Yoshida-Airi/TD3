@@ -2,10 +2,10 @@
 #include "Model.h"
 #include "Collider.h"
 
-class BossBullet : public Collider
+class BossB : public Collider
 {
 public:
-	~BossBullet();
+	~BossB();
 
 	void Initialize();
 

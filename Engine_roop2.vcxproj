@@ -134,6 +134,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Manager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Application\Object\Effect\DeathEffect.cpp" />
     <ClCompile Include="Application\Object\Player\FollowCamera.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Math\MathUtilty.cpp" />
     <ClCompile Include="Engine\3D\Model.cpp" />
@@ -201,6 +202,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Application\Object\Effect\DeathEffect.h" />
     <ClInclude Include="Application\Object\Player\Sword.h" />
     <ClInclude Include="Application\Object\Player\FollowCamera.h" />
+    <ClInclude Include="GameClearScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\Particle.PS.hlsl">

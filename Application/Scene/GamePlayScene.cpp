@@ -182,7 +182,7 @@ void GamePlayScene::Update()
 			return true;
 			});
 
-		boss_->Update();
+		boss_->Update(sceneManager_);
 
 		if (boss_->GetIsDead() == false) {
 			isBossSpawn = true;

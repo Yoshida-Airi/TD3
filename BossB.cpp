@@ -1,11 +1,11 @@
 #include "BossB.h"
 #include"CollisionConfig.h"
 
-BossBullet::~BossBullet() {
+BossB::~BossB() {
 
 }
 
-void BossBullet::Initialize() {
+void BossB::Initialize() {
 	Collider::Initialize();
 
 	//当たり判定用
@@ -18,7 +18,7 @@ void BossBullet::Initialize() {
 	SetRadius(model_->worldTransform_->scale_);
 }
 
-void BossBullet::Update() {
+void BossB::Update() {
 	model_->Update();
 
 	Collider::UpdateWorldTransform();
@@ -32,19 +32,19 @@ void BossBullet::Update() {
 	}
 }
 
-void BossBullet::Draw(Camera* camera) {
+void BossB::Draw(Camera* camera) {
 	model_->Draw(camera);
 }
 
-void BossBullet::SetTranslate(Vector3 translate) {
+void BossB::SetTranslate(Vector3 translate) {
 	model_->worldTransform_->translation_ = { translate.x,translate.y,translate.z };
 }
 
-void BossBullet::SetSpeed(Vector3 speed) {
+void BossB::SetSpeed(Vector3 speed) {
 	speed_ = speed;
 }
 
-Vector3 BossBullet::GetWorldPosition()
+Vector3 BossB::GetWorldPosition()
 {
 	// ワールド座標を入れる変数
 	Vector3 worldpos;
@@ -57,11 +57,11 @@ Vector3 BossBullet::GetWorldPosition()
 	return worldpos;
 }
 
-void BossBullet::SetScale(Vector3 scale) {
+void BossB::SetScale(Vector3 scale) {
 	model_->worldTransform_->scale_ = scale;
 }
 
-void BossBullet::OnCollision([[maybe_unused]] Collider* other)
+void BossB::OnCollision([[maybe_unused]] Collider* other)
 {
 
 	uint32_t typeID = other->GetTypeID();
