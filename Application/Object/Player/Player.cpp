@@ -390,43 +390,21 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y += 0.3f;
 
 		
-		LeftFootModel_->worldTransform_->rotation_.x += 0.1f/10;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f/10;
-	
+		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+
 		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
 		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-		/*bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
-		bodyModel_->worldTransform_->rotation_.y += 1.0f/10;*/
-
+		bodyModel_->worldTransform_->rotation_.y -= 0.2f / 10;
 	}
-
-	//if (MotionCount_ == 1)
-	//{
-	//	if (MotionTimer_ == 20)
-	//	{
-	//		MotionCount_ = 2;
-	//	}
-
-
-	//	//weapon_->GetWorldTransform()->rotation_.y -= 1.6f / 10;
-	//	weapon_->GetWorldTransform()->rotation_.x -= 0.252f;
-	//	weapon_->GetWorldTransform()->rotation_.y -= 0.3f;
-
-	//	LeftFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-	//	LeftFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
-
-	//	RightFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-	//	RightFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
-
-
-	//	/*bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
-	//	bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;*/
-	//	
-	//}
 
 	if (MotionCount_ == 1 && input_->IsLeftMouseClicked() && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
 		MotionCount_ = 2;
+		MotionTimer_ = 60;
+		weapon_->GetWorldTransform()->rotation_.x = 2.83f;
+		weapon_->GetWorldTransform()->rotation_.y = 6.5f;
+		weapon_->GetWorldTransform()->rotation_.z = 0;
 	}
 	if (MotionCount_ == 1 && MotionTimer_ >= 60) {
 		MotionCount_ = 99;
@@ -437,36 +415,47 @@ void Player::AttackUpdate()
 			MotionCount_ = 3;
 		}
 		//ここに１コンボ目の剣の動きを書く
+		
+		weapon_->GetWorldTransform()->rotation_.y -= 0.331f;
+		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
+		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-
-
-
+		bodyModel_->worldTransform_->rotation_.y += 0.2f / 10;
 
 	}
 	if (MotionCount_ == 3 && input_->IsLeftMouseClicked() && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
 		MotionCount_ = 4;
+		MotionTimer_ = 130;
+		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
+		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
+		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 	}
 	if (MotionCount_ == 3 && MotionTimer_ >= 130) {
 		MotionCount_ = 99;
 	}
 	if (MotionCount_ == 4) {
-		if (MotionTimer_ == 140) {
+		if (MotionTimer_ == 180) {
 			MotionCount_ = 99;
 		}
 		//ここに2コンボ目の剣の動きを書く
+		weapon_->GetWorldTransform()->rotation_.y += 0.0862f;
+		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 50;
+		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 50;
 
+		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 50;
+		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 50;
 
-
-
-
+		bodyModel_->worldTransform_->rotation_.y -= 0.3f / 50;
+		Speed = 0.05f;
 
 	}
 
-
-
 	if (MotionCount_ == 99)
 	{
+		Speed = 0.03f;
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
 	}
