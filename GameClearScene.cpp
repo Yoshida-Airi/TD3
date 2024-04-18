@@ -10,6 +10,9 @@ void GameClearScene::Initialize()
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
+	camera = new Camera();
+	camera->Initialize();
+
 	effect = std::make_unique<DeathEffect>();
 	effect->Initialize(camera);
 
