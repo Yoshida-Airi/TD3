@@ -67,6 +67,14 @@ bool Input::TriggerKey(BYTE keyNumber)
 	return false;
 }
 
+// すべてのキーの検出関数を作成する
+void Input::CreateAllKeyDetectionFunctions()
+{
+	for (int i = 0; i < 256; ++i) {
+	
+	}
+}
+
 // ジョイスティックのデッドゾーンを適用する関数
 SHORT Input::ApplyDeadzone(SHORT value, SHORT deadzone) {
 	if (value < -deadzone || value > deadzone) {
