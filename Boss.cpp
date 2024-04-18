@@ -37,25 +37,31 @@ void Boss::Update() {
 
 	Collider::UpdateWorldTransform();
 
-	NextAction();
-
-	switch (bAction)
+	if (model_->worldTransform_->translation_.y <= 0.0f)
 	{
-	case MOVE:
 
-		Move();
+		NextAction();
 
-		break;
+		switch (bAction)
+		{
+		case MOVE:
 
-	case ATTACK:
+			Move();
 
-		Attack();
-		bullet_->Update();
+			break;
 
-		break;
+		case ATTACK:
 
+			Attack();
+			bullet_->Update();
+
+			break;
+
+		}
 	}
-
+	else {
+		Move();
+	}
 
 	if (hp <= 0)
 	{
@@ -129,33 +135,31 @@ void Boss::Move() {
 }
 
 void Boss::Attack() {
+		if (aimTimer <= 90 && isAttack == false) {
+			aimTimer++;
+			Direction(0.1f);
+		}
+		else {
+			aimTimer = 0;
+			isAttack = true;
+		}
 
-	if (aimTimer <= 90 && isAttack == false) {
-		aimTimer++;
-		Direction(0.1f);
-	}
-	else {
-		aimTimer = 0;
-		isAttack = true;
-	}
+		if (isAttack == true && isAssignment == false) {
+			bullet_->SetSpeed(speed_);
+			bullet_->SetTranslate(model_->worldTransform_->translation_);
+			isAssignment = true;
+			isBAlive = true;
+		}
 
-	if (isAttack == true && isAssignment == false) {
-		bullet_->SetSpeed(speed_);
-		bullet_->SetTranslate(model_->worldTransform_->translation_);
-		isAssignment = true;
-		isBAlive = true;
-	}
+		if (isAssignment == true && isNextAction == false) {
+			BTimer++;
+		}
 
-	if (isAssignment == true && isNextAction == false) {
-		BTimer++;
-	}
-
-	if (BTimer >= 60) {
-		isNextAction = true;
-		isBAlive = false;
-		BTimer = 0;
-	}
-
+		if (BTimer >= 60) {
+			isNextAction = true;
+			isBAlive = false;
+			BTimer = 0;
+		}
 }
 
 void Boss::NextAction() {

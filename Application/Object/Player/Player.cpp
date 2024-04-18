@@ -70,7 +70,8 @@ void Player::Initialize(Camera* camera)
 	//RightArmModel_->SetisInvisible(true);
 	//LeftFootModel_->SetisInvisible(true);
 	//RightFootModel_->SetisInvisible(true);
-
+	
+	isHit = false;
 }
 
 void Player::Update()
@@ -466,24 +467,6 @@ void Player::CoolDown() {
 
 }
 
-void Player::Hitstop()
-{
-	if (isHit == true && throughTimer == 0)
-	{
-		hitstopTimer++;
-	}
-	if (hitstopTimer == 15)
-	{
-		isHit = false;
-		throughTimer++;
-	}
-	if (throughTimer == 30)
-	{
-		hitstopTimer = 0;
-		throughTimer = 0;
-	}
-}
-
 void Player::AttackUpdate()
 {
 	//剣を振りかぶる
@@ -556,9 +539,6 @@ void Player::RootUpdate()
 		isSkill = true;
 	}
 
-	if (isHit == false)//被弾時硬直中の移動・攻撃不可
-	{
-	}
 	//スキルと攻撃の併用を禁止
 		if (isSkill == false)
 		{
@@ -574,6 +554,7 @@ void Player::RootUpdate()
 	
 	//ヒット時のクールダウン
 	CoolDown();
+	//被弾時硬直
 
 	//スキルフラグとクールタイムが終わっていたら
 	if (isSkill == true && isSkillCooldown_ == false)

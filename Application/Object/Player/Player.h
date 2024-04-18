@@ -36,6 +36,11 @@ public:
 	{
 		this->isSkill = isSkill;
 	}
+
+	void SetIsHit(bool isHit)
+	{
+		this->isHit = isHit;
+	}
 	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
@@ -78,10 +83,6 @@ private:
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
-	//被弾時硬直の時間
-	int hitstopTimer = 0;
-	//被弾後の無敵時間
-	int throughTimer = 0;
 
 	bool keyBoard = true;
 	bool gamePad = false;
@@ -128,7 +129,6 @@ private:
 	//一回あたったときの無敵時間
 	void CoolDown();
 	//hitstop管理
-	void Hitstop();
 
 	void RootUpdate();
 	void AttackUpdate();
