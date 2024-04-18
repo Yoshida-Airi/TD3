@@ -234,7 +234,7 @@ void GamePlayScene::Update()
 	demo_stage->Update();
 	demo_stage->ModelDebug("demo_stage");
 	
-	player->Update();
+	player->Update(sceneManager_);
 	sword->Update();
 
 

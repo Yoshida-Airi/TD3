@@ -70,7 +70,7 @@ void Player::Initialize(Camera* camera)
 
 }
 
-void Player::Update()
+void Player::Update(SceneManager* scene)
 {
 	Collider::UpdateWorldTransform();
 	model_->Update();	//移動用モデル
@@ -179,6 +179,11 @@ void Player::Update()
 		Skill3Update();
 		break;
 	}
+
+	if (HP <= 0) {
+		scene->ChangeScene("GAMEOVER");
+	}
+
 }
 
 void Player::Draw()
@@ -224,7 +229,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
 		//敵の弾にあたったら
-		HP -= 200;
+		HP -= 10000;
 		isCoolDown = true;
 	}
 
