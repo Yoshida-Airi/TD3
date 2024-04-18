@@ -205,12 +205,14 @@ void GamePlayScene::Update()
 				return true;
 				});
 
-			if (boss_->GetIsDead() == false) {
-				isBossSpawn = true;
-			}
-			else {
-				isBossSpawn = false;
-			}
+		boss_->Update(sceneManager_);
+
+		if (boss_->GetIsDead() == false) {
+			isBossSpawn = true;
+		}
+		else {
+			isBossSpawn = false;
+		}
 
 			boss_->Update();
 
@@ -256,12 +258,11 @@ void GamePlayScene::Update()
 		CheckAllCollisions();
 
 
-		demo_stage->Update();
-		demo_stage->ModelDebug("demo_stage");
-
-		player->Update();
-		sword->Update();
-	};
+	demo_stage->Update();
+	demo_stage->ModelDebug("demo_stage");
+	
+	player->Update(sceneManager_);
+	sword->Update();
 
 	if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)
 	{
@@ -384,7 +385,7 @@ void GamePlayScene::EnemyAttack() {
 			newBullet->Initialize();
 			newBullet->SetTranslate(enemy->GetTranslate());
 
-			const float kBulletSpeed = 0.05f;
+			const float kBulletSpeed = 0.08f;
 			Vector3 playerPos = player->GetPosition();
 			Vector3 enemyPos = enemy->GetTranslate();
 			Vector3 speed;
@@ -407,7 +408,7 @@ void GamePlayScene::EnemyAttack() {
 		}
 		else if (isEnemyAttack == false) {
 			enemyAttackCoolDown++;
-			if (enemyAttackCoolDown >= 60) {
+			if (enemyAttackCoolDown >= 180) {
 				enemyAttackCoolDown = 0;
 				isEnemyAttack = true;
 			}

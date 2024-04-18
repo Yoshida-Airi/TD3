@@ -30,7 +30,7 @@ void Boss::Initialize(Player* player) {
 
 }
 
-void Boss::Update() {
+void Boss::Update(SceneManager* scene) {
 	input_->Update();
 
 	model_->Update();
@@ -63,10 +63,7 @@ void Boss::Update() {
 		Move();
 	}
 
-	if (hp <= 0)
-	{
-		isDead_ = true;
-	}
+	Dead(scene);
 
 	CoolDown();
 
@@ -132,6 +129,14 @@ void Boss::Move() {
 	model_->worldTransform_->translation_.x += speed_.x;
 	model_->worldTransform_->translation_.y += speed_.y;
 	model_->worldTransform_->translation_.z += speed_.z;
+}
+
+void Boss::Dead(SceneManager* scene) {
+	if (hp <= 0)
+	{
+		isDead_ = true;
+		scene->ChangeScene("GAMECLEAR");
+	}
 }
 
 void Boss::Attack() {

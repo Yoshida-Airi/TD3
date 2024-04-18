@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+class SceneManager;
+
 enum BossAction {
 	MOVE,
 	ATTACK,
@@ -24,7 +26,7 @@ public:
 
 	void Initialize(Player* player);
 
-	void Update();
+	void Update(SceneManager* scene);
 
 	void Draw(Camera* camera);
 
@@ -92,6 +94,8 @@ private:
 	void Direction(float speed);
 	
 	void Attack();
+
+	void Dead(SceneManager* scene);
 
 	//ここから下は回転用
 	float Lerp(const float& a, const float& b, float t);

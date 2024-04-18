@@ -134,6 +134,8 @@
     <ClCompile Include="Application\Object\Player\Sword.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Application\Object\Effect\SlashingEffect.cpp">
       <Filter>Application\Object\Effect</Filter>
     </ClCompile>
@@ -273,6 +275,8 @@
     <ClInclude Include="Application\Object\Effect\SlashingEffect.h">
       <Filter>Application\Object\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="GameOverScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

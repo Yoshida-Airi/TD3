@@ -74,7 +74,7 @@ void Player::Initialize(Camera* camera)
 	isHit = false;
 }
 
-void Player::Update()
+void Player::Update(SceneManager* scene)
 {
 	Collider::UpdateWorldTransform();
 	model_->Update();	//移動用モデル
@@ -210,6 +210,11 @@ void Player::Update()
 		Skill3Update();
 		break;
 	}
+
+	if (HP <= 0) {
+		scene->ChangeScene("GAMEOVER");
+	}
+
 }
 
 void Player::Draw()

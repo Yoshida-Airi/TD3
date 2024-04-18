@@ -8,6 +8,7 @@
 #include"SlashingEffect.h"
 
 class Sword;
+class SceneManager;
 
 class Player :public Collider
 {
@@ -23,7 +24,7 @@ public:
 	};
 
 	void Initialize(Camera* camera);
-	void Update();
+	void Update(SceneManager* scene);
 	void Draw();
 	void PLevelUp();
 
