@@ -70,7 +70,8 @@ void Player::Initialize(Camera* camera)
 	//RightArmModel_->SetisInvisible(true);
 	//LeftFootModel_->SetisInvisible(true);
 	//RightFootModel_->SetisInvisible(true);
-
+	
+	isHit = false;
 }
 
 void Player::Update()
@@ -251,6 +252,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵にあたったら
 		HP -= 100;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
@@ -258,6 +260,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵の弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
@@ -265,6 +268,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵の弾にあたったら
 		HP -= 100;
 		isCoolDown = true;
+		isHit = true;
 	}
 
 }
@@ -567,19 +571,21 @@ void Player::RootUpdate()
 	}
 
 	//スキルと攻撃の併用を禁止
-	if (isSkill == false)
-	{
-		//攻撃
-		Attack();
-	}
+		if (isSkill == false)
+		{
+			//攻撃
+			Attack();
+		}
 
-	//移動
-	Move();
+		//移動
+		Move();
 
-	//スキル
-	Skill();
+		//スキル
+		Skill();
+	
 	//ヒット時のクールダウン
 	CoolDown();
+	//被弾時硬直
 
 	//スキルフラグとクールタイムが終わっていたら
 	if (isSkill == true && isSkillCooldown_ == false)

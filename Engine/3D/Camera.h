@@ -84,6 +84,8 @@ public:
 
 	void CameraDebug();
 
+	void ShakeCamera(uint32_t count);
+
 private:
 
 

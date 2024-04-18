@@ -88,3 +88,15 @@ void Camera::CameraDebug()
 
 	
 }
+
+void Camera::ShakeCamera(uint32_t count)
+{
+	if (count % 10 == 0 || count % 10 == 2)
+	{
+		transform.translate.x -= 0.2f;
+	}
+	else if (count % 10 == 5 || count % 10 == 7)
+	{
+		transform.translate.x += 0.2f;
+	}
+}

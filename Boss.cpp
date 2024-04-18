@@ -23,7 +23,7 @@ void Boss::Initialize(Player* player) {
 	srand(currentTime);
 
 	SetRadius(model_->worldTransform_->scale_);
-
+	model_->worldTransform_->translation_ = { 0.0f,6.0f,0.0f };
 	hp = 100;
 
 	player_ = player;
@@ -37,25 +37,31 @@ void Boss::Update() {
 
 	Collider::UpdateWorldTransform();
 
-	NextAction();
-
-	switch (bAction)
+	if (model_->worldTransform_->translation_.y <= 0.0f)
 	{
-	case MOVE:
 
-		Move();
+		NextAction();
 
-		break;
+		switch (bAction)
+		{
+		case MOVE:
 
-	case ATTACK:
+			Move();
 
-		Attack();
-		bullet_->Update();
+			break;
 
-		break;
+		case ATTACK:
 
+			Attack();
+			bullet_->Update();
+
+			break;
+
+		}
 	}
-
+	else {
+		Move();
+	}
 
 	if (hp <= 0)
 	{
@@ -129,33 +135,31 @@ void Boss::Move() {
 }
 
 void Boss::Attack() {
+		if (aimTimer <= 90 && isAttack == false) {
+			aimTimer++;
+			Direction(0.1f);
+		}
+		else {
+			aimTimer = 0;
+			isAttack = true;
+		}
 
-	if (aimTimer <= 90 && isAttack == false) {
-		aimTimer++;
-		Direction(0.1f);
-	}
-	else {
-		aimTimer = 0;
-		isAttack = true;
-	}
+		if (isAttack == true && isAssignment == false) {
+			bullet_->SetSpeed(speed_);
+			bullet_->SetTranslate(model_->worldTransform_->translation_);
+			isAssignment = true;
+			isBAlive = true;
+		}
 
-	if (isAttack == true && isAssignment == false) {
-		bullet_->SetSpeed(speed_);
-		bullet_->SetTranslate(model_->worldTransform_->translation_);
-		isAssignment = true;
-		isBAlive = true;
-	}
+		if (isAssignment == true && isNextAction == false) {
+			BTimer++;
+		}
 
-	if (isAssignment == true && isNextAction == false) {
-		BTimer++;
-	}
-
-	if (BTimer >= 60) {
-		isNextAction = true;
-		isBAlive = false;
-		BTimer = 0;
-	}
-
+		if (BTimer >= 60) {
+			isNextAction = true;
+			isBAlive = false;
+			BTimer = 0;
+		}
 }
 
 void Boss::NextAction() {
@@ -206,6 +210,12 @@ void Boss::Direction(float speed) {
 	//目標角度の算出
 	angle_ = std::atan2(speed_.x, speed_.z);
 
+	if (enemyPos.y > 0.0f)//落下
+	{
+		speed_.x = 0.0f;
+		speed_.y = -0.05f;
+		speed_.z = 0.0f;
+	}
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 
 }

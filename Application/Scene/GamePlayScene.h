@@ -128,6 +128,14 @@ private:
 
 	void CheckAllCollisions();
 	void BossSceneAllCollisions();
+	void Hitstop();
+
+	//被弾時硬直の時間
+	int hitstopTimer = 0;
+	//被弾後の無敵時間
+	int throughTimer = 0;
 
 
+	bool isCameraShake = false;
+	uint32_t cameraShakeTime;
 };

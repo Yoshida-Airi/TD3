@@ -74,6 +74,7 @@ void GamePlayScene::Initialize()
 
 	StartFadeOut();
 
+	throughTimer = 0;
 
 }
 
@@ -94,67 +95,69 @@ void GamePlayScene::Update()
 		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
+		if (player->GetIsHit() != true)
+		{
 
-		//敵の処理
-		EnemyAttack();
+			//敵の処理
+			EnemyAttack();
 
-		if (isEnemySpawn == true) {
-			if (enemyCount <= MaxEnemySpawn) {
-				EnemySpawn();
-				enemyCount++;
+			if (isEnemySpawn == true) {
+				if (enemyCount <= MaxEnemySpawn) {
+					EnemySpawn();
+					enemyCount++;
+				}
+				else {
+					isEnemySpawn = false;
+				}
 			}
-			else {
-				isEnemySpawn = false;
+
+			for (Enemy* enemys : enemy_) {
+				enemys->Update();
+				if (enemys->GetIsDead()) {
+					//貰える経験値
+					player->GetPlayerLevel()->Experiencepoint += 240.0f;
+					enemyDeathCount++;
+					CreateDeathEffect({ enemys->GetTranslate() });
+				}
 			}
+
+			enemy_.remove_if([](Enemy* enemys) {
+				if (enemys->GetIsDead()) {
+					delete enemys;
+					return true;
+				}
+				return false;
+				});
+
+			deathEffect_.remove_if([](DeathEffect* hitEffects) {
+				if (hitEffects->IsDead())
+				{
+					//実行時間をすぎたらメモリ削除
+					delete hitEffects;
+					return true;
+				}
+				return false;
+				});
+
+			for (DeathEffect* deathEffects : deathEffect_) {
+				deathEffects->Update();
+			}
+
+			//ここから敵の弾の処理
+			for (EnemyBullet* enemyBullets : enemyBullet_) {
+				enemyBullets->Update();
+			}
+
+			enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+				if (enemyBullets->GetIsDead()) {
+					delete enemyBullets;
+					return true;
+				}
+				return false;
+				});
+
+			CheckAllCollisions();
 		}
-
-		for (Enemy* enemys : enemy_) {
-			enemys->Update();
-			if (enemys->GetIsDead()) {
-				//貰える経験値
-				player->GetPlayerLevel()->Experiencepoint += 240.0f;
-				enemyDeathCount++;
-				CreateDeathEffect({enemys->GetTranslate()});
-			}
-		}
-
-		enemy_.remove_if([](Enemy* enemys) {
-			if (enemys->GetIsDead()) {
-				delete enemys;
-				return true;
-			}
-			return false;
-			});
-
-		deathEffect_.remove_if([](DeathEffect* hitEffects) {
-			if (hitEffects->IsDead())
-			{
-				//実行時間をすぎたらメモリ削除
-				delete hitEffects;
-				return true;
-			}
-			return false;
-			});
-
-		for (DeathEffect* deathEffects : deathEffect_) {
-			deathEffects->Update();
-		}
-
-		//ここから敵の弾の処理
-		for (EnemyBullet* enemyBullets : enemyBullet_) {
-			enemyBullets->Update();
-		}
-
-		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
-			if (enemyBullets->GetIsDead()) {
-				delete enemyBullets;
-				return true;
-			}
-			return false;
-			});
-
-		CheckAllCollisions();
-
 		if (timer.GetNowFrame() == 60)
 		{
 			timer.AddNowSecond();
@@ -165,7 +168,7 @@ void GamePlayScene::Update()
 			timer.AddNowWaveSecond();
 			timer.ResetNowWaveFrame();
 		}
-		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)//TriggerKey->敵の数を参照して０になったらリセットに変更
+		if (timer.GetNowWaveSecond() == 20 || enemyDeathCount == MaxEnemySpawn)
 		{
 			timer.ResetNowWaveSecond();
 			timer.ResetNowWaveFrame();
@@ -179,42 +182,46 @@ void GamePlayScene::Update()
 				1280.0f,300.0f,0.0f
 			};
 		}
+
 	}
 	else if (timer.GetNowSecond() >= 10)
 	{
 		timer.AddBossFrame();
+		if (player->GetIsHit() != true)
+		{
 
-		enemy_.remove_if([](Enemy* enemys) {
-			delete enemys;
-			return true;
-			});
+			enemy_.remove_if([](Enemy* enemys) {
+				delete enemys;
+				return true;
+				});
 
-		deathEffect_.remove_if([](DeathEffect* hitEffects) {
-			delete hitEffects;
-			return true;
-			});
+			deathEffect_.remove_if([](DeathEffect* hitEffects) {
+				delete hitEffects;
+				return true;
+				});
 
-		enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
-			delete enemyBullets;
-			return true;
-			});
+			enemyBullet_.remove_if([](EnemyBullet* enemyBullets) {
+				delete enemyBullets;
+				return true;
+				});
 
-		boss_->Update();
+			if (boss_->GetIsDead() == false) {
+				isBossSpawn = true;
+			}
+			else {
+				isBossSpawn = false;
+			}
 
-		if (boss_->GetIsDead() == false) {
-			isBossSpawn = true;
+			boss_->Update();
+
+			BossSceneAllCollisions();
 		}
-		else {
-			isBossSpawn = false;
-		}
-
-		BossSceneAllCollisions();
-
 		if (timer.GetBossFrame() == 60)
 		{
 			timer.AddBossSecond();
 			timer.ResetBossFrame();
 		}
+		
 	}
 
 
@@ -244,16 +251,32 @@ void GamePlayScene::Update()
 		sceneManager_->ChangeScene("TITLE");
 	}
 
+	if (player->GetIsHit() != true)
+	{
+		CheckAllCollisions();
 
-	CheckAllCollisions();
 
+		demo_stage->Update();
+		demo_stage->ModelDebug("demo_stage");
 
-	demo_stage->Update();
-	demo_stage->ModelDebug("demo_stage");
-	
-	player->Update();
-	sword->Update();
+		player->Update();
+		sword->Update();
+	};
 
+	if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)
+	{
+		isCameraShake = true;
+	}
+	if (isCameraShake && cameraShakeTime < 51)
+	{
+		if (cameraShakeTime == 50)
+		{
+			isCameraShake = false;
+		}
+		cameraShakeTime++;
+		camera->ShakeCamera(cameraShakeTime);
+	}
+	Hitstop();
 
 	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
 	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
@@ -420,5 +443,23 @@ void GamePlayScene::UpdateFadeOut()
 	{
 		// フェードイン完了時の処理
 		isFadingOut = false;
+	}
+}
+
+void GamePlayScene::Hitstop()
+{
+	if (player->GetIsHit() == true && throughTimer == 0)
+	{
+		hitstopTimer++;
+	}
+	if (hitstopTimer == 15)
+	{
+		player->SetIsHit(false);
+		throughTimer++;
+	}
+	if (throughTimer == 30)
+	{
+		hitstopTimer = 0;
+		throughTimer = 0;
 	}
 }

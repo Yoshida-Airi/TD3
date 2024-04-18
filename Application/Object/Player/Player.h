@@ -36,6 +36,11 @@ public:
 	{
 		this->isSkill = isSkill;
 	}
+
+	void SetIsHit(bool isHit)
+	{
+		this->isHit = isHit;
+	}
 	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
@@ -53,6 +58,7 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
+	bool GetIsHit() { return isHit; }
 	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
 	
 private:
@@ -73,14 +79,14 @@ private:
 	int HP = 5000;
 	float angle_ = 0.0f;
 
+	bool isHit = false;
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
-	
-	bool keyBoard = false;
-	bool gamePad = true;
+
 
 	float PlayerSpeed = 0.05f;
+
 
 	//Playerlevel* playerlevel;
 	std::unique_ptr<Playerlevel>playerLevel = nullptr;
@@ -123,7 +129,7 @@ private:
 
 	//一回あたったときの無敵時間
 	void CoolDown();
-
+	//hitstop管理
 
 	void RootUpdate();
 	void AttackUpdate();
