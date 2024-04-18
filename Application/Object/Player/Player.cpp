@@ -122,6 +122,7 @@ void Player::Update()
 	RightFootModel_->ModelDebug("rightFoot");
 
 	
+	ImGui::Text("SkillFlag : %d", isSkill);
 
 #endif // _DEBUG
 
@@ -585,7 +586,7 @@ void Player::RootUpdate()
 		if (skillCooldownTime_ <= 0) {
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
-			isSkill = false;
+			//isSkill = false;
 
 		}
 	}
