@@ -135,6 +135,7 @@
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -269,6 +270,7 @@
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="GameOverScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
