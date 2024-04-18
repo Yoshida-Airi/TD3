@@ -205,16 +205,14 @@ void GamePlayScene::Update()
 				return true;
 				});
 
-		boss_->Update(sceneManager_);
+			boss_->Update(sceneManager_);
 
-		if (boss_->GetIsDead() == false) {
-			isBossSpawn = true;
-		}
-		else {
-			isBossSpawn = false;
-		}
-
-			boss_->Update();
+			if (boss_->GetIsDead() == false) {
+				isBossSpawn = true;
+			}
+			else {
+				isBossSpawn = false;
+			}
 
 			BossSceneAllCollisions();
 		}
@@ -223,7 +221,7 @@ void GamePlayScene::Update()
 			timer.AddBossSecond();
 			timer.ResetBossFrame();
 		}
-		
+
 	}
 
 
@@ -258,33 +256,34 @@ void GamePlayScene::Update()
 		CheckAllCollisions();
 
 
-	demo_stage->Update();
-	demo_stage->ModelDebug("demo_stage");
-	
-	player->Update(sceneManager_);
-	sword->Update();
+		demo_stage->Update();
+		demo_stage->ModelDebug("demo_stage");
 
-	if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)
-	{
-		isCameraShake = true;
-	}
-	if (isCameraShake && cameraShakeTime < 51)
-	{
-		if (cameraShakeTime == 50)
+		player->Update(sceneManager_);
+		sword->Update();
+
+		if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)
 		{
-			isCameraShake = false;
+			isCameraShake = true;
 		}
-		cameraShakeTime++;
-		camera->ShakeCamera(cameraShakeTime);
+		if (isCameraShake && cameraShakeTime < 51)
+		{
+			if (cameraShakeTime == 50)
+			{
+				isCameraShake = false;
+			}
+			cameraShakeTime++;
+			camera->ShakeCamera(cameraShakeTime);
+		}
+		Hitstop();
+
+		camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
+		camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
+		camera->UpdateMatrix();
+
+		fadeSprite->Update();
+
 	}
-	Hitstop();
-
-	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
-	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
-	camera->UpdateMatrix();
-
-	fadeSprite->Update();
-
 }
 
 void GamePlayScene::Draw()
