@@ -18,6 +18,8 @@ void SlashingEffect::Initialize(Camera* camera)
 
 	hitEffect->StopMakeParticle();
 
+	hitEffect->SetisInvisible(true);
+
 	//hitEffect->SetRandomVelocityX();
 //	hitEffect->SetRandomVelocityZ();
 

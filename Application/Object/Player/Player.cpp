@@ -31,7 +31,7 @@ void Player::Initialize(Camera* camera)
 
 	slashingEffect = std::make_unique<SlashingEffect>();
 	slashingEffect->Initialize(camera);
-
+	//slashingEffect->StopMakeParticle();
 
 
 
@@ -444,6 +444,14 @@ void Player::Attack()
 		isUnderAttack = true;
 	}
 
+	XINPUT_STATE joyState;
+	if (input_->GetJoystickState(0, joyState))
+	{
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+		{
+			isUnderAttack = true;
+		}
+	}
 
 
 	if (isUnderAttack == true)
