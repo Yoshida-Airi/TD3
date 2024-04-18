@@ -666,7 +666,7 @@ void Player::RootUpdate()
 		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+		bodyModel_->worldTransform_->translation_.y -= 0.02f;
 
 	}
 
@@ -680,7 +680,7 @@ void Player::RootUpdate()
 		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 
-		bodyModel_->worldTransform_->translation_.y += 0.01f;
+		bodyModel_->worldTransform_->translation_.y += 0.02f;
 
 	}
 
@@ -695,7 +695,7 @@ void Player::RootUpdate()
 		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+		bodyModel_->worldTransform_->translation_.y -= 0.02f;
 
 	}
 
