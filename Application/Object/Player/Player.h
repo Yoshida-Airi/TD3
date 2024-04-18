@@ -54,7 +54,7 @@ public:
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
 	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
-		float PlayerSpeed = 2.0f;
+	
 private:
 	Input* input_ = nullptr;
 	Camera* camera_ = nullptr;
@@ -79,6 +79,8 @@ private:
 	
 	bool keyBoard = true;
 	bool gamePad = false;
+
+	float PlayerSpeed = 0.05f;
 
 	//Playerlevel* playerlevel;
 	std::unique_ptr<Playerlevel>playerLevel = nullptr;
@@ -108,7 +110,7 @@ private:
 	float rotationspeed = 0.2f;
 
 
-	bool isMove;
+	bool isPlaWalkyAnimation;
 
 private:
 
