@@ -77,8 +77,8 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 	
-	bool keyBoard = true;
-	bool gamePad = false;
+	bool keyBoard = false;
+	bool gamePad = true;
 
 	float PlayerSpeed = 0.05f;
 
@@ -110,7 +110,7 @@ private:
 	float rotationspeed = 0.2f;
 
 
-	bool isPlaWalkyAnimation;
+	bool isPlayWalkAnimation;
 
 private:
 

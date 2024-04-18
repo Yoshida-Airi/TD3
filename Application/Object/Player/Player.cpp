@@ -271,9 +271,10 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 
 void Player::Move()
 {
-	
+	//ゲームパットの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
 	Vector3 move = { 0.0f,0.0f,0.0f };
-	isPlaWalkyAnimation = false;	//歩行アニメーション
+	isPlayWalkAnimation = false;	//歩行アニメーション
 
 	// 剣の基点（柄など）の座標
 	Vector3 basePosition =
@@ -307,6 +308,10 @@ void Player::Move()
 		weapon_->GetWorldPosition().z - 0.3f
 	};
 
+
+
+
+
 	//移動
 	if (keyBoard == true)
 	{
@@ -317,7 +322,7 @@ void Player::Move()
 			slashingEffect->SetVelocityX(false);
 			slashingEffect->SetVelocityZ(true);
 			move.z = PlayerSpeed;
-			isPlaWalkyAnimation = true;
+			isPlayWalkAnimation = true;
 
 			//目標角度の算出
 			angle_ = std::atan2(move.x, move.z);
@@ -330,7 +335,7 @@ void Player::Move()
 			slashingEffect->SetVelocityX(false);
 			slashingEffect->SetVelocityZ(true);
 			move.z = -PlayerSpeed;
-			isPlaWalkyAnimation = true;
+			isPlayWalkAnimation = true;
 
 			//目標角度の算出
 			angle_ = std::atan2(move.x, move.z);
@@ -343,7 +348,7 @@ void Player::Move()
 			slashingEffect->SetVelocityZ(false);
 			slashingEffect->SetVelocityX(true);
 			move.x = -PlayerSpeed;
-			isPlaWalkyAnimation = true;
+			isPlayWalkAnimation = true;
 
 			//目標角度の算出
 			angle_ = std::atan2(move.x, move.z);
@@ -356,7 +361,7 @@ void Player::Move()
 			slashingEffect->SetVelocityZ(false);
 			slashingEffect->SetVelocityX(true);
 			move.x = PlayerSpeed;
-			isPlaWalkyAnimation = true;
+			isPlayWalkAnimation = true;
 
 			//目標角度の算出
 			angle_ = std::atan2(move.x, move.z);
@@ -374,59 +379,64 @@ void Player::Move()
 	}
 
 
+	if (gamePad == true)
+	{
+		
+		if (input_->GetJoystickState(0, joyState))
+		{
+			const float threshold = 0.9f;
+			bool isMoving = false;
+			move = { 0,0,0 };
 
-	//	//ゲームパットの状態を得る変数(XINPUT)
-	//	XINPUT_STATE joyState;
+			if (joyState.Gamepad.sThumbLX != 0 || joyState.Gamepad.sThumbLY != 0)
+			{
+				// 移動量
+				move =
+				{
+					(float)joyState.Gamepad.sThumbLX / SHRT_MAX,
+					0.0f,
+					(float)joyState.Gamepad.sThumbLY / SHRT_MAX
+				};
 
-	//	if (input_->GetJoystickState(0, joyState))
-	//	{
-	//		const float threshold = 0.9f;
-	//		bool isMoveing = false;
-	//		move = { 0,0,0 };
+				float inputMagnitude = Length(move);
 
-	//		if (joyState.Gamepad.sThumbLX != 0 || joyState.Gamepad.sThumbLY != 0)
-	//		{
-	//			
-	//			// 移動量
-	//			move =
-	//			{
-	//				(float)joyState.Gamepad.sThumbLX / SHRT_MAX,
-	//				0.0f,
-	//				(float)joyState.Gamepad.sThumbLY / SHRT_MAX
-	//			};
+				// スティックの入力が一定の閾値以上の場合のみ移動処理を実行
+				if (inputMagnitude > threshold)
+				{
+					isMoving = true;
 
+					// スティックの入力に応じて速度を調整する
+					float adjustedSpeed = PlayerSpeed * inputMagnitude;
 
-	//			if (Length(move) > threshold)
-	//			{
-	//				isMoveing = true;
-	//			}
+					// 最大速度を超えないようにする
+					if (adjustedSpeed > 0.03f)
+					{
+						adjustedSpeed = 0.03f;
+					}
 
-	//			if (isMoveing == true)
-	//			{
-	//				move.x *= Speed;
-	//				move.y = 0.0f;
-	//				move.z *= Speed;
+					// 実際の移動量を計算
+					move.x *= adjustedSpeed;
+					move.z *= adjustedSpeed;
 
-	//				isPlaWalkyAnimation = true;
+					// 歩行アニメーションを開始
+					isPlayWalkAnimation = true;
 
-	//				//目標角度の算出
-	//				angle_ = std::atan2(move.x, move.z);
-
-	//			}
-
-	//		}
-	//	}
-
-
-	//
-	//
-	//
+					// 目標角度の算出
+					angle_ = std::atan2(move.x, move.z);
 
 
-	//// Y軸周り角度(θy)	歩いている方向に顔を向ける
-	//model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
-	//model_->worldTransform_->translation_.x += move.x;
-	//model_->worldTransform_->translation_.z += move.z;
+					// Y軸周り角度(θy)	歩いている方向に顔を向ける
+					model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
+					model_->worldTransform_->translation_.x += move.x;
+					model_->worldTransform_->translation_.z += move.z;
+
+				}
+			}
+		}
+
+	}
+
+	
 
 	CoolDown();
 
@@ -607,7 +617,7 @@ void Player::RootUpdate()
 	//歩行アニメーション
 	MotionTimer_++;
 
-	if (isPlaWalkyAnimation == true)
+	if (isPlayWalkAnimation == true)
 	{
 		if (MotionCount_ == 0)
 		{
