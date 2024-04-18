@@ -2,7 +2,7 @@
 
 GameClearScene::~GameClearScene()
 {
-	
+	delete camera;
 }
 
 void GameClearScene::Initialize()
