@@ -34,6 +34,8 @@ public:
 	/// <returns>トリガーかどうか</returns>
 	bool TriggerKey(BYTE keyNumber);
 
+	void CreateAllKeyDetectionFunctions();
+
 	// ジョイスティックのデッドゾーンを適用する関数
 	SHORT ApplyDeadzone(SHORT value, SHORT deadzone);
 

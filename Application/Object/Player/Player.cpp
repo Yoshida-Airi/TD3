@@ -10,7 +10,7 @@ void Player::Initialize(Camera* camera)
 
 	Collider::Initialize();
 	//属性　：　プレイヤー
-	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));	
+	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kPlayer));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
@@ -28,10 +28,10 @@ void Player::Initialize(Camera* camera)
 	LeftFootModel_.reset(Model::Create("Resources/PlayerModel/LeftFoot.obj"));
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
-	
+
 	slashingEffect = std::make_unique<SlashingEffect>();
 	slashingEffect->Initialize(camera);
-	
+	//slashingEffect->StopMakeParticle();
 
 
 
@@ -54,7 +54,7 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
 
-	
+
 
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
@@ -105,7 +105,7 @@ void Player::Update()
 
 	playerLevel->Update();
 
-	
+
 
 #ifdef _DEBUG
 	model_->ModelDebug("player");
@@ -121,7 +121,7 @@ void Player::Update()
 	LeftFootModel_->ModelDebug("leftFoot");
 	RightFootModel_->ModelDebug("rightFoot");
 
-	
+
 	ImGui::Text("SkillFlag : %d", isSkill);
 
 #endif // _DEBUG
@@ -275,11 +275,10 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 
 void Player::Move()
 {
+	//ゲームパットの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
-	const float threshold = 0.7f;
 	Vector3 move = { 0.0f,0.0f,0.0f };
-	bool isMoveing = false;
-	isMove = false;
+	isPlayWalkAnimation = false;	//歩行アニメーション
 
 	// 剣の基点（柄など）の座標
 	Vector3 basePosition =
@@ -300,7 +299,7 @@ void Player::Move()
 	// 剣の基点（柄など）の座標
 	Vector3 leftBasePosition =
 	{
-		weapon_->GetWorldPosition().x-0.5f ,
+		weapon_->GetWorldPosition().x - 0.5f ,
 		weapon_->GetWorldPosition().y ,
 		weapon_->GetWorldPosition().z - 1.2f
 	};
@@ -308,88 +307,133 @@ void Player::Move()
 	// 剣の基点（柄など）の座標
 	Vector3 rightBasePosition =
 	{
-		weapon_->GetWorldPosition().x +0.5f,
+		weapon_->GetWorldPosition().x + 0.5f,
 		weapon_->GetWorldPosition().y,
 		weapon_->GetWorldPosition().z - 0.3f
 	};
 
+
+
+
 	//移動
-	if (keyBoard == true) {
-		if (input_->PushKey(DIK_W))
-		{
-			slashingEffect->SetPosition(backBasePosition);
-			slashingEffect->SetVelocity({ -0.7f,0.0f,0.0f });
-			slashingEffect->SetVelocityX(false);
-			slashingEffect->SetVelocityZ(true);
-			move.z = 2.0f;
-			isMove = true;
-		}
-		if (input_->PushKey(DIK_S))
-		{
-			slashingEffect->SetPosition(basePosition);
-			slashingEffect->SetVelocity({ 0.3f,0.0f,0.0f });
-			slashingEffect->SetVelocityX(false);
-			slashingEffect->SetVelocityZ(true);
-			move.z = -2.0f;
-			isMove = true;
-		}
-		if (input_->PushKey(DIK_A))
-		{
-			slashingEffect->SetPosition(leftBasePosition);
-			slashingEffect->SetVelocity({ 0.0f,0.0f,-0.5f });
-			slashingEffect->SetVelocityZ(false);
-			slashingEffect->SetVelocityX(true);
-			move.x = -2.0f;
-			isMove = true;
-		}
-		if (input_->PushKey(DIK_D))
-		{
-			slashingEffect->SetPosition(rightBasePosition);
-			slashingEffect->SetVelocity({ 0.2f,0.0f,0.7f });
-			slashingEffect->SetVelocityZ(false);
-			slashingEffect->SetVelocityX(true);
-			move.x = 2.0f;
-			isMove = true;
-		}
-	}
-	//コントローラーチェンジ
-	if (input_->PushKey(DIK_1)) {
-		gamePad = true;
-		keyBoard = false;
-	}
-	if (input_->PushKey(DIK_2)) {
-		gamePad = false;
-		keyBoard = true;
-	}
 
-	if (gamePad == true) {
-		if (input_->GetJoystickState(0, joyState)) {
-			move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
-			move.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
-		}
-	}
-
-	if (Length(move) > threshold)
+	if (input_->PushKey(DIK_W))
 	{
-		isMoveing = true;
+		slashingEffect->SetPosition(backBasePosition);
+		slashingEffect->SetVelocity({ -0.7f,0.0f,0.0f });
+		slashingEffect->SetVelocityX(false);
+		slashingEffect->SetVelocityZ(true);
+		move.z = PlayerSpeed;
+		isPlayWalkAnimation = true;
+
+		//目標角度の算出
+		angle_ = std::atan2(move.x, move.z);
 
 	}
-	if (isMoveing == true)
+	if (input_->PushKey(DIK_S))
 	{
-		move.x *= Speed;
-		move.y = 0.0f;
-		move.z *= Speed;
+		slashingEffect->SetPosition(basePosition);
+		slashingEffect->SetVelocity({ 0.3f,0.0f,0.0f });
+		slashingEffect->SetVelocityX(false);
+		slashingEffect->SetVelocityZ(true);
+		move.z = -PlayerSpeed;
+		isPlayWalkAnimation = true;
+
+		//目標角度の算出
+		angle_ = std::atan2(move.x, move.z);
+
+	}
+	if (input_->PushKey(DIK_A))
+	{
+		slashingEffect->SetPosition(leftBasePosition);
+		slashingEffect->SetVelocity({ 0.0f,0.0f,-0.5f });
+		slashingEffect->SetVelocityZ(false);
+		slashingEffect->SetVelocityX(true);
+		move.x = -PlayerSpeed;
+		isPlayWalkAnimation = true;
+
+		//目標角度の算出
+		angle_ = std::atan2(move.x, move.z);
+
+	}
+	if (input_->PushKey(DIK_D))
+	{
+		slashingEffect->SetPosition(rightBasePosition);
+		slashingEffect->SetVelocity({ 0.2f,0.0f,0.7f });
+		slashingEffect->SetVelocityZ(false);
+		slashingEffect->SetVelocityX(true);
+		move.x = PlayerSpeed;
+		isPlayWalkAnimation = true;
 
 		//目標角度の算出
 		angle_ = std::atan2(move.x, move.z);
 
 	}
 
-
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 	model_->worldTransform_->translation_.x += move.x;
 	model_->worldTransform_->translation_.z += move.z;
+
+
+
+
+
+	if (input_->GetJoystickState(0, joyState))
+	{
+		const float threshold = 0.9f;
+		bool isMoving = false;
+		move = { 0,0,0 };
+
+		if (joyState.Gamepad.sThumbLX != 0 || joyState.Gamepad.sThumbLY != 0)
+		{
+			// 移動量
+			move =
+			{
+				(float)joyState.Gamepad.sThumbLX / SHRT_MAX,
+				0.0f,
+				(float)joyState.Gamepad.sThumbLY / SHRT_MAX
+			};
+
+			float inputMagnitude = Length(move);
+
+			// スティックの入力が一定の閾値以上の場合のみ移動処理を実行
+			if (inputMagnitude > threshold)
+			{
+				isMoving = true;
+
+				// スティックの入力に応じて速度を調整する
+				float adjustedSpeed = PlayerSpeed * inputMagnitude;
+
+				// 最大速度を超えないようにする
+				if (adjustedSpeed > 0.05f)
+				{
+					adjustedSpeed = 0.05f;
+				}
+
+				// 実際の移動量を計算
+				move.x *= adjustedSpeed;
+				move.z *= adjustedSpeed;
+
+				// 歩行アニメーションを開始
+				isPlayWalkAnimation = true;
+
+				// 目標角度の算出
+				angle_ = std::atan2(move.x, move.z);
+
+
+				// Y軸周り角度(θy)	歩いている方向に顔を向ける
+				model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
+				model_->worldTransform_->translation_.x += move.x;
+				model_->worldTransform_->translation_.z += move.z;
+
+			}
+		}
+	}
+
+
+
+
 
 	CoolDown();
 
@@ -397,26 +441,24 @@ void Player::Move()
 
 void Player::Attack()
 {
+
+
+	if (input_->IsLeftMouseClicked())
+	{
+		isUnderAttack = true;
+	}
+
 	XINPUT_STATE joyState;
-
-	if (gamePad == true) {
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-
+	if (input_->GetJoystickState(0, joyState))
+	{
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 		{
 			isUnderAttack = true;
 		}
 	}
-	else if (keyBoard == true) {
-		if (input_->IsLeftMouseClicked()) {
-			isUnderAttack = true;
-		}
-	}
 
 
-	if (isUnderAttack == true )
+	if (isUnderAttack == true)
 	{
 		behaviorRequest_ = Animation::kAttack;
 		slashingEffect->SetFlag(true);
@@ -426,25 +468,13 @@ void Player::Attack()
 
 void Player::Skill()
 {
-	XINPUT_STATE joyState;
 
-	if (gamePad == true) {
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
 
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			isSkill = true;
-		}
-	
+	if (input_->PushKey(DIK_LSHIFT))
+	{
+		isSkill = true;
 	}
-	else if (keyBoard == true) {
-		if (input_->PushKey(DIK_LSHIFT))
-		{
-			isSkill = true;
-		}	
-	}
+
 }
 
 void Player::PLevelUp()
@@ -471,7 +501,7 @@ void Player::CoolDown() {
 void Player::AttackUpdate()
 {
 	//剣を振りかぶる
-	
+
 	//移動
 	//Move();
 
@@ -483,18 +513,18 @@ void Player::AttackUpdate()
 		{
 			MotionCount_ = 1;
 		}
-	
+
 		weapon_->GetWorldTransform()->rotation_.y += 1.6f / 10;
 
-		
-		LeftFootModel_->worldTransform_->rotation_.x += 0.1f/10;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f/10;
-	
+
+		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+
 		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
 		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.1f/10;
-		bodyModel_->worldTransform_->rotation_.y += 1.0f/10;
+		bodyModel_->worldTransform_->translation_.y -= 0.1f / 10;
+		bodyModel_->worldTransform_->rotation_.y += 1.0f / 10;
 
 	}
 
@@ -518,7 +548,7 @@ void Player::AttackUpdate()
 
 		bodyModel_->worldTransform_->translation_.y += 0.1f / 10;
 		bodyModel_->worldTransform_->rotation_.y -= 0.7f / 10;
-		
+
 	}
 
 
@@ -594,11 +624,11 @@ void Player::RootUpdate()
 	//歩行アニメーション
 	MotionTimer_++;
 
-	if (isMove == true)
+	if (isPlayWalkAnimation == true)
 	{
 		if (MotionCount_ == 0)
 		{
-			
+
 			MotionCount_ = 1;
 		}
 	}
@@ -615,8 +645,8 @@ void Player::RootUpdate()
 		bodyModel_->worldTransform_->translation_.y = LerpShortTranslate(bodyModel_->worldTransform_->rotation_.y, 0.0f, 0.2f);
 
 	}
-	
-	
+
+
 
 	if (MotionCount_ == 1)
 	{
@@ -625,7 +655,7 @@ void Player::RootUpdate()
 			MotionCount_ = 2;
 		}
 
-		
+
 		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 
@@ -643,7 +673,7 @@ void Player::RootUpdate()
 		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+		bodyModel_->worldTransform_->translation_.y -= 0.02f;
 
 	}
 
@@ -657,7 +687,7 @@ void Player::RootUpdate()
 		LeftFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 
-		bodyModel_->worldTransform_->translation_.y += 0.01f;
+		bodyModel_->worldTransform_->translation_.y += 0.02f;
 
 	}
 
@@ -672,7 +702,7 @@ void Player::RootUpdate()
 		LeftFootModel_->worldTransform_->rotation_.x -= 0.2f / 10;
 		RightFootModel_->worldTransform_->rotation_.x += 0.2f / 10;
 
-		bodyModel_->worldTransform_->translation_.y -= 0.01f;
+		bodyModel_->worldTransform_->translation_.y -= 0.02f;
 
 	}
 
@@ -856,7 +886,7 @@ void Player::AttackInitialize()
 	MotionCount_ = 0;
 
 
-	
+
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
 
 

@@ -27,15 +27,7 @@ void Sword::Update()
 	model_->Update();
 	model_->ModelDebug("Sword");
 
-	//コントローラーチェンジ
-	if (input_->PushKey(DIK_1)) {
-		gamePad = true;
-		keyBoard = false;
-	}
-	if (input_->PushKey(DIK_2)) {
-		gamePad = false;
-		keyBoard = true;
-	}
+
 
 
 	Attack();
