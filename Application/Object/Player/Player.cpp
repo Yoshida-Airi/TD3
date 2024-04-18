@@ -229,7 +229,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
 	{
 		//敵の弾にあたったら
-		HP -= 10000;
+		HP -= 200;
 		isCoolDown = true;
 	}
 
