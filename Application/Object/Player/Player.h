@@ -85,6 +85,8 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	bool keyBoard = true;
+	bool gamePad = false;
 
 	float PlayerSpeed = 0.05f;
 
