@@ -457,11 +457,11 @@ void Player::Attack()
 			isUnderAttack = true;
 		}
 	}
-	else if (keyBoard == true) {
+	
 		if (input_->IsLeftMouseClicked()) {
 			isUnderAttack = true;
 		}
-	}
+
 
 	if (isUnderAttack == true)
 	{
@@ -475,7 +475,7 @@ void Player::Skill()
 {
 	XINPUT_STATE joyState;
 
-	if (gamePad == true) {
+
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 			return;
 		}
@@ -485,13 +485,12 @@ void Player::Skill()
 			isSkill = true;
 		}
 
-	}
-	else if (keyBoard == true) {
+
 		if (input_->PushKey(DIK_LSHIFT))
 		{
 			isSkill = true;
 		}	
-	}
+	
 }
 
 void Player::PLevelUp()
