@@ -479,12 +479,12 @@ void Player::Skill()
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 			return;
 		}
-		
+
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
 			isSkill = true;
 		}
-	
+
 	}
 	else if (keyBoard == true) {
 		if (input_->PushKey(DIK_LSHIFT))
@@ -552,13 +552,19 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y = 6.5f;
 		weapon_->GetWorldTransform()->rotation_.z = 0;
 	}
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
-		MotionCount_ = 2;
-		MotionTimer_ = 60;
-		weapon_->GetWorldTransform()->rotation_.x = 2.83f;
-		weapon_->GetWorldTransform()->rotation_.y = 6.5f;
-		weapon_->GetWorldTransform()->rotation_.z = 0;
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
+			MotionCount_ = 2;
+			MotionTimer_ = 60;
+			weapon_->GetWorldTransform()->rotation_.x = 2.83f;
+			weapon_->GetWorldTransform()->rotation_.y = 6.5f;
+			weapon_->GetWorldTransform()->rotation_.z = 0;
+		}
 	}
+	
 	if (MotionCount_ == 1 && MotionTimer_ >= 60) {
 		MotionCount_ = 99;
 	}
@@ -586,13 +592,19 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
 		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 	}
-	if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
-		MotionCount_ = 4;
-		MotionTimer_ = 130;
-		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
-		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
-		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
+	if (gamePad == true) {
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+			return;
+		}
+		if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
+			MotionCount_ = 4;
+			MotionTimer_ = 130;
+			weapon_->GetWorldTransform()->rotation_.x = 3.0f;
+			weapon_->GetWorldTransform()->rotation_.y = 2.7f;
+			weapon_->GetWorldTransform()->rotation_.z = -0.24f;
+		}
 	}
+	
 	if (MotionCount_ == 3 && MotionTimer_ >= 130) {
 		MotionCount_ = 99;
 	}
