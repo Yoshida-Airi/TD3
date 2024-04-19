@@ -275,15 +275,15 @@ void GamePlayScene::Update()
 			cameraShakeTime++;
 			camera->ShakeCamera(cameraShakeTime);
 		}
-		Hitstop();
-
-		camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
-		camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
-		camera->UpdateMatrix();
-
-		fadeSprite->Update();
-
 	}
+	Hitstop();
+
+	camera->transform.translate.x = player->LerpShortTranslate(camera->transform.translate.x, player->model_->worldTransform_->translation_.x, 0.04f);
+	camera->transform.translate.z = player->LerpShortTranslate(camera->transform.translate.z, player->model_->worldTransform_->translation_.z - 10.0f, 0.04f);
+	camera->UpdateMatrix();
+
+	fadeSprite->Update();
+
 }
 
 void GamePlayScene::Draw()
