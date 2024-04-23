@@ -34,7 +34,7 @@ void GameOverScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseClicked())
+	if (input->IsLeftMouseTrigger())
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}

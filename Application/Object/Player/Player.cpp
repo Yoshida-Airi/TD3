@@ -29,6 +29,15 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
 
+	bodyModel_->SetTexture(2);
+	headModel_->SetTexture(2);
+	LeftArmModel_->SetTexture(2);
+	RightArmModel_->SetTexture(2);
+	LeftFootModel_->SetTexture(2);
+	RightFootModel_->SetTexture(2);
+	
+
+
 	slashingEffect = std::make_unique<SlashingEffect>();
 	slashingEffect->Initialize(camera);
 	//slashingEffect->StopMakeParticle();

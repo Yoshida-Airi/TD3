@@ -12,6 +12,8 @@
 class Input
 {
 public:
+	Input() : lastState(false) {}
+
 	static Input* GetInstance();
 
 	void Initialize();
@@ -44,6 +46,8 @@ public:
 	//マウスの左クリックの検知
 	bool IsLeftMouseClicked();
 
+	bool IsLeftMouseTrigger();
+
 private:
 
 	WinApp* winApp_;
@@ -56,7 +60,9 @@ private:
 	// デッドゾーンの設定
 	const int DEADZONE_THRESHOLD = 8000;
 
+	bool lastState;
 
 	static Input* instance;
+
 
 };

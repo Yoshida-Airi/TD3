@@ -11,8 +11,8 @@ void TitleScene::Initialize()
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
-	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Alarm01.wav");
-	Audio::GetInstance()->SoundPlayWave(soundData, false);
+	//soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Alarm01.wav");
+	//Audio::GetInstance()->SoundPlayWave(soundData, false);
 
 	camera = new Camera;
 	camera->Initialize();
@@ -60,7 +60,7 @@ void TitleScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseClicked())
+	if (input->IsLeftMouseTrigger())
 	{
 		// フェードイン開始
 		StartFadeIn();
@@ -117,6 +117,6 @@ void TitleScene::UpdateFadeIn()
 		// フェードイン完了時の処理
 		isFadingIn = false;
 		sceneManager_->ChangeScene("GAMEPLAY");
-		Audio::GetInstance()->SoundStopWave(soundData);
+		//Audio::GetInstance()->SoundStopWave(soundData);
 	}
 }
