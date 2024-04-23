@@ -57,7 +57,7 @@ void TitleScene::Update()
 		}
 	}
 
-	if (input->TriggerKey(DIK_RETURN))
+	if (input->IsLeftMouseClicked())
 	{
 		// フェードイン開始
 		StartFadeIn();
