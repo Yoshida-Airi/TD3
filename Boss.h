@@ -7,7 +7,7 @@
 #include "Collider.h"
 #include "Player.h"
 #include "imgui.h"
-#include "EnemyBullet.h"
+#include "../BossBullet.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +24,7 @@ class Boss : public Collider {
 public:
 	~Boss();
 
-	void Initialize(Player* player);
+	void Initialize(Player* player, BossBullet* bullet);
 
 	void Update(SceneManager* scene);
 
@@ -53,7 +53,7 @@ public:
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Player* player_ = nullptr;
-	std::unique_ptr<EnemyBullet> bullet_ = nullptr;
+	BossBullet* bullet_ = nullptr;
 
 	Input* input_ = nullptr;
 

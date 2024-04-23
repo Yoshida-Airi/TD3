@@ -5,7 +5,7 @@ Boss::~Boss() {
 
 }
 
-void Boss::Initialize(Player* player) {
+void Boss::Initialize(Player* player, BossBullet* bullet) {
 	Collider::Initialize();
 
 	//当たり判定用
@@ -16,7 +16,7 @@ void Boss::Initialize(Player* player) {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
-	bullet_ = std::make_unique<EnemyBullet>();
+	bullet_ = bullet;
 	bullet_->Initialize();
 
 	currentTime = int(time(nullptr));
