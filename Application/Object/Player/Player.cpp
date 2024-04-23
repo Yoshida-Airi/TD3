@@ -959,7 +959,7 @@ void Player::AttackInitialize()
 
 
 
-	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,0.0f };
+	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,-2.4f };
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
