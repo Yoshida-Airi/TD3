@@ -203,13 +203,13 @@ void Boss::Direction(float speed) {
 	bool isMoveing = false;
 
 	speed_.x = playerPos.x - enemyPos.x;
-	speed_.y = playerPos.y - enemyPos.y;
+	//speed_.y = playerPos.y - enemyPos.y;
 	speed_.z = playerPos.z - enemyPos.z;
 
 	speed_ = Normalize(speed_);
 
 	speed_.x *= kBulletSpeed;
-	speed_.y *= kBulletSpeed;
+	//speed_.y *= kBulletSpeed;
 	speed_.z *= kBulletSpeed;
 
 	//目標角度の算出

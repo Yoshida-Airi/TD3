@@ -138,4 +138,5 @@ private:
 
 	bool isCameraShake = false;
 	uint32_t cameraShakeTime;
+	uint32_t kFullWaveTime = 10;
 };
