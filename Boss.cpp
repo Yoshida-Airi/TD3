@@ -60,10 +60,7 @@ void Boss::Update(SceneManager* scene) {
 		}
 	}
 	else {
-		if (model_->worldTransform_->translation_.y >= 0.0f)//落下
-		{
-			model_->worldTransform_->translation_.y -= 0.05f;
-		}
+		model_->worldTransform_->translation_.y -= 0.05f;
 	}
 
 	Dead(scene);
@@ -143,31 +140,31 @@ void Boss::Dead(SceneManager* scene) {
 }
 
 void Boss::Attack() {
-		if (aimTimer <= 90 && isAttack == false) {
-			aimTimer++;
-			Direction(0.1f);
-		}
-		else {
-			aimTimer = 0;
-			isAttack = true;
-		}
+	if (aimTimer <= 90 && isAttack == false) {
+		aimTimer++;
+		Direction(0.1f);
+	}
+	else {
+		aimTimer = 0;
+		isAttack = true;
+	}
 
-		if (isAttack == true && isAssignment == false) {
-			bullet_->SetSpeed(speed_);
-			bullet_->SetTranslate(model_->worldTransform_->translation_);
-			isAssignment = true;
-			isBAlive = true;
-		}
+	if (isAttack == true && isAssignment == false) {
+		bullet_->SetSpeed(speed_);
+		bullet_->SetTranslate(model_->worldTransform_->translation_);
+		isAssignment = true;
+		isBAlive = true;
+	}
 
-		if (isAssignment == true && isNextAction == false) {
-			BTimer++;
-		}
+	if (isAssignment == true && isNextAction == false) {
+		BTimer++;
+	}
 
-		if (BTimer >= 60) {
-			isNextAction = true;
-			isBAlive = false;
-			BTimer = 0;
-		}
+	if (BTimer >= 60) {
+		isNextAction = true;
+		isBAlive = false;
+		BTimer = 0;
+	}
 }
 
 void Boss::NextAction() {
