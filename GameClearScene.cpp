@@ -30,13 +30,13 @@ void GameClearScene::Update()
 	{
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
-			sceneManager_->ChangeScene("GAMEPLAY");
+			sceneManager_->ChangeScene("TITLE");
 		}
 	}
 
-	if (input->TriggerKey(DIK_RETURN))
+	if (input->IsLeftMouseClicked())
 	{
-		sceneManager_->ChangeScene("GAMEPLAY");
+		sceneManager_->ChangeScene("TITLE");
 	}
 
 	effect->Update();
