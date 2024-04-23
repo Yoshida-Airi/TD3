@@ -34,7 +34,7 @@ void GameClearScene::Update()
 		}
 	}
 
-	if (input->TriggerKey(DIK_RETURN))
+	if (input->IsLeftMouseClicked())
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}
