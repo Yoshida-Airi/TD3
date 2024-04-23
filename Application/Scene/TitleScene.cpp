@@ -31,6 +31,9 @@ void TitleScene::Initialize()
 
 	slashingEffect->SetFlag(true);
 
+	titleTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/title.png");
+	titleSprite.reset(Sprite::Create(titleTex));
+
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 	fadeSprite.reset(Sprite::Create(fadeTex));
 
@@ -80,7 +83,9 @@ void TitleScene::Update()
 
 	slashingEffect->Update();
 
+	titleSprite->Update();
 	fadeSprite->Update();
+
 }
 
 void TitleScene::Draw()
@@ -91,6 +96,7 @@ void TitleScene::Draw()
 	effect->Draw();
 	slashingEffect->Draw();
 
+	titleSprite->Draw(camera);
 	fadeSprite->Draw(camera);
 
 }
