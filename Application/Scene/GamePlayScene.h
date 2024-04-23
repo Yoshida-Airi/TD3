@@ -24,6 +24,7 @@
 #include "Enemy/EnemyBullet.h"
 #include <random>
 #include "../Boss.h"
+#include "../BossBullet.h"
 #include"DeathEffect.h"
 
 /// <summary>
@@ -79,7 +80,7 @@ private:
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<Sword> sword = nullptr;
-
+	std::unique_ptr<BossBullet> bossBullet_ = nullptr;
 
 	std::list<Enemy*> enemy_;
 	std::list<EnemyBullet*> enemyBullet_;

@@ -56,9 +56,11 @@ void GamePlayScene::Initialize()
 	sword = std::make_unique<Sword>();
 	sword->Initialize(player.get());
 
-	boss_ = std::make_unique<Boss>();
-	boss_->Initialize(player.get());
+	bossBullet_ = std::make_unique<BossBullet>();
+	bossBullet_->Initialize();
 
+	boss_ = std::make_unique<Boss>();
+	boss_->Initialize(player.get(), bossBullet_.get());
 
 	player->SetWeapon(sword.get());
 
@@ -312,6 +314,7 @@ void GamePlayScene::BossSceneAllCollisions() {
 	if (boss_->GetIsCoolDown() == false) {
 		colliderManager_->AddColliders(boss_.get());
 	}
+	colliderManager_->AddColliders(bossBullet_.get());
 	//colliderManager_->AddColliders(sampleEnemy.get());
 
 	//当たり判定
