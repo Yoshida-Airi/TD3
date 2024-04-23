@@ -103,6 +103,8 @@ private:
 
 	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
 
+	uint32_t playerTex;
+
 	Animation behavior_ = Animation::kRoot;
 	std::optional<Animation>behaviorRequest_ = std::nullopt;
 

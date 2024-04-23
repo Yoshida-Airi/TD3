@@ -21,6 +21,8 @@ void Player::Initialize(Camera* camera)
 	playerLevel = std::make_unique<Playerlevel>();
 	playerLevel->Initialize();
 
+	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/player.png");
+
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
 	LeftArmModel_.reset(Model::Create("Resources/PlayerModel/leftArm.obj"));
@@ -29,12 +31,12 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
 
-	bodyModel_->SetTexture(2);
-	headModel_->SetTexture(2);
-	LeftArmModel_->SetTexture(2);
-	RightArmModel_->SetTexture(2);
-	LeftFootModel_->SetTexture(2);
-	RightFootModel_->SetTexture(2);
+	bodyModel_->SetTexture(playerTex);
+	headModel_->SetTexture(playerTex);
+	LeftArmModel_->SetTexture(playerTex);
+	RightArmModel_->SetTexture(playerTex);
+	LeftFootModel_->SetTexture(playerTex);
+	RightFootModel_->SetTexture(playerTex);
 	
 
 
