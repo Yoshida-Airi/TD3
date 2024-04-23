@@ -23,7 +23,7 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 	srand(currentTime);
 
 	SetRadius(model_->worldTransform_->scale_);
-	model_->worldTransform_->translation_ = { 0.0f,6.0f,0.0f };
+	model_->worldTransform_->translation_ = { 0.001f,6.0f,0.0f };
 	hp = 100;
 
 	player_ = player;
