@@ -60,7 +60,10 @@ void Boss::Update(SceneManager* scene) {
 		}
 	}
 	else {
-		Move();
+		if (model_->worldTransform_->translation_.y >= 0.0f)//落下
+		{
+			model_->worldTransform_->translation_.y -= 0.05f;
+		}
 	}
 
 	Dead(scene);
@@ -214,15 +217,6 @@ void Boss::Direction(float speed) {
 
 	//目標角度の算出
 	angle_ = std::atan2(speed_.x, speed_.z);
-
-	if (enemyPos.y >= 0.0f)//落下
-	{
-		speed_.x = 0.0f;
-		speed_.y = -0.05f;
-		speed_.z = 0.0f;
-	}
-	
-
 
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 
