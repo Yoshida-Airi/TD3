@@ -136,6 +136,7 @@
     </ClCompile>
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="BossBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2D\Triangle.h">
@@ -271,6 +272,7 @@
     </ClInclude>
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="BossBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
