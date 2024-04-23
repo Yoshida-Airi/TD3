@@ -842,7 +842,7 @@ void Player::Skill2Update()
 
 	if (MotionCount_ == 0)
 	{
-		if (MotionTimer_ == 30)
+		if (MotionTimer_ == 40)
 		{
 			MotionCount_ = 1;
 		}
@@ -856,9 +856,22 @@ void Player::Skill2Update()
 
 		model_->worldTransform_->translation_.x += dashX;
 		model_->worldTransform_->translation_.z += dashZ;
+
+		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
 		weapon_->GetWorldTransform()->rotation_.y += 1.0f;
+		weapon_->GetWorldTransform()->rotation_.z = -0.2f;
+		if (MotionTimer_ <= 10) {
+			weapon_->GetWorldTransform()->translation_.z += 0.5f;
+		}
+		if (10 <= MotionTimer_) {
+			weapon_->GetWorldTransform()->translation_.z -= 0.1f;
+		}
 		if (weapon_->GetWorldTransform()->rotation_.y >= 6.28f) {
 			weapon_->GetWorldTransform()->rotation_.y = 0.0f;
+		}
+		
+		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
+			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
 
 		//カメラ直書き
@@ -906,9 +919,18 @@ void Player::Skill3Update()
 
 		model_->worldTransform_->translation_.x += dashX;
 		model_->worldTransform_->translation_.z += dashZ;
-		weapon_->model_->worldTransform_->rotation_.y += 1.0f;
-		if (weapon_->model_->worldTransform_->rotation_.y >= 6.28f) {
-			weapon_->model_->worldTransform_->rotation_.y = 0.0f;
+
+		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
+		weapon_->GetWorldTransform()->rotation_.y += 1.0f;
+		weapon_->GetWorldTransform()->rotation_.z = -0.2f;
+		weapon_->GetWorldTransform()->translation_.z += 0.5f;
+
+		if (weapon_->GetWorldTransform()->rotation_.y >= 6.28f) {
+			weapon_->GetWorldTransform()->rotation_.y = 0.0f;
+		}
+
+		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
+			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
 
 		//カメラ直書き
@@ -937,6 +959,7 @@ void Player::RootInitialize()
 	isUnderAttack = false;
 
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,-2.4f };
+	weapon_->GetWorldTransform()->translation_ = { 0.0f,1.66f,0.87f };
 
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
@@ -967,7 +990,7 @@ void Player::AttackInitialize()
 
 
 	weapon_->GetWorldTransform()->rotation_ = { 0.0f,0.0f,-2.4f };
-
+	weapon_->GetWorldTransform()->translation_ = { 0.0f,1.66f,0.87f };
 
 	bodyModel_->worldTransform_->translation_ = { 0.0f,0.0f,0.0f };
 	bodyModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
