@@ -70,6 +70,7 @@ void GamePlayScene::Initialize()
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(false);
 	fadeInAlpha = 1.0f;
+	fadeOutAlpha = 0.0f;
 	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeOutAlpha });
 
 	StartFadeOut();

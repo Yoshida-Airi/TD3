@@ -48,3 +48,5 @@ void GameClearScene::Draw()
 	effect->Draw();
 }
 
+
+
