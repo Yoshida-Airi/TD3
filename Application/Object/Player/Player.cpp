@@ -22,6 +22,12 @@ void Player::Initialize(Camera* camera)
 	playerLevel->Initialize();
 
 	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/player.png");
+	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
+
+	hpSprite_.reset(Sprite::Create(HpTex));
+	hpSprite_->SetPosition({ 20.0f,650.0f });
+	hpSprite_->worldTransform_->scale_ = { float(HP),0.7f };
+	//hpSpriteScale = { 130.0f,3.0f };
 
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
@@ -83,6 +89,8 @@ void Player::Initialize(Camera* camera)
 	//RightFootModel_->SetisInvisible(true);
 	
 	isHit = false;
+
+	
 }
 
 void Player::Update()
@@ -224,7 +232,19 @@ void Player::Update()
 		break;
 	}
 
+	hpSprite_->Update();
 
+	float scaleX = static_cast<float>(HP) / 1000.0f;
+	if (scaleX >= 5.0f)
+	{
+		scaleX = 5.0f;
+	}
+	else if (scaleX <= 0.0f)
+	{
+		scaleX = 0.0f;
+	}
+
+	hpSprite_->worldTransform_->scale_ = { scaleX,0.7f };
 }
 
 void Player::Draw()
@@ -242,6 +262,7 @@ void Player::Draw()
 	playerLevel->Draw();
 
 	slashingEffect->Draw();
+	hpSprite_->Draw(camera_);
 }
 
 Vector3 Player::GetWorldPosition()

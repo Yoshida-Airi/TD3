@@ -103,6 +103,9 @@ private:
 	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
 
 	uint32_t playerTex;
+	uint32_t HpTex;
+	std::unique_ptr<Sprite> hpSprite_;
+	Vector2 hpSpriteScale;
 
 	Animation behavior_ = Animation::kRoot;
 	std::optional<Animation>behaviorRequest_ = std::nullopt;
