@@ -14,6 +14,9 @@ void GameOverScene::Initialize()
 	camera->Initialize();
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
+	overSceneTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/gameover.png");
+	overSprite.reset(Sprite::Create(overSceneTex));
+
 
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });
@@ -49,12 +52,14 @@ void GameOverScene::Update()
 		UpdateFadeOut();
 	}
 
+	overSprite->Update();
 	fadeSprite->Update();
 
 }
 
 void GameOverScene::Draw()
 {
+	overSprite->Draw(camera);
 	fadeSprite->Draw(camera);
 }
 

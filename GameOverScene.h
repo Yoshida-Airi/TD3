@@ -29,6 +29,8 @@ private:
 
 	std::unique_ptr<DeathEffect> effect = nullptr;
 
+	uint32_t overSceneTex;
+	std::unique_ptr<Sprite>overSprite = nullptr;
 
 	uint32_t fadeTex;
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
