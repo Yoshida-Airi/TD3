@@ -69,8 +69,8 @@ void GamePlayScene::Initialize()
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(false);
-	alpha = 1.0f;
-	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,alpha });
+	fadeInAlpha = 1.0f;
+	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeOutAlpha });
 
 	StartFadeOut();
 
@@ -81,7 +81,7 @@ void GamePlayScene::Initialize()
 void GamePlayScene::Update()
 {
 
-	if (isFadingOut == true)
+	if (isFadeOut == true)
 	{
 		UpdateFadeOut();
 	}
@@ -253,7 +253,14 @@ void GamePlayScene::Update()
 
 	if (player->GetHP() <= 0)
 	{
-		sceneManager_->ChangeScene("GAMEOVER");
+		//sceneManager_->ChangeScene("GAMEOVER");
+		StartFadeIn();
+	}
+
+	// フェードイン中の処理
+	if (isFadeIn)
+	{
+		UpdateFadeIn();
 	}
 
 	if (player->GetIsHit() != true)
@@ -437,21 +444,42 @@ void GamePlayScene::CreateDeathEffect(Vector3 position)
 
 void GamePlayScene::StartFadeOut()
 {
-	isFadingOut = true;
+	isFadeOut = true;
 	fadeSprite->SetisInvisible(false);
 }
 
 void GamePlayScene::UpdateFadeOut()
 {
-	alpha -= 0.01f; // フェードイン速度の調整（必要に応じて変更）
-	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, alpha });
+	fadeOutAlpha -= 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeOutAlpha });
 
-	if (alpha <= 0.0f)
+	if (fadeOutAlpha <= 0.0f)
 	{
 		// フェードイン完了時の処理
-		isFadingOut = false;
+		isFadeOut = false;
 	}
 }
+
+void GamePlayScene::StartFadeIn()
+{
+	isFadeIn = true;
+	fadeSprite->SetisInvisible(false);
+}
+
+void GamePlayScene::UpdateFadeIn()
+{
+	fadeOutAlpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeOutAlpha });
+
+	if (fadeOutAlpha >= 1.0f)
+	{
+		// フェードイン完了時の処理
+		isFadeIn = false;
+		sceneManager_->ChangeScene("GAMEOVER");
+		//Audio::GetInstance()->SoundStopWave(soundData);
+	}
+}
+
 
 void GamePlayScene::Hitstop()
 {
