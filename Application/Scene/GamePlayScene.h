@@ -119,10 +119,9 @@ private:
 	uint32_t fadeTex;
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
-	float fadeOutAlpha = 0;
+	float fadeAlpha = 0;
 	bool isFadeOut = false;
 
-	float fadeInAlpha = 0;
 	bool isFadeIn = false;
 
 #ifdef _DEBUG
