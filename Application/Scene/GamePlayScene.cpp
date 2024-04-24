@@ -71,8 +71,8 @@ void GamePlayScene::Initialize()
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(false);
-	alpha = 1.0f;
-	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,alpha });
+	fadeAlpha = 0.0f;
+	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeAlpha });
 
 	StartFadeOut();
 
@@ -83,7 +83,7 @@ void GamePlayScene::Initialize()
 void GamePlayScene::Update()
 {
 
-	if (isFadingOut == true)
+	if (isFadeOut == true)
 	{
 		UpdateFadeOut();
 	}
@@ -253,6 +253,18 @@ void GamePlayScene::Update()
 		sceneManager_->ChangeScene("TITLE");
 	}
 
+	if (player->GetHP() <= 0)
+	{
+		//sceneManager_->ChangeScene("GAMEOVER");
+		StartFadeIn();
+	}
+
+	// フェードイン中の処理
+	if (isFadeIn)
+	{
+		UpdateFadeIn();
+	}
+
 	if (player->GetIsHit() != true)
 	{
 		CheckAllCollisions();
@@ -261,7 +273,7 @@ void GamePlayScene::Update()
 		demo_stage->Update();
 		demo_stage->ModelDebug("demo_stage");
 
-		player->Update(sceneManager_);
+		player->Update();
 		sword->Update();
 
 		if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)
@@ -435,21 +447,44 @@ void GamePlayScene::CreateDeathEffect(Vector3 position)
 
 void GamePlayScene::StartFadeOut()
 {
-	isFadingOut = true;
+	isFadeOut = true;
+	fadeAlpha = 1.0f;
 	fadeSprite->SetisInvisible(false);
 }
 
 void GamePlayScene::UpdateFadeOut()
 {
-	alpha -= 0.01f; // フェードイン速度の調整（必要に応じて変更）
-	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, alpha });
+	fadeAlpha -= 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeAlpha });
 
-	if (alpha <= 0.0f)
+	if (fadeAlpha <= 0.0f)
 	{
 		// フェードイン完了時の処理
-		isFadingOut = false;
+		isFadeOut = false;
 	}
 }
+
+void GamePlayScene::StartFadeIn()
+{
+	isFadeIn = true;
+	fadeAlpha = 0.0f;
+	fadeSprite->SetisInvisible(false);
+}
+
+void GamePlayScene::UpdateFadeIn()
+{
+	fadeAlpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeAlpha });
+
+	if (fadeAlpha >= 1.0f)
+	{
+		// フェードイン完了時の処理
+		isFadeIn = false;
+		sceneManager_->ChangeScene("GAMEOVER");
+		//Audio::GetInstance()->SoundStopWave(soundData);
+	}
+}
+
 
 void GamePlayScene::Hitstop()
 {

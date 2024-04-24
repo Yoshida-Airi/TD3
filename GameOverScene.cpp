@@ -13,10 +13,18 @@ void GameOverScene::Initialize()
 	camera = new Camera();
 	camera->Initialize();
 
-	effect = std::make_unique<DeathEffect>();
-	effect->Initialize(camera);
+	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
+	overSceneTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/gameover.png");
+	overSprite.reset(Sprite::Create(overSceneTex));
 
-	effect->SetFlag(true);
+
+	fadeSprite.reset(Sprite::Create(fadeTex));
+	fadeSprite->SetSize({ 1280,720 });
+	fadeSprite->SetisInvisible(false);
+	fadeOutAlpha = 1.0f;
+	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeOutAlpha });
+
+	StartFadeOut();
 }
 
 void GameOverScene::Update()
@@ -34,17 +42,42 @@ void GameOverScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseClicked())
+	if (input->IsLeftMouseTrigger())
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}
 
-	effect->Update();
+	if (isFadeOut == true)
+	{
+		UpdateFadeOut();
+	}
+
+	overSprite->Update();
+	fadeSprite->Update();
 
 }
 
 void GameOverScene::Draw()
 {
-	effect->Draw();
+	overSprite->Draw(camera);
+	fadeSprite->Draw(camera);
 }
 
+
+void GameOverScene::StartFadeOut()
+{
+	isFadeOut = true;
+	fadeSprite->SetisInvisible(false);
+}
+
+void GameOverScene::UpdateFadeOut()
+{
+	fadeOutAlpha -= 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeOutAlpha });
+
+	if (fadeOutAlpha <= 0.0f)
+	{
+		// フェードイン完了時の処理
+		isFadeOut = false;
+	}
+}

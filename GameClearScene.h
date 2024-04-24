@@ -10,6 +10,7 @@
 #include"Input.h"
 
 #include"DeathEffect.h"
+#include"Sprite.h"
 
 class GameClearScene : public BaseScene
 {
@@ -24,7 +25,9 @@ private:
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
 
-	std::unique_ptr<DeathEffect> effect = nullptr;
+	uint32_t ClearSceneTex;
+	std::unique_ptr<Sprite>clearSprite = nullptr;
+
 
 };
 

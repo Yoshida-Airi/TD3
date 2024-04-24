@@ -46,7 +46,10 @@ private:
 	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
 
 	uint32_t fadeTex;
+	uint32_t titleTex;
+
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
+	std::unique_ptr<Sprite>titleSprite = nullptr;
 
 	float alpha = 0;
 	bool isFadingIn = false;

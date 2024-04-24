@@ -11,8 +11,8 @@ void TitleScene::Initialize()
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
-	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Alarm01.wav");
-	Audio::GetInstance()->SoundPlayWave(soundData, false);
+	//soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Alarm01.wav");
+	//Audio::GetInstance()->SoundPlayWave(soundData, false);
 
 	camera = new Camera;
 	camera->Initialize();
@@ -30,6 +30,9 @@ void TitleScene::Initialize()
 	slashingEffect->Initialize(camera);
 
 	slashingEffect->SetFlag(true);
+
+	titleTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/title.png");
+	titleSprite.reset(Sprite::Create(titleTex));
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 	fadeSprite.reset(Sprite::Create(fadeTex));
@@ -57,7 +60,7 @@ void TitleScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseClicked())
+	if (input->IsLeftMouseTrigger())
 	{
 		// フェードイン開始
 		StartFadeIn();
@@ -80,7 +83,9 @@ void TitleScene::Update()
 
 	slashingEffect->Update();
 
+	titleSprite->Update();
 	fadeSprite->Update();
+
 }
 
 void TitleScene::Draw()
@@ -91,6 +96,7 @@ void TitleScene::Draw()
 	effect->Draw();
 	slashingEffect->Draw();
 
+	titleSprite->Draw(camera);
 	fadeSprite->Draw(camera);
 
 }
@@ -111,6 +117,6 @@ void TitleScene::UpdateFadeIn()
 		// フェードイン完了時の処理
 		isFadingIn = false;
 		sceneManager_->ChangeScene("GAMEPLAY");
-		Audio::GetInstance()->SoundStopWave(soundData);
+		//Audio::GetInstance()->SoundStopWave(soundData);
 	}
 }

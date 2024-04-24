@@ -109,4 +109,14 @@ bool Input::IsLeftMouseClicked()
 	return GetAsyncKeyState(VK_LBUTTON) < 0;
 }
 
+
+
+bool Input::IsLeftMouseTrigger()
+{
+	bool currentState = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+	bool clicked = currentState && !lastState;
+	lastState = currentState;
+	return clicked;
+}
+
 Input* Input::instance = NULL;

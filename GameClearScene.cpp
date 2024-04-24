@@ -13,10 +13,8 @@ void GameClearScene::Initialize()
 	camera = new Camera();
 	camera->Initialize();
 
-	effect = std::make_unique<DeathEffect>();
-	effect->Initialize(camera);
-
-	effect->SetFlag(true);
+	ClearSceneTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/gameclear.png");
+	clearSprite.reset(Sprite::Create(ClearSceneTex));
 }
 
 void GameClearScene::Update()
@@ -34,17 +32,19 @@ void GameClearScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseClicked())
+	if (input->IsLeftMouseTrigger())
 	{
 		sceneManager_->ChangeScene("TITLE");
 	}
 
-	effect->Update();
+	clearSprite->Update();
 
 }
 
 void GameClearScene::Draw()
 {
-	effect->Draw();
+	clearSprite->Draw(camera);
 }
+
+
 
