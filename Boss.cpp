@@ -70,12 +70,17 @@ void Boss::Update(SceneManager* scene) {
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
+
+#ifdef _DEBUG
 	ImGui::Begin("Boss");
 	ImGui::Text("HP : %d", hp);
 	ImGui::Text("Action : %d", isNextAction);
 	ImGui::Text("NextA : %d", action);
 	ImGui::Text("NTimer : %d", nextActionTimer);
 	ImGui::End();
+#endif // _DEBUG
+
+	
 }
 
 void Boss::Draw(Camera* camera) {
