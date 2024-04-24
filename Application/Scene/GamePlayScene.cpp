@@ -349,7 +349,9 @@ void GamePlayScene::CheckAllCollisions()
 			if (player->GetIsUnderAttack() == true || player->GetIsSkill() == true) {
 				colliderManager_->AddColliders(sword.get());
 			}
-			colliderManager_->AddColliders(enemyBullets);
+			if (enemyBullets->GetIsDead() == false) {
+				colliderManager_->AddColliders(enemyBullets);
+			}
 			colliderManager_->AddColliders(enemys);
 
 			//当たり判定
@@ -401,7 +403,7 @@ void GamePlayScene::EnemyAttack() {
 			newBullet->Initialize();
 			newBullet->SetTranslate(enemy->GetTranslate());
 
-			const float kBulletSpeed = 0.08f;
+			const float kBulletSpeed = 0.15f;
 			Vector3 playerPos = player->GetPosition();
 			Vector3 enemyPos = enemy->GetTranslate();
 			Vector3 speed;
