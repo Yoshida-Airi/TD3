@@ -85,7 +85,7 @@ void Player::Initialize(Camera* camera)
 	isHit = false;
 }
 
-void Player::Update(SceneManager* scene)
+void Player::Update()
 {
 	Collider::UpdateWorldTransform();
 	model_->Update();	//移動用モデル
@@ -224,9 +224,6 @@ void Player::Update(SceneManager* scene)
 		break;
 	}
 
-	if (HP <= 0) {
-		scene->ChangeScene("GAMEOVER");
-	}
 
 }
 

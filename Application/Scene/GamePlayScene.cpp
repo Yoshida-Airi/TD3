@@ -251,6 +251,11 @@ void GamePlayScene::Update()
 		sceneManager_->ChangeScene("TITLE");
 	}
 
+	if (player->GetHP() <= 0)
+	{
+		sceneManager_->ChangeScene("GAMEOVER");
+	}
+
 	if (player->GetIsHit() != true)
 	{
 		CheckAllCollisions();
@@ -259,7 +264,7 @@ void GamePlayScene::Update()
 		demo_stage->Update();
 		demo_stage->ModelDebug("demo_stage");
 
-		player->Update(sceneManager_);
+		player->Update();
 		sword->Update();
 
 		if (boss_->GetTranslate().y < 0.0f && isCameraShake == false && cameraShakeTime < 50)

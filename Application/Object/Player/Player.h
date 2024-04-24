@@ -8,8 +8,6 @@
 #include"SlashingEffect.h"
 
 class Sword;
-class SceneManager;
-
 class Player :public Collider
 {
 public:
@@ -24,7 +22,7 @@ public:
 	};
 
 	void Initialize(Camera* camera);
-	void Update(SceneManager* scene);
+	void Update();
 	void Draw();
 	void PLevelUp();
 
@@ -60,6 +58,7 @@ public:
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
 	bool GetIsHit() { return isHit; }
+	int GetHP() { return HP; };
 	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
 	
 private:
