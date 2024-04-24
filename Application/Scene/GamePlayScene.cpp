@@ -226,7 +226,7 @@ void GamePlayScene::Update()
 
 	}
 
-
+#ifdef _DEBUG
 	ImGui::Begin("Frame&Seconds");
 	ImGui::Text("nowFrame : %u", timer.GetNowFrame());
 	ImGui::Text("nowWaveFrame : %u", timer.GetNowWaveFrame());
@@ -239,9 +239,6 @@ void GamePlayScene::Update()
 
 
 	ImGui::End();
-
-
-#ifdef _DEBUG
 
 	camera->CameraDebug();
 	camera->UpdateMatrix();

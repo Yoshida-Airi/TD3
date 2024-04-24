@@ -204,22 +204,22 @@ void Player::Update()
 	case  Player::Animation::kRoot:
 	default:
 		RootUpdate();
-		ImGui::Text("behavior : Root");
+		
 		break;
 	case  Player::Animation::kAttack:
 		AttackUpdate();
-		ImGui::Text("behavior : Attack");
+
 		break;
 	case  Player::Animation::kSkill1:
 		Skill1Update();
-		ImGui::Text("behavior : Skill1");
+		
 		break;
 	case  Player::Animation::kSkill2:
 		Skill2Update();
-		ImGui::Text("behavior : Skill2");
+		
 		break;
 	case  Player::Animation::kSkill3:
-		ImGui::Text("behavior : Skill3");
+		
 		Skill3Update();
 		break;
 	}

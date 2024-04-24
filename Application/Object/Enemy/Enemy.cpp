@@ -34,9 +34,14 @@ void Enemy::Update() {
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
+
+#ifdef _DEBUG
 	ImGui::Begin("EnemyHP");
 	ImGui::Text("%d", EnemyHP);
 	ImGui::End();
+#endif // _DEBUG
+
+
 }
 
 void Enemy::Draw(Camera* camera) {

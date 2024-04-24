@@ -66,11 +66,16 @@ void Playerlevel::Update() {
 	sprite1->Update();
 	sprite2->Update();
 	sprite3->Update();
+
+#ifdef _DEBUG
 	ImGui::Begin("Experiencepoint");
 	ImGui::DragFloat("Experiencepoint", (float*)&Experiencepoint);
 	ImGui::DragInt("nowlevel", (int*)&nowlevel);
 	ImGui::DragInt("nowskill", (int*)&nowskilllevel);
 	ImGui::End();
+#endif // _DEBUG
+
+	
 }
 void Playerlevel::Draw() {
 
