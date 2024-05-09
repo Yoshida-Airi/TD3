@@ -475,7 +475,7 @@ void GamePlayScene::UpdateFadeIn()
 	fadeAlpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
 	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeAlpha });
 
-	if (fadeAlpha >= 1.0f)
+	if (fadeAlpha <= 1.0f)
 	{
 		// フェードイン完了時の処理
 		isFadeIn = false;
