@@ -588,7 +588,7 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y = 6.5f;
 		weapon_->GetWorldTransform()->rotation_.z = 0;
 	}
-	if (gamePad == true) {
+
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 			return;
 		}
@@ -599,7 +599,7 @@ void Player::AttackUpdate()
 			weapon_->GetWorldTransform()->rotation_.y = 6.5f;
 			weapon_->GetWorldTransform()->rotation_.z = 0;
 		}
-	}
+	
 	
 	if (MotionCount_ == 1 && MotionTimer_ >= 60) {
 		MotionCount_ = 99;
@@ -628,7 +628,7 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
 		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 	}
-	if (gamePad == true) {
+	
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 			return;
 		}
@@ -639,7 +639,7 @@ void Player::AttackUpdate()
 			weapon_->GetWorldTransform()->rotation_.y = 2.7f;
 			weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 		}
-	}
+	
 	
 	if (MotionCount_ == 3 && MotionTimer_ >= 130) {
 		MotionCount_ = 99;
