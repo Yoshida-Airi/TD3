@@ -22,6 +22,7 @@ void Player::Initialize(Camera* camera)
 	playerLevel->Initialize();
 
 	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/player.png");
+	headTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/head.png");
 	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
@@ -38,7 +39,7 @@ void Player::Initialize(Camera* camera)
 
 
 	bodyModel_->SetTexture(playerTex);
-	headModel_->SetTexture(playerTex);
+	headModel_->SetTexture(headTex);
 	LeftArmModel_->SetTexture(playerTex);
 	RightArmModel_->SetTexture(playerTex);
 	LeftFootModel_->SetTexture(playerTex);
