@@ -29,6 +29,10 @@ public:
 
 	bool GetIsDead() { return isDead_(); }
 
+	bool GetIsCoolDown() { return isCoolDown; }
+
+	void CoolDown();
+	
 	Vector3 GetWorldPosition()override;
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
@@ -39,10 +43,12 @@ private:
 	Input* input_ = nullptr;
 
 	int deathTimer = 120;
-	int EnemyHP = 2000;
+	int EnemyHP = 20;
 	bool isDead_() {
 		return EnemyHP < 0;
 	}
+	bool isCoolDown = false;
+	int coolDownTimer = 0;
 
 };
 

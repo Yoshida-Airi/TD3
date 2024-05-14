@@ -349,7 +349,10 @@ void GamePlayScene::CheckAllCollisions()
 			if (enemyBullets->GetIsDead() == false) {
 				colliderManager_->AddColliders(enemyBullets);
 			}
-			colliderManager_->AddColliders(enemys);
+			if (enemys->GetIsCoolDown() == false) {
+				colliderManager_->AddColliders(enemys);
+			}
+			//colliderManager_->AddColliders(enemys);
 
 			//当たり判定
 			colliderManager_->ChackAllCollisions();

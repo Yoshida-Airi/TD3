@@ -72,9 +72,9 @@ private:
 	bool isSkill = false; //skill中がどうか　true : skill発動中
 
 	// レベルアップ時のHP増加量
-	const int HPIncreasePerLevel = 2000;
+	const int HPIncreasePerLevel = 200;
 	// レベルアップ時の攻撃力増加量
-	const int AttackPowerIncreasePerLevel = 5;
+	const int AttackPowerIncreasePerLevel = 3;
 
 	int HP = 5000;
 	float angle_ = 0.0f;
