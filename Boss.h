@@ -83,6 +83,8 @@ private:
 	int aimTimer = 0;
 	int BTimer = 0;
 
+	uint32_t bossTex;
+
 private:
 
 	void CoolDown();

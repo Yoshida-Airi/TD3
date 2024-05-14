@@ -11,7 +11,10 @@ void Enemy::Initialize(Player* player) {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemy));
 
+	texture = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/enemyTex.png");
+
 	model_.reset(Model::Create("Resources/Enemy/enemy.obj"));
+	model_->SetTexture(texture);
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
