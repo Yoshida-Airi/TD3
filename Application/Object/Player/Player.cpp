@@ -676,7 +676,7 @@ void Player::AttackUpdate()
 void Player::RootUpdate()
 {
 	//スキルのフラグ
-	if (input_->PushKey(DIK_LSHIFT))
+	if (input_->PushKey(DIK_LSHIFT)&& isSkillCooldown_ == false)
 	{
 		isSkill = true;
 	}
@@ -699,7 +699,7 @@ void Player::RootUpdate()
 	//被弾時硬直
 
 	//スキルフラグとクールタイムが終わっていたら
-	if (isSkill == true && isSkillCooldown_ == false)
+	if (isSkill == true )
 	{
 		if (playerLevel->nowskilllevel == 1)
 		{
@@ -729,8 +729,6 @@ void Player::RootUpdate()
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
 			//isSkill = false;
-			
-
 		}
 	}
 
@@ -860,7 +858,7 @@ void Player::Skill1Update()
 		// スキル使用後、クールダウンを開始する
 
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
+		skillCooldownTime_ = 60 * 1;
 	}
 }
 
@@ -920,7 +918,7 @@ void Player::Skill2Update()
 		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
+		skillCooldownTime_ = 60 * 5;
 		isSkillAttack = false;
 
 	}
@@ -979,7 +977,7 @@ void Player::Skill3Update()
 		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
+		skillCooldownTime_ = 60 * 5;
 		isSkillAttack = false;
 
 	}
