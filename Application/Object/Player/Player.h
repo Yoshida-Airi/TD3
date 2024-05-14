@@ -104,6 +104,9 @@ private:
 
 	uint32_t playerTex;
 	uint32_t headTex;
+	uint32_t bodyTex;
+	uint32_t leftFootTex;
+	uint32_t rightFootTex;
 	uint32_t HpTex;
 	std::unique_ptr<Sprite> hpSprite_;
 	Vector2 hpSpriteScale;

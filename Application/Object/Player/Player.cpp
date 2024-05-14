@@ -21,9 +21,12 @@ void Player::Initialize(Camera* camera)
 	playerLevel = std::make_unique<Playerlevel>();
 	playerLevel->Initialize();
 
-	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/player.png");
+	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/base.png");
 	headTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/head.png");
+	bodyTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/body.png");
 	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
+	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
+	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
@@ -38,12 +41,12 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
 
-	bodyModel_->SetTexture(playerTex);
+	bodyModel_->SetTexture(bodyTex);
 	headModel_->SetTexture(headTex);
 	LeftArmModel_->SetTexture(playerTex);
 	RightArmModel_->SetTexture(playerTex);
-	LeftFootModel_->SetTexture(playerTex);
-	RightFootModel_->SetTexture(playerTex);
+	LeftFootModel_->SetTexture(leftFootTex);
+	RightFootModel_->SetTexture(rightFootTex);
 
 
 
