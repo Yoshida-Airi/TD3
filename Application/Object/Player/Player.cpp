@@ -555,7 +555,7 @@ void Player::AttackUpdate()
 {
 	XINPUT_STATE joyState;
 	//剣を振りかぶる
-
+	Input::GetInstance()->GetJoystickState(0, joyState);
 	//移動
 	//Move();
 
@@ -589,9 +589,7 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.z = 0;
 	}
 
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
+		
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
 			MotionCount_ = 2;
 			MotionTimer_ = 60;
@@ -629,9 +627,6 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 	}
 	
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
 		if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
 			MotionCount_ = 4;
 			MotionTimer_ = 130;
