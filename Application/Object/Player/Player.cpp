@@ -717,6 +717,7 @@ void Player::RootUpdate()
 		{
 			//該当するスキルなし
 			isSkill = false;
+			
 		}
 
 	}
@@ -728,6 +729,7 @@ void Player::RootUpdate()
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
 			//isSkill = false;
+			
 
 		}
 	}
@@ -919,6 +921,7 @@ void Player::Skill2Update()
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
+		isSkillAttack = false;
 
 	}
 
@@ -977,6 +980,7 @@ void Player::Skill3Update()
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
 		skillCooldownTime_ = 60;
+		isSkillAttack = false;
 
 	}
 
@@ -1057,12 +1061,16 @@ void Player::Skill2Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+	isSkillAttack = true;
 }
 
 void Player::Skill3Initialzie()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+	isSkillAttack = true;
 }
 
 
