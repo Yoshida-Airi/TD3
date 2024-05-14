@@ -44,7 +44,7 @@ void Player::Initialize(Camera* camera)
 	RightArmModel_->SetTexture(playerTex);
 	LeftFootModel_->SetTexture(playerTex);
 	RightFootModel_->SetTexture(playerTex);
-	
+
 
 
 	slashingEffect = std::make_unique<SlashingEffect>();
@@ -88,10 +88,10 @@ void Player::Initialize(Camera* camera)
 	//RightArmModel_->SetisInvisible(true);
 	//LeftFootModel_->SetisInvisible(true);
 	//RightFootModel_->SetisInvisible(true);
-	
+
 	isHit = false;
 
-	
+
 }
 
 void Player::Update()
@@ -213,7 +213,7 @@ void Player::Update()
 	case  Player::Animation::kRoot:
 	default:
 		RootUpdate();
-		
+
 		break;
 	case  Player::Animation::kAttack:
 		AttackUpdate();
@@ -221,14 +221,14 @@ void Player::Update()
 		break;
 	case  Player::Animation::kSkill1:
 		Skill1Update();
-		
+
 		break;
 	case  Player::Animation::kSkill2:
 		Skill2Update();
-		
+
 		break;
 	case  Player::Animation::kSkill3:
-		
+
 		Skill3Update();
 		break;
 	}
@@ -494,10 +494,10 @@ void Player::Attack()
 			isUnderAttack = true;
 		}
 	}
-	
-		if (input_->IsLeftMouseClicked()) {
-			isUnderAttack = true;
-		}
+
+	if (input_->IsLeftMouseClicked()) {
+		isUnderAttack = true;
+	}
 
 
 	if (isUnderAttack == true)
@@ -513,21 +513,21 @@ void Player::Skill()
 	XINPUT_STATE joyState;
 
 
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
 
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			isSkill = true;
-		}
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	{
+		isSkill = true;
+	}
 
 
-		if (input_->PushKey(DIK_LSHIFT))
-		{
-			isSkill = true;
-		}	
-	
+	if (input_->PushKey(DIK_LSHIFT))
+	{
+		isSkill = true;
+	}
+
 }
 
 void Player::PLevelUp()
@@ -555,6 +555,8 @@ void Player::AttackUpdate()
 {
 	XINPUT_STATE joyState;
 	//剣を振りかぶる
+
+	Input::GetInstance()->GetJoystickState(0, joyState);
 
 	//移動
 	//Move();
@@ -589,18 +591,17 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.z = 0;
 	}
 
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
-			MotionCount_ = 2;
-			MotionTimer_ = 60;
-			weapon_->GetWorldTransform()->rotation_.x = 2.83f;
-			weapon_->GetWorldTransform()->rotation_.y = 6.5f;
-			weapon_->GetWorldTransform()->rotation_.z = 0;
-		}
-	
-	
+
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
+		MotionCount_ = 2;
+		MotionTimer_ = 60;
+		weapon_->GetWorldTransform()->rotation_.x = 2.83f;
+		weapon_->GetWorldTransform()->rotation_.y = 6.5f;
+		weapon_->GetWorldTransform()->rotation_.z = 0;
+	}
+
+
 	if (MotionCount_ == 1 && MotionTimer_ >= 60) {
 		MotionCount_ = 99;
 	}
@@ -628,19 +629,17 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
 		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 	}
-	
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
-		if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
-			MotionCount_ = 4;
-			MotionTimer_ = 130;
-			weapon_->GetWorldTransform()->rotation_.x = 3.0f;
-			weapon_->GetWorldTransform()->rotation_.y = 2.7f;
-			weapon_->GetWorldTransform()->rotation_.z = -0.24f;
-		}
-	
-	
+
+
+	if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
+		MotionCount_ = 4;
+		MotionTimer_ = 130;
+		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
+		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
+		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
+	}
+
+
 	if (MotionCount_ == 3 && MotionTimer_ >= 130) {
 		MotionCount_ = 99;
 	}
@@ -680,18 +679,18 @@ void Player::RootUpdate()
 	}
 
 	//スキルと攻撃の併用を禁止
-		if (isSkill == false)
-		{
-			//攻撃
-			Attack();
-		}
+	if (isSkill == false)
+	{
+		//攻撃
+		Attack();
+	}
 
-		//移動
-		Move();
+	//移動
+	Move();
 
-		//スキル
-		Skill();
-	
+	//スキル
+	Skill();
+
 	//ヒット時のクールダウン
 	CoolDown();
 	//被弾時硬直
@@ -836,7 +835,7 @@ void Player::Skill1Update()
 		}
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.7f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -879,7 +878,7 @@ void Player::Skill2Update()
 
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.5f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -899,7 +898,7 @@ void Player::Skill2Update()
 		if (weapon_->GetWorldTransform()->rotation_.y >= 6.28f) {
 			weapon_->GetWorldTransform()->rotation_.y = 0.0f;
 		}
-		
+
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
@@ -942,7 +941,7 @@ void Player::Skill3Update()
 		}
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.5f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
