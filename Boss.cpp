@@ -23,7 +23,7 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 	srand(currentTime);
 
 	SetRadius(model_->worldTransform_->scale_);
-	model_->worldTransform_->translation_ = { 0.001f,6.0f,0.0f };
+	model_->worldTransform_->translation_ = { player->GetPosition().x, 6.0f, player->GetPosition().z};
 	hp = 100;
 
 	player_ = player;
@@ -97,11 +97,9 @@ void Boss::Finalize() {
 
 }
 
-void Boss::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
-	std::uniform_real_distribution<float> translateX(-3.0f, 3.0f);
-	std::uniform_real_distribution<float> translateZ(-3.0f, 3.0f);
-
-	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
+void Boss::SetTranslate(Vector3 translate) {
+	
+	model_->worldTransform_->translation_ = { translate.x + 0.00000001f ,6.0f, translate.z };
 }
 
 Vector3 Boss::GetWorldPosition()
