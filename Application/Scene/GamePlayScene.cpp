@@ -343,7 +343,7 @@ void GamePlayScene::CheckAllCollisions()
 			if (player->GetIsCoolDown() == false) {
 				colliderManager_->AddColliders(player.get());
 			}
-			if (player->GetIsUnderAttack() == true || player->GetIsSkill() == true) {
+			if (player->GetIsUnderAttack() == true || player->GetIsSkillAttack() == true) {
 				colliderManager_->AddColliders(sword.get());
 			}
 			if (enemyBullets->GetIsDead() == false) {
@@ -364,7 +364,7 @@ void GamePlayScene::BossSceneAllCollisions() {
 	if (player->GetIsCoolDown() == false) {
 		colliderManager_->AddColliders(player.get());
 	}
-	if (player->GetIsUnderAttack() == true || player->GetIsSkill() == true) {
+	if (player->GetIsUnderAttack() == true || player->GetIsSkillAttack() == true) {
 		colliderManager_->AddColliders(sword.get());
 	}
 	if (boss_->GetIsCoolDown() == false) {

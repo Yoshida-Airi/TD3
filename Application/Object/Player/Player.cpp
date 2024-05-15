@@ -21,9 +21,12 @@ void Player::Initialize(Camera* camera)
 	playerLevel = std::make_unique<Playerlevel>();
 	playerLevel->Initialize();
 
-	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/player.png");
+	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/base.png");
 	headTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/head.png");
+	bodyTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/body.png");
 	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
+	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
+	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
@@ -38,13 +41,13 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_.reset(Model::Create("Resources/PlayerModel/RightFoot.obj"));
 
 
-	bodyModel_->SetTexture(playerTex);
+	bodyModel_->SetTexture(bodyTex);
 	headModel_->SetTexture(headTex);
 	LeftArmModel_->SetTexture(playerTex);
 	RightArmModel_->SetTexture(playerTex);
-	LeftFootModel_->SetTexture(playerTex);
-	RightFootModel_->SetTexture(playerTex);
-	
+	LeftFootModel_->SetTexture(leftFootTex);
+	RightFootModel_->SetTexture(rightFootTex);
+
 
 
 	slashingEffect = std::make_unique<SlashingEffect>();
@@ -88,10 +91,10 @@ void Player::Initialize(Camera* camera)
 	//RightArmModel_->SetisInvisible(true);
 	//LeftFootModel_->SetisInvisible(true);
 	//RightFootModel_->SetisInvisible(true);
-	
+
 	isHit = false;
 
-	
+
 }
 
 void Player::Update()
@@ -213,7 +216,7 @@ void Player::Update()
 	case  Player::Animation::kRoot:
 	default:
 		RootUpdate();
-		
+
 		break;
 	case  Player::Animation::kAttack:
 		AttackUpdate();
@@ -221,14 +224,14 @@ void Player::Update()
 		break;
 	case  Player::Animation::kSkill1:
 		Skill1Update();
-		
+
 		break;
 	case  Player::Animation::kSkill2:
 		Skill2Update();
-		
+
 		break;
 	case  Player::Animation::kSkill3:
-		
+
 		Skill3Update();
 		break;
 	}
@@ -494,10 +497,10 @@ void Player::Attack()
 			isUnderAttack = true;
 		}
 	}
-	
-		if (input_->IsLeftMouseClicked()) {
-			isUnderAttack = true;
-		}
+
+	if (input_->IsLeftMouseClicked()) {
+		isUnderAttack = true;
+	}
 
 
 	if (isUnderAttack == true)
@@ -513,21 +516,21 @@ void Player::Skill()
 	XINPUT_STATE joyState;
 
 
-		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-			return;
-		}
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
 
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			isSkill = true;
-		}
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	{
+		isSkill = true;
+	}
 
 
-		if (input_->PushKey(DIK_LSHIFT))
-		{
-			isSkill = true;
-		}	
-	
+	if (input_->PushKey(DIK_LSHIFT))
+	{
+		isSkill = true;
+	}
+
 }
 
 void Player::PLevelUp()
@@ -669,30 +672,30 @@ void Player::AttackUpdate()
 void Player::RootUpdate()
 {
 	//スキルのフラグ
-	if (input_->PushKey(DIK_LSHIFT))
+	if (input_->PushKey(DIK_LSHIFT)&& isSkillCooldown_ == false)
 	{
 		isSkill = true;
 	}
 
 	//スキルと攻撃の併用を禁止
-		if (isSkill == false)
-		{
-			//攻撃
-			Attack();
-		}
+	if (isSkill == false)
+	{
+		//攻撃
+		Attack();
+	}
 
-		//移動
-		Move();
+	//移動
+	Move();
 
-		//スキル
-		Skill();
-	
+	//スキル
+	Skill();
+
 	//ヒット時のクールダウン
 	CoolDown();
 	//被弾時硬直
 
 	//スキルフラグとクールタイムが終わっていたら
-	if (isSkill == true && isSkillCooldown_ == false)
+	if (isSkill == true )
 	{
 		if (playerLevel->nowskilllevel == 1)
 		{
@@ -710,6 +713,7 @@ void Player::RootUpdate()
 		{
 			//該当するスキルなし
 			isSkill = false;
+			
 		}
 
 	}
@@ -721,7 +725,6 @@ void Player::RootUpdate()
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
 			//isSkill = false;
-
 		}
 	}
 
@@ -831,7 +834,7 @@ void Player::Skill1Update()
 		}
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.7f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -851,7 +854,7 @@ void Player::Skill1Update()
 		// スキル使用後、クールダウンを開始する
 
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
+		skillCooldownTime_ = 60 * 1;
 	}
 }
 
@@ -874,7 +877,7 @@ void Player::Skill2Update()
 
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.5f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -894,7 +897,7 @@ void Player::Skill2Update()
 		if (weapon_->GetWorldTransform()->rotation_.y >= 6.28f) {
 			weapon_->GetWorldTransform()->rotation_.y = 0.0f;
 		}
-		
+
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
@@ -911,7 +914,8 @@ void Player::Skill2Update()
 		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
+		skillCooldownTime_ = 60 * 5;
+		isSkillAttack = false;
 
 	}
 
@@ -937,7 +941,7 @@ void Player::Skill3Update()
 		}
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.5f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -969,7 +973,8 @@ void Player::Skill3Update()
 		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60;
+		skillCooldownTime_ = 60 * 5;
+		isSkillAttack = false;
 
 	}
 
@@ -1050,12 +1055,16 @@ void Player::Skill2Initialize()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+	isSkillAttack = true;
 }
 
 void Player::Skill3Initialzie()
 {
 	MotionTimer_ = 0;
 	MotionCount_ = 0;
+
+	isSkillAttack = true;
 }
 
 

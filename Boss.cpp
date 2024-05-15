@@ -1,6 +1,6 @@
 #include "Boss.h"
 #include"CollisionConfig.h"
-
+#include"TextureManager.h"
 Boss::~Boss() {
 
 }
@@ -11,7 +11,10 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kBoss));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	bossTex = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/bossTex.png");
+
+	model_.reset(Model::Create("Resources/Enemy/enemy.obj"));
+	model_->SetTexture(bossTex);
 
 	input_ = Input::GetInstance();
 	input_->Initialize();

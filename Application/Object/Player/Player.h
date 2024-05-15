@@ -43,7 +43,7 @@ public:
 	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
-	bool GetIsSkill() { return isSkill; };
+	bool GetIsSkillAttack() { return isSkillAttack; };
 	Vector3 GetWorldPosition()override;
 	WorldTransform* GetWorldTransform() { return bodyModel_->worldTransform_; };
 	WorldTransform* GetLeftArmWorldTransform() { return LeftArmModel_->worldTransform_; };
@@ -70,6 +70,7 @@ private:
 	float Speed = 0.03f;//速度
 	bool isUnderAttack = false;	//攻撃中かどうか　true : 攻撃中
 	bool isSkill = false; //skill中がどうか　true : skill発動中
+	bool isSkillAttack = false;
 
 	// レベルアップ時のHP増加量
 	const int HPIncreasePerLevel = 2000;
@@ -104,6 +105,9 @@ private:
 
 	uint32_t playerTex;
 	uint32_t headTex;
+	uint32_t bodyTex;
+	uint32_t leftFootTex;
+	uint32_t rightFootTex;
 	uint32_t HpTex;
 	std::unique_ptr<Sprite> hpSprite_;
 	Vector2 hpSpriteScale;

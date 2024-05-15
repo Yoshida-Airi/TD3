@@ -38,6 +38,8 @@ private:
 	Player* player_ = nullptr;
 	Input* input_ = nullptr;
 
+	uint32_t texture;
+
 	int deathTimer = 120;
 	int EnemyHP = 2000;
 	bool isDead_() {
