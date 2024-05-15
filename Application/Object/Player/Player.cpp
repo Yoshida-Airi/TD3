@@ -592,16 +592,16 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.z = 0;
 	}
 
-		
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
-			MotionCount_ = 2;
-			MotionTimer_ = 60;
-			weapon_->GetWorldTransform()->rotation_.x = 2.83f;
-			weapon_->GetWorldTransform()->rotation_.y = 6.5f;
-			weapon_->GetWorldTransform()->rotation_.z = 0;
-		}
-	
-	
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
+		MotionCount_ = 2;
+		MotionTimer_ = 60;
+		weapon_->GetWorldTransform()->rotation_.x = 2.83f;
+		weapon_->GetWorldTransform()->rotation_.y = 6.5f;
+		weapon_->GetWorldTransform()->rotation_.z = 0;
+	}
+
+
 	if (MotionCount_ == 1 && MotionTimer_ >= 60) {
 		MotionCount_ = 99;
 	}
@@ -613,11 +613,11 @@ void Player::AttackUpdate()
 		//ここに１コンボ目の剣の動きを書く
 
 		weapon_->GetWorldTransform()->rotation_.y -= 0.331f;
-		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+		//LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+		//LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
+		//RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+		//RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;
 
 		bodyModel_->worldTransform_->rotation_.y += 0.2f / 10;
 
@@ -629,16 +629,16 @@ void Player::AttackUpdate()
 		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
 		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
 	}
-	
-		if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
-			MotionCount_ = 4;
-			MotionTimer_ = 130;
-			weapon_->GetWorldTransform()->rotation_.x = 3.0f;
-			weapon_->GetWorldTransform()->rotation_.y = 2.7f;
-			weapon_->GetWorldTransform()->rotation_.z = -0.24f;
-		}
-	
-	
+
+	if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
+		MotionCount_ = 4;
+		MotionTimer_ = 130;
+		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
+		weapon_->GetWorldTransform()->rotation_.y = 2.7f;
+		weapon_->GetWorldTransform()->rotation_.z = -0.24f;
+	}
+
+
 	if (MotionCount_ == 3 && MotionTimer_ >= 130) {
 		MotionCount_ = 99;
 	}
@@ -648,11 +648,11 @@ void Player::AttackUpdate()
 		}
 		//ここに2コンボ目の剣の動きを書く
 		weapon_->GetWorldTransform()->rotation_.y += 0.0862f;
-		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 50;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 50;
+	/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 50;
-		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 50;
+		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
 
 		bodyModel_->worldTransform_->rotation_.y -= 0.3f / 50;
 		Speed = 0.05f;
@@ -672,7 +672,7 @@ void Player::AttackUpdate()
 void Player::RootUpdate()
 {
 	//スキルのフラグ
-	if (input_->PushKey(DIK_LSHIFT)&& isSkillCooldown_ == false)
+	if (input_->PushKey(DIK_LSHIFT) && isSkillCooldown_ == false)
 	{
 		isSkill = true;
 	}
@@ -695,7 +695,7 @@ void Player::RootUpdate()
 	//被弾時硬直
 
 	//スキルフラグとクールタイムが終わっていたら
-	if (isSkill == true )
+	if (isSkill == true)
 	{
 		if (playerLevel->nowskilllevel == 1)
 		{
@@ -713,7 +713,7 @@ void Player::RootUpdate()
 		{
 			//該当するスキルなし
 			isSkill = false;
-			
+
 		}
 
 	}
