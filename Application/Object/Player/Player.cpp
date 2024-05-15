@@ -27,11 +27,23 @@ void Player::Initialize(Camera* camera)
 	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
 	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
+	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_pad.png");
+	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_keyboard.png");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
 	hpSprite_->worldTransform_->scale_ = { float(HP),0.7f };
 	//hpSpriteScale = { 130.0f,3.0f };
+
+	ui_skill_pad.reset(Sprite::Create(ui_skill_padTex));
+	//ui_skill_pad->SetPosition({ 20.0f,650.0f });
+	ui_skill_pad->worldTransform_->scale_ = { 0.1f,0.1f };
+	ui_skill_pad->SetisInvisible(true);
+
+	ui_skill_keyboard.reset(Sprite::Create(ui_skill_keyboardTex));
+	ui_skill_keyboard->SetPosition({ 1100.0f,550.0f });
+	ui_skill_keyboard->worldTransform_->scale_ = { 0.1f,0.1f };
+	ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
 
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
@@ -236,7 +248,11 @@ void Player::Update()
 		break;
 	}
 
+	ui_skill_keyboard->Debug("UI_Keyboard_skill");
+
 	hpSprite_->Update();
+	ui_skill_pad->Update();
+	ui_skill_keyboard->Update();
 
 	float scaleX = static_cast<float>(HP) / 1000.0f;
 	if (scaleX >= 5.0f)
@@ -267,6 +283,9 @@ void Player::Draw()
 
 	slashingEffect->Draw();
 	hpSprite_->Draw(camera_);
+	ui_skill_pad->Draw(camera_);
+	ui_skill_keyboard->Draw(camera_);
+
 }
 
 Vector3 Player::GetWorldPosition()
@@ -724,7 +743,9 @@ void Player::RootUpdate()
 		if (skillCooldownTime_ <= 0) {
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
+			//ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 			//isSkill = false;
+
 		}
 	}
 

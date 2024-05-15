@@ -109,7 +109,14 @@ private:
 	uint32_t leftFootTex;
 	uint32_t rightFootTex;
 	uint32_t HpTex;
+
+	uint32_t ui_skill_padTex;
+	uint32_t ui_skill_keyboardTex;
+
 	std::unique_ptr<Sprite> hpSprite_;
+	std::unique_ptr<Sprite> ui_skill_pad;
+	std::unique_ptr<Sprite> ui_skill_keyboard;
+
 	Vector2 hpSpriteScale;
 
 	Animation behavior_ = Animation::kRoot;
