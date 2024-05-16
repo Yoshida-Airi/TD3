@@ -12,6 +12,8 @@ void EnemyBullet::Initialize() {
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet));
 
 	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	uint32_t redTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
+	model_->SetTexture(redTex);
 
 	model_->worldTransform_->scale_ = { 0.2f,0.2f,0.2f };
 
