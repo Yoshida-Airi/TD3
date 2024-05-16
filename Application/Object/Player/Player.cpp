@@ -694,6 +694,12 @@ void Player::RootUpdate()
 	if (input_->PushKey(DIK_LSHIFT) && isSkillCooldown_ == false)
 	{
 		isSkill = true;
+		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+	}
+
+	if (playerLevel->nowskilllevel == 1 && isSkillCooldown_ == false && isSkill == false)
+	{
+		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 	}
 
 	//スキルと攻撃の併用を禁止
@@ -743,7 +749,7 @@ void Player::RootUpdate()
 		if (skillCooldownTime_ <= 0) {
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
-			//ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+			ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 			//isSkill = false;
 
 		}
