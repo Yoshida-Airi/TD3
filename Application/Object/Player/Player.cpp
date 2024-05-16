@@ -29,6 +29,9 @@ void Player::Initialize(Camera* camera)
 	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
 	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_pad.png");
 	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_keyboard.png");
+	ui_playerLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_playerLevel.png");
+	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_Hp.png");
+	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skillLevel.png");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
@@ -41,9 +44,22 @@ void Player::Initialize(Camera* camera)
 	ui_skill_pad->SetisInvisible(true);
 
 	ui_skill_keyboard.reset(Sprite::Create(ui_skill_keyboardTex));
-	ui_skill_keyboard->SetPosition({ 1100.0f,550.0f });
+	ui_skill_keyboard->SetPosition({ 1050.0f,550.0f });
 	ui_skill_keyboard->worldTransform_->scale_ = { 0.1f,0.1f };
 	ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+
+	ui_playerLevel.reset(Sprite::Create(ui_playerLevelTex));
+	ui_playerLevel->SetPosition({ 40.0f,5.0f });
+	ui_playerLevel->worldTransform_->scale_ = { 0.1f,0.1f };
+	//ui_playerLevel->SetisInvisible(true);
+
+	ui_hp.reset(Sprite::Create(ui_hpTex));
+	ui_hp->SetPosition({ 20.0f,660.0f });
+	ui_hp->worldTransform_->scale_ = { 0.1f,0.1f };
+
+	ui_skillLevel.reset(Sprite::Create(ui_skillLevelTex));
+	ui_skillLevel->SetPosition({ 950.0f,50.0f });
+	ui_skillLevel->worldTransform_->scale_ = { 0.1f,0.1f };
 
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
@@ -136,6 +152,7 @@ void Player::Update()
 	if (playerLevel->nowlevel == playerLevel->count) {
 		PLevelUp();
 		playerLevel->count += 1;
+		
 	}
 
 	playerLevel->Update();
@@ -249,10 +266,16 @@ void Player::Update()
 	}
 
 	ui_skill_keyboard->Debug("UI_Keyboard_skill");
+	ui_playerLevel->Debug("UI_playerlevel");
+	ui_skillLevel->Debug("UI_skillLevel");
+	ui_hp->Debug("UI_HP");
 
 	hpSprite_->Update();
 	ui_skill_pad->Update();
 	ui_skill_keyboard->Update();
+	ui_playerLevel->Update();
+	ui_hp->Update();
+	ui_skillLevel->Update();
 
 	float scaleX = static_cast<float>(HP) / 1000.0f;
 	if (scaleX >= 5.0f)
@@ -279,13 +302,21 @@ void Player::Draw()
 	RightFootModel_->Draw(camera_);
 
 
+}
+
+void Player::TextureDraw()
+{
+	
 	playerLevel->Draw();
 
 	slashingEffect->Draw();
 	hpSprite_->Draw(camera_);
+
 	ui_skill_pad->Draw(camera_);
 	ui_skill_keyboard->Draw(camera_);
-
+	ui_playerLevel->Draw(camera_);
+	ui_hp->Draw(camera_);
+	ui_skillLevel->Draw(camera_);
 }
 
 Vector3 Player::GetWorldPosition()

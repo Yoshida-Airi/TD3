@@ -24,6 +24,7 @@ public:
 	void Initialize(Camera* camera);
 	void Update();
 	void Draw();
+	void TextureDraw();
 	void PLevelUp();
 
 	void SetWeapon(Sword* playerWeapon)
@@ -112,10 +113,16 @@ private:
 
 	uint32_t ui_skill_padTex;
 	uint32_t ui_skill_keyboardTex;
+	uint32_t ui_hpTex;
+	uint32_t ui_playerLevelTex;
+	uint32_t ui_skillLevelTex;
 
 	std::unique_ptr<Sprite> hpSprite_;
 	std::unique_ptr<Sprite> ui_skill_pad;
 	std::unique_ptr<Sprite> ui_skill_keyboard;
+	std::unique_ptr<Sprite> ui_hp;
+	std::unique_ptr<Sprite> ui_playerLevel;
+	std::unique_ptr<Sprite> ui_skillLevel;
 
 	Vector2 hpSpriteScale;
 

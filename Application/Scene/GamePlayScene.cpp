@@ -328,6 +328,7 @@ void GamePlayScene::Draw()
 
 	fadeSprite->Draw(camera);
 
+	player->TextureDraw();
 
 	//colliderManager_->Draw(camera);
 }
