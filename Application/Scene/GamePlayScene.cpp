@@ -64,7 +64,7 @@ void GamePlayScene::Initialize()
 
 	player->SetWeapon(sword.get());
 
-	//colliderManager_->UpdateWorldTransform();
+	colliderManager_->UpdateWorldTransform();
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 
@@ -329,7 +329,7 @@ void GamePlayScene::Draw()
 	fadeSprite->Draw(camera);
 
 
-	//colliderManager_->Draw(camera);
+	colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
@@ -349,7 +349,10 @@ void GamePlayScene::CheckAllCollisions()
 			if (enemyBullets->GetIsDead() == false) {
 				colliderManager_->AddColliders(enemyBullets);
 			}
-			colliderManager_->AddColliders(enemys);
+			if (enemys->GetIsCoolDown() == false) {
+				colliderManager_->AddColliders(enemys);
+			}
+			//colliderManager_->AddColliders(enemys);
 
 			//当たり判定
 			colliderManager_->ChackAllCollisions();
