@@ -102,6 +102,7 @@ void GamePlayScene::Update()
 
 			//敵の処理
 			EnemyAttack();
+			boss_->SetTranslate(player->GetPosition());
 
 			if (isEnemySpawn == true) {
 				if (enemyCount <= MaxEnemySpawn) {

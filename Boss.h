@@ -34,7 +34,7 @@ public:
 
 public:
 
-	void SetTranslate(std::mt19937& randomEngine, Vector3 translate);
+	void SetTranslate(Vector3 translate);
 
 	Vector3 GetTranslate() { return model_->worldTransform_->translation_; }
 
