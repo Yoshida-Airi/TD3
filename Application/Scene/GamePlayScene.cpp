@@ -262,7 +262,7 @@ void GamePlayScene::Update()
 		UpdateFadeIn();
 	}
 
-	if (player->GetIsHit() != true)
+	if (sword->GetIsHit() != true)
 	{
 		CheckAllCollisions();
 
@@ -487,18 +487,18 @@ void GamePlayScene::UpdateFadeIn()
 
 void GamePlayScene::Hitstop()
 {
-	if (player->GetIsHit() == true && throughTimer == 0)
+	if (sword->GetIsHit() == true /*&& throughTimer == 0*/)
 	{
 		hitstopTimer++;
 	}
-	if (hitstopTimer == 15)
+	if (hitstopTimer == 10)
 	{
-		player->SetIsHit(false);
-		throughTimer++;
+		sword->SetIsHit(false);
+		//throughTimer++;
 	}
-	if (throughTimer == 30)
-	{
-		hitstopTimer = 0;
-		throughTimer = 0;
-	}
+	//if (throughTimer == 30)
+	//{
+	//	hitstopTimer = 0;
+	//	throughTimer = 0;
+	//}
 }

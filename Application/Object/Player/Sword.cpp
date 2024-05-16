@@ -53,6 +53,15 @@ Vector3 Sword::GetWorldPosition()
 
 void Sword::OnCollision([[maybe_unused]] Collider* other)
 {
+	if(isHit==false)
+	{
+		isHit = true;
+	}
+}
+
+void Sword::SetIsHit(bool hit)
+{
+	isHit = hit;
 }
 
 void Sword::Attack()

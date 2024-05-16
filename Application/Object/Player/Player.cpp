@@ -497,10 +497,6 @@ void Player::Move()
 		}
 	}
 
-
-
-
-
 	CoolDown();
 
 }
