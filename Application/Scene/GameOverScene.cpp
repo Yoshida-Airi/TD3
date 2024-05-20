@@ -21,8 +21,10 @@ void GameOverScene::Initialize()
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(false);
-	fadeOutAlpha = 1.0f;
 	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeOutAlpha });
+
+	fadeOutAlpha = 1.0f;
+	fadeInAlpha = 0.0f;
 
 	StartFadeOut();
 }
@@ -44,7 +46,12 @@ void GameOverScene::Update()
 
 	if (input->IsLeftMouseTrigger())
 	{
-		sceneManager_->ChangeScene("TITLE");
+		StartFadeIn();
+	}
+
+	if (isFadeIn == true)
+	{
+		UpdateFadeIn();
 	}
 
 	if (isFadeOut == true)
@@ -79,5 +86,25 @@ void GameOverScene::UpdateFadeOut()
 	{
 		// フェードイン完了時の処理
 		isFadeOut = false;
+	}
+}
+
+
+void GameOverScene::StartFadeIn()
+{
+	isFadeIn = true;
+	fadeSprite->SetisInvisible(false);
+}
+
+void GameOverScene::UpdateFadeIn()
+{
+	fadeInAlpha+=0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeInAlpha });
+
+	if (fadeInAlpha >= 1.0f)
+	{
+		// フェードイン完了時の処理
+		isFadeIn = false;
+		sceneManager_->ChangeScene("TITLE");
 	}
 }

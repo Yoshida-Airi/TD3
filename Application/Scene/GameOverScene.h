@@ -22,6 +22,10 @@ public:
 
 	void UpdateFadeOut();
 
+	void StartFadeIn();
+
+	void UpdateFadeIn();
+
 private:
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
@@ -36,7 +40,9 @@ private:
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
 	float fadeOutAlpha = 0;
+	float fadeInAlpha = 0;
 	bool isFadeOut = false;
+	bool isFadeIn = false;
 
 };
 

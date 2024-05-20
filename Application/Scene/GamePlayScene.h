@@ -121,6 +121,7 @@ private:
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
 	float fadeAlpha = 0;
+	float fadeInAlpha = 0;
 	bool isFadeOut = false;
 
 	bool isFadeIn = false;
