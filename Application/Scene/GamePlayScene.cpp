@@ -74,6 +74,9 @@ void GamePlayScene::Initialize()
 	fadeAlpha = 0.0f;
 	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeAlpha });
 
+	isFadeOut = false;
+	isFadeIn = false;
+
 	StartFadeOut();
 
 	throughTimer = 0;
@@ -86,6 +89,14 @@ void GamePlayScene::Update()
 	if (isFadeOut == true)
 	{
 		UpdateFadeOut();
+	}
+
+	// フェードイン中の処理
+	if (isFadeIn == true)
+	{
+		//fadeAlpha += 0.01f;
+		UpdateFadeIn();
+
 	}
 
 	if (timer.GetNowSecond() != kFullWaveTime)
@@ -244,6 +255,8 @@ void GamePlayScene::Update()
 	camera->CameraDebug();
 	camera->UpdateMatrix();
 
+	ImGui::Text("fadeAlpha:%f", fadeAlpha);
+
 #endif // _DEBUG
 
 	if (input->TriggerKey(DIK_RETURN))
@@ -257,11 +270,7 @@ void GamePlayScene::Update()
 		StartFadeIn();
 	}
 
-	// フェードイン中の処理
-	if (isFadeIn)
-	{
-		UpdateFadeIn();
-	}
+	
 
 	if (player->GetIsHit() != true)
 	{
@@ -460,6 +469,7 @@ void GamePlayScene::UpdateFadeOut()
 
 	if (fadeAlpha <= 0.0f)
 	{
+		fadeSprite->SetisInvisible(true);
 		// フェードイン完了時の処理
 		isFadeOut = false;
 	}
@@ -474,15 +484,14 @@ void GamePlayScene::StartFadeIn()
 
 void GamePlayScene::UpdateFadeIn()
 {
-	fadeAlpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
+	fadeAlpha++; // フェードイン速度の調整（必要に応じて変更）
 	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeAlpha });
 
-	if (fadeAlpha <= 1.0f)
+	if (fadeAlpha >= 1.0f)
 	{
 		// フェードイン完了時の処理
-		isFadeIn = false;
+		//isFadeIn = false;
 		sceneManager_->ChangeScene("GAMEOVER");
-		//Audio::GetInstance()->SoundStopWave(soundData);
 	}
 }
 
