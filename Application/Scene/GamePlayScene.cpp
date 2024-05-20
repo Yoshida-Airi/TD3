@@ -76,6 +76,8 @@ void GamePlayScene::Initialize()
 
 	isFadeOut = false;
 	isFadeIn = false;
+	sceneClear = false;
+	sceneOver = false;
 
 	StartFadeOut();
 
@@ -95,8 +97,14 @@ void GamePlayScene::Update()
 	if (isFadeIn == true)
 	{
 		//fadeAlpha += 0.01f;
-		UpdateFadeIn();
-
+		if (sceneClear == true)
+		{
+			UpdateFadeIn("GAMECLEAR");
+		}
+		if (sceneOver == true)
+		{
+			UpdateFadeIn("GAMEOVER");
+		}
 	}
 
 	if (timer.GetNowSecond() != kFullWaveTime)
@@ -268,8 +276,14 @@ void GamePlayScene::Update()
 	{
 		//sceneManager_->ChangeScene("GAMEOVER");
 		StartFadeIn();
+		sceneOver = true;
 	}
 
+	if (boss_->GetIsDead())
+	{
+		StartFadeIn();
+		sceneClear = true;
+	}
 	
 
 	if (player->GetIsHit() != true)
@@ -482,7 +496,7 @@ void GamePlayScene::StartFadeIn()
 	fadeSprite->SetisInvisible(false);
 }
 
-void GamePlayScene::UpdateFadeIn()
+void GamePlayScene::UpdateFadeIn(const std::string& sceneName)
 {
 	fadeInAlpha += 0.01f; // フェードイン速度の調整（必要に応じて変更）
 	fadeSprite->SetMaterialData({ 1.0f, 1.0f, 1.0f, fadeInAlpha });
@@ -491,7 +505,7 @@ void GamePlayScene::UpdateFadeIn()
 	{
 		// フェードイン完了時の処理
 		isFadeIn = false;
-		sceneManager_->ChangeScene("GAMEOVER");
+		sceneManager_->ChangeScene(sceneName);
 	}
 }
 

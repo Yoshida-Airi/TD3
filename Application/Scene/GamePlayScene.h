@@ -56,7 +56,7 @@ private:
 
 	void StartFadeIn();
 
-	void UpdateFadeIn();
+	void UpdateFadeIn(const std::string& sceneName);
 
 private:
 	TextureManager* textureManager_ = nullptr;
@@ -125,6 +125,9 @@ private:
 	bool isFadeOut = false;
 
 	bool isFadeIn = false;
+
+	bool sceneClear;
+	bool sceneOver;
 
 #ifdef _DEBUG
 

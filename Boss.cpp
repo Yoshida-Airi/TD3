@@ -141,7 +141,7 @@ void Boss::Dead(SceneManager* scene) {
 	if (hp <= 0)
 	{
 		isDead_ = true;
-		scene->ChangeScene("GAMECLEAR");
+		//scene->ChangeScene("GAMECLEAR");
 	}
 }
 

@@ -20,6 +20,14 @@ public:
 	void Update()override;
 	void Draw()override;
 
+	void StartFadeOut();
+
+	void UpdateFadeOut();
+
+	void StartFadeIn();
+
+	void UpdateFadeIn();
+
 private:
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
@@ -28,6 +36,12 @@ private:
 	uint32_t ClearSceneTex;
 	std::unique_ptr<Sprite>clearSprite = nullptr;
 
+	uint32_t fadeTex;
+	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
+	float fadeOutAlpha = 0;
+	float fadeInAlpha = 0;
+	bool isFadeOut = false;
+	bool isFadeIn = false;
 };
 
