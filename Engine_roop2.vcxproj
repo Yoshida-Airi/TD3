@@ -133,8 +133,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Manager\GraphicsPipelineManager.cpp" />
     <ClCompile Include="Application\Object\Effect\DeathEffect.cpp" />
     <ClCompile Include="Application\Object\Player\FollowCamera.cpp" />
-    <ClCompile Include="GameClearScene.cpp" />
-    <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="Application\Scene\GameClearScene.cpp" />
+    <ClCompile Include="Application\Scene\GameOverScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Math\MathUtilty.cpp" />
     <ClCompile Include="Engine\3D\Model.cpp" />
@@ -202,8 +202,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Application\Object\Effect\DeathEffect.h" />
     <ClInclude Include="Application\Object\Player\Sword.h" />
     <ClInclude Include="Application\Object\Player\FollowCamera.h" />
-    <ClInclude Include="GameClearScene.h" />
-    <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="Application\Scene\GameClearScene.h" />
+    <ClInclude Include="Application\Scene\GameOverScene.h" />
     <ClInclude Include="Application\Object\Effect\SlashingEffect.h" />
   </ItemGroup>
   <ItemGroup>
