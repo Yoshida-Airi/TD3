@@ -42,22 +42,6 @@ public:
 	//半径を取得
 	Vector3 GetRadius() const { return radius_; };
 
-	struct Sphere {
-		Vector3 center;
-		float radius;
-	};
-	
-	struct AABB {
-		Vector3 min;
-		Vector3 max;
-	};
-
-	struct OBB {
-		Vector3 center;
-		Vector3 orientations[3];
-		Vector3 size;
-	};
-	OBB GetOBB()const { return obb_; }
 
 	//半径を設定
 	void SetRadius(Vector3 radius) { radius_ = radius; };
