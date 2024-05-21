@@ -79,10 +79,10 @@ void Playerlevel::Update() {
 }
 void Playerlevel::Draw() {
 
-	sprite3->Draw(camera);
+	/*sprite3->Draw(camera);
 	sprite2->Draw(camera);
 	sprite1->Draw(camera);
-	sprite0->Draw(camera);
+	sprite0->Draw(camera);*/
 }
 
 void Playerlevel::Levelup() {

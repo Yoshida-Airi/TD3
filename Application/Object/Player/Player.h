@@ -99,6 +99,11 @@ private:
 	std::unique_ptr<Model> ExperienceText = nullptr;
 	std::unique_ptr<Model> ExperiencePoint = nullptr;
 	std::unique_ptr<Model> LevelMax = nullptr;
+	std::unique_ptr<Model> SkillUI = nullptr;
+	std::unique_ptr<Model> Skill1 = nullptr;
+	std::unique_ptr<Model> Skill2 = nullptr;
+	std::unique_ptr<Model> Skill3 = nullptr;
+
 
 
 	std::unique_ptr<Model> bodyModel_ = nullptr;
