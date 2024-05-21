@@ -27,6 +27,10 @@ public:
 
 	void SetScale(Vector3 scale);
 
+	Vector3 GetRotate()override;
+
+	void SetPosition(Vector3 translation) override;
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 

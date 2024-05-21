@@ -42,4 +42,7 @@ private:
 
 	std::unique_ptr<Model>model;
 
+	Vector3 playerTranslate;
+	Vector3 playerRotate;
+
 };

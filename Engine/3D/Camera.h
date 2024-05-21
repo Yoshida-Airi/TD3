@@ -97,6 +97,8 @@ private:
 	// コピー禁止
 	Camera(const Camera&) = delete;
 	Camera& operator=(const Camera&) = delete;
+
+	Vector3 nutralCameraPos;
 };
 
 static_assert(!std::is_copy_assignable_v<Camera>);

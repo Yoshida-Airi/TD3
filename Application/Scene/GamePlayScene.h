@@ -56,7 +56,7 @@ private:
 
 	void StartFadeIn();
 
-	void UpdateFadeIn();
+	void UpdateFadeIn(const std::string& sceneName);
 
 private:
 	TextureManager* textureManager_ = nullptr;
@@ -121,9 +121,13 @@ private:
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
 	float fadeAlpha = 0;
+	float fadeInAlpha = 0;
 	bool isFadeOut = false;
 
 	bool isFadeIn = false;
+
+	bool sceneClear;
+	bool sceneOver;
 
 #ifdef _DEBUG
 

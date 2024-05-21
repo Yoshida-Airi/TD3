@@ -27,8 +27,10 @@ void Player::Initialize(Camera* camera)
 	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
 	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
+
 	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_pad.png");
 	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_keyboard.png");
+
 	ui_playerLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_playerLevel.png");
 	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_Hp.png");
 	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skillLevel.png");
@@ -47,6 +49,11 @@ void Player::Initialize(Camera* camera)
 	ui_skill_keyboard->SetPosition({ 1050.0f,550.0f });
 	ui_skill_keyboard->worldTransform_->scale_ = { 0.1f,0.1f };
 	ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+
+	ui_skill_pad.reset(Sprite::Create(ui_skill_padTex));
+	ui_skill_pad->SetPosition({ 1050.0f,550.0f });
+	ui_skill_pad->worldTransform_->scale_ = { 0.1f,0.1f };
+	ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
 
 	ui_playerLevel.reset(Sprite::Create(ui_playerLevelTex));
 	ui_playerLevel->SetPosition({ 40.0f,5.0f });
@@ -120,7 +127,6 @@ void Player::Initialize(Camera* camera)
 	//LeftFootModel_->SetisInvisible(true);
 	//RightFootModel_->SetisInvisible(true);
 
-	isHit = false;
 
 
 }
@@ -152,7 +158,7 @@ void Player::Update()
 	if (playerLevel->nowlevel == playerLevel->count) {
 		PLevelUp();
 		playerLevel->count += 1;
-		
+
 	}
 
 	playerLevel->Update();
@@ -277,6 +283,21 @@ void Player::Update()
 	ui_hp->Update();
 	ui_skillLevel->Update();
 
+	//ゲームパットの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
+
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		ui_skill_pad->SetisInvisible(false);
+		ui_skill_keyboard->SetisInvisible(true);
+	}
+	else
+	{
+
+		ui_skill_pad->SetisInvisible(true);
+		ui_skill_keyboard->SetisInvisible(false);
+	}
+
 	float scaleX = static_cast<float>(HP) / 1000.0f;
 	if (scaleX >= 5.0f)
 	{
@@ -306,7 +327,7 @@ void Player::Draw()
 
 void Player::TextureDraw()
 {
-	
+
 	playerLevel->Draw();
 
 	slashingEffect->Draw();
@@ -332,6 +353,16 @@ Vector3 Player::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 Player::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
+void Player::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+}
+
 
 void Player::OnCollision([[maybe_unused]] Collider* other)
 {
@@ -342,7 +373,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵にあたったら
 		HP -= 100;
 		isCoolDown = true;
-		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
@@ -350,20 +380,18 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵の弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
-		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
 	{
-		//敵の弾にあたったら
+		//ボスにあたったら
 		HP -= 100;
 		isCoolDown = true;
-		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBossBullet))
 	{
-		//敵の弾にあたったら
+		//ボスの弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
 	}
@@ -531,7 +559,7 @@ void Player::Move()
 
 
 
-
+	//HPが減った後無敵時間
 	CoolDown();
 
 }
@@ -570,16 +598,16 @@ void Player::Skill()
 		return;
 	}
 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-	{
-		isSkill = true;
-	}
+	//if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	//{
+	//	isSkill = true;
+	//}
 
 
-	if (input_->PushKey(DIK_LSHIFT))
-	{
-		isSkill = true;
-	}
+	//if (input_->PushKey(DIK_LSHIFT))
+	//{
+	//	isSkill = true;
+	//}
 
 }
 
@@ -698,11 +726,11 @@ void Player::AttackUpdate()
 		}
 		//ここに2コンボ目の剣の動きを書く
 		weapon_->GetWorldTransform()->rotation_.y += 0.0862f;
-	/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+		/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+			LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
+			RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+			RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
 
 		bodyModel_->worldTransform_->rotation_.y -= 0.3f / 50;
 		Speed = 0.05f;
@@ -726,11 +754,24 @@ void Player::RootUpdate()
 	{
 		isSkill = true;
 		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+		ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
 	}
+
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(0, joyState);
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && isSkillCooldown_ == false)
+	{
+		isSkill = true;
+		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+		ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+	}
+
 
 	if (playerLevel->nowskilllevel == 1 && isSkillCooldown_ == false && isSkill == false)
 	{
 		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+		ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 	}
 
 	//スキルと攻撃の併用を禁止
@@ -761,7 +802,7 @@ void Player::RootUpdate()
 		{
 			behaviorRequest_ = Animation::kSkill2;
 		}
-		else if (playerLevel->nowskilllevel == 3)
+		else if (playerLevel->nowskilllevel >= 3)
 		{
 			behaviorRequest_ = Animation::kSkill3;
 		}
@@ -781,6 +822,7 @@ void Player::RootUpdate()
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
 			ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+			ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 			//isSkill = false;
 
 		}

@@ -73,7 +73,7 @@ private:
 	WNDCLASS wc_{};			//ウィンドウクラスの設定
 	static WinApp* instance;	//シングルトン
 
-	std::wstring windowTitle_ = L"3126_疾風の剣";	//タイトル
+	std::wstring windowTitle_ = L"疾風の剣";	//タイトル
 
 };
 

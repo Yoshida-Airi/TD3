@@ -124,6 +124,16 @@ Vector3 Boss::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 Boss::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
+void Boss::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+}
+
 void Boss::CoolDown() {
 	if (isCoolDown == true) {
 		coolDownTimer++;
@@ -147,7 +157,7 @@ void Boss::Dead(SceneManager* scene) {
 	if (hp <= 0)
 	{
 		isDead_ = true;
-		scene->ChangeScene("GAMECLEAR");
+		//scene->ChangeScene("GAMECLEAR");
 	}
 }
 
