@@ -1,4 +1,5 @@
 #include "CollisionManager.h"
+#include"CollisionConfig.h"
 
 void CollisionManager::Initialize()
 {

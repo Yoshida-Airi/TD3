@@ -120,7 +120,6 @@ void Player::Initialize(Camera* camera)
 	//LeftFootModel_->SetisInvisible(true);
 	//RightFootModel_->SetisInvisible(true);
 
-	isHit = false;
 
 
 }
@@ -332,6 +331,16 @@ Vector3 Player::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 Player::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
+void Player::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+}
+
 
 void Player::OnCollision([[maybe_unused]] Collider* other)
 {
@@ -342,7 +351,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵にあたったら
 		HP -= 100;
 		isCoolDown = true;
-		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet))
@@ -350,7 +358,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//敵の弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
-		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
@@ -358,7 +365,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		//ボスにあたったら
 		HP -= 100;
 		isCoolDown = true;
-		isHit = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBossBullet))

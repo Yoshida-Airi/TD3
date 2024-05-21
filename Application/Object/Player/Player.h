@@ -37,10 +37,6 @@ public:
 		this->isSkill = isSkill;
 	}
 
-	void SetIsHit(bool isHit)
-	{
-		this->isHit = isHit;
-	}
 	
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	bool GetIsUnderAttack() { return isUnderAttack; };
@@ -48,6 +44,8 @@ public:
 	Vector3 GetWorldPosition()override;
 	WorldTransform* GetWorldTransform() { return bodyModel_->worldTransform_; };
 	WorldTransform* GetLeftArmWorldTransform() { return LeftArmModel_->worldTransform_; };
+	Vector3 GetRotate()override;
+	void SetPosition(Vector3 translation) override;
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
@@ -58,7 +56,6 @@ public:
 	float LerpShortAngle(float a, float b, float t);
 	float LerpShortTranslate(float a, float b, float t);
 	bool GetIsCoolDown() { return isCoolDown; }
-	bool GetIsHit() { return isHit; }
 	int GetHP() { return HP; };
 	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
 	
@@ -81,7 +78,6 @@ private:
 	int HP = 1000;
 	float angle_ = 0.0f;
 
-	bool isHit = false;
 
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
