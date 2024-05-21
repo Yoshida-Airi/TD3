@@ -33,12 +33,16 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 
+	bool GetIsRelottery() { return isRelottery; }
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Player* player_ = nullptr;
 	Input* input_ = nullptr;
 
 	uint32_t texture;
+
+	bool isRelottery;
 
 	int deathTimer = 120;
 	int EnemyHP = 2000;

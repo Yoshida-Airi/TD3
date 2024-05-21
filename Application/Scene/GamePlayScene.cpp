@@ -107,7 +107,6 @@ void GamePlayScene::Update()
 			if (isEnemySpawn == true) {
 				if (enemyCount <= MaxEnemySpawn) {
 					EnemySpawn();
-					enemyCount++;
 				}
 				else {
 					isEnemySpawn = false;
@@ -380,6 +379,7 @@ void GamePlayScene::BossSceneAllCollisions() {
 
 void GamePlayScene::EnemySpawn() {
 
+
 	Enemy* newEnemy = new Enemy();
 	newEnemy->Initialize(player.get());
 
@@ -387,7 +387,10 @@ void GamePlayScene::EnemySpawn() {
 
 	newEnemy->SetTranslate(random, player->GetPosition());
 
-	enemy_.push_back(newEnemy);
+	if (newEnemy->GetIsRelottery() == false) {
+		enemy_.push_back(newEnemy);
+		enemyCount++;
+	}
 
 }
 
