@@ -98,6 +98,7 @@ private:
 	std::unique_ptr<Model> ExperienceBar = nullptr;
 	std::unique_ptr<Model> ExperienceText = nullptr;
 	std::unique_ptr<Model> ExperiencePoint = nullptr;
+	std::unique_ptr<Model> LevelMax = nullptr;
 
 
 	std::unique_ptr<Model> bodyModel_ = nullptr;
@@ -137,6 +138,7 @@ private:
 
 	int MotionTimer_ = 0;
 	int MotionCount_ = 0;
+	int level = 1;
 
 	bool isSkillCooldown_; // スキルのクールダウン中かどうかを示すフラグ
 	int skillCooldownTime_; // スキルのクールダウン時間
