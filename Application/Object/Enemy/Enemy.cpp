@@ -23,6 +23,8 @@ void Enemy::Initialize(Player* player) {
 
 	SetRadius(model_->worldTransform_->scale_);
 	player_ = player;
+
+	isRelottery = false;
 }
 
 void Enemy::Update() {
@@ -88,5 +90,8 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 		EnemyHP -= player_->AttackPower;
 	}
 
-	
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
+	{
+		isRelottery = true;
+	}
 }
