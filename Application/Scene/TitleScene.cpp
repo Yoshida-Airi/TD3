@@ -17,10 +17,6 @@ void TitleScene::Initialize()
 	camera = new Camera;
 	camera->Initialize();
 
-	fence_.reset(Model::Create("Resources/DefaultAssets/fence.obj"));
-	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
-	fence_->worldTransform_->rotation_.y = 3.1f;
-
 	effect = std::make_unique<DeathEffect>();
 	effect->Initialize(camera);
 
@@ -37,6 +33,15 @@ void TitleScene::Initialize()
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 	fadeSprite.reset(Sprite::Create(fadeTex));
 
+	UI_MouseTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_MouseLeftClick.png");
+	UI_Mouse.reset(Sprite::Create(UI_MouseTex));
+	UI_Mouse->SetPosition({ 370.0f,450.0f });
+
+	UI_GamePadABottonTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_ABotton.png");
+	UI_GamePadABotton.reset(Sprite::Create(UI_GamePadABottonTex));
+	UI_GamePadABotton->SetPosition({ 370.0f,470.0f });
+	UI_GamePadABotton->worldTransform_->scale_ = { 0.1f,0.1f };
+
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(true);
 	alpha = 0;
@@ -49,6 +54,18 @@ void TitleScene::Update()
 
 	//ゲームパットの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
+
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		UI_GamePadABotton->SetisInvisible(false);
+		UI_Mouse->SetisInvisible(true);
+	}
+	else
+	{
+		UI_GamePadABotton->SetisInvisible(true);
+		UI_Mouse->SetisInvisible(false);
+	}
+
 
 	if (Input::GetInstance()->GetJoystickState(0, joyState))
 	{
@@ -72,12 +89,6 @@ void TitleScene::Update()
 		UpdateFadeIn();
 	}
 
-	fence_->Update();
-	cube_->Update();
-
-	cube_->ModelDebug("cube");
-	fence_->ModelDebug("fence");
-	fence_->Parent(cube_.get());
 
 	effect->Update();
 
@@ -85,18 +96,21 @@ void TitleScene::Update()
 
 	titleSprite->Update();
 	fadeSprite->Update();
+	UI_Mouse->Update();
+	UI_GamePadABotton->Update();
+
 
 }
 
 void TitleScene::Draw()
 {
-	fence_->Draw(camera);
-	cube_->Draw(camera);
 
 	effect->Draw();
 	slashingEffect->Draw();
 
 	titleSprite->Draw(camera);
+	UI_Mouse->Draw(camera);
+	UI_GamePadABotton->Draw(camera);
 	fadeSprite->Draw(camera);
 
 }
