@@ -47,9 +47,14 @@ private:
 
 	uint32_t fadeTex;
 	uint32_t titleTex;
+	uint32_t UI_MouseTex;
+	uint32_t UI_GamePadABottonTex;
+	
 
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 	std::unique_ptr<Sprite>titleSprite = nullptr;
+	std::unique_ptr<Sprite>UI_Mouse = nullptr;
+	std::unique_ptr<Sprite>UI_GamePadABotton = nullptr;
 
 	float alpha = 0;
 	bool isFadingIn = false;
