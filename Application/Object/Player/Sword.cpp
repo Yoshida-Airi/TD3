@@ -38,6 +38,10 @@ void Sword::Draw(Camera* camera)
 	model_->Draw(camera);
 }
 
+void Sword::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+};
 Vector3 Sword::GetWorldPosition()
 {
 	// ワールド座標を入れる変数
@@ -51,8 +55,25 @@ Vector3 Sword::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 Sword::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
+
 void Sword::OnCollision([[maybe_unused]] Collider* other)
 {
+	uint32_t typeID = other->GetTypeID();
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy)|| typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
+	{
+		//敵にあたったら
+		isHit = true;
+	}
+}
+
+void Sword::SetIsHit(bool hit)
+{
+	isHit = hit;
 }
 
 void Sword::Attack()
