@@ -39,6 +39,11 @@ private:
 	uint32_t fadeTex;
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
+	uint32_t UI_MouseTex;
+	uint32_t UI_GamePadABottonTex;
+	std::unique_ptr<Sprite>UI_Mouse = nullptr;
+	std::unique_ptr<Sprite>UI_GamePadABotton = nullptr;
+
 	float fadeOutAlpha = 0;
 	float fadeInAlpha = 0;
 	bool isFadeOut = false;

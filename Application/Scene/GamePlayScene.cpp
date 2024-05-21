@@ -267,10 +267,10 @@ void GamePlayScene::Update()
 
 #endif // _DEBUG
 
-	/*if (input->TriggerKey(DIK_RETURN))
+	if (input->TriggerKey(DIK_RETURN))
 	{
-		sceneManager_->ChangeScene("TITLE");
-	}*/
+		sceneManager_->ChangeScene("GAMECLEAR");
+	}
 
 	if (player->GetHP() <= 0)
 	{
