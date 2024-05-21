@@ -30,7 +30,7 @@ void Player::Initialize(Camera* camera)
 
 	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_pad.png");
 	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_keyboard.png");
-	
+
 	ui_playerLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_playerLevel.png");
 	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_Hp.png");
 	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skillLevel.png");
@@ -158,7 +158,7 @@ void Player::Update()
 	if (playerLevel->nowlevel == playerLevel->count) {
 		PLevelUp();
 		playerLevel->count += 1;
-		
+
 	}
 
 	playerLevel->Update();
@@ -292,7 +292,7 @@ void Player::Update()
 		ui_skill_keyboard->SetisInvisible(true);
 	}
 	else
-	{ 
+	{
 
 		ui_skill_pad->SetisInvisible(true);
 		ui_skill_keyboard->SetisInvisible(false);
@@ -327,7 +327,7 @@ void Player::Draw()
 
 void Player::TextureDraw()
 {
-	
+
 	playerLevel->Draw();
 
 	slashingEffect->Draw();
@@ -726,11 +726,11 @@ void Player::AttackUpdate()
 		}
 		//ここに2コンボ目の剣の動きを書く
 		weapon_->GetWorldTransform()->rotation_.y += 0.0862f;
-	/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+		/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+			LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
+			RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+			RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
 
 		bodyModel_->worldTransform_->rotation_.y -= 0.3f / 50;
 		Speed = 0.05f;
@@ -758,15 +758,15 @@ void Player::RootUpdate()
 	}
 
 	XINPUT_STATE joyState;
-	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	Input::GetInstance()->GetJoystickState(0, joyState);
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && isSkillCooldown_ == false)
 	{
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			isSkill = true;
-			ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
-			ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
-		}
+		isSkill = true;
+		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+		ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
 	}
+
 
 	if (playerLevel->nowskilllevel == 1 && isSkillCooldown_ == false && isSkill == false)
 	{
@@ -802,8 +802,8 @@ void Player::RootUpdate()
 		{
 			behaviorRequest_ = Animation::kSkill2;
 		}
-		else if (playerLevel->nowskilllevel == 3)
-		  {
+		else if (playerLevel->nowskilllevel >= 3)
+		{
 			behaviorRequest_ = Animation::kSkill3;
 		}
 		else
