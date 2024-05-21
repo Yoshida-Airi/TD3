@@ -95,6 +95,11 @@ private:
 	//Playerlevel* playerlevel;
 	std::unique_ptr<Playerlevel>playerLevel = nullptr;
 
+	std::unique_ptr<Model> ExperienceBar = nullptr;
+	std::unique_ptr<Model> ExperienceText = nullptr;
+	std::unique_ptr<Model> ExperiencePoint = nullptr;
+
+
 	std::unique_ptr<Model> bodyModel_ = nullptr;
 	std::unique_ptr<Model> headModel_ = nullptr;
 	std::unique_ptr<Model> LeftArmModel_ = nullptr;

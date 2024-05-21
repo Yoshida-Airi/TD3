@@ -61,6 +61,14 @@ void Player::Initialize(Camera* camera)
 	ui_skillLevel->SetPosition({ 950.0f,50.0f });
 	ui_skillLevel->worldTransform_->scale_ = { 0.1f,0.1f };
 
+	ExperienceBar.reset(Model::Create("Resources/DefaultAssets/ExperienceBar.obj"));
+	ExperienceText.reset(Model::Create("Resources/DefaultAssets/ExperienceText.obj"));
+	ExperiencePoint.reset(Model::Create("Resources/DefaultAssets/ExperiencePoint.obj"));
+	//LevelMax.reset(Model::Create("Resources/DefaultAssets/LevelMax.obj"));
+
+
+
+
 	bodyModel_.reset(Model::Create("Resources/PlayerModel/body.obj"));
 	headModel_.reset(Model::Create("Resources/PlayerModel/head.obj"));
 	LeftArmModel_.reset(Model::Create("Resources/PlayerModel/leftArm.obj"));
@@ -105,6 +113,31 @@ void Player::Initialize(Camera* camera)
 
 
 
+	//LevelMax->worldTransform_->rotation_.x = 0.8f;
+	//LevelMax->worldTransform_->rotation_.y = 0;
+	//LevelMax->worldTransform_->rotation_.z = 0.1f;
+
+	ExperienceBar->worldTransform_->scale_.x = 0.5f;
+	ExperienceBar->worldTransform_->scale_.y = 0.5f;
+	ExperienceText->worldTransform_->scale_.x = 0.5f;
+	ExperienceText->worldTransform_->scale_.y = 0.5f;
+	ExperiencePoint->worldTransform_->scale_.x = 0.5f;
+	ExperiencePoint->worldTransform_->scale_.y = 0.5f;
+	/*LevelMax->worldTransform_->scale_.x = 0.5f;
+	LevelMax->worldTransform_->scale_.y = 0.5f;*/
+
+	ExperienceBar->worldTransform_->translation_.x = -3.5f;
+	ExperienceBar->worldTransform_->translation_.y = 5.0f;
+	ExperienceText->worldTransform_->translation_.x = -3.5f;
+	ExperienceText->worldTransform_->translation_.y = 5.0f;
+	ExperiencePoint->worldTransform_->translation_.x = -3.5f;
+	ExperiencePoint->worldTransform_->translation_.y = 5.0f;
+	/*LevelMax->worldTransform_->translation_.x = -3.5f;
+	LevelMax->worldTransform_->translation_.y = 5.0f;*/
+
+
+
+
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
 	LeftArmModel_->Parent(bodyModel_.get());
@@ -130,12 +163,19 @@ void Player::Update()
 	Collider::UpdateWorldTransform();
 	model_->Update();	//移動用モデル
 
+	ExperienceBar->Update();
+	ExperienceText->Update();
+	ExperiencePoint->Update();
+	//LevelMax->Update();
+
 	bodyModel_->Update();
 	headModel_->Update();
 	LeftArmModel_->Update();
 	RightArmModel_->Update();
 	LeftFootModel_->Update();
 	RightFootModel_->Update();
+
+	//ExperiencePoint->worldTransform_->scale_.x += 40;
 
 
 	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
@@ -152,11 +192,10 @@ void Player::Update()
 	if (playerLevel->nowlevel == playerLevel->count) {
 		PLevelUp();
 		playerLevel->count += 1;
-		
+
 	}
 
 	playerLevel->Update();
-
 
 
 #ifdef _DEBUG
@@ -167,6 +206,11 @@ void Player::Update()
 	ImGui::Text("MotionCount : %d", MotionCount_);
 	ImGui::Text("MotionTimer : %d", MotionTimer_);
 	ImGui::End();
+
+	ExperienceBar->ModelDebug("bar");
+	ExperienceText->ModelDebug("text");
+	ExperiencePoint->ModelDebug("point");
+	//LevelMax->ModelDebug("max");
 
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
@@ -294,6 +338,11 @@ void Player::Draw()
 {
 	model_->Draw(camera_);
 
+	ExperienceBar->Draw(camera_);
+	ExperienceText->Draw(camera_);
+	ExperiencePoint->Draw(camera_);
+	//LevelMax->Draw(camera_);
+
 	bodyModel_->Draw(camera_);
 	headModel_->Draw(camera_);
 	LeftArmModel_->Draw(camera_);
@@ -306,7 +355,7 @@ void Player::Draw()
 
 void Player::TextureDraw()
 {
-	
+
 	playerLevel->Draw();
 
 	slashingEffect->Draw();
@@ -472,7 +521,14 @@ void Player::Move()
 	model_->worldTransform_->translation_.x += move.x;
 	model_->worldTransform_->translation_.z += move.z;
 
-
+	ExperienceBar->worldTransform_->translation_.x += move.x;
+	ExperienceBar->worldTransform_->translation_.z += move.z;
+	ExperiencePoint->worldTransform_->translation_.x += move.x;
+	ExperiencePoint->worldTransform_->translation_.z += move.z;
+	ExperienceText->worldTransform_->translation_.x += move.x;
+	ExperienceText->worldTransform_->translation_.z += move.z;
+	//LevelMax->worldTransform_->translation_.x += move.x;
+	//LevelMax->worldTransform_->translation_.y += move.y;
 
 
 
@@ -524,6 +580,14 @@ void Player::Move()
 				model_->worldTransform_->translation_.x += move.x;
 				model_->worldTransform_->translation_.z += move.z;
 
+				ExperienceBar->worldTransform_->translation_.x += move.x;
+				ExperienceBar->worldTransform_->translation_.z += move.z;
+				ExperiencePoint->worldTransform_->translation_.x += move.x;
+				ExperiencePoint->worldTransform_->translation_.z += move.z;
+				ExperienceText->worldTransform_->translation_.x += move.x;
+				ExperienceText->worldTransform_->translation_.z += move.z;
+				/*LevelMax->worldTransform_->translation_.x += move.x;
+				LevelMax->worldTransform_->translation_.y += move.y;*/
 			}
 		}
 	}
@@ -698,11 +762,11 @@ void Player::AttackUpdate()
 		}
 		//ここに2コンボ目の剣の動きを書く
 		weapon_->GetWorldTransform()->rotation_.y += 0.0862f;
-	/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
-		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
+		/*	LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
+			LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
 
-		RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
-		RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
+			RightFootModel_->worldTransform_->rotation_.x -= 0.1f / 10;
+			RightFootModel_->worldTransform_->rotation_.z += 0.18f / 10;*/
 
 		bodyModel_->worldTransform_->rotation_.y -= 0.3f / 50;
 		Speed = 0.05f;
@@ -899,7 +963,14 @@ void Player::Skill1Update()
 
 		model_->worldTransform_->translation_.x += dashX;
 		model_->worldTransform_->translation_.z += dashZ;
-
+		ExperienceBar->worldTransform_->translation_.x += dashX;
+		ExperienceBar->worldTransform_->translation_.z += dashZ;
+		ExperiencePoint->worldTransform_->translation_.x += dashX;
+		ExperiencePoint->worldTransform_->translation_.z += dashZ;
+		ExperienceText->worldTransform_->translation_.x += dashX;
+		ExperienceText->worldTransform_->translation_.z += dashZ;
+		/*LevelMax->worldTransform_->translation_.x += dashX;
+		LevelMax->worldTransform_->translation_.y += dashZ;*/
 
 		//カメラ直書き
 		camera_->transform.translate.x += dashX;
@@ -959,8 +1030,15 @@ void Player::Skill2Update()
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
-
-		//カメラ直書き
+		ExperienceBar->worldTransform_->translation_.x += dashX;
+		ExperienceBar->worldTransform_->translation_.z += dashZ;
+		ExperiencePoint->worldTransform_->translation_.x += dashX;
+		ExperiencePoint->worldTransform_->translation_.z += dashZ;
+		ExperienceText->worldTransform_->translation_.x += dashX;
+		ExperienceText->worldTransform_->translation_.z += dashZ;
+		/*	LevelMax->worldTransform_->translation_.x += dashX;
+			LevelMax->worldTransform_->translation_.y += dashZ;*/
+			//カメラ直書き
 		camera_->transform.translate.x += dashX;
 		camera_->transform.translate.z += dashZ;
 
@@ -1019,7 +1097,14 @@ void Player::Skill3Update()
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
-
+		ExperienceBar->worldTransform_->translation_.x += dashX;
+		ExperienceBar->worldTransform_->translation_.z += dashZ;
+		ExperiencePoint->worldTransform_->translation_.x += dashX;
+		ExperiencePoint->worldTransform_->translation_.z += dashZ;
+		ExperienceText->worldTransform_->translation_.x += dashX;
+		ExperienceText->worldTransform_->translation_.z += dashZ;
+		/*LevelMax->worldTransform_->translation_.x += dashX;
+		LevelMax->worldTransform_->translation_.y += dashZ;*/
 		//カメラ直書き
 		camera_->transform.translate.x += dashX;
 		camera_->transform.translate.z += dashZ;
