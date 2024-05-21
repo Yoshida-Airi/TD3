@@ -27,8 +27,10 @@ void Player::Initialize(Camera* camera)
 	HpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
 	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
+
 	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_pad.png");
 	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_keyboard.png");
+	
 	ui_playerLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_playerLevel.png");
 	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_Hp.png");
 	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skillLevel.png");
@@ -47,6 +49,11 @@ void Player::Initialize(Camera* camera)
 	ui_skill_keyboard->SetPosition({ 1050.0f,550.0f });
 	ui_skill_keyboard->worldTransform_->scale_ = { 0.1f,0.1f };
 	ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+
+	ui_skill_pad.reset(Sprite::Create(ui_skill_padTex));
+	ui_skill_pad->SetPosition({ 1050.0f,550.0f });
+	ui_skill_pad->worldTransform_->scale_ = { 0.1f,0.1f };
+	ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
 
 	ui_playerLevel.reset(Sprite::Create(ui_playerLevelTex));
 	ui_playerLevel->SetPosition({ 40.0f,5.0f });
@@ -276,6 +283,22 @@ void Player::Update()
 	ui_playerLevel->Update();
 	ui_hp->Update();
 	ui_skillLevel->Update();
+
+	//ゲームパットの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
+
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		ui_skill_pad->SetisInvisible(false);
+		ui_skill_keyboard->SetisInvisible(true);
+	}
+	else
+	{ 
+
+
+		ui_skill_pad->SetisInvisible(true);
+		ui_skill_keyboard->SetisInvisible(false);
+	}
 
 	float scaleX = static_cast<float>(HP) / 1000.0f;
 	if (scaleX >= 5.0f)
@@ -726,11 +749,13 @@ void Player::RootUpdate()
 	{
 		isSkill = true;
 		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
+		ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
 	}
 
 	if (playerLevel->nowskilllevel == 1 && isSkillCooldown_ == false && isSkill == false)
 	{
 		ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+		ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 	}
 
 	//スキルと攻撃の併用を禁止
@@ -781,6 +806,7 @@ void Player::RootUpdate()
 			// クールダウンが終了したらフラグをリセットする
 			isSkillCooldown_ = false;
 			ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+			ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
 			//isSkill = false;
 
 		}
