@@ -55,8 +55,14 @@ void Boss::Update(SceneManager* scene) {
 
 		case SHOT:
 
-			Attack();
+			Shot();
 			bullet_->Update();
+
+			break;
+
+		case TACKLE:
+
+			Tackle();
 
 			break;
 
@@ -145,7 +151,7 @@ void Boss::Dead(SceneManager* scene) {
 	}
 }
 
-void Boss::Attack() {
+void Boss::Shot() {
 	if (aimTimer <= 90 && isAttack == false) {
 		aimTimer++;
 		Direction(0.1f);
@@ -173,13 +179,47 @@ void Boss::Attack() {
 	}
 }
 
+void Boss::Tackle() {
+	if (aimTimer <= 90 && isAttack == false) {
+		aimTimer++;
+		Direction(0.5f);
+	}
+	else {
+		aimTimer = 0;
+		isAttack = true;
+	}
+
+	if (isAttack == true && isAssignment == false) {
+		isAssignment = true;
+	}
+
+	if (isAssignment == true && isNextAction == false) {
+		BTimer++;
+		if (BTimer <= 15) {
+			model_->worldTransform_->translation_.x -= speed_.x / 5.0f;
+			model_->worldTransform_->translation_.y -= speed_.y / 5.0f;
+			model_->worldTransform_->translation_.z -= speed_.z / 5.0f;
+		}
+		else {
+			model_->worldTransform_->translation_.x += speed_.x;
+			model_->worldTransform_->translation_.y += speed_.y;
+			model_->worldTransform_->translation_.z += speed_.z;
+		}
+	}
+
+	if (BTimer >= 45) {
+		isNextAction = true;
+		BTimer = 0;
+	}
+}
+
 void Boss::NextAction() {
 	if (isNextAction == true) {
 		nextActionTimer++;
 	}
 
 	if (nextActionTimer >= 60) {
-		action = rand() % 2;
+		action = rand() % 3;
 		nextActionTimer = 0;
 		bullet_->SetScale({ 0.5f,0.5f,0.5f });
 		isNext = true;
@@ -191,6 +231,13 @@ void Boss::NextAction() {
 	}
 	else if (action == 1 && isNext == true) {
 		bAction = SHOT;
+		isNextAction = false;
+		isNext = false;
+		isAttack = false;
+		isAssignment = false;
+	}
+	else if (action == 2 && isNext == true) {
+		bAction = TACKLE;
 		isNextAction = false;
 		isNext = false;
 		isAttack = false;
