@@ -78,7 +78,7 @@ private:
 	// レベルアップ時の攻撃力増加量
 	const int AttackPowerIncreasePerLevel = 3;
 
-	int HP = 2000;
+	int HP = 1000;
 	float angle_ = 0.0f;
 
 	bool isHit = false;
