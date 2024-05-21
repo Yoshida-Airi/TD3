@@ -97,7 +97,7 @@ void GamePlayScene::Update()
 		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
-		if (player->GetIsHit() != true)
+		if (sword->GetIsHit() != true)
 		{
 
 			//敵の処理
@@ -189,7 +189,7 @@ void GamePlayScene::Update()
 	else if (timer.GetNowSecond() >= kFullWaveTime)
 	{
 		timer.AddBossFrame();
-		if (player->GetIsHit() != true)
+		if (sword->GetIsHit() != true)
 		{
 
 			enemy_.remove_if([](Enemy* enemys) {
@@ -497,6 +497,7 @@ void GamePlayScene::Hitstop()
 	if (hitstopTimer == 10)
 	{
 		sword->SetIsHit(false);
+		hitstopTimer = 0;
 		//throughTimer++;
 	}
 	//if (throughTimer == 30)

@@ -47,7 +47,7 @@ private:
 	int deathTimer = 120;
 	int EnemyHP = 20;
 	bool isDead_() {
-		return EnemyHP < 0;
+		return EnemyHP < 1;
 	}
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
