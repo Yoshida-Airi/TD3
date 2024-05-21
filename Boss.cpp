@@ -195,19 +195,24 @@ void Boss::Tackle() {
 
 	if (isAssignment == true && isNextAction == false) {
 		BTimer++;
-		if (BTimer <= 15) {
-			model_->worldTransform_->translation_.x -= speed_.x / 5.0f;
-			model_->worldTransform_->translation_.y -= speed_.y / 5.0f;
-			model_->worldTransform_->translation_.z -= speed_.z / 5.0f;
+		if (BTimer <= 30) {
+			model_->worldTransform_->translation_.x -= speed_.x / 10.0f;
+			model_->worldTransform_->translation_.y -= speed_.y / 10.0f;
+			model_->worldTransform_->translation_.z -= speed_.z / 10.0f;
 		}
-		else {
+		else if(BTimer > 30 && BTimer <= 55) {
 			model_->worldTransform_->translation_.x += speed_.x;
 			model_->worldTransform_->translation_.y += speed_.y;
 			model_->worldTransform_->translation_.z += speed_.z;
 		}
+		else if (BTimer > 55) {
+			model_->worldTransform_->translation_.x += speed_.x / 10.0f;
+			model_->worldTransform_->translation_.y += speed_.y / 10.0f;
+			model_->worldTransform_->translation_.z += speed_.z / 10.0f;
+		}
 	}
 
-	if (BTimer >= 45) {
+	if (BTimer >= 85) {
 		isNextAction = true;
 		BTimer = 0;
 	}
