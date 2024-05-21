@@ -64,7 +64,6 @@ void Player::Initialize(Camera* camera)
 	ExperienceBar.reset(Model::Create("Resources/DefaultAssets/ExperienceBar.obj"));
 	ExperienceText.reset(Model::Create("Resources/DefaultAssets/ExperienceText.obj"));
 	ExperiencePoint.reset(Model::Create("Resources/DefaultAssets/ExperiencePoint.obj"));
-	//LevelMax.reset(Model::Create("Resources/DefaultAssets/LevelMax.obj"));
 
 
 
@@ -110,8 +109,17 @@ void Player::Initialize(Camera* camera)
 	RightFootModel_->worldTransform_->translation_ = { 0.0f,1.57f,0.0f };
 	RightFootModel_->worldTransform_->rotation_ = { 0.0f,0.0f,0.0f };
 
+	ExperienceText->worldTransform_->rotation_.x = 0.8f;
+	ExperienceText->worldTransform_->rotation_.y = 3.14159265348979f;
+	ExperienceText->worldTransform_->rotation_.z = -0.1f;
 
+	ExperienceBar->worldTransform_->rotation_.x = 0.8f;
+	ExperienceBar->worldTransform_->rotation_.y = 0;
+	ExperienceBar->worldTransform_->rotation_.z = 0.1f;
 
+	ExperiencePoint->worldTransform_->rotation_.x = 0.8f;
+	ExperiencePoint->worldTransform_->rotation_.y = 0;
+	ExperiencePoint->worldTransform_->rotation_.z = 0.1f;
 
 	//LevelMax->worldTransform_->rotation_.x = 0.8f;
 	//LevelMax->worldTransform_->rotation_.y = 0;
@@ -175,8 +183,11 @@ void Player::Update()
 	LeftFootModel_->Update();
 	RightFootModel_->Update();
 
-	//ExperiencePoint->worldTransform_->scale_.x += 40;
+	ExperiencePoint->worldTransform_->scale_.x = playerLevel->Experiencepoint * 234.0f;
 
+	if (ExperiencePoint->worldTransform_->scale_.x >= 24800.0f) {
+		ExperiencePoint->worldTransform_->scale_.x = 0.5f;
+	}
 
 	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerLevel->sprite1->worldTransform_->translation_.y = 31.0f;
@@ -1103,8 +1114,6 @@ void Player::Skill3Update()
 		ExperiencePoint->worldTransform_->translation_.z += dashZ;
 		ExperienceText->worldTransform_->translation_.x += dashX;
 		ExperienceText->worldTransform_->translation_.z += dashZ;
-		/*LevelMax->worldTransform_->translation_.x += dashX;
-		LevelMax->worldTransform_->translation_.y += dashZ;*/
 		//カメラ直書き
 		camera_->transform.translate.x += dashX;
 		camera_->transform.translate.z += dashZ;
