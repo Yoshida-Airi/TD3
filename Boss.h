@@ -17,7 +17,8 @@ class SceneManager;
 
 enum BossAction {
 	MOVE,
-	ATTACK,
+	SHOT,
+	TACKLE,
 };
 
 class Boss : public Collider {
@@ -95,7 +96,9 @@ private:
 
 	void Direction(float speed);
 	
-	void Attack();
+	void Shot();
+
+	void Tackle();
 
 	void Dead(SceneManager* scene);
 
