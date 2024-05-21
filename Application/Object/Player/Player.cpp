@@ -69,6 +69,7 @@ void Player::Initialize(Camera* camera)
 	Skill1.reset(Model::Create("Resources/DefaultAssets/Skill1.obj"));
 	Skill2.reset(Model::Create("Resources/DefaultAssets/Skill2.obj"));
 	Skill3.reset(Model::Create("Resources/DefaultAssets/Skill3.obj"));
+	LevelUp.reset(Model::Create("Resources/DefaultAssets/LevelUp.obj"));
 
 
 
@@ -217,6 +218,7 @@ void Player::Update()
 	Skill1->Update();
 	Skill2->Update();
 	Skill3->Update();
+	LevelUp->Update();
 
 	bodyModel_->Update();
 	headModel_->Update();
@@ -230,6 +232,18 @@ void Player::Update()
 	if (ExperiencePoint->worldTransform_->scale_.x >= 24800.0f) {
 		level += 1;
 		ExperiencePoint->worldTransform_->scale_.x = 0.5f;
+		levelup = true;
+	}
+	if (levelup = true) {
+		levelupcount++;
+		LevelUp->worldTransform_->translation_.y += 0.05f;
+		LevelUp->worldTransform_->rotation_.y += 0.05f;
+		if (levelupcount >= 120) {
+			LevelUp->worldTransform_->translation_.y = 0.0f;
+			LevelUp->worldTransform_->rotation_.y = 0.0f;
+			levelupcount = 0;
+			levelup = false;
+		}
 	}
 
 	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
@@ -269,6 +283,7 @@ void Player::Update()
 	Skill1->ModelDebug("1");
 	Skill2->ModelDebug("2");
 	Skill3->ModelDebug("3");
+	LevelUp->ModelDebug("levelup");
 
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
@@ -412,6 +427,7 @@ void Player::Draw()
 	if (level >= 10) {
 		Skill3->Draw(camera_);
 	}
+	LevelUp->Draw(camera_);
 	bodyModel_->Draw(camera_);
 	headModel_->Draw(camera_);
 	LeftArmModel_->Draw(camera_);
@@ -606,6 +622,8 @@ void Player::Move()
 	Skill2->worldTransform_->translation_.z += move.z;
 	Skill3->worldTransform_->translation_.x += move.x;
 	Skill3->worldTransform_->translation_.z += move.z;
+	LevelUp->worldTransform_->translation_.x += move.x;
+	LevelUp->worldTransform_->translation_.z += move.z;
 
 
 
@@ -673,6 +691,8 @@ void Player::Move()
 				Skill2->worldTransform_->translation_.z += move.z;
 				Skill3->worldTransform_->translation_.x += move.x;
 				Skill3->worldTransform_->translation_.z += move.z;
+				LevelUp->worldTransform_->translation_.x += move.x;
+				LevelUp->worldTransform_->translation_.z += move.z;
 			}
 		}
 	}
@@ -1064,6 +1084,8 @@ void Player::Skill1Update()
 		Skill2->worldTransform_->translation_.z += dashZ;
 		Skill3->worldTransform_->translation_.x += dashX;
 		Skill3->worldTransform_->translation_.z += dashZ;
+		LevelUp->worldTransform_->translation_.x += dashX;
+		LevelUp->worldTransform_->translation_.z += dashZ;
 
 		//カメラ直書き
 		camera_->transform.translate.x += dashX;
@@ -1139,6 +1161,8 @@ void Player::Skill2Update()
 		Skill2->worldTransform_->translation_.z += dashZ;
 		Skill3->worldTransform_->translation_.x += dashX;
 		Skill3->worldTransform_->translation_.z += dashZ;
+		LevelUp->worldTransform_->translation_.x += dashX;
+		LevelUp->worldTransform_->translation_.z += dashZ;
 			//カメラ直書き
 		camera_->transform.translate.x += dashX;
 		camera_->transform.translate.z += dashZ;
@@ -1214,6 +1238,8 @@ void Player::Skill3Update()
 		Skill2->worldTransform_->translation_.z += dashZ;
 		Skill3->worldTransform_->translation_.x += dashX;
 		Skill3->worldTransform_->translation_.z += dashZ;
+		LevelUp->worldTransform_->translation_.x += dashX;
+		LevelUp->worldTransform_->translation_.z += dashZ;
 		//カメラ直書き
 		camera_->transform.translate.x += dashX;
 		camera_->transform.translate.z += dashZ;

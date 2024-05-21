@@ -89,6 +89,9 @@ private:
 	bool keyBoard = true;
 	bool gamePad = false;
 
+	bool levelup = false;
+	int levelupcount = 0;
+
 	float PlayerSpeed = 0.05f;
 
 
@@ -103,6 +106,7 @@ private:
 	std::unique_ptr<Model> Skill1 = nullptr;
 	std::unique_ptr<Model> Skill2 = nullptr;
 	std::unique_ptr<Model> Skill3 = nullptr;
+	std::unique_ptr<Model> LevelUp = nullptr;
 
 
 
