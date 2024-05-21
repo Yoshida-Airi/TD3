@@ -53,7 +53,7 @@ void Boss::Update(SceneManager* scene) {
 
 			break;
 
-		case ATTACK:
+		case SHOT:
 
 			Attack();
 			bullet_->Update();
@@ -190,7 +190,7 @@ void Boss::NextAction() {
 		isNext = false;
 	}
 	else if (action == 1 && isNext == true) {
-		bAction = ATTACK;
+		bAction = SHOT;
 		isNextAction = false;
 		isNext = false;
 		isAttack = false;

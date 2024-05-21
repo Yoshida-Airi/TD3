@@ -17,7 +17,7 @@ class SceneManager;
 
 enum BossAction {
 	MOVE,
-	ATTACK,
+	SHOT,
 };
 
 class Boss : public Collider {
