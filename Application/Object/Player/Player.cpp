@@ -553,7 +553,7 @@ void Player::Move()
 
 
 
-
+	//HPが減った後無敵時間
 	CoolDown();
 
 }

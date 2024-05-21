@@ -48,11 +48,13 @@
     <IncludePath>$(SolutionDir)Externals\ImGui;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)..\Genarated\Outputs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Genarated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>疾風の剣</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)ImGui;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)..\Genarated\Outputs\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Genarated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>疾風の剣</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

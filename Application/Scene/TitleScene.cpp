@@ -17,10 +17,6 @@ void TitleScene::Initialize()
 	camera = new Camera;
 	camera->Initialize();
 
-	fence_.reset(Model::Create("Resources/DefaultAssets/fence.obj"));
-	cube_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
-	fence_->worldTransform_->rotation_.y = 3.1f;
-
 	effect = std::make_unique<DeathEffect>();
 	effect->Initialize(camera);
 
@@ -93,12 +89,6 @@ void TitleScene::Update()
 		UpdateFadeIn();
 	}
 
-	fence_->Update();
-	cube_->Update();
-
-	cube_->ModelDebug("cube");
-	fence_->ModelDebug("fence");
-	fence_->Parent(cube_.get());
 
 	effect->Update();
 
@@ -114,8 +104,6 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	fence_->Draw(camera);
-	cube_->Draw(camera);
 
 	effect->Draw();
 	slashingEffect->Draw();

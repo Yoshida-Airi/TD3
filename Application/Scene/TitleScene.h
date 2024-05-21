@@ -39,9 +39,6 @@ private:
 
 	uint32_t soundData;
 
-	std::unique_ptr<Model> fence_ = nullptr;
-	std::unique_ptr<Model> cube_ = nullptr;
-
 	std::unique_ptr<DeathEffect> effect = nullptr;
 	std::unique_ptr<SlashingEffect> slashingEffect = nullptr;
 
