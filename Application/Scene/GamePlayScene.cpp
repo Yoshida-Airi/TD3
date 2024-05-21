@@ -64,7 +64,7 @@ void GamePlayScene::Initialize()
 
 	player->SetWeapon(sword.get());
 
-	//colliderManager_->UpdateWorldTransform();
+	colliderManager_->UpdateWorldTransform();
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 
@@ -97,7 +97,7 @@ void GamePlayScene::Update()
 		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
-		if (player->GetIsHit() != true)
+		if (sword->GetIsHit() != true)
 		{
 
 			//敵の処理
@@ -190,7 +190,7 @@ void GamePlayScene::Update()
 	else if (timer.GetNowSecond() >= kFullWaveTime)
 	{
 		timer.AddBossFrame();
-		if (player->GetIsHit() != true)
+		if (sword->GetIsHit() != true)
 		{
 
 			enemy_.remove_if([](Enemy* enemys) {
@@ -263,7 +263,7 @@ void GamePlayScene::Update()
 		UpdateFadeIn();
 	}
 
-	if (player->GetIsHit() != true)
+	if (sword->GetIsHit() != true)
 	{
 		CheckAllCollisions();
 
@@ -331,7 +331,7 @@ void GamePlayScene::Draw()
 
 	player->TextureDraw();
 
-	//colliderManager_->Draw(camera);
+	colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
@@ -351,7 +351,10 @@ void GamePlayScene::CheckAllCollisions()
 			if (enemyBullets->GetIsDead() == false) {
 				colliderManager_->AddColliders(enemyBullets);
 			}
-			colliderManager_->AddColliders(enemys);
+			if (enemys->GetIsCoolDown() == false) {
+				colliderManager_->AddColliders(enemys);
+			}
+			//colliderManager_->AddColliders(enemys);
 
 			//当たり判定
 			colliderManager_->ChackAllCollisions();
@@ -489,18 +492,19 @@ void GamePlayScene::UpdateFadeIn()
 
 void GamePlayScene::Hitstop()
 {
-	if (player->GetIsHit() == true && throughTimer == 0)
+	if (sword->GetIsHit() == true /*&& throughTimer == 0*/)
 	{
 		hitstopTimer++;
 	}
-	if (hitstopTimer == 15)
+	if (hitstopTimer == 10)
 	{
-		player->SetIsHit(false);
-		throughTimer++;
-	}
-	if (throughTimer == 30)
-	{
+		sword->SetIsHit(false);
 		hitstopTimer = 0;
-		throughTimer = 0;
+		//throughTimer++;
 	}
+	//if (throughTimer == 30)
+	//{
+	//	hitstopTimer = 0;
+	//	throughTimer = 0;
+	//}
 }

@@ -24,11 +24,12 @@ public:
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;
-	
+	void SetIsHit(bool hit);
 	WorldTransform* GetWorldTransform() { return model_->worldTransform_; };
-
+	bool GetIsHit() { return isHit; }
 
 	bool isAttack = false;
+	bool isHit = false;
 	bool combo1 = false;
 	bool combo2 = false;
 	int count = 0;
