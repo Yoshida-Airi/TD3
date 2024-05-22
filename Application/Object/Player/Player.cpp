@@ -70,7 +70,7 @@ void Player::Initialize(Camera* camera)
 	Skill2.reset(Model::Create("Resources/DefaultAssets/Skill2.obj"));
 	Skill3.reset(Model::Create("Resources/DefaultAssets/Skill3.obj"));
 	LevelUp.reset(Model::Create("Resources/DefaultAssets/LevelUp.obj"));
-
+	TitleText.reset(Model::Create("Resources/DefaultAssets/TitleText.obj"));
 
 
 
@@ -118,6 +118,9 @@ void Player::Initialize(Camera* camera)
 	ExperienceText->worldTransform_->rotation_.x = 0.8f;
 	ExperienceText->worldTransform_->rotation_.y = 3.14159265348979f;
 	ExperienceText->worldTransform_->rotation_.z = -0.1f;
+
+	TitleText->worldTransform_->rotation_.x = 0.8f;
+	TitleText->worldTransform_->rotation_.y = 3.14159265348979f;
 
 	ExperienceBar->worldTransform_->rotation_.x = 0.8f;
 	ExperienceBar->worldTransform_->rotation_.y = 0;
@@ -219,6 +222,7 @@ void Player::Update()
 	Skill2->Update();
 	Skill3->Update();
 	LevelUp->Update();
+	TitleText->Update();
 
 	bodyModel_->Update();
 	headModel_->Update();
@@ -228,6 +232,8 @@ void Player::Update()
 	RightFootModel_->Update();
 
 	ExperiencePoint->worldTransform_->scale_.x = playerLevel->Experiencepoint * 234.0f;
+	TitleText->worldTransform_->scale_.x += 0.001f;
+	TitleText->worldTransform_->scale_.y += 0.001f;
 
 	if (ExperiencePoint->worldTransform_->scale_.x >= 24800.0f) {
 		level += 1;
@@ -277,6 +283,7 @@ void Player::Update()
 	ImGui::Text("Power : %d", AttackPower);
 	ImGui::Text("MotionCount : %d", MotionCount_);
 	ImGui::Text("MotionTimer : %d", MotionTimer_);
+	ImGui::Text("SkillFlag : %d", isSkill);
 	ImGui::End();
 	ImGui::Begin("levelupflag");
 	ImGui::Text("levelupflag = %d", levelup);
@@ -292,6 +299,7 @@ void Player::Update()
 	Skill2->ModelDebug("2");
 	Skill3->ModelDebug("3");
 	LevelUp->ModelDebug("levelup");
+	TitleText->ModelDebug("titletext");
 
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
@@ -300,8 +308,6 @@ void Player::Update()
 	LeftFootModel_->ModelDebug("leftFoot");
 	RightFootModel_->ModelDebug("rightFoot");
 
-
-	ImGui::Text("SkillFlag : %d", isSkill);
 
 #endif // _DEBUG
 
@@ -436,6 +442,10 @@ void Player::Draw()
 		Skill3->Draw(camera_);
 	}
 	LevelUp->Draw(camera_);
+
+	if (TitleText->worldTransform_->scale_.x <= 1.7f) {
+		TitleText->Draw(camera_);
+	}
 	bodyModel_->Draw(camera_);
 	headModel_->Draw(camera_);
 	LeftArmModel_->Draw(camera_);

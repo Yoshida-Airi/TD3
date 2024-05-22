@@ -107,6 +107,7 @@ private:
 	std::unique_ptr<Model> Skill2 = nullptr;
 	std::unique_ptr<Model> Skill3 = nullptr;
 	std::unique_ptr<Model> LevelUp = nullptr;
+	std::unique_ptr<Model> TitleText = nullptr;
 
 
 
