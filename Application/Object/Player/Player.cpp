@@ -282,6 +282,7 @@ void Player::Update()
 	ImGui::Text("levelupflag = %d", levelup);
 	ImGui::Text("levelupcount = %d", levelupcount);
 	ImGui::End();
+
 	ExperienceBar->ModelDebug("bar");
 	ExperienceText->ModelDebug("text");
 	ExperiencePoint->ModelDebug("point");
@@ -786,7 +787,7 @@ void Player::AttackUpdate()
 	//剣を振りかぶる
 	Input::GetInstance()->GetJoystickState(0, joyState);
 	//移動
-	//Move();
+	Move();
 
 	MotionTimer_++;
 
@@ -799,7 +800,6 @@ void Player::AttackUpdate()
 
 		weapon_->GetWorldTransform()->rotation_.x += 0.252f;
 		weapon_->GetWorldTransform()->rotation_.y += 0.3f;
-
 
 		LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
 		LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
@@ -1182,7 +1182,7 @@ void Player::Skill2Update()
 		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60 * 5;
+		skillCooldownTime_ = 60 * 1;
 		isSkillAttack = false;
 
 	}
@@ -1258,7 +1258,7 @@ void Player::Skill3Update()
 		behaviorRequest_ = Animation::kRoot;
 		// スキル使用後、クールダウンを開始する
 		isSkillCooldown_ = true;
-		skillCooldownTime_ = 60 * 5;
+		skillCooldownTime_ = 60 * 1;
 		isSkillAttack = false;
 
 	}
