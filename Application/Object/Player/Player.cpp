@@ -232,19 +232,24 @@ void Player::Update()
 	if (ExperiencePoint->worldTransform_->scale_.x >= 24800.0f) {
 		level += 1;
 		ExperiencePoint->worldTransform_->scale_.x = 0.5f;
+		LevelUp->worldTransform_->translation_.y = 2.00f;
 		levelup = true;
 	}
-	if (levelup = true) {
+	if (levelup == true) {
 		levelupcount++;
 		LevelUp->worldTransform_->translation_.y += 0.05f;
-		LevelUp->worldTransform_->rotation_.y += 0.05f;
-		if (levelupcount >= 120) {
+		LevelUp->worldTransform_->rotation_.y -= 0.05f;
+		if (levelupcount >= 180) {
 			LevelUp->worldTransform_->translation_.y = 0.0f;
 			LevelUp->worldTransform_->rotation_.y = 0.0f;
 			levelupcount = 0;
 			levelup = false;
 		}
 	}
+	if (levelupcount == 0) {
+		levelup = false;
+	}
+	
 
 	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerLevel->sprite1->worldTransform_->translation_.y = 31.0f;
@@ -274,7 +279,10 @@ void Player::Update()
 	ImGui::Text("MotionCount : %d", MotionCount_);
 	ImGui::Text("MotionTimer : %d", MotionTimer_);
 	ImGui::End();
-
+	ImGui::Begin("flag");
+	ImGui::Text("flag = %d", levelup);
+	ImGui::Text("count = %d", levelupcount);
+	ImGui::End();
 	ExperienceBar->ModelDebug("bar");
 	ExperienceText->ModelDebug("text");
 	ExperiencePoint->ModelDebug("point");
