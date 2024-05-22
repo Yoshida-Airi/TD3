@@ -11,9 +11,9 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kBoss));
 
-	bossTex = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/bossTex.png");
+	bossTex = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a2.png");
 
-	model_.reset(Model::Create("Resources/Enemy/enemy.obj"));
+	model_.reset(Model::Create("Resources/Enemy/ene.obj"));
 	model_->SetTexture(bossTex);
 
 	input_ = Input::GetInstance();
