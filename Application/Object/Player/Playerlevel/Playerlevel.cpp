@@ -60,7 +60,7 @@ void Playerlevel::Update() {
 	if (Experiencepoint >= maxbar && nowlevel == maxlevel) {
 		Experiencepoint = maxbar;
 	}
-	Experiencepoint += 0.5f;//デバック用経験値
+	Experiencepoint += DebugExperienvepoint;//デバック用経験値
 
 	sprite0->Update();
 	sprite1->Update();

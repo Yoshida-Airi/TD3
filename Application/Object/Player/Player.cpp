@@ -249,7 +249,6 @@ void Player::Update()
 	if (levelupcount == 0) {
 		levelup = false;
 	}
-	
 
 	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerLevel->sprite1->worldTransform_->translation_.y = 31.0f;
@@ -279,9 +278,9 @@ void Player::Update()
 	ImGui::Text("MotionCount : %d", MotionCount_);
 	ImGui::Text("MotionTimer : %d", MotionTimer_);
 	ImGui::End();
-	ImGui::Begin("flag");
-	ImGui::Text("flag = %d", levelup);
-	ImGui::Text("count = %d", levelupcount);
+	ImGui::Begin("levelupflag");
+	ImGui::Text("levelupflag = %d", levelup);
+	ImGui::Text("levelupcount = %d", levelupcount);
 	ImGui::End();
 	ExperienceBar->ModelDebug("bar");
 	ExperienceText->ModelDebug("text");
