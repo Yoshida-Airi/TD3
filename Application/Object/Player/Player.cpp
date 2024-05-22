@@ -1232,7 +1232,7 @@ void Player::Skill3Update()
 		}
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.2f;
+		float dashSpeed = 0.5f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
