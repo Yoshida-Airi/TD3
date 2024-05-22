@@ -561,11 +561,7 @@ void Player::Move()
 		weapon_->GetWorldPosition().z - 0.3f
 	};
 
-
-
-
 	//移動
-
 	if (input_->PushKey(DIK_W))
 	{
 		slashingEffect->SetPosition(backBasePosition);
@@ -619,6 +615,18 @@ void Player::Move()
 
 	}
 
+	if (model_->worldTransform_->translation_.x >= 60.0f) {
+		model_->worldTransform_->translation_.x = 60.0f;
+	}
+	if (model_->worldTransform_->translation_.z >= 60.0f) {
+		model_->worldTransform_->translation_.z = 60.0f;
+	}
+	if (model_->worldTransform_->translation_.x <= -60.0f) {
+		model_->worldTransform_->translation_.x = -60.0f;
+	}
+	if (model_->worldTransform_->translation_.z <= -60.0f) {
+		model_->worldTransform_->translation_.z = -60.0f;
+	}
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 	model_->worldTransform_->translation_.x += move.x;
@@ -687,7 +695,18 @@ void Player::Move()
 				// 目標角度の算出
 				angle_ = std::atan2(move.x, move.z);
 
-
+				if (model_->worldTransform_->translation_.x >= 60.0f) {
+					model_->worldTransform_->translation_.x = 60.0f;
+				}
+				if (model_->worldTransform_->translation_.z >= 60.0f) {
+					model_->worldTransform_->translation_.z = 60.0f;
+				}
+				if (model_->worldTransform_->translation_.x <= -60.0f) {
+					model_->worldTransform_->translation_.x = -60.0f;
+				}
+				if (model_->worldTransform_->translation_.z <= -60.0f) {
+					model_->worldTransform_->translation_.z = -60.0f;
+				}
 				// Y軸周り角度(θy)	歩いている方向に顔を向ける
 				model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 				model_->worldTransform_->translation_.x += move.x;
@@ -714,13 +733,7 @@ void Player::Move()
 			}
 		}
 	}
-
-
-
-
-
 	CoolDown();
-
 }
 
 void Player::Attack()

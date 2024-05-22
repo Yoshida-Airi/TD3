@@ -37,7 +37,8 @@ void GamePlayScene::Initialize()
 	monsterBall = textureManager_->LoadTexture("Resources/DefaultAssets/monsterBall.png");
 	Doll = textureManager_->LoadTexture("Resources/DefaultAssets/Doll.png");
 	circle = textureManager_->LoadTexture("Resources/DefaultAssets/circle.png");
-	demo_stage.reset(Model::Create("Resources/DefaultAssets/demo_stage.obj"));
+	//demo_stage.reset(Model::Create("Resources/DefaultAssets/demo_stage.obj"));
+	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
 
 	camera = new Camera;
 	camera->Initialize();
