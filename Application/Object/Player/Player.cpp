@@ -191,11 +191,6 @@ void Player::Initialize(Camera* camera)
 	Skill2->worldTransform_->translation_.y = 6.0f;
 	Skill3->worldTransform_->translation_.x = 3.5f;
 	Skill3->worldTransform_->translation_.y = 6.0f;
-	LevelUp->worldTransform_->scale_.x = 0.5f;
-	LevelUp->worldTransform_->scale_.y = 0.5f;
-
-
-
 
 	bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
