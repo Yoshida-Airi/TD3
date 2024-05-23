@@ -65,7 +65,7 @@ void GamePlayScene::Initialize()
 
 	player->SetWeapon(sword.get());
 
-	colliderManager_->UpdateWorldTransform();
+	//colliderManager_->UpdateWorldTransform();
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 
@@ -354,7 +354,7 @@ void GamePlayScene::Draw()
 
 	player->TextureDraw();
 
-	colliderManager_->Draw(camera);
+	//colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
