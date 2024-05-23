@@ -61,12 +61,18 @@ private:
 	bool isCoolDown = false;
 	int coolDownTimer = 0;
 
+	float MotionTimer = 0.0f;
+	int motionCount = 0;
+	bool isplayHitAction = false;	//あたったときの点滅描画をするかどうか
+
 	float Lerp(const float& a, const float& b, float t);
 
 	// 最短角度補間
 	float LerpShortAngle(float a, float b, float t);
 
 	float LerpShortTranslate(float a, float b, float t);
+
+	void HitAction();
 
 };
 

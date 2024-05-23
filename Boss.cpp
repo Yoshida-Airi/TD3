@@ -40,6 +40,8 @@ void Boss::Update(SceneManager* scene) {
 
 	Collider::UpdateWorldTransform();
 
+	HitAction();
+
 	if (model_->worldTransform_->translation_.y <= 0.0f)
 	{
 
@@ -277,6 +279,46 @@ void Boss::Direction(float speed) {
 
 }
 
+void Boss::HitAction()
+{
+	if (isplayHitAction == true)
+	{
+		MotionTimer++;
+
+		if (motionCount == 0)
+		{
+			model_->SetColor({ 0.5f,0.0f,1.0f,0.5f });
+
+			if (MotionTimer >= 20)
+			{
+				motionCount = 1;
+			}
+		}
+
+		if (motionCount == 1)
+		{
+			model_->SetColor({ 0.5f,0.0f,1.0f,0.8f });
+
+			if (MotionTimer >= 40)
+			{
+				motionCount = 2;
+			}
+		}
+
+
+		if (motionCount == 2)
+		{
+			model_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+			isplayHitAction = false;
+			MotionTimer = 0.0f;
+			motionCount = 0;
+		}
+
+
+	}
+
+}
+
 void Boss::OnCollision([[maybe_unused]] Collider* other)
 {
 
@@ -285,6 +327,7 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	{
 		hp -= player_->AttackPower;
 		isCoolDown = true;
+		isplayHitAction = true;
 	}
 
 
