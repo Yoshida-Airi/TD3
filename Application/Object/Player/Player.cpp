@@ -552,7 +552,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
 	{
 		//ボスにあたったら
-		HP -= 100;
 		isCoolDown = true;
 		isHit = true;
 	}
