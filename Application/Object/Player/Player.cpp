@@ -659,16 +659,35 @@ void Player::Move()
 	}
 
 	if (model_->worldTransform_->translation_.x >= 60.0f) {
-		model_->worldTransform_->translation_.x = 60.0f;
+		model_->worldTransform_->translation_.x = 59.5f;
+		PlayerSpeed = 0;
+	}
+	else {
+		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.z >= 60.0f) {
-		model_->worldTransform_->translation_.z = 60.0f;
+		model_->worldTransform_->translation_.z = 59.5f;
+		PlayerSpeed = 0;
+
+	}
+	else {
+		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.x <= -60.0f) {
-		model_->worldTransform_->translation_.x = -60.0f;
+		model_->worldTransform_->translation_.x = -59.5f;
+		PlayerSpeed = 0;
+
+	}
+	else {
+		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.z <= -60.0f) {
-		model_->worldTransform_->translation_.z = -60.0f;
+		model_->worldTransform_->translation_.z = -59.5f;
+		PlayerSpeed = 0;
+
+	}
+	else {
+		PlayerSpeed = 0.05f;
 	}
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
@@ -739,16 +758,35 @@ void Player::Move()
 				angle_ = std::atan2(move.x, move.z);
 
 				if (model_->worldTransform_->translation_.x >= 60.0f) {
-					model_->worldTransform_->translation_.x = 60.0f;
+					model_->worldTransform_->translation_.x = 59.5f;
+					adjustedSpeed = 0;
+				}
+				else {
+					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.z >= 60.0f) {
-					model_->worldTransform_->translation_.z = 60.0f;
+					model_->worldTransform_->translation_.z = 59.5f;
+					adjustedSpeed = 0;
+
+				}
+				else {
+					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.x <= -60.0f) {
-					model_->worldTransform_->translation_.x = -60.0f;
+					model_->worldTransform_->translation_.x = -59.5f;
+					adjustedSpeed = 0;
+
+				}
+				else {
+					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.z <= -60.0f) {
-					model_->worldTransform_->translation_.z = -60.0f;
+					model_->worldTransform_->translation_.z = -59.5f;
+					adjustedSpeed = 0;
+
+				}
+				else {
+					adjustedSpeed = 0.05f;
 				}
 				// Y軸周り角度(θy)	歩いている方向に顔を向ける
 				model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
