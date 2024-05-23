@@ -44,6 +44,7 @@ void GamePlayScene::Initialize()
 
 	GameBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/GameBGM.wav");
 	Audio::GetInstance()->SoundPlayWave(GameBGM, false);
+	Audio::GetInstance()->SoundVolume(GameBGM, 0.01f);
 
 
 	camera = new Camera;

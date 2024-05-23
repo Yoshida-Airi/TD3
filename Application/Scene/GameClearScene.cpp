@@ -29,6 +29,7 @@ void GameClearScene::Initialize()
 
 	ClearBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/ClearBGM.wav");
 	Audio::GetInstance()->SoundPlayWave(ClearBGM, false);
+	Audio::GetInstance()->SoundVolume(ClearBGM, 0.01f);
 
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });

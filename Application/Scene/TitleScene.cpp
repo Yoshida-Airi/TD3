@@ -13,6 +13,7 @@ void TitleScene::Initialize()
 
 	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/TitleBGM.wav");
 	Audio::GetInstance()->SoundPlayWave(soundData, false);
+	Audio::GetInstance()->SoundVolume(soundData, 0.01f);
 
 
 	camera = new Camera;
