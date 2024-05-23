@@ -960,7 +960,7 @@ void Player::RootUpdate()
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoystickState(0, joyState))
 	{
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && isSkillCooldown_ == false)
 		{
 			isSkill = true;
 			ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,0.5f });
