@@ -23,6 +23,8 @@ void Enemy::Initialize(Player* player) {
 
 	SetRadius(model_->worldTransform_->scale_);
 	player_ = player;
+
+	isRelottery = false;
 }
 
 void Enemy::Update() {
@@ -31,6 +33,8 @@ void Enemy::Update() {
 	model_->Update();
 
 	Collider::UpdateWorldTransform();
+
+	Direction();
 
 	model_->worldTransform_->translation_.x += 0.001f;
 
@@ -59,8 +63,8 @@ void Enemy::Finalize() {
 }
 
 void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
-	std::uniform_real_distribution<float> translateX (-3.0f, 3.0f);
-	std::uniform_real_distribution<float> translateZ (-3.0f, 3.0f);
+	std::uniform_real_distribution<float> translateX (-5.0f, 5.0f);
+	std::uniform_real_distribution<float> translateZ (-5.0f, 5.0f);
 
 	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
 }
@@ -78,6 +82,31 @@ Vector3 Enemy::GetWorldPosition()
 	return worldpos;
 }
 
+void Enemy::Direction() {
+	const float kBulletSpeed = 0.04f;
+	Vector3 playerPos = player_->GetPosition();
+	Vector3 enemyPos = model_->worldTransform_->translation_;
+
+	const float threshold = 0.7f;
+	Vector3 move = { 0.0f,0.0f,0.0f };
+	bool isMoveing = false;
+
+	speed_.x = playerPos.x - enemyPos.x;
+	//speed_.y = playerPos.y - enemyPos.y;
+	speed_.z = playerPos.z - enemyPos.z;
+
+	speed_ = Normalize(speed_);
+
+	speed_.x *= kBulletSpeed;
+	//speed_.y *= kBulletSpeed;
+	speed_.z *= kBulletSpeed;
+
+	//目標角度の算出
+	angle_ = std::atan2(speed_.x, speed_.z);
+
+	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
+
+}
 
 void Enemy::OnCollision([[maybe_unused]] Collider* other)
 {
@@ -88,5 +117,49 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 		EnemyHP -= player_->AttackPower;
 	}
 
-	
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
+	{
+		isRelottery = true;
+	}
+}
+
+float Enemy::Lerp(const float& a, const float& b, float t) {
+	float result{};
+
+	result = a + b * t;
+
+	return result;
+}
+
+// 最短角度補間
+float Enemy::LerpShortAngle(float a, float b, float t)
+{
+	// 角度差分を求める
+	float diff = b - a;
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < 2 * (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= 2 * std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	diff = std::fmod(diff, 2 * (float)std::numbers::pi);
+	if (diff < (float)-std::numbers::pi)
+	{
+		diff += 2 * (float)std::numbers::pi;
+	}
+	else if (diff >= (float)std::numbers::pi)
+	{
+		diff -= 2 * (float)std::numbers::pi;
+	}
+
+	return Lerp(a, diff, t);
+}
+
+float Enemy::LerpShortTranslate(float a, float b, float t) {
+	return a + t * (b - a);
 }
