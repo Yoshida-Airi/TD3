@@ -137,7 +137,7 @@ void GamePlayScene::Update()
 				enemys->Update();
 				if (enemys->GetIsDead()) {
 					//貰える経験値
-					player->GetPlayerLevel()->Experiencepoint += 50.0f;
+					player->GetPlayerLevel()->Experiencepoint += 16.0f;
 					enemyDeathCount++;
 					CreateDeathEffect({ enemys->GetTranslate() });
 				}

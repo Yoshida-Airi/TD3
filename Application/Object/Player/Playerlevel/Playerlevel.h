@@ -19,7 +19,7 @@ public:
 	void Levelup();
 	void Skillup();
 	float Experiencepoint = 0.0f;//経験値
-	float DebugExperienvepoint = 0.5f; //デバック用経験値
+	float DebugExperienvepoint = 0.0f; //デバック用経験値
 	int nowlevel = 1;
 	int count = 2;
 	int nowskilllevel = 0;
