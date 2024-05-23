@@ -14,6 +14,8 @@ void TitleScene::Initialize()
 	//soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Alarm01.wav");
 	//Audio::GetInstance()->SoundVolume(soundData, 0.1f);
 	//Audio::GetInstance()->SoundPlayWave(soundData, false);
+	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit.wav");
+	Audio::GetInstance()->SoundPlayWave(soundData, false);
 
 
 	camera = new Camera;
@@ -133,6 +135,6 @@ void TitleScene::UpdateFadeIn()
 		// フェードイン完了時の処理
 		isFadingIn = false;
 		sceneManager_->ChangeScene("GAMEPLAY");
-		//Audio::GetInstance()->SoundStopWave(soundData);
+		Audio::GetInstance()->SoundStopWave(soundData);
 	}
 }
