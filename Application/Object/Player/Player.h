@@ -60,6 +60,10 @@ public:
 	bool GetIsCoolDown() { return isCoolDown; }
 	bool GetIsHit() { return isHit; }
 	int GetHP() { return HP; };
+	int SetHP(int damege) {
+		HP -= damege;
+		return HP;
+	};
 	Playerlevel* GetPlayerLevel() { return playerLevel.get(); };
 	
 private:

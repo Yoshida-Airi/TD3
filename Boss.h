@@ -92,6 +92,7 @@ private:
 
 	uint32_t hitSound[3];
 
+	int tackleDamage = 100;
 
 	float MotionTimer = 0.0f;
 	int motionCount = 0;
