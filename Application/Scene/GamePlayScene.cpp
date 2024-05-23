@@ -32,6 +32,8 @@ void GamePlayScene::Initialize()
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG
 
+	currentTime = int(time(nullptr));
+	srand(currentTime);
 
 	uvTexture = textureManager_->LoadTexture("Resources/DefaultAssets/uvChecker.png");
 	monsterBall = textureManager_->LoadTexture("Resources/DefaultAssets/monsterBall.png");
@@ -198,6 +200,8 @@ void GamePlayScene::Update()
 			isEnemySpawn = true;
 			enemyCount = 1;
 			enemyDeathCount = 0;
+
+			EnemyNumberOfOccurrences();
 
 			sprite->worldTransform_->translation_ =
 			{
@@ -534,4 +538,8 @@ void GamePlayScene::Hitstop()
 	//	hitstopTimer = 0;
 	//	throughTimer = 0;
 	//}
+}
+
+void GamePlayScene::EnemyNumberOfOccurrences() {
+	enemyNumberOfOccurrences = rand() % 15 + 5;
 }
