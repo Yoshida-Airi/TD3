@@ -70,6 +70,8 @@ private:
 	uint32_t Doll;
 	uint32_t circle;
 
+	uint32_t GameBGM;
+
 	Camera* camera;
 	
 	Timer timer;

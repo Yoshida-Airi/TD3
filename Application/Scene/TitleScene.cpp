@@ -11,10 +11,7 @@ void TitleScene::Initialize()
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
-	//soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Alarm01.wav");
-	//Audio::GetInstance()->SoundVolume(soundData, 0.1f);
-	//Audio::GetInstance()->SoundPlayWave(soundData, false);
-	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit.wav");
+	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/TitleBGM.wav");
 	Audio::GetInstance()->SoundPlayWave(soundData, false);
 
 

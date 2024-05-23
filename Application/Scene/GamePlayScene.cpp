@@ -42,6 +42,10 @@ void GamePlayScene::Initialize()
 	//demo_stage.reset(Model::Create("Resources/DefaultAssets/demo_stage.obj"));
 	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
 
+	GameBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/GameBGM.wav");
+	Audio::GetInstance()->SoundPlayWave(GameBGM, false);
+
+
 	camera = new Camera;
 	camera->Initialize();
 
@@ -497,6 +501,7 @@ void GamePlayScene::UpdateFadeOut()
 		fadeSprite->SetisInvisible(true);
 		// フェードイン完了時の処理
 		isFadeOut = false;
+
 	}
 }
 
@@ -516,6 +521,7 @@ void GamePlayScene::UpdateFadeIn(const std::string& sceneName)
 	{
 		// フェードイン完了時の処理
 		isFadeIn = false;
+		Audio::GetInstance()->SoundStopWave(GameBGM);
 		sceneManager_->ChangeScene(sceneName);
 	}
 }

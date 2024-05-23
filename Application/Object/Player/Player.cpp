@@ -35,6 +35,13 @@ void Player::Initialize(Camera* camera)
 	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_Hp.png");
 	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skillLevel.png");
 
+	AttackSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Attack.wav");
+	ComboSE1 = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Combo1.wav");
+	ComboSE2 = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Combo2.wav");
+	LevelUpSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/LevelUp.wav");
+	DashSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Dash.wav");
+	SkillSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Skill.wav");
+
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
 	hpSprite_->worldTransform_->scale_ = { float(HP),0.7f };
@@ -235,30 +242,36 @@ void Player::Update()
 	LeftFootModel_->Update();
 	RightFootModel_->Update();
 
-	ExperiencePoint->worldTransform_->scale_.x = playerLevel->Experiencepoint * 234.0f;
 	TitleText->worldTransform_->scale_.x += 0.001f;
 	TitleText->worldTransform_->scale_.y += 0.001f;
 
-	if (ExperiencePoint->worldTransform_->scale_.x >= 24800.0f) {
-		level += 1;
-		ExperiencePoint->worldTransform_->scale_.x = 0.5f;
-		LevelUp->worldTransform_->translation_.y = 2.00f;
-		levelup = true;
-	}
-	if (levelup == true) {
-		levelupcount++;
-		LevelUp->worldTransform_->translation_.y += 0.05f;
-		LevelUp->worldTransform_->rotation_.y -= 0.05f;
-		if (levelupcount >= 180) {
-			LevelUp->worldTransform_->translation_.y = 0.0f;
-			LevelUp->worldTransform_->rotation_.y = 0.0f;
-			levelupcount = 0;
+
+		ExperiencePoint->worldTransform_->scale_.x = playerLevel->Experiencepoint * 234.0f;
+
+		if (ExperiencePoint->worldTransform_->scale_.x >= 24800.0f) {
+			level += 1;
+			ExperiencePoint->worldTransform_->scale_.x = 0.5f;
+			LevelUp->worldTransform_->translation_.y = 2.00f;
+			levelup = true;
+		}
+		if (levelup == true) {
+			levelupcount++;
+			if (levelupcount == 1) {
+				Audio::GetInstance()->SoundPlayWave(LevelUpSE, false);
+			}
+			LevelUp->worldTransform_->translation_.y += 0.05f;
+			LevelUp->worldTransform_->rotation_.y -= 0.05f;
+			if (levelupcount >= 180) {
+				LevelUp->worldTransform_->translation_.y = 0.0f;
+				LevelUp->worldTransform_->rotation_.y = 0.0f;
+				levelupcount = 0;
+				levelup = false;
+			}
+		}
+		if (levelupcount == 0) {
 			levelup = false;
 		}
-	}
-	if (levelupcount == 0) {
-		levelup = false;
-	}
+	
 
 	playerLevel->sprite1->worldTransform_->translation_.x = 54.0f;
 	playerLevel->sprite1->worldTransform_->translation_.y = 31.0f;
@@ -769,11 +782,13 @@ void Player::Attack()
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 		{
 			isUnderAttack = true;
+			Audio::GetInstance()->SoundPlayWave(AttackSE, false);
 		}
 	}
 
 	if (input_->IsLeftMouseClicked()) {
 		isUnderAttack = true;
+		Audio::GetInstance()->SoundPlayWave(AttackSE, false);
 	}
 
 
@@ -858,6 +873,7 @@ void Player::AttackUpdate()
 	}
 
 	if (MotionCount_ == 1 && input_->IsLeftMouseClicked() && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
+		Audio::GetInstance()->SoundPlayWave(ComboSE1, false);
 		MotionCount_ = 2;
 		MotionTimer_ = 60;
 		weapon_->GetWorldTransform()->rotation_.x = 2.83f;
@@ -867,6 +883,7 @@ void Player::AttackUpdate()
 
 
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionCount_ == 1 && MotionTimer_ >= 10 && MotionTimer_ <= 60) {
+		Audio::GetInstance()->SoundPlayWave(ComboSE1, false);
 		MotionCount_ = 2;
 		MotionTimer_ = 60;
 		weapon_->GetWorldTransform()->rotation_.x = 2.83f;
@@ -884,7 +901,6 @@ void Player::AttackUpdate()
 			MotionCount_ = 3;
 		}
 		//ここに１コンボ目の剣の動きを書く
-
 		weapon_->GetWorldTransform()->rotation_.y -= 0.331f;
 		//LeftFootModel_->worldTransform_->rotation_.x += 0.1f / 10;
 		//LeftFootModel_->worldTransform_->rotation_.z -= 0.18f / 10;
@@ -896,6 +912,7 @@ void Player::AttackUpdate()
 
 	}
 	if (MotionCount_ == 3 && input_->IsLeftMouseClicked() && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
+		Audio::GetInstance()->SoundPlayWave(ComboSE2, false);
 		MotionCount_ = 4;
 		MotionTimer_ = 130;
 		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
@@ -904,6 +921,7 @@ void Player::AttackUpdate()
 	}
 
 	if (MotionCount_ == 3 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && MotionTimer_ >= 80 && MotionTimer_ <= 130) {
+		Audio::GetInstance()->SoundPlayWave(ComboSE2, false);
 		MotionCount_ = 4;
 		MotionTimer_ = 130;
 		weapon_->GetWorldTransform()->rotation_.x = 3.0f;
@@ -1120,7 +1138,9 @@ void Player::Skill1Update()
 	}
 
 	MotionTimer_++;
-
+	if (MotionTimer_ == 1) {
+		Audio::GetInstance()->SoundPlayWave(DashSE, false);
+	}
 	if (MotionCount_ == 0)
 	{
 		if (MotionTimer_ == 20)
@@ -1179,7 +1199,9 @@ void Player::Skill2Update()
 	}
 
 	MotionTimer_++;
-
+	if (MotionTimer_ == 1) {
+		Audio::GetInstance()->SoundPlayWave(SkillSE, false);
+	}
 	if (MotionCount_ == 0)
 	{
 		if (MotionTimer_ == 40)
@@ -1259,11 +1281,11 @@ void Player::Skill3Update()
 	}
 
 	MotionTimer_++;
-
+	if (MotionTimer_ == 1) {
+		Audio::GetInstance()->SoundPlayWave(SkillSE, false);
+	}
 	if (MotionCount_ == 0)
 	{
-
-
 		if (MotionTimer_ == 30)
 		{
 			MotionCount_ = 1;

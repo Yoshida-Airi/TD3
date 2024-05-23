@@ -27,6 +27,9 @@ void GameClearScene::Initialize()
 	UI_GamePadABotton->SetPosition({ 1100.0f,470.0f });
 	UI_GamePadABotton->worldTransform_->scale_ = { 0.1f,0.1f };
 
+	ClearBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/ClearBGM.wav");
+	Audio::GetInstance()->SoundPlayWave(ClearBGM, false);
+
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(false);
@@ -132,5 +135,6 @@ void GameClearScene::UpdateFadeIn()
 		// フェードイン完了時の処理
 		isFadeIn = false;
 		sceneManager_->ChangeScene("TITLE");
+		Audio::GetInstance()->SoundStopWave(ClearBGM);
 	}
 }
