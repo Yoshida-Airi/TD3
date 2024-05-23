@@ -31,6 +31,10 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 
 	player_ = player;
 
+	hitSound[0] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit.wav");
+	hitSound[1] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit2.wav");
+	hitSound[2] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit3.wav");
+
 }
 
 void Boss::Update(SceneManager* scene) {
@@ -39,6 +43,8 @@ void Boss::Update(SceneManager* scene) {
 	model_->Update();
 
 	Collider::UpdateWorldTransform();
+
+	LotteryHitSound();
 
 	HitAction();
 
@@ -131,7 +137,7 @@ void Boss::CoolDown() {
 		coolDownTimer++;
 	}
 
-	if (coolDownTimer == 120) {
+	if (coolDownTimer == 45) {
 		isCoolDown = false;
 		coolDownTimer = 0;
 	}
@@ -327,9 +333,27 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	{
 		hp -= player_->AttackPower;
 		isCoolDown = true;
+		isPlayHitSound = true;
+	}
+
+
+}
 		isplayHitAction = true;
 	}
 
+void Boss::LotteryHitSound() {
+	if (isPlayHitSound == true && isPlayNum == false) {
+		for (int i = 0; i < 1; i++) {
+			hitSoundNumber = rand() % 3;
+		}
+		Audio::GetInstance()->SoundPlayWave(hitSound[hitSoundNumber], false);
+		isPlayNum = true;
+	}
+
+	if (isPlayNum == true) {
+		isPlayHitSound = false;
+		isPlayNum = false;
+	}
 
 }
 

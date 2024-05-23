@@ -86,6 +86,12 @@ private:
 
 	uint32_t bossTex;
 
+	bool isPlayHitSound = false;
+	int hitSoundNumber;
+	bool isPlayNum = false;
+
+	uint32_t hitSound[3];
+
 
 	float MotionTimer = 0.0f;
 	int motionCount = 0;
@@ -116,6 +122,8 @@ private:
 	float LerpShortAngle(float a, float b, float t);
 	
 	float LerpShortTranslate(float a, float b, float t);
+
+	void LotteryHitSound();
 
 };
 

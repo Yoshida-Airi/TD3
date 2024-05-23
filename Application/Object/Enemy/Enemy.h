@@ -6,6 +6,11 @@
 #include <random>
 #include "Collider.h"
 #include"ImGuiManager.h"
+#include "Audio.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 class Enemy : public Collider {
 public:
@@ -49,9 +54,17 @@ private:
 	uint32_t texture;
 	Vector3 speed_;
 
+	uint32_t hitSound[3];
+
 	float angle_ = 0.0f;
 
 	bool isRelottery;
+
+	unsigned int currentTime;
+
+	bool isPlayHitSound = false;
+	int hitSoundNumber;
+	bool isPlayNum = false;
 
 	int deathTimer = 120;
 	int EnemyHP = 20;
@@ -73,6 +86,8 @@ private:
 	float LerpShortTranslate(float a, float b, float t);
 
 	void HitAction();
+
+	void LotteryHitSound();
 
 };
 
