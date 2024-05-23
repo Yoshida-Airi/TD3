@@ -38,6 +38,7 @@ void Enemy::Update() {
 
 	model_->worldTransform_->translation_.x += 0.001f;
 
+	CoolDown();
 	/*if (--deathTimer <= 0) {
 		isDead_ = true;
 	}*/
@@ -67,6 +68,18 @@ void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
 	std::uniform_real_distribution<float> translateZ (-5.0f, 5.0f);
 
 	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
+}
+
+void Enemy::CoolDown()
+{
+	if (isCoolDown == true) {
+		coolDownTimer++;
+	}
+
+	if (coolDownTimer == 25) {
+		isCoolDown = false;
+		coolDownTimer = 0;
+	}
 }
 
 Vector3 Enemy::GetWorldPosition()
@@ -115,6 +128,7 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
 		EnemyHP -= player_->AttackPower;
+		isCoolDown = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))

@@ -526,7 +526,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
 	{
-		//敵の弾にあたったら
+		//ボスにあたったら
 		HP -= 100;
 		isCoolDown = true;
 		isHit = true;
@@ -534,7 +534,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBossBullet))
 	{
-		//敵の弾にあたったら
+		//ボスの弾にあたったら
 		HP -= 200;
 		isCoolDown = true;
 	}

@@ -53,6 +53,17 @@ Vector3 Sword::GetWorldPosition()
 
 void Sword::OnCollision([[maybe_unused]] Collider* other)
 {
+	uint32_t typeID = other->GetTypeID();
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy)|| typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
+	{
+		//敵にあたったら
+		isHit = true;
+	}
+}
+
+void Sword::SetIsHit(bool hit)
+{
+	isHit = hit;
 }
 
 void Sword::Attack()
