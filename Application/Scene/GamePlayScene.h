@@ -70,6 +70,8 @@ private:
 	uint32_t Doll;
 	uint32_t circle;
 
+	uint32_t GameBGM;
+
 	Camera* camera;
 	
 	Timer timer;
@@ -95,14 +97,13 @@ private:
 	std::list<DeathEffect*>deathEffect_;	//敵消滅エフェクト
 
 	int enemyCount = 1;
-	const int MaxEnemySpawn = 15;
+	int MaxEnemySpawn = 15;
+	int enemyNumberOfOccurrences;
 	bool isEnemySpawn = true;
 	bool isEnemyReSpawn = false;
 
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
-
-
 
 	bool isBossSpawn = false;
 
@@ -113,7 +114,8 @@ private:
 	Vector3 offset;
 	Vector3 targetPosition;
 
-
+	unsigned int currentTime;
+	int action = 0;
 
 	float cameraZ;//lerpしたときの誤差修正数値
 
@@ -140,6 +142,7 @@ private:
 	void CheckAllCollisions();
 	void BossSceneAllCollisions();
 	void Hitstop();
+	void EnemyNumberOfOccurrences();
 
 	//被弾時硬直の時間
 	int hitstopTimer = 0;

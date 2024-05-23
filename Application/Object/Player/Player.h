@@ -129,6 +129,13 @@ private:
 	uint32_t rightFootTex;
 	uint32_t HpTex;
 
+	uint32_t AttackSE;
+	uint32_t ComboSE1;
+	uint32_t ComboSE2;
+	uint32_t LevelUpSE;
+	uint32_t DashSE;
+	uint32_t SkillSE;
+
 	uint32_t ui_skill_padTex;
 	uint32_t ui_skill_keyboardTex;
 	uint32_t ui_hpTex;

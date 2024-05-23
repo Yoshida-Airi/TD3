@@ -4,7 +4,7 @@
 #include"ImGuiManager.h"
 #include"SceneFactory.h"
 #include"SceneManager.h"
-
+#include"Audio.h"
 #include"Camera.h"
 
 #include"Input.h"
@@ -43,6 +43,8 @@ private:
 	uint32_t UI_GamePadABottonTex;
 	std::unique_ptr<Sprite>UI_Mouse = nullptr;
 	std::unique_ptr<Sprite>UI_GamePadABotton = nullptr;
+
+	uint32_t ClearBGM;
 
 	float fadeOutAlpha = 0;
 	float fadeInAlpha = 0;

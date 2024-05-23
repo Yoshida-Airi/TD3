@@ -32,6 +32,8 @@ void GamePlayScene::Initialize()
 	imgui = ImGuiManager::GetInstance();
 #endif // _DEBUG
 
+	currentTime = int(time(nullptr));
+	srand(currentTime);
 
 	uvTexture = textureManager_->LoadTexture("Resources/DefaultAssets/uvChecker.png");
 	monsterBall = textureManager_->LoadTexture("Resources/DefaultAssets/monsterBall.png");
@@ -39,6 +41,10 @@ void GamePlayScene::Initialize()
 	circle = textureManager_->LoadTexture("Resources/DefaultAssets/circle.png");
 	//demo_stage.reset(Model::Create("Resources/DefaultAssets/demo_stage.obj"));
 	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
+
+	GameBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/GameBGM.wav");
+	Audio::GetInstance()->SoundPlayWave(GameBGM, false);
+
 
 	camera = new Camera;
 	camera->Initialize();
@@ -65,7 +71,7 @@ void GamePlayScene::Initialize()
 
 	player->SetWeapon(sword.get());
 
-	colliderManager_->UpdateWorldTransform();
+	//colliderManager_->UpdateWorldTransform();
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 
@@ -111,10 +117,10 @@ void GamePlayScene::Update()
 	if (timer.GetNowSecond() != kFullWaveTime)
 
 	{
-		//sprite->worldTransform_->translation_ =
-		//{
-		//	sprite->worldTransform_->translation_.x - 20.0f,sprite->worldTransform_->translation_.y,sprite->worldTransform_->translation_.z
-		//};
+		sprite->worldTransform_->translation_ =
+		{
+			sprite->worldTransform_->translation_.x - 20.0f,sprite->worldTransform_->translation_.y,sprite->worldTransform_->translation_.z
+		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
 		if (isHitstop != true)
@@ -199,10 +205,12 @@ void GamePlayScene::Update()
 			enemyCount = 1;
 			enemyDeathCount = 0;
 
-			//sprite->worldTransform_->translation_ =
-			//{
-			//	1280.0f,300.0f,0.0f
-			//};
+			EnemyNumberOfOccurrences();
+
+			sprite->worldTransform_->translation_ =
+			{
+				1280.0f,300.0f,0.0f
+			};
 		}
 
 	}
@@ -354,7 +362,7 @@ void GamePlayScene::Draw()
 
 	player->TextureDraw();
 
-	colliderManager_->Draw(camera);
+	//colliderManager_->Draw(camera);
 }
 
 void GamePlayScene::CheckAllCollisions()
@@ -512,6 +520,7 @@ void GamePlayScene::UpdateFadeIn(const std::string& sceneName)
 	{
 		// フェードイン完了時の処理
 		isFadeIn = false;
+		Audio::GetInstance()->SoundStopWave(GameBGM);
 		sceneManager_->ChangeScene(sceneName);
 	}
 }
@@ -559,4 +568,8 @@ void GamePlayScene::Hitstop()
 	//	throughTimer = 0;
 	//}
 
+}
+
+void GamePlayScene::EnemyNumberOfOccurrences() {
+	enemyNumberOfOccurrences = rand() % 15 + 5;
 }

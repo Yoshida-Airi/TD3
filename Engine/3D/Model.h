@@ -49,6 +49,8 @@ public:
 		textureHandle_ = textureIndex;
 	}
 
+	void SetColor(Vector4 color);
+
 private:
 	DirectXCommon* dxCommon_;
 	GraphicsPipelineManager* psoManager_;
@@ -70,6 +72,8 @@ private:
 
 	uint32_t textureHandle_;
 	bool isInvisible_ = false;
+
+	Vector4 color_;
 
 	
 private:

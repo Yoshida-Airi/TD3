@@ -32,6 +32,9 @@ void GameOverScene::Initialize()
 	fadeSprite->SetisInvisible(false);
 	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeOutAlpha });
 
+	GameoverBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/ClearBGM.wav");
+	Audio::GetInstance()->SoundPlayWave(GameoverBGM, false);
+
 	fadeOutAlpha = 1.0f;
 	fadeInAlpha = 0.0f;
 
@@ -131,5 +134,7 @@ void GameOverScene::UpdateFadeIn()
 		// フェードイン完了時の処理
 		isFadeIn = false;
 		sceneManager_->ChangeScene("TITLE");
+		Audio::GetInstance()->SoundStopWave(GameoverBGM);
+
 	}
 }
