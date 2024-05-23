@@ -72,6 +72,8 @@ public:
 
 	void SoundStopWave(const uint32_t& soundHandle);
 
+	void SoundVolume(const uint32_t& soundHandle, float volume);
+
 private:
 	static const size_t kMaxAudio = 256;	//最大テクスチャ数
 

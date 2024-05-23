@@ -161,6 +161,12 @@ void Audio::SoundStopWave(const uint32_t& soundHandle)
 {
 
 	audios_[soundHandle].pSourceVoice->Stop();
+
+}
+
+void Audio::SoundVolume(const uint32_t& soundHandle, float volume)
+{
+	audios_[soundHandle].pSourceVoice->SetVolume(volume);
 }
 
 Audio* Audio::instance = NULL;
