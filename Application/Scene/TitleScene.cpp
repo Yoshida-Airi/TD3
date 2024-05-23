@@ -15,7 +15,6 @@ void TitleScene::Initialize()
 	Audio::GetInstance()->SoundPlayWave(soundData, false);
 	Audio::GetInstance()->SoundVolume(soundData, 0.01f);
 
-
 	camera = new Camera;
 	camera->Initialize();
 

@@ -213,6 +213,7 @@ void Boss::Tackle() {
 
 	if (isAssignment == true && isNextAction == false) {
 		BTimer++;
+		tackleDamage = 300;
 		if (BTimer <= 30) {
 			model_->worldTransform_->translation_.x -= speed_.x / 10.0f;
 			model_->worldTransform_->translation_.y -= speed_.y / 10.0f;
@@ -233,6 +234,7 @@ void Boss::Tackle() {
 	if (BTimer >= 85) {
 		isNextAction = true;
 		BTimer = 0;
+		tackleDamage = 100;
 	}
 }
 
@@ -345,6 +347,10 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 		isPlayHitSound = true;
 	}
 
+	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayer))
+	{
+		player_->SetHP(tackleDamage);
+	}
 
 }
 
@@ -353,7 +359,9 @@ void Boss::LotteryHitSound() {
 		for (int i = 0; i < 1; i++) {
 			hitSoundNumber = rand() % 3;
 		}
+		Audio::GetInstance()->SoundVolume(hitSound[hitSoundNumber], 0.0001f);
 		Audio::GetInstance()->SoundPlayWave(hitSound[hitSoundNumber], false);
+		Audio::GetInstance()->SoundVolume(hitSound[hitSoundNumber], 0.3f);
 		isPlayNum = true;
 	}
 
