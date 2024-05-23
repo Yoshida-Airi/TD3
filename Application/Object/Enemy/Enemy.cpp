@@ -24,6 +24,13 @@ void Enemy::Initialize(Player* player) {
 	SetRadius(model_->worldTransform_->scale_);
 	player_ = player;
 
+	currentTime = int(time(nullptr));
+	srand(currentTime);
+
+	hitSound[0] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit.wav");
+	hitSound[1] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit2.wav");
+	hitSound[2] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit3.wav");
+
 	isRelottery = false;
 }
 
@@ -35,6 +42,7 @@ void Enemy::Update() {
 	Collider::UpdateWorldTransform();
 
 	Direction();
+	LotteryHitSound();
 
 	model_->worldTransform_->translation_.x += 0.001f;
 
@@ -76,7 +84,7 @@ void Enemy::CoolDown()
 		coolDownTimer++;
 	}
 
-	if (coolDownTimer == 25) {
+	if (coolDownTimer == 30) {
 		isCoolDown = false;
 		coolDownTimer = 0;
 	}
@@ -129,6 +137,7 @@ void Enemy::OnCollision([[maybe_unused]] Collider* other)
 	{
 		EnemyHP -= player_->AttackPower;
 		isCoolDown = true;
+		isPlayHitSound = true;
 	}
 
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kEnemy))
@@ -176,4 +185,20 @@ float Enemy::LerpShortAngle(float a, float b, float t)
 
 float Enemy::LerpShortTranslate(float a, float b, float t) {
 	return a + t * (b - a);
+}
+
+void Enemy::LotteryHitSound() {
+	if (isPlayHitSound == true && isPlayNum == false) {
+		for (int i = 0; i < 1; i++) {
+			hitSoundNumber = rand() % 3;
+		}
+		Audio::GetInstance()->SoundPlayWave(hitSound[hitSoundNumber], false);
+		isPlayNum = true;
+	}
+
+	if (isPlayNum == true) {
+		isPlayHitSound = false;
+		isPlayNum = false;
+	}
+
 }
