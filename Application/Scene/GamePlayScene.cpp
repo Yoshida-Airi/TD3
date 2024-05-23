@@ -563,12 +563,6 @@ void GamePlayScene::Hitstop()
 		isHitstop = false;
 		isKillBoss = false;
 	}
-	//if (throughTimer == 30)
-	//{
-	//	hitstopTimer = 0;
-	//	throughTimer = 0;
-	//}
-
 }
 
 void GamePlayScene::EnemyNumberOfOccurrences() {
