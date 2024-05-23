@@ -238,6 +238,7 @@ void Enemy::LotteryHitSound() {
 			hitSoundNumber = rand() % 3;
 		}
 		Audio::GetInstance()->SoundPlayWave(hitSound[hitSoundNumber], false);
+		Audio::GetInstance()->SoundVolume(hitSound[hitSoundNumber], 0.3f);
 		isPlayNum = true;
 	}
 
