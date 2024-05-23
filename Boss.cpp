@@ -338,8 +338,6 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 
 
 }
-		isplayHitAction = true;
-	}
 
 void Boss::LotteryHitSound() {
 	if (isPlayHitSound == true && isPlayNum == false) {
