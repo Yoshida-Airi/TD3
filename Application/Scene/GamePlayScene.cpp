@@ -111,10 +111,10 @@ void GamePlayScene::Update()
 	if (timer.GetNowSecond() != kFullWaveTime)
 
 	{
-		sprite->worldTransform_->translation_ =
-		{
-			sprite->worldTransform_->translation_.x - 20.0f,sprite->worldTransform_->translation_.y,sprite->worldTransform_->translation_.z
-		};
+		//sprite->worldTransform_->translation_ =
+		//{
+		//	sprite->worldTransform_->translation_.x - 20.0f,sprite->worldTransform_->translation_.y,sprite->worldTransform_->translation_.z
+		//};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
 		if (isHitstop != true)
@@ -199,10 +199,10 @@ void GamePlayScene::Update()
 			enemyCount = 1;
 			enemyDeathCount = 0;
 
-			sprite->worldTransform_->translation_ =
-			{
-				1280.0f,300.0f,0.0f
-			};
+			//sprite->worldTransform_->translation_ =
+			//{
+			//	1280.0f,300.0f,0.0f
+			//};
 		}
 
 	}

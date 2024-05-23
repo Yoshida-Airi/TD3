@@ -36,6 +36,8 @@ public:
 	void CoolDown();
 	
 	Vector3 GetWorldPosition()override;
+	Vector3 GetRotate()override;
+	void SetPosition(Vector3 translation) override;
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 

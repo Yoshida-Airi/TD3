@@ -503,6 +503,16 @@ Vector3 Player::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 Player::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
+void Player::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+}
+
 
 void Player::OnCollision([[maybe_unused]] Collider* other)
 {

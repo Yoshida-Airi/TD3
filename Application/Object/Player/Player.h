@@ -48,6 +48,8 @@ public:
 	Vector3 GetWorldPosition()override;
 	WorldTransform* GetWorldTransform() { return bodyModel_->worldTransform_; };
 	WorldTransform* GetLeftArmWorldTransform() { return LeftArmModel_->worldTransform_; };
+	Vector3 GetRotate()override;
+	void SetPosition(Vector3 translation) override; 
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;

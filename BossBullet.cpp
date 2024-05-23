@@ -58,6 +58,15 @@ Vector3 BossBullet::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 BossBullet::GetRotate()
+{
+	return Vector3();
+}
+
+void BossBullet::SetPosition(Vector3 translation)
+{
+}
+
 void BossBullet::SetScale(Vector3 scale) {
 	model_->worldTransform_->scale_ = scale;
 }

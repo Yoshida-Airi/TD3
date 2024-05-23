@@ -14,6 +14,7 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 
+	void SetPosition(Vector3 translation) override; 
 	void SetWeapon(PlayerWeapon* playerWeapon)
 	{
 		Weapon_ = playerWeapon;
@@ -21,6 +22,7 @@ public:
 
 	Vector3 GetPosition()const { return model_->worldTransform_->translation_; };
 	Vector3 GetWorldPosition()override;
+	Vector3 GetRotate()override;
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 	std::unique_ptr<Model> model_ = nullptr;

@@ -22,6 +22,8 @@ public:
 	void SetSpeed(Vector3 speed);
 
 	Vector3 GetWorldPosition()override;
+	virtual Vector3 GetRotate() override;
+	virtual void SetPosition(Vector3 translation)override;
 
 	void OnCollision([[maybe_unused]] Collider* other)override;
 

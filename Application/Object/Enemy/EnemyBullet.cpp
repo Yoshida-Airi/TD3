@@ -59,6 +59,15 @@ Vector3 EnemyBullet::GetWorldPosition()
 	return worldpos;
 }
 
+Vector3 EnemyBullet::GetRotate()
+{
+	return Vector3();
+}
+
+void EnemyBullet::SetPosition(Vector3 translation)
+{
+}
+
 void EnemyBullet::SetScale(Vector3 scale) {
 	model_->worldTransform_->scale_ = scale;
 }

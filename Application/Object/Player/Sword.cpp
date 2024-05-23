@@ -14,7 +14,7 @@ void Sword::Initialize(Player* player)
 
 	model_->worldTransform_->translation_ = {0.0f,1.66f,0.87f };
 
-	SetRadius({ 3.0f,1.0f,1.0f });
+	SetRadius({ 2.0f,1.0f,0.125f });
 	player_ = player;
 
 	model_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
@@ -38,6 +38,10 @@ void Sword::Draw(Camera* camera)
 	model_->Draw(camera);
 }
 
+void Sword::SetPosition(Vector3 translation)
+{
+	model_->worldTransform_->translation_ = translation;
+};
 Vector3 Sword::GetWorldPosition()
 {
 	// ワールド座標を入れる変数
@@ -50,6 +54,12 @@ Vector3 Sword::GetWorldPosition()
 
 	return worldpos;
 }
+
+Vector3 Sword::GetRotate()
+{
+	return model_->worldTransform_->rotation_;
+}
+
 
 void Sword::OnCollision([[maybe_unused]] Collider* other)
 {

@@ -60,7 +60,6 @@ void Enemy::Draw(Camera* camera) {
 
 void Enemy::Finalize() {
 	
-	
 }
 
 void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
@@ -93,6 +92,15 @@ Vector3 Enemy::GetWorldPosition()
 	worldpos.z = model_->worldTransform_->matWorld_.m[3][2];
 
 	return worldpos;
+}
+
+Vector3 Enemy::GetRotate()
+{
+	return Vector3();
+}
+
+void Enemy::SetPosition(Vector3 translation)
+{
 }
 
 void Enemy::Direction() {
