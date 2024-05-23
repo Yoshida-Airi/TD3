@@ -95,7 +95,7 @@ private:
 	std::list<DeathEffect*>deathEffect_;	//敵消滅エフェクト
 
 	int enemyCount = 1;
-	const int MaxEnemySpawn = 5;
+	const int MaxEnemySpawn = 15;
 	bool isEnemySpawn = true;
 	bool isEnemyReSpawn = false;
 
@@ -150,5 +150,5 @@ private:
 	bool isCameraShake = false;
 	uint32_t cameraShakeTime;
 	//雑魚戦の総秒数
-	uint32_t kFullWaveTime = 3;
+	uint32_t kFullWaveTime = 30;
 };
