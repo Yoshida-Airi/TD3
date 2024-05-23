@@ -146,9 +146,11 @@ private:
 	//被弾後の無敵時間
 	int throughTimer = 0;
 
+	bool isHitstop = false;
+	bool isKillBoss = false;
 
 	bool isCameraShake = false;
 	uint32_t cameraShakeTime;
 	//雑魚戦の総秒数
-	uint32_t kFullWaveTime = 30;
+	uint32_t kFullWaveTime = 60;
 };

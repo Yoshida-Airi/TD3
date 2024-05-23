@@ -117,7 +117,7 @@ void GamePlayScene::Update()
 		};
 		timer.AddNowFrame();
 		timer.AddNowWaveFrame();
-		if (sword->GetIsHit() != true)
+		if (isHitstop != true)
 		{
 
 			//敵の処理
@@ -209,7 +209,7 @@ void GamePlayScene::Update()
 	else if (timer.GetNowSecond() >= kFullWaveTime)
 	{
 		timer.AddBossFrame();
-		if (sword->GetIsHit() != true)
+		if (isHitstop != true)
 		{
 
 			enemy_.remove_if([](Enemy* enemys) {
@@ -286,7 +286,7 @@ void GamePlayScene::Update()
 	}
 	
 
-	if (sword->GetIsHit() != true)
+	if (isHitstop != true)
 	{
 		CheckAllCollisions();
 
@@ -519,19 +519,44 @@ void GamePlayScene::UpdateFadeIn(const std::string& sceneName)
 
 void GamePlayScene::Hitstop()
 {
-	if (sword->GetIsHit() == true /*&& throughTimer == 0*/)
+
+	for (Enemy* enemys : enemy_)
+	{
+		if (enemys->GetIsDead() == true && isHitstop == false)
+		{
+			isHitstop = true;
+			continue;
+		}
+	}
+	if (isHitstop == true && isKillBoss == false)
 	{
 		hitstopTimer++;
 	}
-	if (hitstopTimer == 10)
+	if (hitstopTimer == 8 && isKillBoss == false)
 	{
-		sword->SetIsHit(false);
 		hitstopTimer = 0;
-		//throughTimer++;
+		isHitstop = false;
+	}
+
+	if (boss_->GetIsDead() == true && isHitstop == false)
+	{
+		isHitstop = true;
+		isKillBoss = true;
+	}
+	if (isHitstop == true && isKillBoss == true)
+	{
+		hitstopTimer++;
+	}
+	if (hitstopTimer == 3 && isKillBoss == true)
+	{
+		hitstopTimer = 0;
+		isHitstop = false;
+		isKillBoss = false;
 	}
 	//if (throughTimer == 30)
 	//{
 	//	hitstopTimer = 0;
 	//	throughTimer = 0;
 	//}
+
 }
