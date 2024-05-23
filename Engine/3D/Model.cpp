@@ -35,8 +35,9 @@ void Model::Initialize(const std::string& filename)
 	MaterialBuffer();
 	LightBuffer();
 
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
 
-	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialData_->color = { color_ };
 	materialData_->uvTransform = MakeIdentity4x4();
 	materialData_->shininess = 10.0f;
 	materialData_->enableLighting = true;
@@ -157,6 +158,12 @@ void Model::Parent(Model* model)
 {
 	this->worldTransform_->parent_ = model->worldTransform_;
 }
+
+void Model::SetColor(Vector4 color)
+{
+	materialData_->color = color;
+}
+
 
 
 

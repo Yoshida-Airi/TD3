@@ -86,6 +86,11 @@ private:
 
 	uint32_t bossTex;
 
+
+	float MotionTimer = 0.0f;
+	int motionCount = 0;
+	bool isplayHitAction = false;	//あたったときの点滅描画をするかどうか
+
 private:
 
 	void CoolDown();
@@ -95,6 +100,8 @@ private:
 	void NextAction();
 
 	void Direction(float speed);
+
+	void HitAction();
 	
 	void Shot();
 

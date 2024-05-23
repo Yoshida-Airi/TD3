@@ -43,6 +43,8 @@ void Enemy::Update() {
 		isDead_ = true;
 	}*/
 
+	HitAction();
+
 #ifdef _DEBUG
 	ImGui::Begin("EnemyHP");
 	ImGui::Text("%d", EnemyHP);
@@ -121,12 +123,55 @@ void Enemy::Direction() {
 
 }
 
+
+void Enemy::HitAction()
+{
+	if (isplayHitAction == true)
+	{
+		MotionTimer++;
+		
+		if (motionCount == 0)
+		{
+			model_->SetColor({ 1.0f,0.0f,1.0f,0.5f });
+
+			if (MotionTimer >= 20)
+			{
+				motionCount = 1;
+			}
+		}
+
+		if (motionCount == 1)
+		{
+			model_->SetColor({ 1.0f,0.0f,1.0f,0.8f });
+
+			if (MotionTimer >= 40)
+			{
+				motionCount = 2;
+			}
+		}
+
+
+		if (motionCount == 2)
+		{
+			model_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+			isplayHitAction = false;
+			MotionTimer = 0.0f;
+			motionCount = 0;
+		}
+
+
+	}
+
+}
+
+
 void Enemy::OnCollision([[maybe_unused]] Collider* other)
 {
 
 	uint32_t typeID = other->GetTypeID();
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
+		isplayHitAction = true;
 		EnemyHP -= player_->AttackPower;
 		isCoolDown = true;
 	}
@@ -177,3 +222,4 @@ float Enemy::LerpShortAngle(float a, float b, float t)
 float Enemy::LerpShortTranslate(float a, float b, float t) {
 	return a + t * (b - a);
 }
+
