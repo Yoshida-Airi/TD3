@@ -11,7 +11,7 @@ void BossBullet::Initialize() {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kBossBullet));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/DamageBall.obj"));
 	uint32_t redTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	model_->SetTexture(redTex);
 	model_->worldTransform_->scale_ = { 0.2f,0.2f,0.2f };

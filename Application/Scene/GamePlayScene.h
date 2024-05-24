@@ -87,6 +87,7 @@ private:
 
 
 	std::unique_ptr<Model> demo_stage = nullptr;
+	
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<Sword> sword = nullptr;

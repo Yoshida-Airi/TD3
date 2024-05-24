@@ -11,7 +11,7 @@ void EnemyBullet::Initialize() {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/DamageBall.obj"));
 	uint32_t redTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	model_->SetTexture(redTex);
 

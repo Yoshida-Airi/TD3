@@ -12,10 +12,11 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kBoss));
 
 	bossTex = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a2.png");
-
+	bosshpTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	model_.reset(Model::Create("Resources/Enemy/ene.obj"));
 	model_->SetTexture(bossTex);
-
+	BossHp.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	BossHp->SetTexture(bosshpTex);
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
@@ -26,9 +27,8 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 	srand(currentTime);
 
 	SetRadius(model_->worldTransform_->scale_);
-	model_->worldTransform_->translation_ = { player->GetPosition().x, 6.0f, player->GetPosition().z};
-	hp = 100;
-
+	model_->worldTransform_->translation_ = { player->GetPosition().x, 6.0f, player->GetPosition().z };
+	hp = 300;
 	player_ = player;
 
 	hitSound[0] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit.wav");
@@ -39,9 +39,10 @@ void Boss::Initialize(Player* player, BossBullet* bullet) {
 
 void Boss::Update(SceneManager* scene) {
 	input_->Update();
-
 	model_->Update();
-
+	BossHp->Update();
+	BossHp->worldTransform_->translation_ = { model_->worldTransform_->translation_.x, model_->worldTransform_->translation_.y + 5.0f, model_->worldTransform_->translation_.z };
+	BossHp->worldTransform_->scale_ = { hp / 100.0f,0.3f,0.08f };
 	Collider::UpdateWorldTransform();
 
 	LotteryHitSound();
@@ -89,6 +90,7 @@ void Boss::Update(SceneManager* scene) {
 	}*/
 
 #ifdef _DEBUG
+	BossHp->ModelDebug("bosshp");
 	ImGui::Begin("Boss");
 	ImGui::Text("HP : %d", hp);
 	ImGui::Text("Action : %d", isNextAction);
@@ -103,6 +105,8 @@ void Boss::Update(SceneManager* scene) {
 void Boss::Draw(Camera* camera) {
 
 	model_->Draw(camera);
+	BossHp->Draw(camera);
+
 
 	if (isBAlive == true) {
 		bullet_->Draw(camera);
@@ -190,7 +194,7 @@ void Boss::Shot() {
 		BTimer++;
 	}
 
-	if (BTimer >= 60) {
+	if (BTimer >= 120) {
 		isNextAction = true;
 		isBAlive = false;
 		BTimer = 0;
