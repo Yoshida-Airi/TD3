@@ -97,7 +97,7 @@ private:
 
 	bool levelup = false;
 	int levelupcount = 0;
-
+	
 	float PlayerSpeed = 0.05f;
 
 
