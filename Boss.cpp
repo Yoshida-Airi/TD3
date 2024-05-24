@@ -348,6 +348,7 @@ void Boss::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kPlayerWeapon))
 	{
 		hp -= player_->AttackPower;
+		isplayHitAction = true;
 		isCoolDown = true;
 		isPlayHitSound = true;
 	}

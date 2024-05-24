@@ -539,7 +539,12 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 100;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
-		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
+		bodyModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -550,7 +555,12 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 200;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
-		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
+		bodyModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 
 		isCoolDown = true;
 		isHit = true;
@@ -562,7 +572,12 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 100;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
-		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
+		bodyModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -573,7 +588,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 200;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
-		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 		isCoolDown = true;
 	}
 
@@ -994,6 +1009,12 @@ void Player::CoolDown() {
 	}
 
 	if (coolDownTimer == 120) {
+		bodyModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		headModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		LeftArmModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		RightArmModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		LeftFootModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		RightFootModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		isCoolDown = false;
 		coolDownTimer = 0;
 	}
