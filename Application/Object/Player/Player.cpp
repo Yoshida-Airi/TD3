@@ -254,7 +254,7 @@ void Player::Update()
 			LevelUp->worldTransform_->translation_.y = 2.00f;
 			levelup = true;
 		}
-		if (levelup == true) {
+		if (levelup == true && playerLevel->nowlevel < 17) {
 			levelupcount++;
 			if (levelupcount == 1) {
 				Audio::GetInstance()->SoundPlayWave(LevelUpSE, false);
