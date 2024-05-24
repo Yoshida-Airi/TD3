@@ -139,6 +139,7 @@ private:
 	uint32_t LevelUpSE;
 	uint32_t DashSE;
 	uint32_t SkillSE;
+	uint32_t DamageSE;
 
 	uint32_t ui_skill_padTex;
 	uint32_t ui_skill_keyboardTex;

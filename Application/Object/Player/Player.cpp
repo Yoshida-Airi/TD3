@@ -41,6 +41,7 @@ void Player::Initialize(Camera* camera)
 	LevelUpSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/LevelUp.wav");
 	DashSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Dash.wav");
 	SkillSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Skill.wav");
+	DamageSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Damage.wav");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
@@ -536,6 +537,8 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		//敵にあたったら
 		HP -= 100;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -544,6 +547,8 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		//敵の弾にあたったら
 		HP -= 200;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -551,6 +556,9 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
 	{
 		//ボスにあたったら
+		HP -= 100;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -559,6 +567,8 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		//ボスの弾にあたったら
 		HP -= 200;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
 		isCoolDown = true;
 	}
 
