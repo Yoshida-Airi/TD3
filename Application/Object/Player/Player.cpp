@@ -539,6 +539,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 100;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -549,6 +550,8 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 200;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
+
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -559,6 +562,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 100;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -569,6 +573,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 		HP -= 200;
 		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
 		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		headModel_->SetColor({ 1.0f, 0.5f, 0.5f, 1.0f });
 		isCoolDown = true;
 	}
 
