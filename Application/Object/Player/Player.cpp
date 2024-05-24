@@ -319,7 +319,6 @@ void Player::Update()
 	Skill3->ModelDebug("3");
 	LevelUp->ModelDebug("levelup");
 	TitleText->ModelDebug("titletext");
-
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
 	LeftArmModel_->ModelDebug("leftArm");
@@ -659,14 +658,14 @@ void Player::Move()
 	}
 
 	if (model_->worldTransform_->translation_.x >= 60.0f) {
-		model_->worldTransform_->translation_.x = 59.5f;
+		model_->worldTransform_->translation_.x = 59.9f;
 		PlayerSpeed = 0;
 	}
 	else {
 		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.z >= 60.0f) {
-		model_->worldTransform_->translation_.z = 59.5f;
+		model_->worldTransform_->translation_.z = 59.9f;
 		PlayerSpeed = 0;
 
 	}
@@ -674,7 +673,7 @@ void Player::Move()
 		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.x <= -60.0f) {
-		model_->worldTransform_->translation_.x = -59.5f;
+		model_->worldTransform_->translation_.x = -59.9f;
 		PlayerSpeed = 0;
 
 	}
@@ -682,7 +681,7 @@ void Player::Move()
 		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.z <= -60.0f) {
-		model_->worldTransform_->translation_.z = -59.5f;
+		model_->worldTransform_->translation_.z = -59.9f;
 		PlayerSpeed = 0;
 
 	}
@@ -758,14 +757,14 @@ void Player::Move()
 				angle_ = std::atan2(move.x, move.z);
 
 				if (model_->worldTransform_->translation_.x >= 60.0f) {
-					model_->worldTransform_->translation_.x = 59.5f;
+					model_->worldTransform_->translation_.x = 59.9f;
 					adjustedSpeed = 0;
 				}
 				else {
 					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.z >= 60.0f) {
-					model_->worldTransform_->translation_.z = 59.5f;
+					model_->worldTransform_->translation_.z = 59.9f;
 					adjustedSpeed = 0;
 
 				}
@@ -773,7 +772,7 @@ void Player::Move()
 					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.x <= -60.0f) {
-					model_->worldTransform_->translation_.x = -59.5f;
+					model_->worldTransform_->translation_.x = -59.9f;
 					adjustedSpeed = 0;
 
 				}
@@ -781,7 +780,7 @@ void Player::Move()
 					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.z <= -60.0f) {
-					model_->worldTransform_->translation_.z = -59.5f;
+					model_->worldTransform_->translation_.z = -59.9f;
 					adjustedSpeed = 0;
 
 				}
@@ -1221,6 +1220,45 @@ void Player::Skill1Update()
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
 
+		if (model_->worldTransform_->translation_.x >= 60.0f) {
+			camera_->transform.translate.x = 59.9f;
+			model_->worldTransform_->translation_.x = 59.9f;
+			dashSpeed = 0;
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z >= 60.0f) {
+			camera_->transform.translate.z = 49.9f;
+			model_->worldTransform_->translation_.z = 59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.x <= -60.0f) {
+			camera_->transform.translate.x = -59.9f;
+			model_->worldTransform_->translation_.x = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z <= -60.0f) {
+			camera_->transform.translate.z = -69.9f;
+			model_->worldTransform_->translation_.z = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+
 		model_->worldTransform_->translation_.x += dashX;
 		model_->worldTransform_->translation_.z += dashZ;
 		ExperienceBar->worldTransform_->translation_.x += dashX;
@@ -1280,7 +1318,7 @@ void Player::Skill2Update()
 
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.2f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -1303,6 +1341,45 @@ void Player::Skill2Update()
 
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
+		}
+
+		if (model_->worldTransform_->translation_.x >= 60.0f) {
+			camera_->transform.translate.x = 59.9f;
+			model_->worldTransform_->translation_.x = 59.9f;
+			dashSpeed = 0;
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z >= 60.0f) {
+			camera_->transform.translate.z = 49.9f;
+			model_->worldTransform_->translation_.z = 59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.x <= -60.0f) {
+			camera_->transform.translate.x = -59.9f;
+			model_->worldTransform_->translation_.x = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z <= -60.0f) {
+			camera_->transform.translate.z = -69.9f;
+			model_->worldTransform_->translation_.z = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
 		}
 		ExperienceBar->worldTransform_->translation_.x += dashX;
 		ExperienceBar->worldTransform_->translation_.z += dashZ;
@@ -1382,6 +1459,45 @@ void Player::Skill3Update()
 
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
+		}
+
+		if (model_->worldTransform_->translation_.x >= 60.0f) {
+			camera_->transform.translate.x = 59.9f;
+			model_->worldTransform_->translation_.x = 59.9f;
+			dashSpeed = 0;
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		if (model_->worldTransform_->translation_.z >= 60.0f) {
+			camera_->transform.translate.z = 49.9f;
+			model_->worldTransform_->translation_.z = 59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		if (model_->worldTransform_->translation_.x <= -60.0f) {
+			camera_->transform.translate.x = -59.9f;
+			model_->worldTransform_->translation_.x = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		if (model_->worldTransform_->translation_.z <= -60.0f) {
+			camera_->transform.translate.z = -69.9f;
+			model_->worldTransform_->translation_.z = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.5f;
 		}
 		ExperienceBar->worldTransform_->translation_.x += dashX;
 		ExperienceBar->worldTransform_->translation_.z += dashZ;
