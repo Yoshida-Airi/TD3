@@ -73,8 +73,8 @@ void Enemy::Finalize() {
 }
 
 void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
-	std::uniform_real_distribution<float> translateX (-7.0f, 7.0f);
-	std::uniform_real_distribution<float> translateZ (-7.0f, 7.0f);
+	std::uniform_real_distribution<float> translateX (-8.0f, 8.0f);
+	std::uniform_real_distribution<float> translateZ (-8.0f, 8.0f);
 
 	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
 }
