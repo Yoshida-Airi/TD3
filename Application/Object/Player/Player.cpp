@@ -28,12 +28,12 @@ void Player::Initialize(Camera* camera)
 	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
 	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
 
-	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_pad.png");
-	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skill_keyboard.png");
+	ui_skill_padTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_skill_pad.png");
+	ui_skill_keyboardTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_skill_keyboard.png");
 	
-	ui_playerLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_playerLevel.png");
-	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_Hp.png");
-	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_skillLevel.png");
+	ui_playerLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_playerLevel.png");
+	ui_hpTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_Hp.png");
+	ui_skillLevelTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_skillLevel.png");
 
 	AttackSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Attack.wav");
 	ComboSE1 = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Combo1.wav");
