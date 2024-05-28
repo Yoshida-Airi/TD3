@@ -40,6 +40,16 @@ void GameClearScene::Initialize()
 	fadeInAlpha = 0.0f;
 
 	StartFadeOut();
+	for (int i = 0; i < 3; i++)
+	{
+		numberTex[i] = TextureManager::GetInstance()->LoadTexture(texNum);
+		numberSprite[i].reset(Sprite::Create(numberTex[i]));
+		numberSprite[i]->SetSize({ 36.0f,72.0f });
+	}
+	numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),0.0f };
+	numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),0.0f };
+	numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),0.0f };
+
 }
 
 
@@ -89,6 +99,17 @@ void GameClearScene::Update()
 	UI_GamePadABotton->Update();
 	UI_Mouse->Update();
 
+	for (int i = 0; i < 3; i++)
+	{
+		numberSprite[i]->Update();
+	}
+	uint32_t texNum100 = timer.GetBossSecond() / 100;
+	uint32_t texNum10 = timer.GetBossSecond() % 100 / 10;
+	uint32_t texNum1 = timer.GetBossSecond() % 100 % 10;
+	numberSprite[0]->SetTextureLeftTop({ 36.0f * texNum100,500.0f });
+	numberSprite[1]->SetTextureLeftTop({ 36.0f * texNum10,500.0f });
+	numberSprite[2]->SetTextureLeftTop({ 36.0f * texNum1,500.0f });
+
 }
 
 void GameClearScene::Draw()
@@ -96,7 +117,11 @@ void GameClearScene::Draw()
 	clearSprite->Draw(camera);
 	UI_GamePadABotton->Draw(camera);
 	UI_Mouse->Draw(camera);
-	fadeSprite->Draw(camera);
+	//fadeSprite->Draw(camera);
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	numberSprite[i]->Draw(camera);
+	//}
 }
 
 
