@@ -41,6 +41,7 @@ void Player::Initialize(Camera* camera)
 	LevelUpSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/LevelUp.wav");
 	DashSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Dash.wav");
 	SkillSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Skill.wav");
+	DamageSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Damage.wav");
 
 	hpSprite_.reset(Sprite::Create(HpTex));
 	hpSprite_->SetPosition({ 20.0f,650.0f });
@@ -254,7 +255,7 @@ void Player::Update()
 			LevelUp->worldTransform_->translation_.y = 2.00f;
 			levelup = true;
 		}
-		if (levelup == true) {
+		if (levelup == true && playerLevel->nowlevel < 17) {
 			levelupcount++;
 			if (levelupcount == 1) {
 				Audio::GetInstance()->SoundPlayWave(LevelUpSE, false);
@@ -319,7 +320,6 @@ void Player::Update()
 	Skill3->ModelDebug("3");
 	LevelUp->ModelDebug("levelup");
 	TitleText->ModelDebug("titletext");
-
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
 	LeftArmModel_->ModelDebug("leftArm");
@@ -537,6 +537,14 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		//敵にあたったら
 		HP -= 100;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		bodyModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -545,6 +553,15 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		//敵の弾にあたったら
 		HP -= 200;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		bodyModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -552,6 +569,15 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	if (typeID == static_cast<uint32_t>(CollisionTypeDef::kBoss))
 	{
 		//ボスにあたったら
+		HP -= 100;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		bodyModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightArmModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		LeftFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
+		RightFootModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 		isCoolDown = true;
 		isHit = true;
 	}
@@ -560,6 +586,9 @@ void Player::OnCollision([[maybe_unused]] Collider* other)
 	{
 		//ボスの弾にあたったら
 		HP -= 200;
+		Audio::GetInstance()->SoundPlayWave(DamageSE, false);
+		Audio::GetInstance()->SoundVolume(DamageSE, 0.4f);
+		headModel_->SetColor({ 1.0f,0.0f,0.0f,0.5f });
 		isCoolDown = true;
 	}
 
@@ -659,14 +688,35 @@ void Player::Move()
 	}
 
 	if (model_->worldTransform_->translation_.x >= 60.0f) {
-		model_->worldTransform_->translation_.x = 59.5f;
+		camera_->transform.translate.x = 59.9f;
+		ExperienceBar->worldTransform_->translation_.x = 56.4f;
+		ExperiencePoint->worldTransform_->translation_.x = 56.4f;
+		ExperienceText->worldTransform_->translation_.x = 56.4f;
+		LevelMax->worldTransform_->translation_.x = 56.4f;
+		SkillUI->worldTransform_->translation_.x = 63.4f;
+		Skill1->worldTransform_->translation_.x = 63.4f;
+		Skill2->worldTransform_->translation_.x = 63.4f;
+		Skill3->worldTransform_->translation_.x = 63.4f;
+		LevelUp->worldTransform_->translation_.x = 59.9f;
+		model_->worldTransform_->translation_.x = 59.9f;
 		PlayerSpeed = 0;
 	}
 	else {
 		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.z >= 60.0f) {
-		model_->worldTransform_->translation_.z = 59.5f;
+		camera_->transform.translate.z = 49.9f;
+		ExperienceBar->worldTransform_->translation_.z = 59.9f;
+		ExperiencePoint->worldTransform_->translation_.z = 59.9f;
+		ExperienceText->worldTransform_->translation_.z = 59.9f;
+		LevelMax->worldTransform_->translation_.z = 59.9f;
+		SkillUI->worldTransform_->translation_.z = 59.9f;
+		Skill1->worldTransform_->translation_.z = 59.9f;
+		Skill2->worldTransform_->translation_.z = 59.9f;
+		Skill3->worldTransform_->translation_.z = 59.9f;
+		LevelUp->worldTransform_->translation_.z = 59.9f;
+		model_->worldTransform_->translation_.z = 59.9f;
+
 		PlayerSpeed = 0;
 
 	}
@@ -674,7 +724,18 @@ void Player::Move()
 		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.x <= -60.0f) {
-		model_->worldTransform_->translation_.x = -59.5f;
+		camera_->transform.translate.x = -59.9f;
+		ExperienceBar->worldTransform_->translation_.x = -63.4f;
+		ExperiencePoint->worldTransform_->translation_.x = -63.4f;
+		ExperienceText->worldTransform_->translation_.x = -63.4f;
+		LevelMax->worldTransform_->translation_.x = -63.4f;
+		SkillUI->worldTransform_->translation_.x = -56.4f;
+		Skill1->worldTransform_->translation_.x = -56.4f;
+		Skill2->worldTransform_->translation_.x = -56.4f;
+		Skill3->worldTransform_->translation_.x = -56.4f;
+		LevelUp->worldTransform_->translation_.x = -59.9f;
+		model_->worldTransform_->translation_.x = -59.9f;
+
 		PlayerSpeed = 0;
 
 	}
@@ -682,13 +743,25 @@ void Player::Move()
 		PlayerSpeed = 0.05f;
 	}
 	if (model_->worldTransform_->translation_.z <= -60.0f) {
-		model_->worldTransform_->translation_.z = -59.5f;
+		camera_->transform.translate.z = -69.9f;
+		ExperienceBar->worldTransform_->translation_.z = -59.9f;
+		ExperiencePoint->worldTransform_->translation_.z = -59.9f;
+		ExperienceText->worldTransform_->translation_.z = -59.9f;
+		LevelMax->worldTransform_->translation_.z = -59.9f;
+		SkillUI->worldTransform_->translation_.z = -59.9f;
+		Skill1->worldTransform_->translation_.z = -59.9f;
+		Skill2->worldTransform_->translation_.z = -59.9f;
+		Skill3->worldTransform_->translation_.z = -59.9f;
+		LevelUp->worldTransform_->translation_.z = -59.9f;
+		model_->worldTransform_->translation_.z = -59.9f;
+
 		PlayerSpeed = 0;
 
 	}
 	else {
 		PlayerSpeed = 0.05f;
 	}
+
 	// Y軸周り角度(θy)	歩いている方向に顔を向ける
 	model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 	model_->worldTransform_->translation_.x += move.x;
@@ -758,14 +831,35 @@ void Player::Move()
 				angle_ = std::atan2(move.x, move.z);
 
 				if (model_->worldTransform_->translation_.x >= 60.0f) {
-					model_->worldTransform_->translation_.x = 59.5f;
+					camera_->transform.translate.x = 59.9f;
+					ExperienceBar->worldTransform_->translation_.x = 56.4f;
+					ExperiencePoint->worldTransform_->translation_.x = 56.4f;
+					ExperienceText->worldTransform_->translation_.x = 56.4f;
+					LevelMax->worldTransform_->translation_.x = 56.4f;
+					SkillUI->worldTransform_->translation_.x = 63.4f;
+					Skill1->worldTransform_->translation_.x = 63.4f;
+					Skill2->worldTransform_->translation_.x = 63.4f;
+					Skill3->worldTransform_->translation_.x = 63.4f;
+					LevelUp->worldTransform_->translation_.x = 59.9f;
+					model_->worldTransform_->translation_.x = 59.9f;
 					adjustedSpeed = 0;
 				}
 				else {
 					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.z >= 60.0f) {
-					model_->worldTransform_->translation_.z = 59.5f;
+					camera_->transform.translate.z = 49.9f;
+					ExperienceBar->worldTransform_->translation_.z = 59.9f;
+					ExperiencePoint->worldTransform_->translation_.z = 59.9f;
+					ExperienceText->worldTransform_->translation_.z = 59.9f;
+					LevelMax->worldTransform_->translation_.z = 59.9f;
+					SkillUI->worldTransform_->translation_.z = 59.9f;
+					Skill1->worldTransform_->translation_.z = 59.9f;
+					Skill2->worldTransform_->translation_.z = 59.9f;
+					Skill3->worldTransform_->translation_.z = 59.9f;
+					LevelUp->worldTransform_->translation_.z = 59.9f;
+					model_->worldTransform_->translation_.z = 59.9f;
+
 					adjustedSpeed = 0;
 
 				}
@@ -773,7 +867,18 @@ void Player::Move()
 					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.x <= -60.0f) {
-					model_->worldTransform_->translation_.x = -59.5f;
+					camera_->transform.translate.x = -59.9f;
+					ExperienceBar->worldTransform_->translation_.x = -63.4f;
+					ExperiencePoint->worldTransform_->translation_.x = -63.4f;
+					ExperienceText->worldTransform_->translation_.x = -63.4f;
+					LevelMax->worldTransform_->translation_.x = -63.4f;
+					SkillUI->worldTransform_->translation_.x = -56.4f;
+					Skill1->worldTransform_->translation_.x = -56.4f;
+					Skill2->worldTransform_->translation_.x = -56.4f;
+					Skill3->worldTransform_->translation_.x = -56.4f;
+					LevelUp->worldTransform_->translation_.x = -59.9f;
+					model_->worldTransform_->translation_.x = -59.9f;
+
 					adjustedSpeed = 0;
 
 				}
@@ -781,13 +886,25 @@ void Player::Move()
 					adjustedSpeed = 0.05f;
 				}
 				if (model_->worldTransform_->translation_.z <= -60.0f) {
-					model_->worldTransform_->translation_.z = -59.5f;
+					camera_->transform.translate.z = -69.9f;
+					ExperienceBar->worldTransform_->translation_.z = -59.9f;
+					ExperiencePoint->worldTransform_->translation_.z = -59.9f;
+					ExperienceText->worldTransform_->translation_.z = -59.9f;
+					LevelMax->worldTransform_->translation_.z = -59.9f;
+					SkillUI->worldTransform_->translation_.z = -59.9f;
+					Skill1->worldTransform_->translation_.z = -59.9f;
+					Skill2->worldTransform_->translation_.z = -59.9f;
+					Skill3->worldTransform_->translation_.z = -59.9f;
+					LevelUp->worldTransform_->translation_.z = -59.9f;
+					model_->worldTransform_->translation_.z = -59.9f;
+
 					adjustedSpeed = 0;
 
 				}
 				else {
 					adjustedSpeed = 0.05f;
 				}
+
 				// Y軸周り角度(θy)	歩いている方向に顔を向ける
 				model_->worldTransform_->rotation_.y = LerpShortAngle(model_->worldTransform_->rotation_.y, angle_, 0.1f);
 				model_->worldTransform_->translation_.x += move.x;
@@ -892,6 +1009,12 @@ void Player::CoolDown() {
 	}
 
 	if (coolDownTimer == 120) {
+		bodyModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		headModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		LeftArmModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		RightArmModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		LeftFootModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		RightFootModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		isCoolDown = false;
 		coolDownTimer = 0;
 	}
@@ -1221,6 +1344,81 @@ void Player::Skill1Update()
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
 
+		if (model_->worldTransform_->translation_.x >= 60.0f) {
+			camera_->transform.translate.x = 59.9f;
+			ExperienceBar->worldTransform_->translation_.x = 56.4f;
+			ExperiencePoint->worldTransform_->translation_.x = 56.4f;
+			ExperienceText->worldTransform_->translation_.x = 56.4f;
+			LevelMax->worldTransform_->translation_.x = 56.4f;
+			SkillUI->worldTransform_->translation_.x = 63.4f;
+			Skill1->worldTransform_->translation_.x = 63.4f;
+			Skill2->worldTransform_->translation_.x = 63.4f;
+			Skill3->worldTransform_->translation_.x = 63.4f;
+			LevelUp->worldTransform_->translation_.x = 59.9f;
+			model_->worldTransform_->translation_.x = 59.9f;
+			dashSpeed = 0;
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z >= 60.0f) {
+			camera_->transform.translate.z = 49.9f;
+			ExperienceBar->worldTransform_->translation_.z = 59.9f;
+			ExperiencePoint->worldTransform_->translation_.z = 59.9f;
+			ExperienceText->worldTransform_->translation_.z = 59.9f;
+			LevelMax->worldTransform_->translation_.z = 59.9f;
+			SkillUI->worldTransform_->translation_.z = 59.9f;
+			Skill1->worldTransform_->translation_.z = 59.9f;
+			Skill2->worldTransform_->translation_.z = 59.9f;
+			Skill3->worldTransform_->translation_.z = 59.9f;
+			LevelUp->worldTransform_->translation_.z = 59.9f;
+			model_->worldTransform_->translation_.z = 59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.x <= -60.0f) {
+			camera_->transform.translate.x = -59.9f;
+			ExperienceBar->worldTransform_->translation_.x = -63.4f;
+			ExperiencePoint->worldTransform_->translation_.x = -63.4f;
+			ExperienceText->worldTransform_->translation_.x = -63.4f;
+			LevelMax->worldTransform_->translation_.x = -63.4f;
+			SkillUI->worldTransform_->translation_.x = -56.4f;
+			Skill1->worldTransform_->translation_.x = -56.4f;
+			Skill2->worldTransform_->translation_.x = -56.4f;
+			Skill3->worldTransform_->translation_.x = -56.4f;
+			LevelUp->worldTransform_->translation_.x = -59.9f;
+			model_->worldTransform_->translation_.x = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z <= -60.0f) {
+			camera_->transform.translate.z = -69.9f;
+			ExperienceBar->worldTransform_->translation_.z = -59.9f;
+			ExperiencePoint->worldTransform_->translation_.z = -59.9f;
+			ExperienceText->worldTransform_->translation_.z = -59.9f;
+			LevelMax->worldTransform_->translation_.z = -59.9f;
+			SkillUI->worldTransform_->translation_.z = -59.9f;
+			Skill1->worldTransform_->translation_.z = -59.9f;
+			Skill2->worldTransform_->translation_.z = -59.9f;
+			Skill3->worldTransform_->translation_.z = -59.9f;
+			LevelUp->worldTransform_->translation_.z = -59.9f;
+			model_->worldTransform_->translation_.z = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+
 		model_->worldTransform_->translation_.x += dashX;
 		model_->worldTransform_->translation_.z += dashZ;
 		ExperienceBar->worldTransform_->translation_.x += dashX;
@@ -1280,7 +1478,7 @@ void Player::Skill2Update()
 
 		float directionAngle = model_->worldTransform_->rotation_.y;
 
-		float dashSpeed = 0.2f;
+		float dashSpeed = 0.3f;
 
 		float dashX = std::sin(directionAngle) * dashSpeed;
 		float dashZ = std::cos(directionAngle) * dashSpeed;
@@ -1303,6 +1501,81 @@ void Player::Skill2Update()
 
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
+		}
+
+		if (model_->worldTransform_->translation_.x >= 60.0f) {
+			camera_->transform.translate.x = 59.9f;
+			ExperienceBar->worldTransform_->translation_.x = 56.4f;
+			ExperiencePoint->worldTransform_->translation_.x = 56.4f;
+			ExperienceText->worldTransform_->translation_.x = 56.4f;
+			LevelMax->worldTransform_->translation_.x = 56.4f;
+			SkillUI->worldTransform_->translation_.x = 63.4f;
+			Skill1->worldTransform_->translation_.x = 63.4f;
+			Skill2->worldTransform_->translation_.x = 63.4f;
+			Skill3->worldTransform_->translation_.x = 63.4f;
+			LevelUp->worldTransform_->translation_.x = 59.9f;
+			model_->worldTransform_->translation_.x = 59.9f;
+			dashSpeed = 0;
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z >= 60.0f) {
+			camera_->transform.translate.z = 49.9f;
+			ExperienceBar->worldTransform_->translation_.z = 59.9f;
+			ExperiencePoint->worldTransform_->translation_.z = 59.9f;
+			ExperienceText->worldTransform_->translation_.z = 59.9f;
+			LevelMax->worldTransform_->translation_.z = 59.9f;
+			SkillUI->worldTransform_->translation_.z = 59.9f;
+			Skill1->worldTransform_->translation_.z = 59.9f;
+			Skill2->worldTransform_->translation_.z = 59.9f;
+			Skill3->worldTransform_->translation_.z = 59.9f;
+			LevelUp->worldTransform_->translation_.z = 59.9f;
+			model_->worldTransform_->translation_.z = 59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.x <= -60.0f) {
+			camera_->transform.translate.x = -59.9f;
+			ExperienceBar->worldTransform_->translation_.x = -63.4f;
+			ExperiencePoint->worldTransform_->translation_.x = -63.4f;
+			ExperienceText->worldTransform_->translation_.x = -63.4f;
+			LevelMax->worldTransform_->translation_.x = -63.4f;
+			SkillUI->worldTransform_->translation_.x = -56.4f;
+			Skill1->worldTransform_->translation_.x = -56.4f;
+			Skill2->worldTransform_->translation_.x = -56.4f;
+			Skill3->worldTransform_->translation_.x = -56.4f;
+			LevelUp->worldTransform_->translation_.x = -59.9f;
+			model_->worldTransform_->translation_.x = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
+		}
+		if (model_->worldTransform_->translation_.z <= -60.0f) {
+			camera_->transform.translate.z = -69.9f;
+			ExperienceBar->worldTransform_->translation_.z = -59.9f;
+			ExperiencePoint->worldTransform_->translation_.z = -59.9f;
+			ExperienceText->worldTransform_->translation_.z = -59.9f;
+			LevelMax->worldTransform_->translation_.z = -59.9f;
+			SkillUI->worldTransform_->translation_.z = -59.9f;
+			Skill1->worldTransform_->translation_.z = -59.9f;
+			Skill2->worldTransform_->translation_.z = -59.9f;
+			Skill3->worldTransform_->translation_.z = -59.9f;
+			LevelUp->worldTransform_->translation_.z = -59.9f;
+			model_->worldTransform_->translation_.z = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.3f;
 		}
 		ExperienceBar->worldTransform_->translation_.x += dashX;
 		ExperienceBar->worldTransform_->translation_.z += dashZ;
@@ -1383,6 +1656,82 @@ void Player::Skill3Update()
 		if (weapon_->GetWorldTransform()->translation_.z >= 4.0f) {
 			weapon_->GetWorldTransform()->translation_.z = 4.0f;
 		}
+
+		if (model_->worldTransform_->translation_.x >= 60.0f) {
+			camera_->transform.translate.x = 59.9f;
+			ExperienceBar->worldTransform_->translation_.x = 56.4f;
+			ExperiencePoint->worldTransform_->translation_.x = 56.4f;
+			ExperienceText->worldTransform_->translation_.x = 56.4f;
+			LevelMax->worldTransform_->translation_.x = 56.4f;
+			SkillUI->worldTransform_->translation_.x = 63.4f;
+			Skill1->worldTransform_->translation_.x = 63.4f;
+			Skill2->worldTransform_->translation_.x = 63.4f;
+			Skill3->worldTransform_->translation_.x = 63.4f;
+			LevelUp->worldTransform_->translation_.x = 59.9f;
+			model_->worldTransform_->translation_.x = 59.9f;
+			dashSpeed = 0;
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		if (model_->worldTransform_->translation_.z >= 60.0f) {
+			camera_->transform.translate.z = 49.9f;
+			ExperienceBar->worldTransform_->translation_.z = 59.9f;
+			ExperiencePoint->worldTransform_->translation_.z = 59.9f;
+			ExperienceText->worldTransform_->translation_.z = 59.9f;
+			LevelMax->worldTransform_->translation_.z = 59.9f;
+			SkillUI->worldTransform_->translation_.z = 59.9f;
+			Skill1->worldTransform_->translation_.z = 59.9f;
+			Skill2->worldTransform_->translation_.z = 59.9f;
+			Skill3->worldTransform_->translation_.z = 59.9f;
+			LevelUp->worldTransform_->translation_.z = 59.9f;
+			model_->worldTransform_->translation_.z = 59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		if (model_->worldTransform_->translation_.x <= -60.0f) {
+			camera_->transform.translate.x = -59.9f;
+			ExperienceBar->worldTransform_->translation_.x = -63.4f;
+			ExperiencePoint->worldTransform_->translation_.x = -63.4f;
+			ExperienceText->worldTransform_->translation_.x = -63.4f;
+			LevelMax->worldTransform_->translation_.x = -63.4f;
+			SkillUI->worldTransform_->translation_.x = -56.4f;
+			Skill1->worldTransform_->translation_.x = -56.4f;
+			Skill2->worldTransform_->translation_.x = -56.4f;
+			Skill3->worldTransform_->translation_.x = -56.4f;
+			LevelUp->worldTransform_->translation_.x = -59.9f;
+			model_->worldTransform_->translation_.x = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		if (model_->worldTransform_->translation_.z <= -60.0f) {
+			camera_->transform.translate.z = -69.9f;
+			ExperienceBar->worldTransform_->translation_.z = -59.9f;
+			ExperiencePoint->worldTransform_->translation_.z = -59.9f;
+			ExperienceText->worldTransform_->translation_.z = -59.9f;
+			LevelMax->worldTransform_->translation_.z = -59.9f;
+			SkillUI->worldTransform_->translation_.z = -59.9f;
+			Skill1->worldTransform_->translation_.z = -59.9f;
+			Skill2->worldTransform_->translation_.z = -59.9f;
+			Skill3->worldTransform_->translation_.z = -59.9f;
+			LevelUp->worldTransform_->translation_.z = -59.9f;
+			model_->worldTransform_->translation_.z = -59.9f;
+
+			dashSpeed = 0;
+
+		}
+		else {
+			dashSpeed = 0.5f;
+		}
+		
 		ExperienceBar->worldTransform_->translation_.x += dashX;
 		ExperienceBar->worldTransform_->translation_.z += dashZ;
 		ExperiencePoint->worldTransform_->translation_.x += dashX;

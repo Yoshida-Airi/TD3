@@ -55,6 +55,7 @@ public:
 
 private:
 	std::unique_ptr<Model> model_ = nullptr;
+	std::unique_ptr<Model> BossHp = nullptr;
 	Player* player_ = nullptr;
 	BossBullet* bullet_ = nullptr;
 
@@ -87,6 +88,7 @@ private:
 	int BTimer = 0;
 
 	uint32_t bossTex;
+	uint32_t bosshpTex;
 
 	bool isPlayHitSound = false;
 	int hitSoundNumber;

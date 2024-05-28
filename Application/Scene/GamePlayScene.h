@@ -27,6 +27,10 @@
 #include "../BossBullet.h"
 #include"DeathEffect.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
@@ -87,6 +91,7 @@ private:
 
 
 	std::unique_ptr<Model> demo_stage = nullptr;
+	
 
 	std::unique_ptr<Player> player = nullptr;
 	std::unique_ptr<Sword> sword = nullptr;
@@ -102,6 +107,9 @@ private:
 	bool isEnemySpawn = true;
 	bool isEnemyReSpawn = false;
 
+	unsigned int currentTime;
+	uint32_t nomber_;
+
 	bool isEnemyAttack = true;
 	int enemyAttackCoolDown = 0;
 
@@ -114,7 +122,6 @@ private:
 	Vector3 offset;
 	Vector3 targetPosition;
 
-	unsigned int currentTime;
 	int action = 0;
 
 	float cameraZ;//lerpしたときの誤差修正数値

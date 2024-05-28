@@ -11,7 +11,7 @@ void EnemyBullet::Initialize() {
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemyBullet));
 
-	model_.reset(Model::Create("Resources/DefaultAssets/cube.obj"));
+	model_.reset(Model::Create("Resources/DefaultAssets/DamageBall.obj"));
 	uint32_t redTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
 	model_->SetTexture(redTex);
 
@@ -28,6 +28,9 @@ void EnemyBullet::Update() {
 	model_->worldTransform_->translation_.x += speed_.x;
 	model_->worldTransform_->translation_.y += speed_.y;
 	model_->worldTransform_->translation_.z += speed_.z;
+	model_->worldTransform_->rotation_.x += speed_.x;
+	model_->worldTransform_->rotation_.y += speed_.y;
+	model_->worldTransform_->rotation_.z += speed_.z;
 
 	if (--deathTimer <= 0) {
 		isDead_ = true;

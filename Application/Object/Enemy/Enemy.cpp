@@ -5,16 +5,19 @@ Enemy::~Enemy() {
 
 }
 
-void Enemy::Initialize(Player* player) {
+void Enemy::Initialize(Player* player, uint32_t nomber) {
 	Collider::Initialize();
 
 	//当たり判定用
 	Collider::SetTypeID(static_cast<uint32_t>(CollisionTypeDef::kEnemy));
 
-	texture = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a.png");
+	texture[0] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a.png");
+	texture[1] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a3.png");
+	texture[2] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a4.png");
+	texture[3] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a5.png");
 
 	model_.reset(Model::Create("Resources/Enemy/ene.obj"));
-	model_->SetTexture(texture);
+	model_->SetTexture(texture[nomber]);
 
 	input_ = Input::GetInstance();
 	input_->Initialize();
@@ -73,8 +76,8 @@ void Enemy::Finalize() {
 }
 
 void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
-	std::uniform_real_distribution<float> translateX (-7.0f, 7.0f);
-	std::uniform_real_distribution<float> translateZ (-7.0f, 7.0f);
+	std::uniform_real_distribution<float> translateX (-8.0f, 8.0f);
+	std::uniform_real_distribution<float> translateZ (-8.0f, 8.0f);
 
 	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
 }
