@@ -29,6 +29,7 @@ void EnemyBullet::Update() {
 	model_->worldTransform_->translation_.y += speed_.y;
 	model_->worldTransform_->translation_.z += speed_.z;
 	model_->worldTransform_->rotation_.x += speed_.x;
+	model_->worldTransform_->rotation_.y += speed_.y;
 	model_->worldTransform_->rotation_.z += speed_.z;
 
 	if (--deathTimer <= 0) {
