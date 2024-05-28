@@ -23,8 +23,8 @@
 #include "Enemy/Enemy.h"
 #include "Enemy/EnemyBullet.h"
 #include <random>
-#include "../Boss.h"
-#include "../BossBullet.h"
+#include "Boss.h"
+#include "BossBullet.h"
 #include"DeathEffect.h"
 
 #include <stdio.h>
