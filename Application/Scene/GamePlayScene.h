@@ -171,5 +171,5 @@ private:
 	uint32_t numberTex[3];
 	std::string texNum = "Resources/Numbers/number000-sheet.png";
 	std::unique_ptr<Sprite>numberSprite[3];
-	uint32_t kFullWaveTime = 3;
+	//uint32_t kFullWaveTime = 3;
 };
