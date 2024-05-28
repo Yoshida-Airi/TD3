@@ -16,7 +16,7 @@ class Enemy : public Collider {
 public:
 	~Enemy();
 
-	void Initialize(Player* player);
+	void Initialize(Player* player, uint32_t nomber);
 
 	void Update();
 
@@ -53,7 +53,7 @@ private:
 	Player* player_ = nullptr;
 	Input* input_ = nullptr;
 
-	uint32_t texture;
+	uint32_t texture[4];
 	Vector3 speed_;
 
 	uint32_t hitSound[3];

@@ -24,6 +24,7 @@ void GamePlayScene::Initialize()
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
+
 	//当たり判定処理の設定
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
@@ -418,9 +419,15 @@ void GamePlayScene::EnemySpawn() {
 
 
 	Enemy* newEnemy = new Enemy();
-	newEnemy->Initialize(player.get());
-
+	if (nomber_ <= 2) {
+		nomber_++;
+	}
+	else {
+		nomber_ = 0;
+	}
 	std::mt19937 random(generator());
+
+	newEnemy->Initialize(player.get(), nomber_);
 
 	newEnemy->SetTranslate(random, player->GetPosition());
 
