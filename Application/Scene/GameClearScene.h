@@ -59,6 +59,8 @@ private:
 	uint32_t numberTex[3];
 	std::string texNum = "Resources/Numbers/number000-sheet.png";
 	std::unique_ptr<Sprite>numberSprite[3];
-
+	uint32_t scoreTex;
+	std::string texScore = "Resources/Numbers/seconds.png";
+	std::unique_ptr<Sprite>scoreSprite;
 };
 
