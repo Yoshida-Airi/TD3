@@ -35,6 +35,9 @@ void Enemy::Initialize(Player* player, uint32_t nomber) {
 	hitSound[2] = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Hit3.wav");
 
 	isRelottery = false;
+
+	isMoveLottery = false;
+
 }
 
 void Enemy::Update() {
@@ -46,8 +49,6 @@ void Enemy::Update() {
 
 	Direction();
 	LotteryHitSound();
-
-	model_->worldTransform_->translation_.x += 0.001f;
 
 	CoolDown();
 	/*if (--deathTimer <= 0) {
@@ -80,6 +81,29 @@ void Enemy::SetTranslate(std::mt19937& randomEngine, Vector3 translate) {
 	std::uniform_real_distribution<float> translateZ (-8.0f, 8.0f);
 
 	model_->worldTransform_->translation_ = { translate.x + translateX(randomEngine),0.0f, translate.z + translateZ(randomEngine) };
+}
+
+void Enemy::SetMoveDirection(std::mt19937& randomEngine) {
+	std::uniform_int_distribution move(0,3);
+
+	if (isMoveLottery == false) {
+		moveNo = move(randomEngine);
+		isMoveLottery = true;
+	}
+
+	if (moveNo == 0) {
+		model_->worldTransform_->translation_.x += 0.001f;
+	}
+	else if (moveNo == 1) {
+		model_->worldTransform_->translation_.x -= 0.001f;
+	}
+	else if (moveNo == 2) {
+		model_->worldTransform_->translation_.z += 0.001f;
+	}
+	else if (moveNo == 3) {
+		model_->worldTransform_->translation_.z -= 0.001f;
+	}
+
 }
 
 void Enemy::CoolDown()

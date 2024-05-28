@@ -142,7 +142,9 @@ void GamePlayScene::Update()
 			}
 
 			for (Enemy* enemys : enemy_) {
+				std::mt19937 random(generator());
 				enemys->Update();
+				enemys->SetMoveDirection(random);
 				if (enemys->GetIsDead()) {
 					//貰える経験値
 					player->GetPlayerLevel()->Experiencepoint += 16.0f;

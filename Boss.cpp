@@ -120,7 +120,7 @@ void Boss::Finalize() {
 
 void Boss::SetTranslate(Vector3 translate) {
 	
-	model_->worldTransform_->translation_ = { translate.x + 0.00000001f ,6.0f, translate.z };
+	model_->worldTransform_->translation_ = { translate.x + 0.00001f ,6.0f, translate.z + 2.0f };
 }
 
 Vector3 Boss::GetWorldPosition()
