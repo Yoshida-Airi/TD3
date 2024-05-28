@@ -48,6 +48,8 @@ public:
 
 	bool GetIsRelottery() { return isRelottery; }
 
+	void SetMoveDirection(std::mt19937& randomEngine);
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Player* player_ = nullptr;
@@ -61,6 +63,9 @@ private:
 	float angle_ = 0.0f;
 
 	bool isRelottery;
+
+	bool isMoveLottery;
+	int moveNo;
 
 	unsigned int currentTime;
 
