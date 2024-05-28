@@ -22,6 +22,7 @@ public:
 	void ChangeScene(const std::string& sceneName);
 
 	void SetSceneFactory(AbstractSceneFactory* sceneFactory);
+	static uint32_t bossTimeData;
 
 private:
 	static SceneManager* instance;	//シングルトン

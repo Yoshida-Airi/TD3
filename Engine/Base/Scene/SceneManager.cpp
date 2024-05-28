@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include<cassert>
 
+uint32_t SceneManager::bossTimeData = 0;
 SceneManager* SceneManager::GetInstance()
 {
 	if (instance == nullptr)

@@ -341,9 +341,9 @@ void GamePlayScene::Update()
 			uint32_t texNum100 = kRestWaveTime / 100;
 			uint32_t texNum10 = kRestWaveTime % 100 / 10;
 			uint32_t texNum1 = kRestWaveTime % 100 % 10;
-			numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),0.0f };
-			numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),0.0f };
-			numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),0.0f };
+			numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),5.0f };
+			numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),5.0f };
+			numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),5.0f };
 			numberSprite[0]->SetTextureLeftTop({ 36.0f * texNum100,0.0f });
 			numberSprite[1]->SetTextureLeftTop({ 36.0f * texNum10,0.0f });
 			numberSprite[2]->SetTextureLeftTop({ 36.0f * texNum1,0.0f });
@@ -357,12 +357,13 @@ void GamePlayScene::Update()
 			uint32_t texNum100 = timer.GetBossSecond() / 100;
 			uint32_t texNum10 = timer.GetBossSecond() % 100 / 10;
 			uint32_t texNum1 = timer.GetBossSecond() % 100 % 10;
-			numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),0.0f };
-			numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),0.0f };
-			numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),0.0f };
+			numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),5.0f };
+			numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),5.0f };
+			numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),5.0f };
 			numberSprite[0]->SetTextureLeftTop({ 36.0f * texNum100,0.0f });
 			numberSprite[1]->SetTextureLeftTop({ 36.0f * texNum10,0.0f });
 			numberSprite[2]->SetTextureLeftTop({ 36.0f * texNum1,0.0f });
+			SceneManager::bossTimeData = timer.GetBossSecond();
 		}
 	}
 
