@@ -57,10 +57,10 @@ private:
 	bool isFadeIn = false;
 
 	uint32_t numberTex[3];
-	std::string texNum = "Resources/Numbers/number000-sheet.png";
+	std::string texNum = "Resources/Numbers/number.png";
 	std::unique_ptr<Sprite>numberSprite[3];
 	uint32_t scoreTex;
-	std::string texScore = "Resources/Numbers/seconds.png";
+	std::string texScore = "Resources/Numbers/seconds_white.png";
 	std::unique_ptr<Sprite>scoreSprite;
 };
 

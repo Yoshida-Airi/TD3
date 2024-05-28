@@ -169,7 +169,7 @@ private:
 	uint32_t kRestWaveTime = 0;
 
 	uint32_t numberTex[3];
-	std::string texNum = "Resources/Numbers/number000-sheet.png";
+	std::string texNum = "Resources/Numbers/number.png";
 	std::unique_ptr<Sprite>numberSprite[3];
 	//uint32_t kFullWaveTime = 3;
 };
