@@ -1,11 +1,14 @@
 #pragma once
 #include"BaseScene.h"
 
+#include"WinApp.h"
+
 #include"ImGuiManager.h"
 #include"SceneFactory.h"
 #include"SceneManager.h"
 #include"Audio.h"
 #include"Camera.h"
+#include"Timer.h"
 
 #include"Input.h"
 
@@ -29,9 +32,11 @@ public:
 	void UpdateFadeIn();
 
 private:
+	WinApp* winApp_ = nullptr;
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
+	Timer timer;
 
 	uint32_t ClearSceneTex;
 	std::unique_ptr<Sprite>clearSprite = nullptr;
@@ -50,5 +55,10 @@ private:
 	float fadeInAlpha = 0;
 	bool isFadeOut = false;
 	bool isFadeIn = false;
+
+	uint32_t numberTex[3];
+	std::string texNum = "Resources/Numbers/number000-sheet.png";
+	std::unique_ptr<Sprite>numberSprite[3];
+
 };
 
