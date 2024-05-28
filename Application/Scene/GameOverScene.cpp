@@ -18,11 +18,11 @@ void GameOverScene::Initialize()
 	overSprite.reset(Sprite::Create(overSceneTex));
 
 
-	UI_MouseTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_MouseLeftClick.png");
+	UI_MouseTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_MouseLeftClick.png");
 	UI_Mouse.reset(Sprite::Create(UI_MouseTex));
 	UI_Mouse->SetPosition({ 1100.0f,450.0f });
 
-	UI_GamePadABottonTex = TextureManager::GetInstance()->LoadTexture("Resources/UI_ABotton.png");
+	UI_GamePadABottonTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_ABotton.png");
 	UI_GamePadABotton.reset(Sprite::Create(UI_GamePadABottonTex));
 	UI_GamePadABotton->SetPosition({ 1100.0f,470.0f });
 	UI_GamePadABotton->worldTransform_->scale_ = { 0.1f,0.1f };
