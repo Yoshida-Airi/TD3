@@ -272,7 +272,6 @@ void Boss::NextAction() {
 		isAttack = false;
 		isAssignment = false;
 	}
-
 }
 
 void Boss::Direction(float speed) {

@@ -2,6 +2,8 @@
 
 #include"BaseScene.h"
 
+#include"WinApp.h"
+
 #include"ImGuiManager.h"
 #include"SceneFactory.h"
 #include"SceneManager.h"
@@ -65,6 +67,7 @@ private:
 private:
 	TextureManager* textureManager_ = nullptr;
 	SceneManager* sceneManager_ = nullptr;
+	WinApp* winApp_ = nullptr;
 	
 	//当たり判定処理
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
@@ -162,5 +165,11 @@ private:
 	bool isCameraShake = false;
 	uint32_t cameraShakeTime;
 	//雑魚戦の総秒数
+	uint32_t kFullWaveTime = 120;
+	uint32_t kRestWaveTime = 0;
+
+	uint32_t numberTex[3];
+	std::string texNum = "Resources/Numbers/number000-sheet.png";
+	std::unique_ptr<Sprite>numberSprite[3];
 	uint32_t kFullWaveTime = 3;
 };

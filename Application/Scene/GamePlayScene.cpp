@@ -76,13 +76,11 @@ void GamePlayScene::Initialize()
 	//colliderManager_->UpdateWorldTransform();
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
-
 	fadeSprite.reset(Sprite::Create(fadeTex));
 	fadeSprite->SetSize({ 1280,720 });
 	fadeSprite->SetisInvisible(false);
 	fadeAlpha = 0.0f;
 	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,fadeAlpha });
-
 	isFadeOut = false;
 	isFadeIn = false;
 	sceneClear = false;
@@ -90,8 +88,15 @@ void GamePlayScene::Initialize()
 
 	StartFadeOut();
 
-	throughTimer = 0;
+	for(int i=0;i<3;i++)
+	{
+		numberTex[i] = TextureManager::GetInstance()->LoadTexture(texNum);
+		numberSprite[i].reset(Sprite::Create(numberTex[i]));
+		numberSprite[i]->SetSize({ 36.0f,72.0f });
+	}
 
+	throughTimer = 0;
+	kRestWaveTime = kFullWaveTime;
 }
 
 void GamePlayScene::Update()
@@ -117,7 +122,6 @@ void GamePlayScene::Update()
 	}
 
 	if (timer.GetNowSecond() != kFullWaveTime)
-
 	{
 		sprite->worldTransform_->translation_ =
 		{
@@ -216,7 +220,7 @@ void GamePlayScene::Update()
 				1280.0f,300.0f,0.0f
 			};
 		}
-
+		kRestWaveTime = kFullWaveTime - timer.GetNowSecond();
 	}
 	else if (timer.GetNowSecond() >= kFullWaveTime)
 	{
@@ -255,7 +259,6 @@ void GamePlayScene::Update()
 			timer.AddBossSecond();
 			timer.ResetBossFrame();
 		}
-
 	}
 
 #ifdef _DEBUG
@@ -329,7 +332,38 @@ void GamePlayScene::Update()
 		camera->UpdateMatrix();
 
 		fadeSprite->Update();
-
+		if (timer.GetNowSecond() != kFullWaveTime)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				numberSprite[i]->Update();
+			}
+			uint32_t texNum100 = kRestWaveTime / 100;
+			uint32_t texNum10 = kRestWaveTime % 100 / 10;
+			uint32_t texNum1 = kRestWaveTime % 100 % 10;
+			numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),0.0f };
+			numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),0.0f };
+			numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),0.0f };
+			numberSprite[0]->SetTextureLeftTop({ 36.0f * texNum100,0.0f });
+			numberSprite[1]->SetTextureLeftTop({ 36.0f * texNum10,0.0f });
+			numberSprite[2]->SetTextureLeftTop({ 36.0f * texNum1,0.0f });
+		}
+		else if (timer.GetNowSecond() >= kFullWaveTime)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				numberSprite[i]->Update();
+			}
+			uint32_t texNum100 = timer.GetBossSecond() / 100;
+			uint32_t texNum10 = timer.GetBossSecond() % 100 / 10;
+			uint32_t texNum1 = timer.GetBossSecond() % 100 % 10;
+			numberSprite[0]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 54),0.0f };
+			numberSprite[1]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 - 18),0.0f };
+			numberSprite[2]->worldTransform_->translation_ = { float(winApp_->kCilentWidth / 2 + 18),0.0f };
+			numberSprite[0]->SetTextureLeftTop({ 36.0f * texNum100,0.0f });
+			numberSprite[1]->SetTextureLeftTop({ 36.0f * texNum10,0.0f });
+			numberSprite[2]->SetTextureLeftTop({ 36.0f * texNum1,0.0f });
+		}
 	}
 
 	Hitstop();
@@ -363,6 +397,10 @@ void GamePlayScene::Draw()
 	}
 
 	fadeSprite->Draw(camera);
+	for (int i = 0; i < 3; i++)
+	{
+		numberSprite[i]->Draw(camera);
+	}
 
 	player->TextureDraw();
 
@@ -572,12 +610,6 @@ void GamePlayScene::Hitstop()
 		isHitstop = false;
 		isKillBoss = false;
 	}
-	//if (throughTimer == 30)
-	//{
-	//	hitstopTimer = 0;
-	//	throughTimer = 0;
-	//}
-
 }
 
 void GamePlayScene::EnemyNumberOfOccurrences() {
