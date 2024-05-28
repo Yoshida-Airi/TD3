@@ -127,14 +127,12 @@
       <Filter>Application\Object\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Math\Timer.cpp" />
-    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Application\Object\Player\FollowCamera.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="Application\Object\Player\Sword.cpp">
       <Filter>Application\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="BossBullet.cpp" />
     <ClCompile Include="Application\Object\Effect\SlashingEffect.cpp">
       <Filter>Application\Object\Effect</Filter>
     </ClCompile>
@@ -143,6 +141,12 @@
     </ClCompile>
     <ClCompile Include="Application\Scene\GameOverScene.cpp">
       <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Enemy\Boss.cpp">
+      <Filter>Application\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Object\Enemy\BossBullet.cpp">
+      <Filter>Application\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,19 +277,23 @@
     <ClInclude Include="Application\Object\Player\FollowCamera.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Boss.h" />
     <ClInclude Include="Application\Object\Player\Sword.h">
       <Filter>Application\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="Application\Object\Effect\SlashingEffect.h">
       <Filter>Application\Object\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="BossBullet.h" />
     <ClInclude Include="Application\Scene\GameClearScene.h">
       <Filter>Application\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Application\Scene\GameOverScene.h">
       <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Enemy\BossBullet.h">
+      <Filter>Application\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Object\Enemy\Boss.h">
+      <Filter>Application\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
 #include "Collider.h"
 #include "Player.h"
 #include "imgui.h"
-#include "../BossBullet.h"
+#include "BossBullet.h"
 
 #include <stdio.h>
 #include <stdlib.h>
