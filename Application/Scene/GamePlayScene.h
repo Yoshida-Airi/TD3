@@ -165,7 +165,7 @@ private:
 	bool isCameraShake = false;
 	uint32_t cameraShakeTime;
 	//雑魚戦の総秒数
-	uint32_t kFullWaveTime = 70;
+	uint32_t kFullWaveTime = 120;
 	uint32_t kRestWaveTime = 0;
 
 	uint32_t numberTex[3];
