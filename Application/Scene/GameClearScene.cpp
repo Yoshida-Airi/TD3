@@ -235,7 +235,7 @@ void GameClearScene::UpdateFadeIn()
 void GameClearScene::SetPlayerModel()
 {
 	playerTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/base.png");
-	headTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/head_dead.png");
+	headTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/head_smile.png");
 	bodyTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/body.png");
 	leftFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
 	rightFootTex = TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
