@@ -21,10 +21,10 @@ void GameOverScene::Initialize()
 	overSceneTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/gameover.png");
 	//overSprite.reset(Sprite::Create(overSceneTex));
 
-	enemyTexture[0] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a.png");
-	enemyTexture[1] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a3.png");
-	enemyTexture[2] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a4.png");
-	enemyTexture[3] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a5.png");
+	//enemyTexture[0] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a.png");
+	//enemyTexture[1] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a3.png");
+	//enemyTexture[2] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a4.png");
+	//enemyTexture[3] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a5.png");
 
 	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
 	demo_stage->SetLightDirection({ -5.2f,0.1f,1.0f });
@@ -37,18 +37,18 @@ void GameOverScene::Initialize()
 	swoad_->worldTransform_->rotation_ = { 0.0f,1.8f,-0.02f };
 	swoad_->SetLightDirection({ -5.2f,0.1f,1.0f });
 
-	enemy_.reset(Model::Create("Resources/Enemy/ene.obj"));
-	enemy_->SetTexture(enemyTexture[0]);
-	enemy_->worldTransform_->translation_ = { 4.6f,0.0f,6.9f };
-	enemy_->worldTransform_->rotation_ = { 0.0f,3.2f,0.0f };
-	enemy_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
-	enemy_->SetLightDirection({ -5.2f,0.1f,1.0f });
+	//enemy_.reset(Model::Create("Resources/Enemy/ene.obj"));
+	//enemy_->SetTexture(enemyTexture[0]);
+	//enemy_->worldTransform_->translation_ = { 4.6f,0.0f,6.9f };
+	//enemy_->worldTransform_->rotation_ = { 0.0f,3.2f,0.0f };
+	//enemy_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
+	//enemy_->SetLightDirection({ -5.2f,0.1f,1.0f });
 
 	ui_gameOver_.reset(Model::Create("Resources/UI/UI_gameover.obj"));
 	ui_gameOver_->worldTransform_->translation_ = { -2.1f,3.93f,0.0f };
 	ui_gameOver_->worldTransform_->rotation_ = { 0.42f,3.18f,0.0f };
 	ui_gameOver_->worldTransform_->scale_ = { 0.0f,0.0f,0.0f };
-	ui_gameOver_->SetLightDirection({ -5.2f,0.1f,1.0f });
+	ui_gameOver_->SetLightDirection({-5.2f ,lightDirectionX,1.0f });
 
 	UI_MouseTex = TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_MouseLeftClick.png");
 	UI_Mouse.reset(Sprite::Create(UI_MouseTex));
@@ -90,6 +90,9 @@ void GameOverScene::Update()
 
 
 	gameoverAnimation();
+	EnemyMoveAction();
+
+
 
 	if (Input::GetInstance()->GetJoystickState(0, joyState))
 	{
@@ -134,7 +137,8 @@ void GameOverScene::Update()
 	RightFootModel_->Update();
 	swoad_->Update();
 	ui_gameOver_->Update();
-	enemy_->Update();
+	ui_gameOver_->SetLightDirection({ -5.2f, lightDirectionX, 1.0f });
+	//enemy_->Update();
 
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
@@ -144,7 +148,7 @@ void GameOverScene::Update()
 	RightFootModel_->ModelDebug("rightFoot");
 
 	swoad_->ModelDebug("swoad");
-	enemy_->ModelDebug("enemy1");
+//	enemy_->ModelDebug("enemy1");
 
 	ui_gameOver_->ModelDebug("gameover");
 
@@ -167,7 +171,7 @@ void GameOverScene::Draw()
 	RightFootModel_->Draw(camera);
 	swoad_->Draw(camera);
 
-	enemy_->Draw(camera);
+	//enemy_->Draw(camera);
 
 	ui_gameOver_->Draw(camera);
 
@@ -287,6 +291,46 @@ void GameOverScene::gameoverAnimation()
 	if (addScale >= 1.0f)
 	{
 		ui_gameOver_->worldTransform_->scale_ = { 1.0f,1.0f,1.0f };
+	}
+
+}
+
+
+void GameOverScene::EnemyMoveAction()
+{
+
+	MotionTimer++;
+
+	if (motionCount == 0)
+	{
+		//enemy_->worldTransform_->translation_.x += 0.04f;
+		lightDirectionX += 0.7f;
+		//ui_gameOver_->SetLightDirection({ -5.2f,0.1f,1.0f });
+
+		if (MotionTimer >= 40)
+		{
+			motionCount = 1;
+		}
+	}
+
+	if (motionCount == 1)
+	{
+		lightDirectionX -= 0.7f;
+		//enemy_->worldTransform_->translation_.x -= 0.04f;
+
+		if (MotionTimer >= 80)
+		{
+			motionCount = 2;
+		}
+	}
+
+
+	if (motionCount == 2)
+	{
+		//model_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		//isplayHitAction = false;
+		MotionTimer = 0.0f;
+		motionCount = 0;
 	}
 
 }

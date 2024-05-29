@@ -75,11 +75,18 @@ private:
 
 	float addScale = 0.00f;
 
+	float MotionTimer = 0.0f;
+	int motionCount = 0;
+	bool isplayHitAction = false;	//あたったときの点滅描画をするかどうか
+
+	float lightDirectionX = 0.1f;
 
 private:
 
 	void SetPlayerModel();
 	void gameoverAnimation();
+
+	void EnemyMoveAction();
 
 };
 
