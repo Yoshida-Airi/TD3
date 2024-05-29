@@ -16,19 +16,10 @@ void GameOverScene::Initialize()
 	camera->transform.translate.y = 11.0f;
 	camera->transform.rotate.x = 0.7f;
 
-	//redTex=TextureManager::GetInstance()->LoadTexture("Resource/")
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
-	overSceneTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/gameover.png");
-	//overSprite.reset(Sprite::Create(overSceneTex));
-
-	//enemyTexture[0] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a.png");
-	//enemyTexture[1] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a3.png");
-	//enemyTexture[2] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a4.png");
-	//enemyTexture[3] = TextureManager::GetInstance()->LoadTexture("Resources/Enemy/a5.png");
 
 	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
 	demo_stage->SetLightDirection({ -5.2f,0.1f,1.0f });
-	//demo_stage->SetTexture(fadeTex);
 	SetPlayerModel();
 
 	swoad_.reset(Model::Create("Resources/DefaultAssets/Sword.obj"));
@@ -36,13 +27,6 @@ void GameOverScene::Initialize()
 	swoad_->worldTransform_->translation_ = { 1.6f,0.1f,4.5f };
 	swoad_->worldTransform_->rotation_ = { 0.0f,1.8f,-0.02f };
 	swoad_->SetLightDirection({ -5.2f,0.1f,1.0f });
-
-	//enemy_.reset(Model::Create("Resources/Enemy/ene.obj"));
-	//enemy_->SetTexture(enemyTexture[0]);
-	//enemy_->worldTransform_->translation_ = { 4.6f,0.0f,6.9f };
-	//enemy_->worldTransform_->rotation_ = { 0.0f,3.2f,0.0f };
-	//enemy_->worldTransform_->scale_ = { 0.5f,0.5f,0.5f };
-	//enemy_->SetLightDirection({ -5.2f,0.1f,1.0f });
 
 	ui_gameOver_.reset(Model::Create("Resources/UI/UI_gameover.obj"));
 	ui_gameOver_->worldTransform_->translation_ = { -2.1f,3.93f,0.0f };
@@ -90,7 +74,7 @@ void GameOverScene::Update()
 
 
 	gameoverAnimation();
-	EnemyMoveAction();
+	GameOverAction();
 
 
 
@@ -105,18 +89,18 @@ void GameOverScene::Update()
 		UI_Mouse->SetisInvisible(false);
 	}
 
-	//if (Input::GetInstance()->GetJoystickState(0, joyState))
-	//{
-	//	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-	//	{
-	//		StartFadeIn();
-	//	}
-	//}
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			StartFadeIn();
+		}
+	}
 
-	//if (input->IsLeftMouseTrigger())
-	//{
-	//	StartFadeIn();
-	//}
+	if (input->IsLeftMouseTrigger())
+	{
+		StartFadeIn();
+	}
 
 	if (isFadeIn == true)
 	{
@@ -138,7 +122,7 @@ void GameOverScene::Update()
 	swoad_->Update();
 	ui_gameOver_->Update();
 	ui_gameOver_->SetLightDirection({ -5.2f, lightDirectionX, 1.0f });
-	//enemy_->Update();
+	
 
 	bodyModel_->ModelDebug("body");
 	headModel_->ModelDebug("head");
@@ -148,11 +132,9 @@ void GameOverScene::Update()
 	RightFootModel_->ModelDebug("rightFoot");
 
 	swoad_->ModelDebug("swoad");
-//	enemy_->ModelDebug("enemy1");
 
 	ui_gameOver_->ModelDebug("gameover");
 
-	//overSprite->Update();
 	fadeSprite->Update();
 	UI_GamePadABotton->Update();
 	UI_Mouse->Update();
@@ -171,11 +153,8 @@ void GameOverScene::Draw()
 	RightFootModel_->Draw(camera);
 	swoad_->Draw(camera);
 
-	//enemy_->Draw(camera);
-
 	ui_gameOver_->Draw(camera);
 
-	//overSprite->Draw(camera);
 	UI_GamePadABotton->Draw(camera);
 	UI_Mouse->Draw(camera);
 
@@ -247,7 +226,6 @@ void GameOverScene::SetPlayerModel()
 	LeftFootModel_->SetTexture(leftFootTex);
 	RightFootModel_->SetTexture(rightFootTex);
 
-	//bodyModel_->Parent(model_.get());
 	headModel_->Parent(bodyModel_.get());
 	LeftArmModel_->Parent(bodyModel_.get());
 	RightArmModel_->Parent(bodyModel_.get());
@@ -296,17 +274,15 @@ void GameOverScene::gameoverAnimation()
 }
 
 
-void GameOverScene::EnemyMoveAction()
+void GameOverScene::GameOverAction()
 {
 
 	MotionTimer++;
 
 	if (motionCount == 0)
 	{
-		//enemy_->worldTransform_->translation_.x += 0.04f;
 		lightDirectionX += 0.7f;
-		//ui_gameOver_->SetLightDirection({ -5.2f,0.1f,1.0f });
-
+		
 		if (MotionTimer >= 40)
 		{
 			motionCount = 1;
@@ -316,7 +292,6 @@ void GameOverScene::EnemyMoveAction()
 	if (motionCount == 1)
 	{
 		lightDirectionX -= 0.7f;
-		//enemy_->worldTransform_->translation_.x -= 0.04f;
 
 		if (MotionTimer >= 80)
 		{
@@ -327,8 +302,6 @@ void GameOverScene::EnemyMoveAction()
 
 	if (motionCount == 2)
 	{
-		//model_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
-		//isplayHitAction = false;
 		MotionTimer = 0.0f;
 		motionCount = 0;
 	}

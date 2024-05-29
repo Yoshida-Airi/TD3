@@ -34,9 +34,6 @@ private:
 
 	std::unique_ptr<DeathEffect> effect = nullptr;
 
-	uint32_t overSceneTex;
-	std::unique_ptr<Sprite>overSprite = nullptr;
-
 	uint32_t fadeTex;
 	std::unique_ptr<Sprite>fadeSprite = nullptr;
 
@@ -55,7 +52,6 @@ private:
 	std::unique_ptr<Model> LeftFootModel_ = nullptr;
 	std::unique_ptr<Model> RightFootModel_ = nullptr;
 	std::unique_ptr<Model> swoad_ = nullptr;
-	std::unique_ptr<Model> enemy_ = nullptr;
 
 	std::unique_ptr<Model> ui_gameOver_ = nullptr;
 
@@ -86,7 +82,7 @@ private:
 	void SetPlayerModel();
 	void gameoverAnimation();
 
-	void EnemyMoveAction();
+	void GameOverAction();
 
 };
 
