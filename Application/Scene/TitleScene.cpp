@@ -18,6 +18,7 @@ void TitleScene::Initialize()
 	TitleWall.reset(Model::Create("Resources/Scene/TitleWall.obj"));
 	Title.reset(Model::Create("Resources/Scene/Title.obj"));
 	TitleText.reset(Model::Create("Resources/Scene/TitleText.obj"));
+	Sword.reset(Model::Create("Resources/Scene/sword.obj"));
 
 	camera = new Camera;
 	camera->Initialize();
@@ -57,12 +58,37 @@ void TitleScene::Initialize()
 
 	TitleText->worldTransform_->translation_ = { 0.5f, 6.74f,-7.61f };
 	TitleText->worldTransform_->rotation_ = { 1.0f,3.14f,0.0f };
+
+	Sword->worldTransform_->translation_ = { 0.0f,4.94f,-5.08f };
+	Sword->worldTransform_->rotation_ = { -0.02f,1.57f,-0.73f };
+	Sword->worldTransform_->scale_ = { 0.8f,0.8f,0.8f };
+
+	TitleWall->worldTransform_->rotation_.x = { 1.7f };
+
+	
 }
 
 void TitleScene::Update()
 {
+	speedframe += addframenum;
+	/*if (speedframe == 115 || 65 == speedframe) {
+		speed *= 0.5f;
+	}*/
+	if (speedframe >= 135) {
+		addframenum *= -1;
+		speed *= -1;
+	}
+	if (speedframe <= 45) {
+		addframenum *= -1;
+		speed *= -1;
+	}
+	
 	camera->CameraDebug();
-
+	ImGui::Begin("Num");
+	ImGui::Text("NUM : %f", speed);
+	ImGui::Text("NUM : %f", speedframe);
+	ImGui::End();
+	Sword->worldTransform_->translation_.z += speed;
 	Title->worldTransform_->rotation_.y += 0.001f;
 
 	//ゲームパットの状態を得る変数(XINPUT)
@@ -90,11 +116,11 @@ void TitleScene::Update()
 		}
 	}
 
-	//if (input->IsLeftMouseTrigger())
-	//{
-	//	// フェードイン開始
-	//	StartFadeIn();
-	//}
+	if (input->IsLeftMouseTrigger())
+	{
+		// フェードイン開始
+		StartFadeIn();
+	}
 
 	// フェードイン中の処理
 	if (isFadingIn)
@@ -111,9 +137,11 @@ void TitleScene::Update()
 	TitleWall->Update();
 	Title->Update();
 	TitleText->Update();
+	Sword->Update();
 	TitleWall->ModelDebug("wall");
 	Title->ModelDebug("title");
 	TitleText->ModelDebug("text");
+	Sword->ModelDebug("sword");
 	fadeSprite->Update();
 	UI_Mouse->Update();
 	UI_GamePadABotton->Update();
@@ -129,6 +157,7 @@ void TitleScene::Draw()
 	TitleWall->Draw(camera);
 	Title->Draw(camera);
 	TitleText->Draw(camera);
+	Sword->Draw(camera);
 	//titleSprite->Draw(camera);
 	UI_Mouse->Draw(camera);
 	UI_GamePadABotton->Draw(camera);
