@@ -119,7 +119,7 @@ void GameClearScene::Update()
 
 void GameClearScene::Draw()
 {
-	clearSprite->Draw(camera);
+	//clearSprite->Draw(camera);
 	UI_GamePadABotton->Draw(camera);
 	UI_Mouse->Draw(camera);
 	fadeSprite->Draw(camera);

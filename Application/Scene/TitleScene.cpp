@@ -20,6 +20,8 @@ void TitleScene::Initialize()
 	TitleText.reset(Model::Create("Resources/Scene/TitleText.obj"));
 	Sword.reset(Model::Create("Resources/Scene/sword.obj"));
 
+	LoadModel();
+
 	camera = new Camera;
 	camera->Initialize();
 
@@ -183,4 +185,32 @@ void TitleScene::UpdateFadeIn()
 		sceneManager_->ChangeScene("GAMEPLAY");
 		Audio::GetInstance()->SoundStopWave(soundData);
 	}
+}
+
+void TitleScene::LoadModel()
+{
+	TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/base.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/head.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/body.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/red.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/leftFoot.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/PlayerModel/rightFoot.png");
+
+	TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_skill_pad.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_skill_keyboard.png");
+
+	TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_playerLevel.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_Hp.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/UI/UI_skillLevel.png");
+
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/Attack.wav");
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/Combo1.wav");
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/Combo2.wav");
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/LevelUp.wav");
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/Dash.wav");
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/Skill.wav");
+	Audio::GetInstance()->SoundLoadWave("Resources/Sound/Damage.wav");
+
+
+
 }
