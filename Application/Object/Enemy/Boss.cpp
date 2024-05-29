@@ -365,7 +365,7 @@ void Boss::LotteryHitSound() {
 		for (int i = 0; i < 1; i++) {
 			hitSoundNumber = rand() % 3;
 		}
-		Audio::GetInstance()->SoundVolume(hitSound[hitSoundNumber], 0.0001f);
+		//Audio::GetInstance()->SoundVolume(hitSound[hitSoundNumber], 0.0001f);
 		Audio::GetInstance()->SoundPlayWave(hitSound[hitSoundNumber], false);
 		Audio::GetInstance()->SoundVolume(hitSound[hitSoundNumber], 0.3f);
 		isPlayNum = true;
