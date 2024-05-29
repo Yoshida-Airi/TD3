@@ -164,6 +164,11 @@ void Model::SetColor(Vector4 color)
 	materialData_->color = color;
 }
 
+void Model::SetLightDirection(Vector3 direction)
+{
+	lightData_->direction = direction;
+}
+
 
 
 
