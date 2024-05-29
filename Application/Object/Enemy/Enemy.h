@@ -16,7 +16,7 @@ class Enemy : public Collider {
 public:
 	~Enemy();
 
-	void Initialize(Player* player, uint32_t nomber);
+	void Initialize(Player* player);
 
 	void Update();
 
@@ -50,12 +50,14 @@ public:
 
 	void SetMoveDirection(std::mt19937& randomEngine);
 
+	void SetTexture(std::mt19937& randomEngine);
+
 private:
 	std::unique_ptr<Model> model_ = nullptr;
 	Player* player_ = nullptr;
 	Input* input_ = nullptr;
 
-	uint32_t texture[4];
+	uint32_t texture[5];
 	Vector3 speed_;
 
 	uint32_t hitSound[3];
@@ -66,6 +68,9 @@ private:
 
 	bool isMoveLottery;
 	int moveNo;
+
+	bool isTextureLottery = false;
+	int textureNo;
 
 	unsigned int currentTime;
 

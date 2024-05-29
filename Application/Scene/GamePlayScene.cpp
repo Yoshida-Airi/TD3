@@ -149,6 +149,7 @@ void GamePlayScene::Update()
 				std::mt19937 random(generator());
 				enemys->Update();
 				enemys->SetMoveDirection(random);
+				enemys->SetTexture(random);
 				if (enemys->GetIsDead()) {
 					//貰える経験値
 					player->GetPlayerLevel()->Experiencepoint += 16.0f;
@@ -460,15 +461,8 @@ void GamePlayScene::EnemySpawn() {
 
 
 	Enemy* newEnemy = new Enemy();
-	if (nomber_ <= 2) {
-		nomber_++;
-	}
-	else {
-		nomber_ = 0;
-	}
 	std::mt19937 random(generator());
-
-	newEnemy->Initialize(player.get(), nomber_);
+	newEnemy->Initialize(player.get());
 
 	newEnemy->SetTranslate(random, player->GetPosition());
 
