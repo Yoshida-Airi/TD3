@@ -14,6 +14,7 @@
 
 #include"DeathEffect.h"
 #include"Sprite.h"
+#include"Model.h"
 
 class GameClearScene : public BaseScene
 {
@@ -30,6 +31,10 @@ public:
 	void StartFadeIn();
 
 	void UpdateFadeIn();
+
+	void SetPlayerModel();
+
+	void GameClearAction();
 
 private:
 	WinApp* winApp_ = nullptr;
@@ -62,5 +67,28 @@ private:
 	uint32_t scoreTex;
 	std::string texScore = "Resources/Numbers/seconds_white.png";
 	std::unique_ptr<Sprite>scoreSprite;
+
+	std::unique_ptr<Model> demo_stage = nullptr;
+	std::unique_ptr<Model> bodyModel_ = nullptr;
+	std::unique_ptr<Model> headModel_ = nullptr;
+	std::unique_ptr<Model> LeftArmModel_ = nullptr;
+	std::unique_ptr<Model> RightArmModel_ = nullptr;
+	std::unique_ptr<Model> LeftFootModel_ = nullptr;
+	std::unique_ptr<Model> RightFootModel_ = nullptr;
+	std::unique_ptr<Model> swoad_ = nullptr;
+
+	std::unique_ptr<Model> ui_gameOver_ = nullptr;
+
+	uint32_t playerTex;
+	uint32_t headTex;
+	uint32_t bodyTex;
+	uint32_t leftFootTex;
+	uint32_t rightFootTex;
+
+	float MotionTimer = 0.0f;
+	int motionCount = 0;
+	bool isplayHitAction = false;	//あたったときの点滅描画をするかどうか
+
+	float lightDirectionX = 0.1f;
 };
 

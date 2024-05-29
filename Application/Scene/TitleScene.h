@@ -61,6 +61,10 @@ private:
 	float alpha = 0;
 	bool isFadingIn = false;
 
+private:
+
+	void LoadModel();	//ゲームに移るときのロード時間が長くならないようにあらかじめここで読み込んでおく
+
 
 };
 

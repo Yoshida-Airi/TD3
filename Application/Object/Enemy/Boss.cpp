@@ -308,7 +308,7 @@ void Boss::HitAction()
 
 		if (motionCount == 0)
 		{
-			model_->SetColor({ 0.5f,0.0f,1.0f,0.5f });
+			model_->SetColor({ 1.0f,1.0f,1.0f,0.5f });
 
 			if (MotionTimer >= 20)
 			{
@@ -318,7 +318,7 @@ void Boss::HitAction()
 
 		if (motionCount == 1)
 		{
-			model_->SetColor({ 0.5f,0.0f,1.0f,0.8f });
+			model_->SetColor({ 1.0f,1.0f,1.0f,0.8f });
 
 			if (MotionTimer >= 40)
 			{
