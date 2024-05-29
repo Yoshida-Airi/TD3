@@ -50,6 +50,7 @@ public:
 	}
 
 	void SetColor(Vector4 color);
+	void SetLightDirection(Vector3 direction);
 
 private:
 	DirectXCommon* dxCommon_;
