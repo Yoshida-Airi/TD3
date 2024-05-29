@@ -182,12 +182,14 @@ void GameClearScene::Draw()
 
 	UI_GamePadABotton->Draw(camera);
 	UI_Mouse->Draw(camera);
-	fadeSprite->Draw(camera);
 	for (int i = 0; i < 3; i++)
 	{
 		numberSprite[i]->Draw(camera);
 	}
 	scoreSprite->Draw(camera);
+
+	fadeSprite->Draw(camera);
+
 }
 
 

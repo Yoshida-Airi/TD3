@@ -442,7 +442,7 @@ void Player::Update()
 		ui_skill_keyboard->SetisInvisible(false);
 	}
 
-	float scaleX = static_cast<float>(HP) / 1000.0f;
+	float scaleX = static_cast<float>(HP) / 600.0f;
 	if (scaleX >= 5.0f)
 	{
 		scaleX = 5.0f;
