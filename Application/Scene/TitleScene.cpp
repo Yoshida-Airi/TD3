@@ -15,6 +15,10 @@ void TitleScene::Initialize()
 	Audio::GetInstance()->SoundPlayWave(soundData, false);
 	Audio::GetInstance()->SoundVolume(soundData, 0.01f);
 
+	TitleWall.reset(Model::Create("Resources/Scene/TitleWall.obj"));
+	Title.reset(Model::Create("Resources/Scene/Title.obj"));
+	TitleText.reset(Model::Create("Resources/Scene/TitleText.obj"));
+
 	camera = new Camera;
 	camera->Initialize();
 
@@ -28,8 +32,8 @@ void TitleScene::Initialize()
 
 	slashingEffect->SetFlag(true);
 
-	titleTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/title.png");
-	titleSprite.reset(Sprite::Create(titleTex));
+	/*titleTex = TextureManager::GetInstance()->LoadTexture("Resources/Scene/title.png");
+	titleSprite.reset(Sprite::Create(titleTex));*/
 
 	fadeTex = TextureManager::GetInstance()->LoadTexture("Resources/DefaultAssets/black.png");
 	fadeSprite.reset(Sprite::Create(fadeTex));
@@ -95,7 +99,10 @@ void TitleScene::Update()
 
 	slashingEffect->Update();
 
-	titleSprite->Update();
+	//titleSprite->Update();
+	TitleWall->Update();
+	Title->Update();
+	TitleText->Update();
 	fadeSprite->Update();
 	UI_Mouse->Update();
 	UI_GamePadABotton->Update();
@@ -108,8 +115,10 @@ void TitleScene::Draw()
 
 	effect->Draw();
 	slashingEffect->Draw();
-
-	titleSprite->Draw(camera);
+	TitleWall->Draw(camera);
+	Title->Draw(camera);
+	TitleText->Draw(camera);
+	//titleSprite->Draw(camera);
 	UI_Mouse->Draw(camera);
 	UI_GamePadABotton->Draw(camera);
 	fadeSprite->Draw(camera);
