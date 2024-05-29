@@ -51,11 +51,19 @@ void TitleScene::Initialize()
 	fadeSprite->SetisInvisible(true);
 	alpha = 0;
 	fadeSprite->SetMaterialData({ 1.0f,1.0f,1.0f,alpha });
+
+	Title->worldTransform_->translation_ = { 0.0f,8.22f,-5.3f };
+	Title->worldTransform_->rotation_ = { 1.0f,3.14f,0.0f };
+
+	TitleText->worldTransform_->translation_ = { 0.5f, 6.74f,-7.61f };
+	TitleText->worldTransform_->rotation_ = { 1.0f,3.14f,0.0f };
 }
 
 void TitleScene::Update()
 {
 	camera->CameraDebug();
+
+	Title->worldTransform_->rotation_.y += 0.001f;
 
 	//ゲームパットの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
@@ -82,11 +90,11 @@ void TitleScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseTrigger())
-	{
-		// フェードイン開始
-		StartFadeIn();
-	}
+	//if (input->IsLeftMouseTrigger())
+	//{
+	//	// フェードイン開始
+	//	StartFadeIn();
+	//}
 
 	// フェードイン中の処理
 	if (isFadingIn)
@@ -103,6 +111,9 @@ void TitleScene::Update()
 	TitleWall->Update();
 	Title->Update();
 	TitleText->Update();
+	TitleWall->ModelDebug("wall");
+	Title->ModelDebug("title");
+	TitleText->ModelDebug("text");
 	fadeSprite->Update();
 	UI_Mouse->Update();
 	UI_GamePadABotton->Update();

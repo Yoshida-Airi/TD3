@@ -45,7 +45,7 @@ private:
 	std::unique_ptr<Model> TitleWall = nullptr;
 	std::unique_ptr<Model> Title = nullptr;
 	std::unique_ptr<Model> TitleText = nullptr;
-
+	float num;
 	uint32_t fadeTex;
 	//uint32_t titleTex;
 	uint32_t UI_MouseTex;
