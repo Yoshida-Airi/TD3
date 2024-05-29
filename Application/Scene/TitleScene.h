@@ -11,7 +11,7 @@
 #include"Sphere.h"
 #include"Model.h"
 #include"Camera.h"
-
+#include<cmath>
 #include"DeathEffect.h"
 #include"SlashingEffect.h"
 
@@ -30,13 +30,11 @@ public:
 	void StartFadeIn();
 
 	void UpdateFadeIn();
-
 private:
-
+	
 	Input* input;
 	SceneManager* sceneManager_ = nullptr;
 	Camera* camera;
-
 	uint32_t soundData;
 
 	std::unique_ptr<DeathEffect> effect = nullptr;
@@ -45,7 +43,10 @@ private:
 	std::unique_ptr<Model> TitleWall = nullptr;
 	std::unique_ptr<Model> Title = nullptr;
 	std::unique_ptr<Model> TitleText = nullptr;
-	float num;
+	std::unique_ptr<Model> Sword = nullptr; 
+	float speed = 0.01f;
+	float speedframe = 90;
+	float addframenum = 1;
 	uint32_t fadeTex;
 	//uint32_t titleTex;
 	uint32_t UI_MouseTex;
