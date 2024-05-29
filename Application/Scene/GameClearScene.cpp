@@ -91,18 +91,18 @@ void GameClearScene::Update()
 		UI_Mouse->SetisInvisible(false);
 	}
 
-	//if (Input::GetInstance()->GetJoystickState(0, joyState))
-	//{
-	//	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-	//	{
-	//		StartFadeIn();
-	//	}
-	//}
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+	{
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			StartFadeIn();
+		}
+	}
 
-	//if (input->IsLeftMouseTrigger())
-	//{
-	//	StartFadeIn();
-	//}
+	if (input->IsLeftMouseTrigger())
+	{
+		StartFadeIn();
+	}
 
 	if (isFadeIn == true)
 	{
