@@ -66,16 +66,13 @@ void TitleScene::Initialize()
 	Sword->worldTransform_->scale_ = { 0.8f,0.8f,0.8f };
 
 	TitleWall->worldTransform_->rotation_.x = { 1.7f };
-
 	
 }
 
 void TitleScene::Update()
 {
 	speedframe += addframenum;
-	/*if (speedframe == 115 || 65 == speedframe) {
-		speed *= 0.5f;
-	}*/
+	
 	if (speedframe >= 135) {
 		addframenum *= -1;
 		speed *= -1;
@@ -84,15 +81,25 @@ void TitleScene::Update()
 		addframenum *= -1;
 		speed *= -1;
 	}
-	
+
+	lightDirectionX += speed * 20;
+
+#ifdef _DEBUG
 	camera->CameraDebug();
 	ImGui::Begin("Num");
-	ImGui::Text("NUM : %f", speed);
-	ImGui::Text("NUM : %f", speedframe);
+	ImGui::Text("spd : %f", speed);
+	ImGui::Text("frame : %f", speedframe);
+	ImGui::Checkbox("move", &isMoveSword);
+	ImGui::Checkbox("reset", &ResetSword);
 	ImGui::End();
-	Sword->worldTransform_->translation_.z += speed;
+#endif // _DEBUG
+	if (isMoveSword == false) {
+		Sword->worldTransform_->translation_.z += speed;
+	}
+	if (Title->worldTransform_->rotation_.y >= 4.710f) {
+		Title->worldTransform_->rotation_.y = 1.570f;
+	}
 	Title->worldTransform_->rotation_.y += 0.001f;
-
 	//ゲームパットの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
 
@@ -118,16 +125,27 @@ void TitleScene::Update()
 		}
 	}
 
-	if (input->IsLeftMouseTrigger())
-	{
-		// フェードイン開始
-		StartFadeIn();
-	}
+	//if (input->IsLeftMouseTrigger())
+	//{
+	//	// フェードイン開始
+	//	StartFadeIn();
+	//}
 
 	// フェードイン中の処理
 	if (isFadingIn)
 	{
 		UpdateFadeIn();
+	}
+	if (isMoveSword)
+	{
+		Swordmove();
+	}
+	if (ResetSword)
+	{
+		Sword->worldTransform_->translation_ = { 0.0f,4.94f,-5.08f };
+		Sword->worldTransform_->rotation_ = { -0.02f,1.57f,-0.73f };
+		Sword->worldTransform_->scale_ = { 0.8f,0.8f,0.8f };
+		ResetSword = false;
 	}
 
 
@@ -147,7 +165,10 @@ void TitleScene::Update()
 	fadeSprite->Update();
 	UI_Mouse->Update();
 	UI_GamePadABotton->Update();
-
+	TitleText->SetLightDirection({ lightDirectionX,lightDirectionY,lightDirectionZ });
+	Title->SetLightDirection({ lightDirectionX,lightDirectionY,lightDirectionZ });
+	Sword->SetLightDirection({ lightDirectionX,lightDirectionY,lightDirectionZ });
+	TitleWall->SetLightDirection({ lightDirectionX,lightDirectionY,lightDirectionZ });
 
 }
 
@@ -170,7 +191,16 @@ void TitleScene::Draw()
 void TitleScene::StartFadeIn()
 {
 	isFadingIn = true;
+	isMoveSword = true;
 	fadeSprite->SetisInvisible(false);
+}
+
+void TitleScene::Swordmove() {
+	Sword->worldTransform_->translation_.y += 0.1f;
+	Sword->worldTransform_->translation_.z -= 0.013f;
+	if (Sword->worldTransform_->rotation_.x >= -1.1f) {
+		Sword->worldTransform_->rotation_.x -= 0.1f;
+	}
 }
 
 void TitleScene::UpdateFadeIn()
@@ -182,6 +212,7 @@ void TitleScene::UpdateFadeIn()
 	{
 		// フェードイン完了時の処理
 		isFadingIn = false;
+		isMoveSword = false;
 		sceneManager_->ChangeScene("GAMEPLAY");
 		Audio::GetInstance()->SoundStopWave(soundData);
 	}

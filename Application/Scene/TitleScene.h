@@ -29,7 +29,14 @@ public:
 
 	void StartFadeIn();
 
+	void Swordmove();
+
 	void UpdateFadeIn();
+
+	float lightDirectionX = 0.1f;
+	float lightDirectionY = 0.0f;
+	float lightDirectionZ = 1.0f;
+
 private:
 	
 	Input* input;
@@ -60,6 +67,8 @@ private:
 
 	float alpha = 0;
 	bool isFadingIn = false;
+	bool isMoveSword = false;
+	bool ResetSword = false;
 
 private:
 
