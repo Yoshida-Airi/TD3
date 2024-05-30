@@ -125,11 +125,11 @@ void TitleScene::Update()
 		}
 	}
 
-	//if (input->IsLeftMouseTrigger())
-	//{
-	//	// フェードイン開始
-	//	StartFadeIn();
-	//}
+	if (input->IsLeftMouseTrigger())
+	{
+		// フェードイン開始
+		StartFadeIn();
+	}
 
 	// フェードイン中の処理
 	if (isFadingIn)
