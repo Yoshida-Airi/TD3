@@ -33,6 +33,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
@@ -78,6 +80,7 @@ private:
 	uint32_t circle;
 
 	uint32_t GameBGM;
+	uint32_t BossSE;
 
 	Camera* camera;
 	

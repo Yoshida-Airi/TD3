@@ -24,7 +24,6 @@ void GamePlayScene::Initialize()
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
-
 	//当たり判定処理の設定
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
@@ -44,6 +43,7 @@ void GamePlayScene::Initialize()
 	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
 
 	GameBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/GameBGM.wav");
+	BossSE = Audio::GetInstance()->SoundLoadWave("Resources/Sound/Boss.wav");
 	Audio::GetInstance()->SoundPlayWave(GameBGM, true);
 	Audio::GetInstance()->SoundVolume(GameBGM, 0.01f);
 
@@ -247,6 +247,7 @@ void GamePlayScene::Update()
 			boss_->Update(sceneManager_);
 
 			if (boss_->GetIsDead() == false) {
+
 				isBossSpawn = true;
 			}
 			else {
@@ -351,6 +352,7 @@ void GamePlayScene::Update()
 		}
 		else if (timer.GetNowSecond() >= kFullWaveTime)
 		{
+			
 			for (int i = 0; i < 3; i++)
 			{
 				numberSprite[i]->Update();

@@ -1008,7 +1008,7 @@ void Player::CoolDown() {
 		coolDownTimer++;
 	}
 
-	if (coolDownTimer == 120) {
+	if (coolDownTimer == 60) {
 		bodyModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		headModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		LeftArmModel_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
@@ -1142,6 +1142,19 @@ void Player::AttackUpdate()
 		Speed = 0.03f;
 		behaviorRequest_ = Animation::kRoot;
 		isUnderAttack = false;
+	}
+
+	// スキルのクールダウンを減らす
+	if (isSkillCooldown_) {
+		skillCooldownTime_--;
+		if (skillCooldownTime_ <= 0) {
+			// クールダウンが終了したらフラグをリセットする
+			isSkillCooldown_ = false;
+			ui_skill_keyboard->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+			ui_skill_pad->SetMaterialData({ 1.0f,1.0f,1.0f,1.0f });
+			//isSkill = false;
+
+		}
 	}
 }
 

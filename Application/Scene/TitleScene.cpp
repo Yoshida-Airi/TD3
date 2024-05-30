@@ -8,6 +8,8 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+	
+
 	input = Input::GetInstance();
 	sceneManager_ = SceneManager::GetInstance();
 
