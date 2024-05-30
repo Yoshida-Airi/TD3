@@ -44,7 +44,7 @@ void GamePlayScene::Initialize()
 	demo_stage.reset(Model::Create("Resources/DefaultAssets/stage.obj"));
 
 	GameBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/GameBGM.wav");
-	Audio::GetInstance()->SoundPlayWave(GameBGM, false);
+	Audio::GetInstance()->SoundPlayWave(GameBGM, true);
 	Audio::GetInstance()->SoundVolume(GameBGM, 0.01f);
 
 

@@ -51,7 +51,7 @@ void GameOverScene::Initialize()
 
 
 	GameoverBGM = Audio::GetInstance()->SoundLoadWave("Resources/Sound/ClearBGM.wav");
-	Audio::GetInstance()->SoundPlayWave(GameoverBGM, false);
+	Audio::GetInstance()->SoundPlayWave(GameoverBGM, true);
 	Audio::GetInstance()->SoundVolume(GameoverBGM, 0.01f);
 
 
