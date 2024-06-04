@@ -15,7 +15,7 @@ void TitleScene::Initialize()
 
 	soundData = Audio::GetInstance()->SoundLoadWave("Resources/Sound/TitleBGM.wav");
 	Audio::GetInstance()->SoundPlayWave(soundData, true);
-	Audio::GetInstance()->SoundVolume(soundData, 0.01f);
+	Audio::GetInstance()->SoundVolume(soundData, 0.1f);
 
 	TitleWall.reset(Model::Create("Resources/Scene/TitleWall.obj"));
 	Title.reset(Model::Create("Resources/Scene/Title.obj"));
